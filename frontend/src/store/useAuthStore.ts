@@ -7,6 +7,10 @@ interface User {
  role: string;
  registrationNumber: string;
  email?: string;
+ phoneNumber?: string;
+ gender?: string;
+ batch?: string;
+ residenceType?: string;
  department?: string;
  year?: string;
  accumulatedHours?: number;
