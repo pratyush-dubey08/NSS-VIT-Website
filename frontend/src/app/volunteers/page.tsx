@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { staticVolunteers } from '@/data/volunteers';
-import { api } from '@/lib/axios';
+import api from '@/lib/axios';
 
 interface Volunteer {
   name: string;
