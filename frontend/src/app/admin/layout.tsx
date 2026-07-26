@@ -12,7 +12,8 @@ import {
  LogOut, 
  Menu,
  X,
- FileSpreadsheet
+ FileSpreadsheet,
+ Image as ImageIcon
 } from 'lucide-react';
 import { useAuthStore } from '@/store/useAuthStore';
 
@@ -34,6 +35,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
  { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
  { name: 'Manage Activities', path: '/admin/activities', icon: CalendarDays },
  { name: 'Volunteers', path: '/admin/volunteers', icon: Users },
+ { name: 'Gallery', path: '/admin/gallery', icon: ImageIcon },
  { name: 'Resources', path: '/admin/resources', icon: FileSpreadsheet },
  { name: 'Settings', path: '/admin/settings', icon: Settings },
  ];

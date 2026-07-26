@@ -9,6 +9,7 @@ import formRoutes from './routes/formRoutes';
 import userRoutes from './routes/userRoutes';
 import uploadRoutes from './routes/uploadRoutes';
 import resourceRoutes from './routes/resourceRoutes';
+import galleryRoutes from './routes/galleryRoutes';
 import path from 'path';
 import fs from 'fs';
 
@@ -57,6 +58,7 @@ app.use('/api/forms', formRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/resources', resourceRoutes);
+app.use('/api/gallery', galleryRoutes);
 
 // Basic Route
 app.get('/', (req: Request, res: Response) => {
