@@ -413,13 +413,13 @@ export default function AwardeesPage() {
                 <Award size={18} /> Pre-Republic Day Camp 2025
               </div>
               <h3 className="text-3xl lg:text-5xl font-black leading-tight tracking-tight text-white">
-                District-Level Selections
+                District-Level <span className="text-purple-400">Selections</span>
               </h3>
               <p className="text-slate-300 text-lg md:text-xl leading-relaxed">
-                We are excited to announce that volunteers Maulik Dubey and Soumya Mishra from VIT Bhopal University have been selected from the <strong className="text-purple-400">Sehore district</strong> for the district-level trials of the Pre-Republic Day Camp 2025.
+                A remarkable achievement by <strong className="text-white">Maulik Dubey</strong> and <strong className="text-white">Soumya Mishra</strong>, who successfully cleared the preliminary rounds. They have been officially selected from the <strong className="text-purple-400">Sehore District</strong> to compete in the prestigious district-level trials for the Pre-Republic Day Camp (Pre-RDC) 2025.
               </p>
               <div className="mt-8 p-6 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 italic text-slate-200 shadow-inner">
-                Their dedication and exemplary performance in community service have earned them this prestigious opportunity to represent our district.
+                "Their dedication, discipline, and exemplary performance in community service have earned them this prestigious opportunity to proudly represent our university."
               </div>
             </div>
           </motion.div>
@@ -441,10 +441,10 @@ export default function AwardeesPage() {
                 <Award size={18} /> Pre-RDC Camp Zonal Level Selections
               </div>
               <h3 className="text-3xl lg:text-5xl font-black leading-tight tracking-tight text-slate-900">
-                Representing <span className="text-blue-600">VIT Bhopal University</span>
+                A Proud Moment for <span className="text-blue-600">VIT Bhopal University</span>
               </h3>
-              <p className="text-slate-600 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
-                Congratulations to our outstanding volunteers who proudly represented our NSS Unit at the Pre-RDC Camp Zonal Level Selections! Their dedication reflects the true spirit of NSS.
+              <p className="text-slate-600 text-lg md:text-xl leading-relaxed max-w-4xl mx-auto">
+                These exceptional volunteers showcased outstanding leadership and commitment at the <strong className="text-slate-900">Pre-RDC Zonal Level Selections</strong>. Their phenomenal performance perfectly reflects the true essence of NSS—<span className="italic text-blue-600 font-semibold">"Not Me But You"</span>.
               </p>
             </div>
             
