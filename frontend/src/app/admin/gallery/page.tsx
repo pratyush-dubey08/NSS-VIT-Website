@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Folder, Trash2, Edit, Image as ImageIcon, Loader2 } from 'lucide-react';
 import { api } from '@/lib/axios';
-import { toast } from 'react-hot-toast';
 import Link from 'next/link';
 
 // Use same categories as public gallery
@@ -38,7 +37,7 @@ export default function AdminGalleryPage() {
       const response = await api.get('/gallery');
       setFolders(response.data);
     } catch (error) {
-      toast.error('Failed to fetch albums');
+      alert('Failed to fetch albums');
     } finally {
       setIsLoading(false);
     }
@@ -47,7 +46,7 @@ export default function AdminGalleryPage() {
   const handleCreateSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title || !categoryId || !coverImage) {
-      toast.error('Please fill all fields and select a cover image');
+      alert('Please fill all fields and select a cover image');
       return;
     }
 
@@ -68,12 +67,12 @@ export default function AdminGalleryPage() {
         coverImage: imageUrl
       });
 
-      toast.success('Album created successfully!');
+      alert('Album created successfully!');
       setIsCreateModalOpen(false);
       resetForm();
       fetchFolders();
     } catch (error) {
-      toast.error('Failed to create album');
+      alert('Failed to create album');
     } finally {
       setIsSubmitting(false);
     }
@@ -90,10 +89,10 @@ export default function AdminGalleryPage() {
     
     try {
       await api.delete(`/gallery/${id}`);
-      toast.success('Album deleted');
+      alert('Album deleted');
       fetchFolders();
     } catch (error) {
-      toast.error('Failed to delete album');
+      alert('Failed to delete album');
     }
   };
 

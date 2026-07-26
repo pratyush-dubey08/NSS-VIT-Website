@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft, Loader2, Upload, Trash2, Edit, Check, X } from 'lucide-react';
 import { api } from '@/lib/axios';
-import { toast } from 'react-hot-toast';
 import Link from 'next/link';
 
 const categories = [
@@ -45,7 +44,7 @@ export default function AlbumDetailsPage() {
       setEditTitle(res.data.title);
       setEditCategoryId(res.data.categoryId);
     } catch (error) {
-      toast.error('Failed to load album');
+      alert('Failed to load album');
       router.push('/admin/gallery');
     } finally {
       setIsLoading(false);
@@ -72,12 +71,12 @@ export default function AlbumDetailsPage() {
         coverImage: coverImageUrl
       });
 
-      toast.success('Album updated');
+      alert('Album updated');
       setIsEditing(false);
       setEditCover(null);
       fetchFolder();
     } catch (error) {
-      toast.error('Failed to update album');
+      alert('Failed to update album');
     } finally {
       setIsSaving(false);
     }
@@ -105,7 +104,7 @@ export default function AlbumDetailsPage() {
       // Add urls to folder
       await api.post(`/gallery/${id}/images`, { images: uploadedUrls });
       
-      toast.success(`${uploadedUrls.length} photos uploaded!`);
+      alert(`${uploadedUrls.length} photos uploaded!`);
       setPhotosToUpload(null);
       // Reset file input
       const fileInput = document.getElementById('photo-upload') as HTMLInputElement;
@@ -113,7 +112,7 @@ export default function AlbumDetailsPage() {
       
       fetchFolder();
     } catch (error) {
-      toast.error('Failed to upload photos');
+      alert('Failed to upload photos');
     } finally {
       setIsUploading(false);
     }
@@ -124,10 +123,10 @@ export default function AlbumDetailsPage() {
     
     try {
       await api.delete(`/gallery/${id}/images`, { data: { imageUrl } });
-      toast.success('Photo removed');
+      alert('Photo removed');
       fetchFolder();
     } catch (error) {
-      toast.error('Failed to remove photo');
+      alert('Failed to remove photo');
     }
   };
 
