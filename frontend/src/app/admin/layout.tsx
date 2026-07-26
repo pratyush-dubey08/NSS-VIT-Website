@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -24,12 +24,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
  const [sidebarOpen, setSidebarOpen] = useState(false);
  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
- // Note: Add logic to redirect if not admin
- // useEffect(() => {
- // if (!isAuthorized(['SUPER_ADMIN', 'PROGRAM_OFFICER', 'EVENT_MANAGER'])) {
- // router.push('/dashboard');
- // }
- // }, []);
+  useEffect(() => {
+    // If not authenticated, go to login
+    if (!user) {
+      router.push('/login');
+      return;
+    }
+    
+    // Check if the user's role is allowed
+    const allowedRoles = ['SUPER_ADMIN', 'PROGRAM_OFFICER', 'EVENT_MANAGER'];
+    if (!allowedRoles.includes(user.role)) {
+      router.push('/dashboard');
+    }
+  }, [user, router]);
 
  const navItems = [
  { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
