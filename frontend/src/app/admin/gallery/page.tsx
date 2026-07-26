@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Folder, Trash2, Edit, Image as ImageIcon, Loader2 } from 'lucide-react';
-import { api } from '@/lib/axios';
+import api from '@/lib/axios';
 import Link from 'next/link';
 
 // Use same categories as public gallery

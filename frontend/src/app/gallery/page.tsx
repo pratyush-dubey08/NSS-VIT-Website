@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FolderOpen, ArrowLeft, Loader2, Image as ImageIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { api } from '@/lib/axios';
+import api from '@/lib/axios';
 
 const categories = [
   { id: 'camps', title: 'Special Camps', image: '/images/gallery/events_2025/image1.png' },

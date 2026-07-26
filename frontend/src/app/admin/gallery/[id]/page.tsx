@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft, Loader2, Upload, Trash2, Edit, Check, X } from 'lucide-react';
-import { api } from '@/lib/axios';
+import api from '@/lib/axios';
 import Link from 'next/link';
 
 const categories = [
