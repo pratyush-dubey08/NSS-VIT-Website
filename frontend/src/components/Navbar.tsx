@@ -27,6 +27,7 @@ export default function Navbar() {
     { name: 'Activities', path: '/activities' },
     { name: 'Gallery', path: '/gallery' },
     { name: 'Achievements', path: '/achievements' },
+    { name: 'Alumni', path: '/alumni' },
     { name: 'Leadership', path: '/team' },
     { name: 'Contact', path: '/contact' },
   ];
