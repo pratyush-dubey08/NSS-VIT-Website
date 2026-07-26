@@ -380,6 +380,86 @@ export default function AwardeesPage() {
           </motion.div>
         </section>
 
+        {/* 7. Pre-RDC District Level */}
+        <section className="relative">
+          <motion.div 
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7 }}
+            className="bg-slate-900 rounded-[3rem] p-8 md:p-12 lg:p-16 shadow-2xl shadow-purple-900/20 border border-slate-800 flex flex-col lg:flex-row-reverse gap-12 items-center relative overflow-hidden text-white"
+          >
+            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-purple-900/40 to-transparent rounded-tr-full -z-10"></div>
+            
+            <div className="w-full lg:w-5/12 grid grid-cols-1 sm:grid-cols-2 gap-6 relative z-10">
+                <CamperCard 
+                  name="Maulik Dubey" 
+                  regNo="24BAI10764" 
+                  color="purple"
+                  delay={0.1}
+                  image="https://ui-avatars.com/api/?name=Maulik+Dubey&background=9333EA&color=fff&size=256&bold=true"
+                />
+                <CamperCard 
+                  name="Soumya Mishra" 
+                  regNo="24MIP10024" 
+                  color="purple"
+                  delay={0.2}
+                  image="https://ui-avatars.com/api/?name=Soumya+Mishra&background=A855F7&color=fff&size=256&bold=true"
+                />
+            </div>
+            
+            <div className="w-full lg:w-7/12 space-y-6 flex flex-col items-start text-left">
+              <div className="inline-flex w-fit mr-auto items-center gap-2 px-4 py-2 bg-purple-500/20 text-purple-400 rounded-xl text-sm font-black uppercase tracking-widest border border-purple-500/30">
+                <Award size={18} /> Pre-Republic Day Camp 2025
+              </div>
+              <h3 className="text-3xl lg:text-5xl font-black leading-tight tracking-tight text-white">
+                District-Level Selections
+              </h3>
+              <p className="text-slate-300 text-lg md:text-xl leading-relaxed">
+                We are excited to announce that volunteers Maulik Dubey and Soumya Mishra from VIT Bhopal University have been selected from the <strong className="text-purple-400">Sehore district</strong> for the district-level trials of the Pre-Republic Day Camp 2025.
+              </p>
+              <div className="mt-8 p-6 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 italic text-slate-200 shadow-inner">
+                Their dedication and exemplary performance in community service have earned them this prestigious opportunity to represent our district.
+              </div>
+            </div>
+          </motion.div>
+        </section>
+
+        {/* 8. Pre-RDC Zonal Level */}
+        <section className="relative">
+          <motion.div 
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7 }}
+            className="bg-white rounded-[3rem] p-8 md:p-12 lg:p-16 shadow-2xl shadow-blue-900/5 border border-slate-100 flex flex-col gap-12 items-center relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-blue-50 to-transparent rounded-bl-full -z-10"></div>
+            
+            <div className="w-full space-y-6 flex flex-col items-center text-center">
+              <div className="inline-flex w-fit mx-auto items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-xl text-sm font-black uppercase tracking-widest border border-blue-100">
+                <Award size={18} /> Pre-RDC Camp Zonal Level Selections
+              </div>
+              <h3 className="text-3xl lg:text-5xl font-black leading-tight tracking-tight text-slate-900">
+                Representing <span className="text-blue-600">VIT Bhopal University</span>
+              </h3>
+              <p className="text-slate-600 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
+                Congratulations to our outstanding volunteers who proudly represented our NSS Unit at the Pre-RDC Camp Zonal Level Selections! Their dedication reflects the true spirit of NSS.
+              </p>
+            </div>
+            
+            <div className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6 relative z-10">
+                <CamperCard name="Shagun Singh" color="blue" delay={0.1} image="https://ui-avatars.com/api/?name=Shagun+Singh&background=3B82F6&color=fff&size=256&bold=true" />
+                <CamperCard name="Maulik Dubey" color="blue" delay={0.2} image="https://ui-avatars.com/api/?name=Maulik+Dubey&background=3B82F6&color=fff&size=256&bold=true" />
+                <CamperCard name="Kshitika Atri" color="blue" delay={0.3} image="https://ui-avatars.com/api/?name=Kshitika+Atri&background=3B82F6&color=fff&size=256&bold=true" />
+                <CamperCard name="Soumya Mishra" color="blue" delay={0.4} image="https://ui-avatars.com/api/?name=Soumya+Mishra&background=3B82F6&color=fff&size=256&bold=true" />
+                <CamperCard name="Pragati" color="blue" delay={0.5} image="https://ui-avatars.com/api/?name=Pragati&background=3B82F6&color=fff&size=256&bold=true" />
+                <CamperCard name="Riya Singh" color="blue" delay={0.6} image="https://ui-avatars.com/api/?name=Riya+Singh&background=3B82F6&color=fff&size=256&bold=true" />
+            </div>
+            
+          </motion.div>
+        </section>
+
       </div>
     </div>
   );
