@@ -2,6 +2,9 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import User, { Role } from '../models/User';
+import { OAuth2Client } from 'google-auth-library';
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 export const loginUser = async (req: Request, res: Response) => {
   try {
@@ -73,6 +76,65 @@ export const loginUser = async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Login Error:', error);
     res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+export const googleLoginUser = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.body;
+    if (!token) {
+      return res.status(400).json({ message: 'Google token is required' });
+    }
+
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    
+    const payload = ticket.getPayload();
+    if (!payload || !payload.email) {
+      return res.status(400).json({ message: 'Invalid Google token payload' });
+    }
+
+    const email = payload.email.toLowerCase();
+
+    // Verify it's a college email
+    if (!email.endsWith('@vitbhopal.ac.in')) {
+      return res.status(403).json({ message: 'Only @vitbhopal.ac.in emails are allowed' });
+    }
+
+    // Find user in DB
+    const user = await User.findOne({ email });
+    
+    if (!user) {
+      return res.status(404).json({ message: 'Volunteer not found in database. Please contact the administrator.' });
+    }
+
+    // Generate JWT
+    const authToken = jwt.sign(
+      { userId: user._id, role: user.role },
+      process.env.JWT_SECRET || 'fallback_secret',
+      { expiresIn: '7d' }
+    );
+
+    res.status(200).json({
+      message: 'Google Login successful',
+      token: authToken,
+      user: {
+        id: user._id,
+        name: user.name,
+        role: user.role,
+        registrationNumber: user.registrationNumber,
+        email: user.email,
+        accumulatedHours: user.accumulatedHours || 0,
+        bunks: user.bunks || 0,
+        certificates: user.certificates || []
+      }
+    });
+
+  } catch (error) {
+    console.error('Google Login Error:', error);
+    res.status(500).json({ message: 'Google Authentication failed' });
   }
 };
 
