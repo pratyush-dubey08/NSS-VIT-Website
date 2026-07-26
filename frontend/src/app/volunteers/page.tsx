@@ -102,9 +102,6 @@ export default function VolunteersPage() {
                   <h2 className="text-2xl md:text-3xl font-black text-gray-900">
                     Batch of {batch}
                   </h2>
-                  <span className="bg-blue-50 text-nss-blue px-3 py-1 rounded-full text-sm font-bold border border-blue-100">
-                    {groupedVolunteers[batch].length} Volunteers
-                  </span>
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

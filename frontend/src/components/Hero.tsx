@@ -63,14 +63,14 @@ export default function Hero() {
  Empowering youth through community service. Join us in our mission to develop personality through social impact and make a difference.
  </p>
 
- <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
- <a href="/login"className="px-8 py-4 bg-nss-blue text-white rounded-full font-bold text-lg hover:bg-blue-900 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 text-center">
- Volunteer Login
- </a>
- <a href="#activities"className="px-8 py-4 bg-white border-2 border-gray-200 text-gray-900 rounded-full font-bold text-lg hover:bg-gray-50 transition-all shadow-md hover:shadow-lg text-center">
- Explore Activities
- </a>
- </div>
+  <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+    <a href="/login" className="px-8 py-4 bg-nss-blue text-white rounded-full font-bold text-lg hover:bg-blue-900 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 text-center">
+      Volunteer Login
+    </a>
+    <a href="/activities" className="px-8 py-4 bg-white border-2 border-gray-200 text-gray-900 rounded-full font-bold text-lg hover:bg-gray-50 transition-all shadow-md hover:shadow-lg text-center">
+      Explore Activities
+    </a>
+  </div>
  </motion.div>
  </div>
 
