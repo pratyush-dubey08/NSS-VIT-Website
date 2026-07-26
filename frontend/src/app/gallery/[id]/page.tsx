@@ -54,9 +54,16 @@ export default function AlbumPhotosPage() {
           </button>
           
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <span className="inline-block px-3 py-1 bg-yellow-400 text-yellow-900 text-xs font-bold rounded-full uppercase tracking-wider mb-3">
-              {folder.images?.length || 0} Photos
-            </span>
+            <div className="flex items-center gap-3 mb-3">
+              <span className="inline-block px-3 py-1 bg-yellow-400 text-yellow-900 text-xs font-bold rounded-full uppercase tracking-wider">
+                {folder.images?.length || 0} Photos
+              </span>
+              {folder.eventDate && (
+                <span className="text-white/80 text-sm font-semibold tracking-wide">
+                  {new Date(folder.eventDate).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                </span>
+              )}
+            </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight drop-shadow-md">
               {folder.title}
             </h1>

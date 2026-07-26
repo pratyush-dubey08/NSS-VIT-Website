@@ -4,7 +4,7 @@ import GalleryFolder from '../models/GalleryFolder';
 // Create a new folder
 export const createFolder = async (req: Request, res: Response) => {
   try {
-    const { title, categoryId, coverImage } = req.body;
+    const { title, categoryId, coverImage, eventDate } = req.body;
     
     if (!title || !categoryId || !coverImage) {
       return res.status(400).json({ message: 'Title, category, and cover image are required.' });
@@ -14,6 +14,7 @@ export const createFolder = async (req: Request, res: Response) => {
       title,
       categoryId,
       coverImage,
+      eventDate: eventDate || new Date(),
       images: []
     });
 
@@ -27,7 +28,7 @@ export const createFolder = async (req: Request, res: Response) => {
 // Get all folders
 export const getFolders = async (req: Request, res: Response) => {
   try {
-    const folders = await GalleryFolder.find().sort({ createdAt: -1 });
+    const folders = await GalleryFolder.find().sort({ eventDate: -1, createdAt: -1 });
     res.status(200).json(folders);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching folders', error });
@@ -50,11 +51,11 @@ export const getFolderById = async (req: Request, res: Response) => {
 // Update folder details
 export const updateFolder = async (req: Request, res: Response) => {
   try {
-    const { title, categoryId, coverImage } = req.body;
+    const { title, categoryId, coverImage, eventDate } = req.body;
     
     const folder = await GalleryFolder.findByIdAndUpdate(
       req.params.id,
-      { title, categoryId, coverImage },
+      { title, categoryId, coverImage, eventDate },
       { new: true }
     );
     

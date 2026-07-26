@@ -25,6 +25,7 @@ export default function AdminGalleryPage() {
   // Form states
   const [title, setTitle] = useState('');
   const [categoryId, setCategoryId] = useState('camps');
+  const [eventDate, setEventDate] = useState('');
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -45,7 +46,7 @@ export default function AdminGalleryPage() {
 
   const handleCreateSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title || !categoryId || !coverImage) {
+    if (!title || !categoryId || !coverImage || !eventDate) {
       alert('Please fill all fields and select a cover image');
       return;
     }
@@ -64,7 +65,8 @@ export default function AdminGalleryPage() {
       await api.post('/gallery', {
         title,
         categoryId,
-        coverImage: imageUrl
+        coverImage: imageUrl,
+        eventDate
       });
 
       alert('Album created successfully!');
@@ -81,6 +83,7 @@ export default function AdminGalleryPage() {
   const resetForm = () => {
     setTitle('');
     setCategoryId('camps');
+    setEventDate('');
     setCoverImage(null);
   };
 
@@ -158,6 +161,9 @@ export default function AdminGalleryPage() {
               </Link>
               <div className="p-4">
                 <h3 className="font-bold text-gray-900 line-clamp-1" title={folder.title}>{folder.title}</h3>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-xs text-gray-500 font-medium">{new Date(folder.eventDate).toLocaleDateString()}</span>
+                </div>
                 <div className="flex items-center justify-between mt-2">
                   <p className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
                     {categories.find(c => c.id === folder.categoryId)?.title || folder.categoryId}
@@ -199,6 +205,10 @@ export default function AdminGalleryPage() {
                       <option key={cat.id} value={cat.id}>{cat.title}</option>
                     ))}
                   </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Event Date</label>
+                  <input type="date" value={eventDate} onChange={e => setEventDate(e.target.value)} required className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-nss-blue focus:border-transparent outline-none" />
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1">Cover Image</label>

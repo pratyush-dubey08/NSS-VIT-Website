@@ -168,7 +168,11 @@ export default function GalleryPage() {
                           
                           <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col justify-end z-10">
                             <h4 className="text-white font-bold text-xl leading-tight drop-shadow-md pr-4">{folder.title}</h4>
-                            <p className="text-white/80 text-sm mt-1">{folder.images?.length || 0} Photos</p>
+                            <div className="flex items-center gap-2 mt-2">
+                              <span className="text-white/80 text-sm font-medium">{folder.eventDate ? new Date(folder.eventDate).toLocaleDateString() : ''}</span>
+                              {folder.eventDate && <span className="text-white/50">•</span>}
+                              <p className="text-white/80 text-sm">{folder.images?.length || 0} Photos</p>
+                            </div>
                           </div>
                         </motion.div>
                       ))}
