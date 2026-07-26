@@ -13,6 +13,19 @@ export const getVolunteers = async (req: Request, res: Response) => {
   }
 };
 
+// Get public list of volunteers (only basic info)
+export const getPublicVolunteers = async (req: Request, res: Response) => {
+  try {
+    const volunteers = await User.find({ role: { $ne: Role.SUPER_ADMIN } })
+      .select('name registrationNumber batch')
+      .sort({ name: 1 });
+    res.status(200).json(volunteers);
+  } catch (error) {
+    console.error('Error fetching public volunteers:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
 // Add a single volunteer
 export const addVolunteer = async (req: Request, res: Response) => {
   try {

@@ -64,7 +64,7 @@ export default function Stats() {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-8 max-w-7xl mx-auto">
           <StatCard title="Activities Conducted" value="120" icon={Calendar} delay={0.1} link="/activities" />
-          <StatCard title="Active Volunteers" value="200" icon={Users} delay={0.2} />
+          <StatCard title="Active Volunteers" value="200" icon={Users} delay={0.2} link="/volunteers" />
           <StatCard title="Trees Planted" value="15000" icon={Leaf} delay={0.3} link="/initiatives/tree-plantation" />
           <StatCard title="Blood Units" value="2000" icon={Droplet} delay={0.4} link="/initiatives/blood-donation" />
           <StatCard title="Annual Camps" value="3" icon={Tent} delay={0.5} link="/initiatives/annual-camp" showPlus={false} />

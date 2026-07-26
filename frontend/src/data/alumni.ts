@@ -1,15 +1,5 @@
 export const alumniData = [
-  {
-    name: "Sudarshan Chandravanshi",
-    batch: "2022",
-    status: "Higher Studies",
-    company: "VIT Bhopal University",
-    designation: "",
-    linkedin: "https://www.linkedin.com/in/sudarshan-chandravanshi-7b6765251",
-    photoUrl: "https://drive.google.com/uc?export=view&id=1aq_Jsy4q3VPX55xfPIW6WRv683OZyouR",
-    message: "The National Service Scheme (NSS) has played a significant role in shaping my personality and outlook on life. Through NSS, I learned the importance of selfless service, teamwork, discipline, and social responsibility. Participating in various community service activities helped me understand the challenges faced by society and inspired me to contribute to the welfare of others. NSS also improved my leadership, communication, and problem-solving skills.",
-    cherished: "I am proud to be an NSS volunteer, and I will always cherish the lessons and memories it has given me."
-  },
+  // 2021 Batch
   {
     name: "Shreya Gupta",
     batch: "2021",
@@ -33,6 +23,29 @@ export const alumniData = [
     cherished: "Working with diverse communities taught me empathy, humility, and the true value of giving back to society. Every activity reinforced the belief that even small efforts can create a lasting impact."
   },
   {
+    name: "Rishabh Kabra",
+    batch: "2021",
+    status: "Placed",
+    company: "SD Biosensors",
+    designation: "Business Analyst",
+    linkedin: "https://www.linkedin.com/in/kabrarishabh/",
+    photoUrl: "https://drive.google.com/uc?export=view&id=1CbgmCFHF7439gSKzXXXR8hZ_9nYFk5Nu",
+    message: "Breathtaking, Worth every moment",
+    cherished: "People"
+  },
+  // 2022 Batch
+  {
+    name: "Sudarshan Chandravanshi",
+    batch: "2022",
+    status: "Higher Studies",
+    company: "VIT Bhopal University",
+    designation: "",
+    linkedin: "https://www.linkedin.com/in/sudarshan-chandravanshi-7b6765251",
+    photoUrl: "https://drive.google.com/uc?export=view&id=1aq_Jsy4q3VPX55xfPIW6WRv683OZyouR",
+    message: "The National Service Scheme (NSS) has played a significant role in shaping my personality and outlook on life. Through NSS, I learned the importance of selfless service, teamwork, discipline, and social responsibility. Participating in various community service activities helped me understand the challenges faced by society and inspired me to contribute to the welfare of others. NSS also improved my leadership, communication, and problem-solving skills.",
+    cherished: "I am proud to be an NSS volunteer, and I will always cherish the lessons and memories it has given me."
+  },
+  {
     name: "Tanishk Agarwal",
     batch: "2022",
     status: "Placed",
@@ -53,17 +66,6 @@ export const alumniData = [
     photoUrl: "https://drive.google.com/uc?export=view&id=1ojbVJnSXl8Y5KAd5oXux_2Ae-e8oeZ4m",
     message: "NSS gave me valuable experiences, helped me become more disciplined and responsible, and improved my teamwork and communication skills.",
     cherished: "The memories I made with my friends while working together and serving the community are what I cherish the most."
-  },
-  {
-    name: "Rishabh Kabra",
-    batch: "2021",
-    status: "Placed",
-    company: "SD Biosensors",
-    designation: "Business Analyst",
-    linkedin: "https://www.linkedin.com/in/kabrarishabh/",
-    photoUrl: "https://drive.google.com/uc?export=view&id=1CbgmCFHF7439gSKzXXXR8hZ_9nYFk5Nu",
-    message: "Breathtaking, Worth every moment",
-    cherished: "People"
   },
   {
     name: "Nitank Dasondi",
