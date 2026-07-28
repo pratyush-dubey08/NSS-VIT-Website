@@ -38,6 +38,7 @@ export const uploadFile = (req: Request, res: Response): void => {
     res.status(200).json({
       message: 'File uploaded successfully',
       url: fileUrl,
+      fileUrl: fileUrl,
       filename: req.file.filename
     });
   } catch (error) {

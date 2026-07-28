@@ -59,7 +59,7 @@ export default function AdminGalleryPage() {
       const uploadRes = await api.post('/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      const imageUrl = uploadRes.data.fileUrl;
+      const imageUrl = uploadRes.data.url || uploadRes.data.fileUrl;
 
       // 2. Create folder
       await api.post('/gallery', {

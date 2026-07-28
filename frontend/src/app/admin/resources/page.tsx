@@ -49,7 +49,7 @@ export default function AdminResources() {
       const uploadRes = await api.post('/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      const fileUrl = uploadRes.data.fileUrl;
+      const fileUrl = uploadRes.data.url || uploadRes.data.fileUrl;
 
       // 2. Create Resource
       await api.post('/resources', { title, category, fileUrl });

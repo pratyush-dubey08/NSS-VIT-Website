@@ -64,7 +64,7 @@ export default function AlbumDetailsPage() {
         const uploadRes = await api.post('/upload', formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
-        coverImageUrl = uploadRes.data.fileUrl;
+        coverImageUrl = uploadRes.data.url || uploadRes.data.fileUrl;
       }
 
       await api.put(`/gallery/${id}`, {
@@ -101,7 +101,10 @@ export default function AlbumDetailsPage() {
         const res = await api.post('/upload', formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
-        uploadedUrls.push(res.data.fileUrl);
+        const photoUrl = res.data.url || res.data.fileUrl;
+        if (photoUrl) {
+          uploadedUrls.push(photoUrl);
+        }
       }
 
       // Add urls to folder
