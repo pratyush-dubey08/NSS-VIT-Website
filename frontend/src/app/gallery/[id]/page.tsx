@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Loader2, X, Image as ImageIcon } from 'lucide-react';
 import api from '@/lib/axios';
+import { getImageUrl } from '@/lib/utils';
 
 export default function AlbumPhotosPage() {
   const { id } = useParams();
@@ -41,7 +42,7 @@ export default function AlbumPhotosPage() {
       {/* Hero Section */}
       <section className="relative h-[40vh] min-h-[300px] w-full bg-slate-900 overflow-hidden">
         <div className="absolute inset-0">
-          <img src={folder.coverImage} alt={folder.title} className="w-full h-full object-cover opacity-50" />
+          <img src={getImageUrl(folder.coverImage)} alt={folder.title} className="w-full h-full object-cover opacity-50" />
           <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent"></div>
         </div>
         
@@ -85,7 +86,7 @@ export default function AlbumPhotosPage() {
                 className="relative rounded-2xl overflow-hidden cursor-pointer group break-inside-avoid shadow-sm hover:shadow-xl transition-all"
                 onClick={() => setSelectedPhoto(img)}
               >
-                <img src={img} alt={`${folder.title} - Photo ${idx + 1}`} className="w-full h-auto object-cover" />
+                <img src={getImageUrl(img)} alt={`${folder.title} - Photo ${idx + 1}`} className="w-full h-auto object-cover" />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
               </motion.div>
             ))}
@@ -123,7 +124,7 @@ export default function AlbumPhotosPage() {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="w-full h-full flex items-center justify-center relative">
-                 <img src={selectedPhoto} alt="Fullscreen view" className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"/>
+                 <img src={getImageUrl(selectedPhoto)} alt="Fullscreen view" className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"/>
               </div>
             </motion.div>
           </motion.div>

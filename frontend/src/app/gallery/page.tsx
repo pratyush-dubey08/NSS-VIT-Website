@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FolderOpen, ArrowLeft, Loader2, Image as ImageIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/axios';
+import { getImageUrl } from '@/lib/utils';
 
 const categories = [
   { id: 'camps', title: 'Special Camps', image: '/images/gallery/events_2025/image1.png' },
@@ -156,7 +157,7 @@ export default function GalleryPage() {
                           className="relative rounded-3xl overflow-hidden cursor-pointer group bg-gray-100 shadow-md hover:shadow-2xl transition-all aspect-square md:aspect-[4/3]"
                           onClick={() => router.push(`/gallery/${folder._id}`)}
                         >
-                          <img src={folder.coverImage} alt={folder.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"/>
+                          <img src={getImageUrl(folder.coverImage)} alt={folder.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"/>
                           
                           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-300"></div>
                           

@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft, Loader2, Upload, Trash2, Edit, Check, X } from 'lucide-react';
 import api from '@/lib/axios';
 import Link from 'next/link';
+import { getImageUrl } from '@/lib/utils';
 
 const categories = [
   { id: 'camps', title: 'Special Camps' },
@@ -167,7 +168,7 @@ export default function AlbumDetailsPage() {
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col md:flex-row">
         {/* Cover Photo */}
         <div className="w-full md:w-1/3 relative bg-gray-100">
-          <img src={isEditing && editCover ? URL.createObjectURL(editCover) : folder.coverImage} alt={folder.title} className="w-full h-full object-cover aspect-video md:aspect-square" />
+          <img src={isEditing && editCover ? URL.createObjectURL(editCover) : getImageUrl(folder.coverImage)} alt={folder.title} className="w-full h-full object-cover aspect-video md:aspect-square" />
           {isEditing && (
             <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center">
               <label className="cursor-pointer bg-white text-gray-900 px-4 py-2 rounded-lg font-semibold text-sm shadow-lg hover:bg-gray-100 transition-colors">
@@ -276,7 +277,7 @@ export default function AlbumDetailsPage() {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {folder.images.map((img: string, idx: number) => (
             <div key={idx} className="relative aspect-square rounded-xl overflow-hidden group bg-gray-100">
-              <img src={img} alt="Gallery item" className="w-full h-full object-cover transition-transform group-hover:scale-110" />
+              <img src={getImageUrl(img)} alt="Gallery item" className="w-full h-full object-cover transition-transform group-hover:scale-110" />
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                 <button 
                   onClick={() => handleDeletePhoto(img, idx)}

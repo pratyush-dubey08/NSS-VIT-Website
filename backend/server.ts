@@ -16,6 +16,7 @@ import fs from 'fs';
 dotenv.config();
 
 const app: Express = express();
+app.set('trust proxy', 1);
 const port = process.env.PORT || 5000;
 
 // Middleware

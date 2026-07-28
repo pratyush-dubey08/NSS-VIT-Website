@@ -32,8 +32,11 @@ export const uploadFile = (req: Request, res: Response): void => {
       return;
     }
 
-    // Return the URL where the file can be accessed
-    const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+    // Determine base URL dynamically or from environment variable
+    const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+    const host = req.headers['x-forwarded-host'] || req.get('host');
+    const baseUrl = process.env.BACKEND_URL || `${protocol}://${host}`;
+    const fileUrl = `${baseUrl}/uploads/${req.file.filename}`;
     
     res.status(200).json({
       message: 'File uploaded successfully',
