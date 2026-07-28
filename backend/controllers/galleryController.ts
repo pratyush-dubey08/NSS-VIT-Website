@@ -91,12 +91,17 @@ export const addImages = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'Images array is required.' });
     }
 
+    const validImages = images.filter(img => img && typeof img === 'string');
+    if (validImages.length === 0) {
+      return res.status(400).json({ message: 'No valid image URLs provided.' });
+    }
+
     const folder = await GalleryFolder.findById(req.params.id);
     if (!folder) {
       return res.status(404).json({ message: 'Folder not found' });
     }
 
-    folder.images.push(...images);
+    folder.images.push(...validImages);
     await folder.save();
 
     res.status(200).json(folder);
@@ -108,20 +113,25 @@ export const addImages = async (req: Request, res: Response) => {
 // Remove an image from folder
 export const removeImage = async (req: Request, res: Response) => {
   try {
-    const { imageUrl } = req.body;
-
-    if (!imageUrl) {
-      return res.status(400).json({ message: 'Image URL is required.' });
-    }
+    const { imageUrl, index, removeAll } = req.body;
 
     const folder = await GalleryFolder.findById(req.params.id);
     if (!folder) {
       return res.status(404).json({ message: 'Folder not found' });
     }
 
-    folder.images = folder.images.filter(img => img !== imageUrl);
-    await folder.save();
+    if (removeAll) {
+      folder.images = [];
+    } else if (typeof index === 'number' && index >= 0 && index < folder.images.length) {
+      folder.images.splice(index, 1);
+    } else if (imageUrl) {
+      folder.images = folder.images.filter(img => img !== imageUrl);
+    } else {
+      // Cleanup invalid/null entries
+      folder.images = folder.images.filter(img => img && typeof img === 'string');
+    }
 
+    await folder.save();
     res.status(200).json(folder);
   } catch (error) {
     res.status(500).json({ message: 'Error removing image', error });

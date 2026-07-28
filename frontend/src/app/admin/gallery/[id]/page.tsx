@@ -124,15 +124,27 @@ export default function AlbumDetailsPage() {
     }
   };
 
-  const handleDeletePhoto = async (imageUrl: string) => {
+  const handleDeletePhoto = async (imageUrl: string, index: number) => {
     if (!confirm('Remove this photo from the album?')) return;
     
     try {
-      await api.delete(`/gallery/${id}/images`, { data: { imageUrl } });
+      await api.delete(`/gallery/${id}/images`, { data: { imageUrl, index } });
       alert('Photo removed');
       fetchFolder();
     } catch (error) {
       alert('Failed to remove photo');
+    }
+  };
+
+  const handleClearAllPhotos = async () => {
+    if (!confirm('Are you sure you want to remove ALL photos from this album?')) return;
+    
+    try {
+      await api.delete(`/gallery/${id}/images`, { data: { removeAll: true } });
+      alert('All photos removed');
+      fetchFolder();
+    } catch (error) {
+      alert('Failed to clear photos');
     }
   };
 
@@ -222,9 +234,20 @@ export default function AlbumDetailsPage() {
       {/* Photos Section */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-          <div>
-            <h2 className="text-xl font-bold text-gray-900">Photos ({folder.images.length})</h2>
-            <p className="text-sm text-gray-500">Upload multiple photos to this album.</p>
+          <div className="flex items-center gap-3">
+            <div>
+              <h2 className="text-xl font-bold text-gray-900">Photos ({folder.images.length})</h2>
+              <p className="text-sm text-gray-500">Upload multiple photos to this album.</p>
+            </div>
+            {folder.images.length > 0 && (
+              <button 
+                onClick={handleClearAllPhotos} 
+                className="ml-4 text-xs font-semibold text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1"
+                title="Clear all photos from this album"
+              >
+                <Trash2 size={14} /> Clear All
+              </button>
+            )}
           </div>
           
           <div className="flex items-center gap-3 w-full sm:w-auto">
@@ -256,7 +279,7 @@ export default function AlbumDetailsPage() {
               <img src={img} alt="Gallery item" className="w-full h-full object-cover transition-transform group-hover:scale-110" />
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                 <button 
-                  onClick={() => handleDeletePhoto(img)}
+                  onClick={() => handleDeletePhoto(img, idx)}
                   className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors transform scale-90 group-hover:scale-100"
                   title="Remove Photo"
                 >
