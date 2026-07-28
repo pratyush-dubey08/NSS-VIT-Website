@@ -6,8 +6,8 @@ dotenv.config();
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/nss-vit-bhopal';
 
-// Placeholder image for all auto-generated albums
-const PLACEHOLDER_IMAGE = 'https://images.unsplash.com/photo-1511649475669-e288648b2339?q=80&w=2851&auto=format&fit=crop';
+// Placeholder image for all auto-generated albums (using local frontend public asset)
+const PLACEHOLDER_IMAGE = '/images/gallery/events_2025/image1.png';
 
 const requestedFolders = [
   // Special Camps
@@ -75,29 +75,35 @@ const seedGallery = async () => {
     await mongoose.connect(MONGODB_URI);
     console.log('Connected!');
 
-    console.log('Creating folders...');
-    let count = 0;
-    
-    // Using a fake date that decreases by 1 day for each folder to retain the exact order provided
+    // Update existing folders that have unsplash URLs to use local asset
+    console.log('Updating existing folders to replace broken Unsplash URLs...');
+    const result = await GalleryFolder.updateMany(
+      { coverImage: { $regex: 'unsplash|placeholder', $options: 'i' } },
+      { $set: { coverImage: PLACEHOLDER_IMAGE } }
+    );
+    console.log(`Updated ${result.modifiedCount} existing folders.`);
+
+    // Ensure all folders exist
     let fakeDate = new Date();
 
     for (const folder of requestedFolders) {
       fakeDate.setDate(fakeDate.getDate() - 1);
       
-      const newFolder = new GalleryFolder({
-        title: folder.title,
-        categoryId: folder.categoryId,
-        coverImage: PLACEHOLDER_IMAGE,
-        images: [],
-        eventDate: new Date(fakeDate)
-      });
-      await newFolder.save();
-      count++;
-      console.log(`Created: ${folder.title}`);
+      const existing = await GalleryFolder.findOne({ title: folder.title });
+      if (!existing) {
+        const newFolder = new GalleryFolder({
+          title: folder.title,
+          categoryId: folder.categoryId,
+          coverImage: PLACEHOLDER_IMAGE,
+          images: [],
+          eventDate: new Date(fakeDate)
+        });
+        await newFolder.save();
+        console.log(`Created: ${folder.title}`);
+      }
     }
 
-    console.log(`\nSuccess! Created ${count} empty folders with generic cover photos.`);
-    console.log('You can now log into your Admin Portal to change their covers, dates, and upload real photos.');
+    console.log('\nSuccess! All folders updated with local placeholder images.');
   } catch (error) {
     console.error('Error seeding gallery:', error);
   } finally {
