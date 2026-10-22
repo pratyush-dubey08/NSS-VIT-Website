@@ -9,46 +9,93 @@ interface Leader {
   designation: string;
   institution: string;
   tier: number;
+  image?: string;
 }
 
 interface ProgramOfficer {
   name: string;
   designation: string;
   bio: string;
+  image?: string;
 }
 
 // --- Data ---
 const leadershipData: Leader[] = [
-  { name: 'Dr. G. Viswanathan', designation: 'Founder & Chancellor', institution: 'VIT Bhopal University, India', tier: 1 },
+  {
+    name: 'Dr. G. Viswanathan',
+    designation: 'Founder & Chancellor',
+    institution: 'VIT Bhopal University, India',
+    tier: 1,
+    image: '/images/leadership/chancellor.jpg'
+  },
   
-  { name: 'Dr. Sankar Viswanathan', designation: 'Vice President', institution: 'VIT Bhopal, India', tier: 2 },
-  { name: 'Ms. Kadhambari S. Viswanathan', designation: 'Assistant Vice President', institution: 'VIT Bhopal, India', tier: 2 },
-  { name: 'Mrs. Ramni Balasundaram', designation: 'Trustee', institution: 'VIT Bhopal, India', tier: 2 },
+  {
+    name: 'Dr. Sankar Viswanathan',
+    designation: 'Vice President',
+    institution: 'VIT Bhopal, India',
+    tier: 2,
+    image: '/images/leadership/vice-president.jpg'
+  },
+  {
+    name: 'Ms. Kadhambari S. Viswanathan',
+    designation: 'Assistant Vice President',
+    institution: 'VIT Bhopal, India',
+    tier: 2,
+    image: '/images/leadership/assistant-vice-president.jpg'
+  },
+  {
+    name: 'Mrs. Ramni Balasundaram',
+    designation: 'Trustee',
+    institution: 'VIT Bhopal, India',
+    tier: 2
+  },
   
-  { name: 'Prof. Satish Kumar Modh', designation: 'Vice-Chancellor', institution: 'VIT Bhopal University, India', tier: 3 },
-  { name: 'Prof. T. B. Sridharan', designation: 'Pro-Vice Chancellor', institution: 'VIT Bhopal University, India', tier: 3 },
-  { name: 'Dr. Gyan Prakash Mishra', designation: 'Registrar', institution: 'VIT Bhopal University, India', tier: 3 },
+  {
+    name: 'Prof. Satish Kumar Modh',
+    designation: 'Vice-Chancellor',
+    institution: 'VIT Bhopal University, India',
+    tier: 3,
+    image: '/images/leadership/vice-chancellor.jpg'
+  },
+  {
+    name: 'Prof. T. B. Sridharan',
+    designation: 'Pro-Vice Chancellor',
+    institution: 'VIT Bhopal University, India',
+    tier: 3,
+    image: '/images/leadership/pro-vice-chancellor.jpeg'
+  },
+  {
+    name: 'Dr. Gyan Prakash Mishra',
+    designation: 'Registrar',
+    institution: 'VIT Bhopal University, India',
+    tier: 3,
+    image: '/images/leadership/registrar.png'
+  },
 ];
 
 const programOfficersData: ProgramOfficer[] = [
   {
     name: 'Dr. Vinod Bhatt',
     designation: 'Program Officer',
+    image: '/images/leadership/vinod-bhatt.png',
     bio: 'Dr. Vinod Bhatt is an accomplished scholar, researcher, and writer specializing in English Literature and Journalism. He has had 22 years of teaching and administrative experience, for which he has been the main force in fusing literature and mass communication to create unique pedagogic strategies. An Associate Professor in VIT Bhopal University, he personally guides students and research scholars. He holds a Ph.D. in Canadian Literature. Dr. Bhatt is a registered Ph.D. guide and has supervised numerous research scholars. He has published 42 research papers, with nine appearing in Scopus-indexed journals. His academic engagements include participation in over 48 conferences, and he serves as an editor and reviewer for four international journals. He has also chaired conferences at prestigious institutions such as Amity University Dubai and Singapore. In recognition of his contributions, he was honored with the IWA Bogdani Prize (Belgium) in 2023.'
   },
   {
     name: 'Dr. Devbrat Gupta',
     designation: 'Program Officer',
+    image: '/images/leadership/devbrat-gupta.png',
     bio: 'Dr. Dev Brat Gupta is MA and M.Phil. in English Literature and Ph.D. in ELT from Vikram University, Ujjain. Having 16 years of experience in teaching and administration and 12 years of experience in research, he has worked at all levels of academics such as Academic Head and HoD. Presently at VIT Bhopal University, he has authored five research papers, presented 12 national and international conferences, and attended several workshops, seminars, and FDPs. Moreover, he is a member, editor, and reviewer of five international peer-reviewed journals. Dr. Devbrat has also given expert talks on communication skills, professional communication, and soft skills in engineering colleges and universities in India.'
   },
   {
-    name: 'Dr. Geetanjali Giri',
+    name: 'Dr. Himanshi Harish Sharma',
     designation: 'Program Officer',
-    bio: 'Dr. Geetanjali Giri is a Doctorate from Indian Institute of Science, Bengaluru and Master of Science in Physics from Banaras Hindu University. Along With 3 years of Postdoctoral experience from Institut Laue-Langevein, Grenoble France, she is an experienced computational quantum scientist with a strong background in high-performance computing (HPC) simulations, data analysis, and solid-state chemistry. With 75 citations she has published 5 papers in internationally reputed journals with high impact factors. She has been awarded best oral presentation in International symposium and has been Department of Science and Technology INSPIRE awardee from 2007-2019. Moreover, she is passionate about innovation and pushing the boundaries of quantum science in the research industry.'
+    image: '/images/leadership/himanshi-sharma.jpeg',
+    bio: 'Dr. Himanshi Harish Sharma is an Assistant Professor of Chemistry in the School of Advanced Sciences and Languages at VIT Bhopal University. She holds a Ph.D. in Chemistry from Vellore Institute of Technology (VIT), Tamil Nadu, where her doctoral research established fundamental work in coordination chemistry, functional nanomaterials, and bio-inorganic applications. Her research career seamlessly integrates advanced academic investigation with applied industrial R&D. Complementing her academic foundation, she has led six multidisciplinary R&D projects as a Research Scientist at Macsen Drugs, Udaipur focusing on standardized nanomaterial suspensions, inorganic support matrices, and multi-step chemical process development and contributed to green technology research on biomass torrefaction for resource recovery as a Project Assistant-II at CSIR-IICT Hyderabad. Her scholarly contributions include numerous research papers in SCI and Scopus-indexed international journals, complemented by active national and international conference presentations and three Raman Research Awards from VIT.'
   },
   {
     name: 'Dr. Dipti Bhojwani',
     designation: 'Program Officer',
+    image: '/images/leadership/dipti-bhojwani.png',
     bio: 'Dr. Dipti Bhojwani is a dedicated Program Officer at VIT Bhopal University. (Full biographical information will be updated shortly).'
   }
 ];
@@ -63,9 +110,17 @@ const LeaderCard = ({ leader, delay }: { leader: Leader, delay: number }) => (
     transition={{ duration: 0.5, delay }}
     className="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 flex items-center gap-6 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 w-full max-w-sm mx-auto"
   >
-    <div className="w-20 h-20 shrink-0 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center text-gray-400 font-bold text-xl border-2 border-white shadow-inner">
-      {/* Placeholder for Photo - Initials */}
-      {leader.name.split(' ').map(n => n[0]).join('').substring(0, 2).replace('.', '')}
+    <div className="w-20 h-20 shrink-0 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center text-gray-400 font-bold text-xl border-2 border-white shadow-inner overflow-hidden relative">
+      {leader.image ? (
+        <img
+          src={leader.image}
+          alt={leader.name}
+          className="w-full h-full object-cover"
+          onError={(e: any) => { e.currentTarget.style.display = 'none'; }}
+        />
+      ) : (
+        leader.name.split(' ').map(n => n[0]).join('').substring(0, 2).replace('.', '')
+      )}
     </div>
     <div>
       <h3 className="text-lg font-extrabold text-gray-900 leading-tight mb-1">{leader.name}</h3>
@@ -83,14 +138,23 @@ const ProgramOfficerCard = ({ officer, index }: { officer: ProgramOfficer, index
     transition={{ duration: 0.6, delay: index * 0.1 }}
     className="bg-white rounded-[2rem] overflow-hidden shadow-xl shadow-gray-200/50 border border-gray-100 flex flex-col md:flex-row group"
   >
-    {/* Photo Placeholder Area */}
+    {/* Photo Area */}
     <div className="md:w-1/3 bg-slate-50 border-r border-gray-100 flex flex-col items-center justify-center p-8 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent"></div>
       
-      <div className="w-48 h-48 rounded-full bg-gradient-to-tr from-gray-200 to-gray-100 border-8 border-white shadow-lg flex items-center justify-center relative z-10 group-hover:scale-105 transition-transform duration-500">
-         <span className="text-gray-400 font-bold text-3xl">
-           {officer.name.split(' ').map(n => n[0]).join('').substring(0, 2).replace('.', '')}
-         </span>
+      <div className="w-48 h-48 rounded-full bg-gradient-to-tr from-gray-200 to-gray-100 border-8 border-white shadow-lg flex items-center justify-center relative z-10 group-hover:scale-105 transition-transform duration-500 overflow-hidden">
+        {officer.image ? (
+          <img
+            src={officer.image}
+            alt={officer.name}
+            className="w-full h-full object-cover"
+            onError={(e: any) => { e.currentTarget.style.display = 'none'; }}
+          />
+        ) : (
+          <span className="text-gray-400 font-bold text-3xl">
+            {officer.name.split(' ').map(n => n[0]).join('').substring(0, 2).replace('.', '')}
+          </span>
+        )}
       </div>
       
       <div className="mt-6 text-center relative z-10">
