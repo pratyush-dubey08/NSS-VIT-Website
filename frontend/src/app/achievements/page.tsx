@@ -26,7 +26,14 @@ const CamperCard = ({ name, regNo, role, image, delay = 0, color = "blue" }: any
       <div className={`relative bg-white/70 backdrop-blur-xl border ${selectedColor.split(' ')[2]} p-6 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 flex flex-col items-center text-center overflow-hidden h-full`}>
         <div className="w-32 h-32 rounded-full border-4 border-white shadow-md overflow-hidden mb-5 relative bg-gray-100 flex items-center justify-center z-10 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
           {image ? (
-            <img src={image} alt={name} className="w-full h-full object-cover" />
+            <img 
+              src={image} 
+              alt={name} 
+              className="w-full h-full object-cover object-top" 
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=2563EB&color=fff&size=256&bold=true`;
+              }}
+            />
           ) : (
             <Users size={40} className="text-gray-300" />
           )}
@@ -97,7 +104,7 @@ export default function AwardeesPage() {
                       regNo="21MSI10017" 
                       role="State Representative"
                       color="blue"
-                      image="https://ui-avatars.com/api/?name=Rishabh+Kabra&background=2563EB&color=fff&size=256&bold=true"
+                      image="/images/achievements/rishabh-kabra.jpeg"
                     />
                   </div>
                </div>
@@ -144,14 +151,14 @@ export default function AwardeesPage() {
                   regNo="21MSI10017" 
                   color="emerald"
                   delay={0.1}
-                  image="https://ui-avatars.com/api/?name=Rishabh+Kabra&background=059669&color=fff&size=256&bold=true"
+                  image="/images/achievements/rishabh-kabra.jpeg"
                 />
                 <CamperCard 
                   name="Khushi Desai" 
                   regNo="22BOE10027" 
                   color="emerald"
                   delay={0.2}
-                  image="https://ui-avatars.com/api/?name=Khushi+Desai&background=10B981&color=fff&size=256&bold=true"
+                  image="/images/achievements/khushi-desai.png"
                 />
             </div>
             
@@ -207,7 +214,7 @@ export default function AwardeesPage() {
               <div className="bg-gradient-to-r from-rose-500/20 to-rose-600/10 border border-rose-500/30 rounded-3xl p-6 flex items-center gap-6 backdrop-blur-md">
                 <div className="w-20 h-20 shrink-0 bg-white/10 p-1 rounded-full backdrop-blur-sm border border-white/20">
                    <div className="w-full h-full bg-gray-100 rounded-full overflow-hidden flex items-center justify-center relative">
-                     <img src="https://ui-avatars.com/api/?name=Vinod+Bhatt&background=E11D48&color=fff&size=256&bold=true" alt="Dr. Vinod Bhatt" className="w-full h-full object-cover" />
+                     <img src="/images/achievements/vinod-bhatt.png" alt="Dr. Vinod Bhatt" className="w-full h-full object-cover object-top" onError={(e) => { (e.currentTarget as HTMLImageElement).src = "https://ui-avatars.com/api/?name=Vinod+Bhatt&background=E11D48&color=fff&size=256&bold=true"; }} />
                    </div>
                 </div>
                 <div>
@@ -225,14 +232,14 @@ export default function AwardeesPage() {
                   regNo="23BAI10595"
                   color="rose"
                   delay={0.1}
-                  image="https://ui-avatars.com/api/?name=Pratyush+Dubey&background=E11D48&color=fff&size=256&bold=true"
+                  image="/images/achievements/pratyush-dubey.png"
                 />
                 <CamperCard 
                   name="Shivani Nikam" 
                   regNo="24BEY10074"
                   color="rose"
                   delay={0.2}
-                  image="https://ui-avatars.com/api/?name=Shivani+Nikam&background=E11D48&color=fff&size=256&bold=true"
+                  image="/images/achievements/shivani-nikam.png"
                 />
               </div>
 
@@ -257,10 +264,10 @@ export default function AwardeesPage() {
                   <div className="absolute inset-0 bg-yellow-400 rounded-3xl -rotate-6 opacity-20 transition-transform duration-500 hover:-rotate-12"></div>
                   <div className="absolute inset-0 bg-white/10 backdrop-blur-md p-2 rounded-3xl shadow-2xl border border-white/20 flex flex-col items-center justify-center">
                     <CamperCard 
-                      name="Nandine Pandey" 
+                      name="Nandini Pandey" 
                       role="State Representative"
                       color="amber"
-                      image="https://ui-avatars.com/api/?name=Nandine+Pandey&background=F59E0B&color=fff&size=256&bold=true"
+                      image="/images/achievements/nandini-pandey.png"
                     />
                   </div>
                </div>
@@ -279,7 +286,7 @@ export default function AwardeesPage() {
               <div className="mt-6 bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 flex items-start gap-5 shadow-inner">
                 <Medal className="text-yellow-400 shrink-0 mt-1" size={32} />
                 <p className="text-white font-medium text-lg leading-relaxed">
-                  Amidst fierce competition, Nandine Pandey's outstanding performance earned her the honour of representing the Nodal District (Bhopal) at the State Youth Parliament in the Madhya Pradesh Assembly.
+                  Amidst fierce competition, Nandini Pandey's outstanding performance earned her the honour of representing the Nodal District (Bhopal) at the State Youth Parliament in the Madhya Pradesh Assembly.
                 </p>
               </div>
             </div>
@@ -303,10 +310,10 @@ export default function AwardeesPage() {
                   <div className="absolute inset-0 bg-yellow-400 rounded-3xl rotate-6 opacity-20 transition-transform duration-500 hover:rotate-12"></div>
                   <div className="absolute inset-0 bg-white/10 backdrop-blur-md p-2 rounded-3xl shadow-2xl border border-white/20 flex flex-col items-center justify-center">
                     <CamperCard 
-                      name="Nandine Pandey" 
+                      name="Nandini Pandey" 
                       role="Sehore Representative"
                       color="amber"
-                      image="https://ui-avatars.com/api/?name=Nandine+Pandey&background=F59E0B&color=fff&size=256&bold=true"
+                      image="/images/achievements/nandini-pandey.png"
                     />
                   </div>
                </div>
@@ -320,7 +327,7 @@ export default function AwardeesPage() {
                 Representing <span className="text-indigo-300">Sehore District</span>
               </h3>
               <p className="text-indigo-100 text-lg md:text-xl leading-relaxed">
-                Continuing her outstanding journey in youth advocacy and democratic discourse, Nandine Pandey was once again selected for the prestigious National Youth Parliament.
+                Continuing her outstanding journey in youth advocacy and democratic discourse, Nandini Pandey was once again selected for the prestigious National Youth Parliament.
               </p>
               <div className="mt-6 bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 flex items-start gap-5 shadow-inner">
                 <Medal className="text-yellow-400 shrink-0 mt-1" size={32} />
@@ -351,7 +358,7 @@ export default function AwardeesPage() {
                       name="Maulik Dubey" 
                       role="Finalist"
                       color="amber"
-                      image="https://ui-avatars.com/api/?name=Maulik+Dubey&background=F97316&color=fff&size=256&bold=true"
+                      image="/images/achievements/maulik-dubey.png"
                     />
                   </div>
                </div>
@@ -397,14 +404,14 @@ export default function AwardeesPage() {
                   regNo="24BAI10764" 
                   color="purple"
                   delay={0.1}
-                  image="https://ui-avatars.com/api/?name=Maulik+Dubey&background=9333EA&color=fff&size=256&bold=true"
+                  image="/images/achievements/maulik-dubey.png"
                 />
                 <CamperCard 
                   name="Soumya Mishra" 
                   regNo="24MIP10024" 
                   color="purple"
                   delay={0.2}
-                  image="https://ui-avatars.com/api/?name=Soumya+Mishra&background=A855F7&color=fff&size=256&bold=true"
+                  image="/images/achievements/soumya-mishra.png"
                 />
             </div>
             
@@ -450,9 +457,9 @@ export default function AwardeesPage() {
             
             <div className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6 relative z-10">
                 <CamperCard name="Shagun Singh" color="blue" delay={0.1} image="https://ui-avatars.com/api/?name=Shagun+Singh&background=3B82F6&color=fff&size=256&bold=true" />
-                <CamperCard name="Maulik Dubey" color="blue" delay={0.2} image="https://ui-avatars.com/api/?name=Maulik+Dubey&background=3B82F6&color=fff&size=256&bold=true" />
+                <CamperCard name="Maulik Dubey" color="blue" delay={0.2} image="/images/achievements/maulik-dubey.png" />
                 <CamperCard name="Kshitika Atri" color="blue" delay={0.3} image="https://ui-avatars.com/api/?name=Kshitika+Atri&background=3B82F6&color=fff&size=256&bold=true" />
-                <CamperCard name="Soumya Mishra" color="blue" delay={0.4} image="https://ui-avatars.com/api/?name=Soumya+Mishra&background=3B82F6&color=fff&size=256&bold=true" />
+                <CamperCard name="Soumya Mishra" color="blue" delay={0.4} image="/images/achievements/soumya-mishra.png" />
                 <CamperCard name="Pragati" color="blue" delay={0.5} image="https://ui-avatars.com/api/?name=Pragati&background=3B82F6&color=fff&size=256&bold=true" />
                 <CamperCard name="Riya Singh" color="blue" delay={0.6} image="https://ui-avatars.com/api/?name=Riya+Singh&background=3B82F6&color=fff&size=256&bold=true" />
             </div>
