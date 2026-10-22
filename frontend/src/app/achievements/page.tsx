@@ -443,25 +443,24 @@ export default function AwardeesPage() {
           >
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-blue-50 to-transparent rounded-bl-full -z-10"></div>
             
-            <div className="w-full space-y-6 flex flex-col items-center text-center">
+            <div className="w-full space-y-6 flex flex-col items-center text-center max-w-4xl mx-auto">
               <div className="inline-flex w-fit mx-auto items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-xl text-sm font-black uppercase tracking-widest border border-blue-100">
                 <Award size={18} /> Pre-RDC Camp Zonal Level Selections
               </div>
               <h3 className="text-3xl lg:text-5xl font-black leading-tight tracking-tight text-slate-900">
                 A Proud Moment for <span className="text-blue-600">VIT Bhopal University</span>
               </h3>
-              <p className="text-slate-600 text-lg md:text-xl leading-relaxed max-w-4xl mx-auto">
-                These exceptional volunteers showcased outstanding leadership and commitment at the <strong className="text-slate-900">Pre-RDC Zonal Level Selections</strong>. Their phenomenal performance perfectly reflects the true essence of NSS—<span className="italic text-blue-600 font-semibold">"Not Me But You"</span>.
+              <p className="text-slate-600 text-lg md:text-xl leading-relaxed text-justify">
+                Our exceptional volunteers — <strong className="text-slate-900 font-bold">Shagun Singh, Maulik Dubey, Kshitika Atri, Soumya Mishra, Pragati,</strong> and <strong className="text-slate-900 font-bold">Riya Singh</strong> — showcased outstanding leadership, discipline, and dedication at the <strong className="text-slate-900 font-bold">Pre-RDC Zonal Level Selections</strong>. Their phenomenal performance proudly represents VIT Bhopal University and reflects the true essence of NSS — <span className="italic text-blue-600 font-semibold">"Not Me But You"</span>.
               </p>
-            </div>
-            
-            <div className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6 relative z-10">
-                <CamperCard name="Shagun Singh" color="blue" delay={0.1} image="https://ui-avatars.com/api/?name=Shagun+Singh&background=3B82F6&color=fff&size=256&bold=true" />
-                <CamperCard name="Maulik Dubey" color="blue" delay={0.2} image="/images/achievements/maulik-dubey.png" />
-                <CamperCard name="Kshitika Atri" color="blue" delay={0.3} image="https://ui-avatars.com/api/?name=Kshitika+Atri&background=3B82F6&color=fff&size=256&bold=true" />
-                <CamperCard name="Soumya Mishra" color="blue" delay={0.4} image="/images/achievements/soumya-mishra.png" />
-                <CamperCard name="Pragati" color="blue" delay={0.5} image="https://ui-avatars.com/api/?name=Pragati&background=3B82F6&color=fff&size=256&bold=true" />
-                <CamperCard name="Riya Singh" color="blue" delay={0.6} image="https://ui-avatars.com/api/?name=Riya+Singh&background=3B82F6&color=fff&size=256&bold=true" />
+
+              <div className="flex flex-wrap justify-center items-center gap-2.5 pt-2">
+                {['Shagun Singh', 'Maulik Dubey', 'Kshitika Atri', 'Soumya Mishra', 'Pragati', 'Riya Singh'].map((name) => (
+                  <span key={name} className="px-4 py-1.5 rounded-full bg-blue-50 text-blue-700 font-bold text-xs sm:text-sm border border-blue-200/80 shadow-sm">
+                    {name}
+                  </span>
+                ))}
+              </div>
             </div>
             
           </motion.div>

@@ -111,7 +111,7 @@ export const alumniData: IAlumnus[] = [
     company: "LTIMINDTREE",
     designation: "SDE",
     linkedin: "",
-    photoUrl: "/images/alumni/tanishk-agarwal.jpg",
+    photoUrl: "/images/alumni/tanishk-agarwal.png",
     message: "Being a part of the NSS Unit at VIT Bhopal University has been a truly enriching experience. It taught me the importance of teamwork, leadership, and social responsibility through community service activities. Volunteering in various initiatives helped me build confidence, improve my communication skills, and develop empathy toward society.",
     cherished: "The one thing I cherished most as an NSS volunteer was the opportunity to make a meaningful impact on people's lives through service. Seeing the positive difference our efforts made gave me a deep sense of purpose."
   },
