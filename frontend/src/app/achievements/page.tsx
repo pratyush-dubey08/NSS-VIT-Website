@@ -117,7 +117,7 @@ export default function AwardeesPage() {
               <h3 className="text-3xl lg:text-5xl font-black text-slate-900 leading-tight tracking-tight">
                 Representing VIT Bhopal & Madhya Pradesh
               </h3>
-              <p className="text-slate-600 text-lg md:text-xl leading-relaxed">
+              <p className="text-slate-600 text-lg md:text-xl leading-relaxed text-justify">
                 Rishabh Kabra was selected to be the esteemed representative of VIT Bhopal University and Madhya Pradesh for the National Level NSS National Integration Camp (NIC), promoting national harmony and cultural exchange.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
@@ -169,7 +169,7 @@ export default function AwardeesPage() {
               <h3 className="text-3xl lg:text-5xl font-black leading-tight tracking-tight text-white">
                 Excellence in Public Awareness & Leadership
               </h3>
-              <p className="text-slate-300 text-lg md:text-xl leading-relaxed">
+              <p className="text-slate-300 text-lg md:text-xl leading-relaxed text-justify">
                 Chosen for the State-Level Leadership Training Camp conducted by the Ministry of Higher Education, Govt. of Madhya Pradesh at Pachore. Their selection was made based on outstanding contributions to public awareness programs, such as <strong className="text-emerald-400">medical camps and street plays</strong>.
               </p>
               <div className="mt-8 p-6 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 italic text-slate-200 shadow-inner">
@@ -197,7 +197,7 @@ export default function AwardeesPage() {
               <h3 className="text-3xl lg:text-5xl font-black leading-tight tracking-tight text-white">
                 Excellence in Social Welfare & Leadership
               </h3>
-              <p className="text-slate-300 text-lg md:text-xl leading-relaxed">
+              <p className="text-slate-300 text-lg md:text-xl leading-relaxed text-justify">
                 Chosen for the State-Level Leadership Training Camp at Chitrakoot. Representing VIT Bhopal University under the leadership category, their immense contribution to social welfare and community development was highly recognized.
               </p>
               <div className="mt-8 p-6 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 italic text-slate-200 shadow-inner">
@@ -280,12 +280,12 @@ export default function AwardeesPage() {
               <h3 className="text-3xl lg:text-5xl font-black leading-tight tracking-tight text-white">
                 Top 10 at Nodal Level: <span className="text-indigo-300">Viksit Bharat Youth Parliament</span>
               </h3>
-              <p className="text-indigo-100 text-lg md:text-xl leading-relaxed">
+              <p className="text-indigo-100 text-lg md:text-xl leading-relaxed text-justify">
                 The event witnessed a remarkable confluence of youthful energy and intellectual discourse across Bhopal, Sehore, and Vidisha districts on the transformative theme of <strong className="text-white">“One Nation, One Election.”</strong>
               </p>
               <div className="mt-6 bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 flex items-start gap-5 shadow-inner">
                 <Medal className="text-yellow-400 shrink-0 mt-1" size={32} />
-                <p className="text-white font-medium text-lg leading-relaxed">
+                <p className="text-white font-medium text-lg leading-relaxed text-justify">
                   Amidst fierce competition, Nandini Pandey's outstanding performance earned her the honour of representing the Nodal District (Bhopal) at the State Youth Parliament in the Madhya Pradesh Assembly.
                 </p>
               </div>
@@ -326,12 +326,12 @@ export default function AwardeesPage() {
               <h3 className="text-3xl lg:text-5xl font-black leading-tight tracking-tight text-white">
                 Representing <span className="text-indigo-300">Sehore District</span>
               </h3>
-              <p className="text-indigo-100 text-lg md:text-xl leading-relaxed">
+              <p className="text-indigo-100 text-lg md:text-xl leading-relaxed text-justify">
                 Continuing her outstanding journey in youth advocacy and democratic discourse, Nandini Pandey was once again selected for the prestigious National Youth Parliament.
               </p>
               <div className="mt-6 bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 flex items-start gap-5 shadow-inner">
                 <Medal className="text-yellow-400 shrink-0 mt-1" size={32} />
-                <p className="text-white font-medium text-lg leading-relaxed">
+                <p className="text-white font-medium text-lg leading-relaxed text-justify">
                   Building upon her previous success, she proudly represented the Sehore district in 2026, showcasing exemplary leadership and oratorical skills on a significant platform.
                 </p>
               </div>
@@ -371,7 +371,7 @@ export default function AwardeesPage() {
               <h3 className="text-3xl lg:text-5xl font-black text-slate-900 leading-tight tracking-tight">
                 Selected for the <span className="text-orange-600">Final Round</span>
               </h3>
-              <p className="text-slate-600 text-lg md:text-xl leading-relaxed">
+              <p className="text-slate-600 text-lg md:text-xl leading-relaxed text-justify">
                 Maulik Dubey has showcased exceptional analytical and financial acumen, earning a highly coveted spot in the final round of the prestigious My Bharat Budget Quest. His achievement is a matter of immense pride for the NSS Unit, VIT Bhopal University.
               </p>
               <div className="grid grid-cols-1 gap-4 pt-4">
@@ -422,7 +422,7 @@ export default function AwardeesPage() {
               <h3 className="text-3xl lg:text-5xl font-black leading-tight tracking-tight text-white">
                 District-Level <span className="text-purple-400">Selections</span>
               </h3>
-              <p className="text-slate-300 text-lg md:text-xl leading-relaxed">
+              <p className="text-slate-300 text-lg md:text-xl leading-relaxed text-justify">
                 A remarkable achievement by <strong className="text-white">Maulik Dubey</strong> and <strong className="text-white">Soumya Mishra</strong>, who successfully cleared the preliminary rounds. They have been officially selected from the <strong className="text-purple-400">Sehore District</strong> to compete in the prestigious district-level trials for the Pre-Republic Day Camp (Pre-RDC) 2025.
               </p>
               <div className="mt-8 p-6 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 italic text-slate-200 shadow-inner">
