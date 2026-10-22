@@ -151,7 +151,12 @@ export default function AdminGalleryPage() {
             <div key={folder._id} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 group">
               <Link href={`/admin/gallery/${folder._id}`}>
                 <div className="aspect-video relative overflow-hidden bg-gray-100">
-                  <img src={getImageUrl(folder.coverImage)} alt={folder.title} className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+                  <img 
+                    src={getImageUrl(folder.coverImage)} 
+                    alt={folder.title} 
+                    onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image1.png'; }}
+                    className="w-full h-full object-cover transition-transform group-hover:scale-105" 
+                  />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
                     <Edit size={24} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>

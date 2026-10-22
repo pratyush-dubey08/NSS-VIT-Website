@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Calendar, MapPin, ArrowRight, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import api from '@/lib/axios';
+import { getImageUrl } from '@/lib/utils';
 
 const getAcademicYear = (dateString: string) => {
   const d = new Date(dateString);
@@ -153,7 +154,14 @@ export default function ActivitiesPage() {
                   {/* Card Image Area */}
                   <div className="h-56 relative overflow-hidden bg-gray-100 flex items-center justify-center">
                     {activity.bannerUrl ? (
-                      <img src={activity.bannerUrl} alt={activity.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                      <img 
+                        src={getImageUrl(activity.bannerUrl)} 
+                        alt={activity.title} 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLElement).style.display = 'none';
+                        }}
+                      />
                     ) : (
                       <div className="absolute inset-0 bg-gradient-to-tr from-gray-100 to-gray-50 flex items-center justify-center">
                         <Sparkles className="text-gray-300" size={40} />

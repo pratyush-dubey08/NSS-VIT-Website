@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { getImageUrl } from '@/lib/utils';
 import api from '@/lib/axios';
 
 export default function UpcomingActivities() {
@@ -60,7 +61,14 @@ export default function UpcomingActivities() {
             >
               <div className="h-48 relative overflow-hidden bg-gray-200 flex items-center justify-center">
                 {activity.bannerUrl ? (
-                  <img src={activity.bannerUrl} alt={activity.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                  <img 
+                    src={getImageUrl(activity.bannerUrl)} 
+                    alt={activity.title} 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLElement).style.display = 'none';
+                    }}
+                  />
                 ) : (
                   <span className="text-gray-400 font-bold">No Image</span>
                 )}
