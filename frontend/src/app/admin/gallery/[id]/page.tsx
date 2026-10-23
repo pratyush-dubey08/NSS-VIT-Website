@@ -217,7 +217,7 @@ export default function AlbumDetailsPage() {
         {/* Cover Photo */}
         <div className="w-full md:w-1/3 relative bg-gray-100">
           <img 
-            src={isEditing && editCover ? URL.createObjectURL(editCover) : getImageUrl(folder.coverImage, { width: 600 })} 
+            src={isEditing && editCover ? URL.createObjectURL(editCover) : getImageUrl((folder.coverImage && !folder.coverImage.includes('onrender.com/uploads/')) ? folder.coverImage : (folder.images?.[0] || folder.coverImage), { width: 600 })} 
             alt={folder.title} 
             loading="lazy"
             decoding="async"

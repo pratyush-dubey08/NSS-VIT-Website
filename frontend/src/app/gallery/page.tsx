@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FolderOpen, ArrowLeft, Image as ImageIcon, Loader2 } from 'lucide-react';
 import api from '@/lib/axios';
+import Link from 'next/link';
 import { getImageUrl } from '@/lib/utils';
 
 const categories = [
@@ -45,8 +46,16 @@ function GalleryContent() {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get('category');
 
-  const [folders, setFolders] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [folders, setFolders] = useState<any[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const cached = sessionStorage.getItem('all_gallery_folders');
+        if (cached) return JSON.parse(cached);
+      } catch (e) {}
+    }
+    return [];
+  });
+  const [isLoading, setIsLoading] = useState(folders.length === 0);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(categoryParam);
 
   useEffect(() => {
@@ -54,6 +63,13 @@ function GalleryContent() {
       try {
         const response = await api.get('/gallery');
         setFolders(response.data);
+        try {
+          sessionStorage.setItem('all_gallery_folders', JSON.stringify(response.data));
+          // Pre-cache individual albums for instant 0ms open
+          for (const f of response.data) {
+            sessionStorage.setItem(`cached_album_${f._id}`, JSON.stringify(f));
+          }
+        } catch (e) {}
       } catch (error) {
         console.error('Failed to fetch gallery folders', error);
       } finally {
@@ -77,6 +93,23 @@ function GalleryContent() {
   const handleBackToCategories = () => {
     setSelectedCategoryId(null);
     router.push('/gallery', { scroll: false });
+  };
+
+  const handleOpenAlbum = (folder: any) => {
+    try {
+      sessionStorage.setItem(`cached_album_${folder._id}`, JSON.stringify(folder));
+    } catch (e) {}
+  };
+
+  const getCoverSrc = (folder: any) => {
+    // Priority: Cloudinary coverImage > folder.images[0] > fallback
+    if (folder.coverImage && !folder.coverImage.includes('onrender.com/uploads/')) {
+      return folder.coverImage;
+    }
+    if (folder.images && folder.images.length > 0) {
+      return folder.images[0];
+    }
+    return folder.coverImage || '/images/gallery/events_2025/image1.png';
   };
 
   const selectedCategory = categories.find(c => c.id === selectedCategoryId);
@@ -203,54 +236,69 @@ function GalleryContent() {
                   <div className="h-1 w-24 bg-yellow-400 rounded-full md:hidden"></div>
                 </div>
 
-                {/* Grid of Albums */}
+                {/* Grid of Albums with Instant Link Prefetch */}
                 {filteredFolders.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     <AnimatePresence>
-                      {filteredFolders.map((folder, index) => (
-                        <motion.div
-                          layout
-                          initial={{ opacity: 0, scale: 0.95 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: 0.95 }}
-                          transition={{ duration: 0.3, delay: index * 0.04 }}
-                          key={folder._id}
-                          className="relative rounded-3xl overflow-hidden cursor-pointer group bg-gray-100 shadow-md hover:shadow-2xl transition-all aspect-square md:aspect-[4/3]"
-                          onClick={() => router.push(`/gallery/${folder._id}`)}
-                        >
-                          <img 
-                            src={getImageUrl(folder.coverImage, { width: 600 })} 
-                            alt={folder.title} 
-                            loading="lazy"
-                            decoding="async"
-                            onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image1.png'; }}
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                          />
-                          
-                          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/30 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-300"></div>
-                          
-                          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                            <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white transform scale-90 group-hover:scale-100 transition-transform">
-                              <ImageIcon size={26} />
-                            </div>
-                          </div>
-                          
-                          <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col justify-end z-10">
-                            <h4 className="text-white font-bold text-lg md:text-xl leading-tight drop-shadow-md pr-4">{folder.title}</h4>
-                            <div className="flex items-center gap-2 mt-2">
-                              {folder.eventDate && (
-                                <>
-                                  <span className="text-white/80 text-xs md:text-sm font-medium">
-                                    {new Date(folder.eventDate).toLocaleDateString(undefined, { year: 'numeric', month: 'short' })}
-                                  </span>
-                                  <span className="text-white/50">•</span>
-                                </>
-                              )}
-                              <p className="text-white/80 text-xs md:text-sm font-medium">{folder.images?.length || 0} Photos</p>
-                            </div>
-                          </div>
-                        </motion.div>
-                      ))}
+                      {filteredFolders.map((folder, index) => {
+                        const coverUrl = getCoverSrc(folder);
+                        return (
+                          <motion.div
+                            layout
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            transition={{ duration: 0.3, delay: index * 0.04 }}
+                            key={folder._id}
+                          >
+                            <Link
+                              href={`/gallery/${folder._id}`}
+                              prefetch={true}
+                              onClick={() => handleOpenAlbum(folder)}
+                              className="block relative rounded-3xl overflow-hidden cursor-pointer group bg-gray-200 shadow-md hover:shadow-2xl transition-all aspect-square md:aspect-[4/3]"
+                            >
+                              <img 
+                                src={getImageUrl(coverUrl, { width: 600 })} 
+                                alt={folder.title} 
+                                loading="lazy"
+                                decoding="async"
+                                onError={(e: any) => {
+                                  // Fallback to first image in album if cover fails
+                                  if (folder.images && folder.images.length > 0 && e.currentTarget.src !== getImageUrl(folder.images[0])) {
+                                    e.currentTarget.src = getImageUrl(folder.images[0], { width: 600 });
+                                  } else {
+                                    e.currentTarget.src = '/images/gallery/events_2025/image1.png';
+                                  }
+                                }}
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                              />
+                              
+                              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/30 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-300"></div>
+                              
+                              <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white transform scale-90 group-hover:scale-100 transition-transform">
+                                  <ImageIcon size={26} />
+                                </div>
+                              </div>
+                              
+                              <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col justify-end z-10">
+                                <h4 className="text-white font-bold text-lg md:text-xl leading-tight drop-shadow-md pr-4">{folder.title}</h4>
+                                <div className="flex items-center gap-2 mt-2">
+                                  {folder.eventDate && (
+                                    <>
+                                      <span className="text-white/80 text-xs md:text-sm font-medium">
+                                        {new Date(folder.eventDate).toLocaleDateString(undefined, { year: 'numeric', month: 'short' })}
+                                      </span>
+                                      <span className="text-white/50">•</span>
+                                    </>
+                                  )}
+                                  <p className="text-white/80 text-xs md:text-sm font-medium">{folder.images?.length || 0} Photos</p>
+                                </div>
+                              </div>
+                            </Link>
+                          </motion.div>
+                        );
+                      })}
                     </AnimatePresence>
                   </div>
                 ) : (

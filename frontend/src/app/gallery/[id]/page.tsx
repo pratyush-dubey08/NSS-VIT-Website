@@ -23,8 +23,19 @@ function AlbumPhotosContent() {
   const searchParams = useSearchParams();
   const fromParam = searchParams.get('from');
   
-  const [folder, setFolder] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  // Instant 0ms render from pre-cached sessionStorage if opened from gallery
+  const [folder, setFolder] = useState<any>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const cached = sessionStorage.getItem(`cached_album_${id}`);
+        if (cached) return JSON.parse(cached);
+      } catch (e) {}
+    }
+    return null;
+  });
+  
+  // Only show full-screen loader if there is NO cached data at all
+  const [isLoading, setIsLoading] = useState<boolean>(!folder);
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
 
   useEffect(() => {
@@ -32,9 +43,14 @@ function AlbumPhotosContent() {
       try {
         const response = await api.get(`/gallery/${id}`);
         setFolder(response.data);
+        try {
+          sessionStorage.setItem(`cached_album_${id}`, JSON.stringify(response.data));
+        } catch (e) {}
       } catch (error) {
-        console.error('Failed to fetch album', error);
-        router.push('/gallery');
+        if (!folder) {
+          console.error('Failed to fetch album', error);
+          router.push('/gallery');
+        }
       } finally {
         setIsLoading(false);
       }
@@ -54,7 +70,7 @@ function AlbumPhotosContent() {
     }
   };
 
-  if (isLoading) {
+  if (isLoading && !folder) {
     return (
       <div className="min-h-screen flex justify-center items-center bg-gray-50">
         <Loader2 className="animate-spin text-nss-blue" size={40} />
@@ -65,6 +81,9 @@ function AlbumPhotosContent() {
   if (!folder) return null;
 
   const categoryTitle = categoriesMap[folder.categoryId] || folder.categoryId || 'Gallery';
+  const heroCoverUrl = (folder.coverImage && !folder.coverImage.includes('onrender.com/uploads/'))
+    ? folder.coverImage
+    : (folder.images?.[0] || folder.coverImage);
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20 pb-20">
@@ -73,11 +92,17 @@ function AlbumPhotosContent() {
       <section className="relative h-[45vh] min-h-[340px] w-full bg-slate-900 overflow-hidden">
         <div className="absolute inset-0">
           <img 
-            src={getImageUrl(folder.coverImage, { width: 1400 })} 
+            src={getImageUrl(heroCoverUrl, { width: 1400 })} 
             alt={folder.title} 
             loading="eager"
             decoding="async"
-            onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image1.png'; }}
+            onError={(e: any) => {
+              if (folder.images && folder.images.length > 0 && e.currentTarget.src !== getImageUrl(folder.images[0])) {
+                e.currentTarget.src = getImageUrl(folder.images[0], { width: 1400 });
+              } else {
+                e.currentTarget.src = '/images/gallery/events_2025/image1.png';
+              }
+            }}
             className="w-full h-full object-cover opacity-40 blur-[1px]" 
           />
           <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-900/60 to-transparent"></div>
@@ -111,7 +136,7 @@ function AlbumPhotosContent() {
             <span>Back to {categoryTitle} Albums</span>
           </button>
           
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
             <div className="flex flex-wrap items-center gap-3 mb-2">
               <span className="inline-block px-3 py-1 bg-yellow-400 text-yellow-950 text-xs font-bold rounded-full uppercase tracking-wider shadow-sm">
                 {folder.images?.length || 0} {folder.images?.length === 1 ? 'Photo' : 'Photos'}
@@ -134,12 +159,8 @@ function AlbumPhotosContent() {
         {folder.images && folder.images.length > 0 ? (
           <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
             {folder.images.map((img: string, idx: number) => (
-              <motion.div
+              <div
                 key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "100px" }}
-                transition={{ duration: 0.3, delay: (idx % 6) * 0.05 }}
                 className="relative rounded-2xl overflow-hidden cursor-pointer group break-inside-avoid shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200"
                 onClick={() => setSelectedPhoto(img)}
               >
@@ -166,7 +187,7 @@ function AlbumPhotosContent() {
                     <ImageIcon size={22} />
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         ) : (

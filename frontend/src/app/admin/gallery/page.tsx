@@ -189,7 +189,7 @@ function AdminGalleryContent() {
             >
               <div className="relative aspect-video bg-gray-100 overflow-hidden">
                 <img 
-                  src={getImageUrl(folder.coverImage, { width: 500 })} 
+                  src={getImageUrl((folder.coverImage && !folder.coverImage.includes('onrender.com/uploads/')) ? folder.coverImage : (folder.images?.[0] || folder.coverImage), { width: 500 })} 
                   alt={folder.title} 
                   loading="lazy"
                   decoding="async"
