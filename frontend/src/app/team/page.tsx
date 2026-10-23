@@ -17,6 +17,7 @@ interface ProgramOfficer {
   designation: string;
   bio: string;
   image?: string;
+  imagePosition?: string;
 }
 
 // --- Data ---
@@ -72,6 +73,7 @@ const programOfficersData: ProgramOfficer[] = [
     name: 'Dr. Vinod Bhatt',
     designation: 'Program Officer',
     image: '/images/leadership/vinod-bhatt.png',
+    imagePosition: 'object-top',
     bio: 'Dr. Vinod Bhatt is an accomplished scholar, researcher, and writer specializing in English Literature and Journalism. He has had 22 years of teaching and administrative experience, for which he has been the main force in fusing literature and mass communication to create unique pedagogic strategies. An Associate Professor in VIT Bhopal University, he personally guides students and research scholars. He holds a Ph.D. in Canadian Literature. Dr. Bhatt is a registered Ph.D. guide and has supervised numerous research scholars. He has published 42 research papers, with nine appearing in Scopus-indexed journals. His academic engagements include participation in over 48 conferences, and he serves as an editor and reviewer for four international journals. He has also chaired conferences at prestigious institutions such as Amity University Dubai and Singapore. In recognition of his contributions, he was honored with the IWA Bogdani Prize (Belgium) in 2023.'
   },
   {
@@ -109,7 +111,7 @@ const LeaderCard = ({ leader, delay }: { leader: Leader, delay: number }) => (
         <img
           src={leader.image}
           alt={leader.name}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover object-top"
           onError={(e: any) => { e.currentTarget.style.display = 'none'; }}
         />
       ) : (
@@ -141,7 +143,7 @@ const ProgramOfficerCard = ({ officer, index }: { officer: ProgramOfficer, index
           <img
             src={officer.image}
             alt={officer.name}
-            className="w-full h-full object-cover"
+            className={`w-full h-full object-cover ${officer.imagePosition || 'object-top'}`}
             onError={(e: any) => { e.currentTarget.style.display = 'none'; }}
           />
         ) : (
