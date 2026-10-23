@@ -440,7 +440,13 @@ export default function ManageActivityPage() {
       v.registrationNumber?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       v.email?.toLowerCase().includes(searchQuery.toLowerCase())
     )
-    .filter(v => !registrations.some(r => r.userId?._id === v._id || r.userId === v._id));
+    .filter(v => {
+      const vId = (v._id || v.id || '').toString();
+      return !registrations.some(r => {
+        const rUserId = (r.userId?._id || r.userId?.id || r.userId || '').toString();
+        return rUserId === vId;
+      });
+    });
 
   const { matched: bulkMatched, alreadyAdded: bulkAlreadyAdded, notFound: bulkNotFound } = parseBulkAdd();
   const { absentMatches: bulkAbsentMatches, otherRegistrations: bulkOtherRegistrations } = parseBulkAbsent();
@@ -601,7 +607,7 @@ export default function ManageActivityPage() {
 
               {/* Table */}
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
+                <table className="w-full text-left border-collapse min-w-[700px]">
                   <thead>
                     <tr className="bg-gray-50/80 border-b border-gray-100 text-xs font-bold text-gray-500 uppercase tracking-wider">
                       <th className="p-4">Volunteer</th>

@@ -24,30 +24,42 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
  const [sidebarOpen, setSidebarOpen] = useState(false);
  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
+  const [authorized, setAuthorized] = useState(false);
+
   useEffect(() => {
-    // If not authenticated, go to login
     if (!user) {
       router.push('/login');
       return;
     }
     
-    // Check if the user's role is allowed
     const allowedRoles = ['SUPER_ADMIN', 'PROGRAM_OFFICER', 'EVENT_MANAGER'];
     if (!allowedRoles.includes(user.role)) {
       router.push('/dashboard');
+      return;
     }
+
+    setAuthorized(true);
   }, [user, router]);
 
- const navItems = [
- { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
- { name: 'Manage Activities', path: '/admin/activities', icon: CalendarDays },
- { name: 'Volunteers', path: '/admin/volunteers', icon: Users },
- { name: 'Gallery', path: '/admin/gallery', icon: ImageIcon },
- { name: 'Resources', path: '/admin/resources', icon: FileSpreadsheet },
- { name: 'Settings', path: '/admin/settings', icon: Settings },
- ];
+  const navItems = [
+    { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
+    { name: 'Manage Activities', path: '/admin/activities', icon: CalendarDays },
+    { name: 'Volunteers', path: '/admin/volunteers', icon: Users },
+    { name: 'Gallery', path: '/admin/gallery', icon: ImageIcon },
+    { name: 'Resources', path: '/admin/resources', icon: FileSpreadsheet },
+    { name: 'Settings', path: '/admin/settings', icon: Settings },
+  ];
 
- return (
+  if (!authorized) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white">
+        <div className="w-10 h-10 border-3 border-blue-500 border-t-transparent rounded-full animate-spin mb-3"></div>
+        <p className="text-sm font-bold text-gray-300">Verifying security credentials...</p>
+      </div>
+    );
+  }
+
+  return (
  <div className="min-h-screen bg-gray-50 flex">
  
  {/* Mobile Sidebar Overlay */}

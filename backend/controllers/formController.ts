@@ -80,7 +80,7 @@ export const getRegistrationsByActivity = async (req: Request, res: Response) =>
       const activity = await Activity.findById(activityId);
       if (!activity) return res.status(404).json({ message: 'Activity not found' });
       
-      const isManager = activity.eventManagers.some(m => m.toString() === userId);
+      const isManager = activity.eventManagers.some(m => (m._id || m).toString() === userId);
       if (!isManager) return res.status(403).json({ message: 'Not authorized' });
     }
 
@@ -255,31 +255,43 @@ export const addManualRegistration = async (req: Request, res: Response) => {
     if (userRole === 'VOLUNTEER' || userRole === 'EVENT_MANAGER') {
       const activity = await Activity.findById(activityId);
       if (!activity) return res.status(404).json({ message: 'Activity not found' });
-      const isManager = activity.eventManagers.some(m => m.toString() === userId);
+      const isManager = activity.eventManagers.some(m => (m._id || m).toString() === userId);
       if (!isManager) return res.status(403).json({ message: 'Not authorized' });
     }
 
-    const addedRegistrations = [];
+    // 1. Find all existing registrations in 1 fast query
+    const existing = await Registration.find({
+      activityId,
+      userId: { $in: userIds }
+    }).select('userId');
+    
+    const existingSet = new Set(existing.map(r => r.userId.toString()));
+    const newIds = userIds.filter(id => !existingSet.has(id.toString()));
 
-    for (const uId of userIds) {
-      // Check if already registered
-      const existing = await Registration.findOne({ activityId, userId: uId });
-      if (existing) continue;
-
-      // Create a manual registration
-      const registration = new Registration({
-        activityId,
-        userId: uId,
-        responses: [],
-        status: 'APPROVED' // manually added volunteers are approved by default
+    if (newIds.length === 0) {
+      return res.status(200).json({ 
+        message: 'All selected volunteers are already registered for this event.',
+        registrations: [] 
       });
-
-      await registration.save();
-      await registration.populate('userId', 'name registrationNumber department email phoneNumber gender batch residenceType');
-      addedRegistrations.push(registration);
     }
 
-    res.status(201).json({ message: 'Volunteers added successfully', registrations: addedRegistrations });
+    // 2. Prepare documents for single bulk insert
+    const docs = newIds.map(uId => ({
+      activityId,
+      userId: uId,
+      responses: [],
+      status: 'APPROVED',
+      attendanceStatus: 'PENDING'
+    }));
+
+    const inserted = await Registration.insertMany(docs, { ordered: false });
+    
+    // 3. Populate all inserted registrations in 1 query
+    const populated = await Registration.find({
+      _id: { $in: inserted.map(d => d._id) }
+    }).populate('userId', 'name registrationNumber department email phoneNumber gender batch residenceType');
+
+    res.status(201).json({ message: 'Volunteers added successfully', registrations: populated });
   } catch (error) {
     console.error('Manual registration error:', error);
     res.status(500).json({ message: 'Error adding volunteers manually' });
