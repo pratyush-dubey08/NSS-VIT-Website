@@ -1,152 +1,268 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, MapPin, Clock, X } from 'lucide-react';
-import DynamicForm from '@/components/DynamicForm';
-import { FieldType } from '@/components/admin/FormBuilder';
+import { Calendar, MapPin, Clock, Award, Briefcase, ArrowRight, CheckCircle2, ShieldAlert } from 'lucide-react';
+import Link from 'next/link';
+import api from '@/lib/axios';
+import { useAuthStore } from '@/store/useAuthStore';
 
-export default function VolunteerActivities() {
- const [selectedActivity, setSelectedActivity] = useState<any>(null);
- const [isSubmitting, setIsSubmitting] = useState(false);
- const [submitSuccess, setSubmitSuccess] = useState(false);
+export default function VolunteerActivitiesPage() {
+  const { user } = useAuthStore();
+  const [activeTab, setActiveTab] = useState<'ATTENDED' | 'MANAGING'>('ATTENDED');
+  const [attendedActivities, setAttendedActivities] = useState<any[]>([]);
+  const [managingActivities, setManagingActivities] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
- // Mock data for activities that the volunteer can register for
- const openActivities = [
- {
- id: 'act1',
- title: 'Mega Blood Donation Camp 2026',
- date: '2026-08-15',
- venue: 'Auditorium, VIT Bhopal',
- hours: 5,
- description: 'Join us for the annual mega blood donation drive. Your single donation can save up to 3 lives.',
- },
- {
- id: 'act2',
- title: 'Digital Literacy Awareness Drive',
- date: '2026-07-25',
- venue: 'Sehore Community Hall',
- hours: 4,
- description: 'Teach basic computer and internet skills to senior citizens in the neighboring community.',
- }
- ];
+  useEffect(() => {
+    if (!user) return;
 
- // Mock Form Schema corresponding to the Activity
- const mockSchema = {
- activityId: 'act1',
- fields: [
- { id: 'f1', type: FieldType.SHORT_TEXT, label: 'Full Name', required: true },
- { id: 'f2', type: FieldType.REG_NUMBER, label: 'Registration Number', required: true },
- { id: 'f3', type: FieldType.DROPDOWN, label: 'Blood Group', required: true, options: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] },
- { id: 'f4', type: FieldType.DECLARATION, label: 'Medical Declaration', required: true, placeholder: 'I declare that I have not consumed alcohol in the last 24 hours and have no major medical conditions.' }
- ]
- };
+    const fetchActivities = async () => {
+      try {
+        setLoading(true);
+        const [regRes, actRes] = await Promise.all([
+          api.get('/forms/my-registrations'),
+          api.get('/activities')
+        ]);
 
- const handleRegisterClick = (activity: any) => {
- setSelectedActivity(activity);
- setSubmitSuccess(false);
- };
+        // Filter attended activities (marked Present / ATTENDED)
+        const myRegs = regRes.data || [];
+        const attended = myRegs.filter((reg: any) => 
+          reg.attendanceStatus === 'ATTENDED' || reg.attendanceStatus === 'Present'
+        );
+        setAttendedActivities(attended);
 
- const handleSubmitRegistration = async (responses: any) => {
- setIsSubmitting(true);
- // Simulate API call
- setTimeout(() => {
- console.log('Submitted Responses:', responses);
- setIsSubmitting(false);
- setSubmitSuccess(true);
- setTimeout(() => {
- setSelectedActivity(null);
- }, 2000);
- }, 1500);
- };
+        // Filter activities managed by this user
+        const allActs = actRes.data || [];
+        const managing = allActs.filter((act: any) => 
+          act.eventManagers && act.eventManagers.some((m: any) => (m._id || m) === user._id)
+        );
+        setManagingActivities(managing);
 
- return (
- <div className="space-y-6">
- <div className="flex justify-between items-center">
- <h1 className="text-2xl font-bold text-gray-900">Available Activities</h1>
- </div>
+        // If no attended events but has managing events, default to managing tab
+        if (attended.length === 0 && managing.length > 0) {
+          setActiveTab('MANAGING');
+        }
+      } catch (error) {
+        console.error('Error fetching volunteer activities:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
- <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
- {openActivities.map((activity) => (
- <div key={activity.id} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col">
- <h3 className="text-xl font-bold text-gray-900 mb-2">{activity.title}</h3>
- <p className="text-gray-600 text-sm mb-4 line-clamp-2 flex-1">{activity.description}</p>
- 
- <div className="space-y-2 mb-6 bg-gray-50 p-4 rounded-xl">
- <div className="flex items-center text-sm text-gray-600 gap-3">
- <Calendar size={16} className="text-nss-blue"/>
- <span>{new Date(activity.date).toLocaleDateString()}</span>
- </div>
- <div className="flex items-center text-sm text-gray-600 gap-3">
- <MapPin size={16} className="text-nss-red"/>
- <span>{activity.venue}</span>
- </div>
- <div className="flex items-center text-sm text-gray-600 gap-3">
- <Clock size={16} className="text-green-500"/>
- <span>{activity.hours} Hours</span>
- </div>
- </div>
+    fetchActivities();
+  }, [user]);
 
- <button 
- onClick={() => handleRegisterClick(activity)}
- className="w-full py-3 bg-gray-900 text-white font-bold rounded-xl hover:bg-nss-blue :bg-nss-blue hover:text-white transition-colors"
- >
- Register Now
- </button>
- </div>
- ))}
- </div>
+  if (!user) return null;
 
- {/* Registration Modal */}
- <AnimatePresence>
- {selectedActivity && (
- <motion.div
- initial={{ opacity: 0 }}
- animate={{ opacity: 1 }}
- exit={{ opacity: 0 }}
- className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
- >
- <motion.div
- initial={{ scale: 0.95, opacity: 0, y: 20 }}
- animate={{ scale: 1, opacity: 1, y: 0 }}
- exit={{ scale: 0.95, opacity: 0, y: 20 }}
- className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl relative my-auto"
- >
- <div className="sticky top-0 bg-white/80 backdrop-blur-md px-6 py-4 border-b border-gray-100 flex justify-between items-center rounded-t-3xl z-10">
- <div>
- <h2 className="text-xl font-bold text-gray-900">Activity Registration</h2>
- <p className="text-sm text-gray-500">{selectedActivity.title}</p>
- </div>
- <button 
- onClick={() => !isSubmitting && setSelectedActivity(null)}
- className="p-2 bg-gray-100 text-gray-500 hover:text-gray-900 :text-white rounded-full transition-colors"
- disabled={isSubmitting}
- >
- <X size={20} />
- </button>
- </div>
+  return (
+    <div className="space-y-8">
+      {/* Header Section */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-gray-100 pb-6">
+        <div>
+          <h1 className="text-3xl font-black text-gray-900 tracking-tight">My Activities</h1>
+          <p className="text-gray-500 mt-1 text-sm md:text-base">
+            View activities you have attended and events you have been assigned to manage.
+          </p>
+        </div>
 
- <div className="p-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
- {submitSuccess ? (
- <div className="text-center py-12">
- <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
- <svg className="w-10 h-10"fill="none"stroke="currentColor"viewBox="0 0 24 24"><path strokeLinecap="round"strokeLinejoin="round"strokeWidth={3} d="M5 13l4 4L19 7"/></svg>
- </div>
- <h3 className="text-2xl font-bold text-gray-900 mb-2">Registration Successful!</h3>
- <p className="text-gray-500">Your form has been submitted for approval.</p>
- </div>
- ) : (
- <DynamicForm 
- schema={mockSchema} 
- onSubmit={handleSubmitRegistration} 
- isSubmitting={isSubmitting} 
- />
- )}
- </div>
- </motion.div>
- </motion.div>
- )}
- </AnimatePresence>
- </div>
- );
+        {/* Tab Switcher */}
+        <div className="flex items-center gap-1.5 p-1.5 bg-gray-100/80 rounded-2xl border border-gray-200/60 shadow-inner">
+          <button
+            onClick={() => setActiveTab('ATTENDED')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${
+              activeTab === 'ATTENDED'
+                ? 'bg-white text-nss-blue shadow-sm'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            <CheckCircle2 size={16} />
+            Attended Events
+            <span className={`px-2 py-0.5 rounded-full text-xs font-black ${
+              activeTab === 'ATTENDED' ? 'bg-blue-50 text-nss-blue' : 'bg-gray-200 text-gray-600'
+            }`}>
+              {attendedActivities.length}
+            </span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('MANAGING')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${
+              activeTab === 'MANAGING'
+                ? 'bg-white text-nss-blue shadow-sm'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            <Briefcase size={16} />
+            Events You Manage
+            <span className={`px-2 py-0.5 rounded-full text-xs font-black ${
+              activeTab === 'MANAGING' ? 'bg-blue-50 text-nss-blue' : 'bg-gray-200 text-gray-600'
+            }`}>
+              {managingActivities.length}
+            </span>
+          </button>
+        </div>
+      </div>
+
+      {loading ? (
+        <div className="flex flex-col items-center justify-center py-20 text-gray-400">
+          <div className="w-10 h-10 border-3 border-nss-blue border-t-transparent rounded-full animate-spin mb-3"></div>
+          <p className="font-bold text-sm">Loading your activities...</p>
+        </div>
+      ) : activeTab === 'ATTENDED' ? (
+        /* Tab 1: Attended Activities */
+        <div>
+          {attendedActivities.length === 0 ? (
+            <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm p-8 max-w-lg mx-auto">
+              <div className="w-16 h-16 bg-blue-50 text-nss-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                <Calendar size={32} />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">No Attended Events Yet</h3>
+              <p className="text-gray-500 text-sm leading-relaxed mb-6">
+                When an admin marks you Present for an event, it will appear here along with your approved hours.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {attendedActivities.map((reg) => {
+                const act = reg.activityId || {};
+                const hours = act.hoursAllocated || act.workingHours || 0;
+
+                return (
+                  <motion.div
+                    key={reg._id}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col justify-between"
+                  >
+                    {/* Optional Banner */}
+                    {act.bannerUrl && (
+                      <div className="h-44 w-full bg-slate-100 relative overflow-hidden">
+                        <img 
+                          src={act.bannerUrl} 
+                          alt={act.title || 'Event'} 
+                          className="w-full h-full object-cover"
+                          onError={(e: any) => { e.currentTarget.style.display = 'none'; }}
+                        />
+                        <div className="absolute top-3 right-3">
+                          <span className="px-3 py-1 bg-emerald-600/90 backdrop-blur-md text-white text-xs font-black rounded-full shadow-sm flex items-center gap-1">
+                            <CheckCircle2 size={13} /> Present
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="p-6 flex-1 flex flex-col">
+                      {!act.bannerUrl && (
+                        <div className="flex justify-between items-center mb-3">
+                          <span className="px-2.5 py-1 bg-emerald-50 text-emerald-700 text-xs font-black rounded-full flex items-center gap-1">
+                            <CheckCircle2 size={13} /> Present
+                          </span>
+                          {hours > 0 && (
+                            <span className="px-2.5 py-1 bg-blue-50 text-nss-blue text-xs font-black rounded-lg">
+                              +{hours} Hours
+                            </span>
+                          )}
+                        </div>
+                      )}
+
+                      <h3 className="text-lg font-black text-gray-900 mb-2 line-clamp-1">{act.title || 'NSS Activity'}</h3>
+                      <p className="text-gray-600 text-xs md:text-sm line-clamp-2 mb-4 leading-relaxed flex-1">
+                        {act.description || 'NSS community engagement initiative.'}
+                      </p>
+
+                      <div className="space-y-2 pt-3 border-t border-gray-100 text-xs text-gray-500 font-medium">
+                        <div className="flex items-center gap-2">
+                          <Calendar size={14} className="text-nss-blue shrink-0" />
+                          <span>{act.date ? new Date(act.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'No date'}</span>
+                        </div>
+                        {act.venue && (
+                          <div className="flex items-center gap-2 truncate">
+                            <MapPin size={14} className="text-rose-500 shrink-0" />
+                            <span className="truncate">{act.venue}</span>
+                          </div>
+                        )}
+                        {act.bannerUrl && hours > 0 && (
+                          <div className="flex items-center gap-2 text-emerald-600 font-bold">
+                            <Clock size={14} className="shrink-0" />
+                            <span>+{hours} Hours Credited</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      ) : (
+        /* Tab 2: Events You Manage */
+        <div>
+          {managingActivities.length === 0 ? (
+            <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm p-8 max-w-lg mx-auto">
+              <div className="w-16 h-16 bg-blue-50 text-nss-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                <Briefcase size={32} />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">No Managed Events Assigned</h3>
+              <p className="text-gray-500 text-sm leading-relaxed mb-6">
+                When you are appointed as an Event Manager for an NSS activity, you will be able to edit event details and mark volunteer attendance here.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {managingActivities.map((act) => (
+                <motion.div
+                  key={act._id}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col justify-between"
+                >
+                  <div className="p-6 flex-1 flex flex-col">
+                    <div className="flex justify-between items-center gap-2 mb-3">
+                      <span className={`px-2.5 py-0.5 rounded-full text-xs font-black ${
+                        act.isRegistrationOpen 
+                          ? 'bg-emerald-100 text-emerald-800' 
+                          : 'bg-gray-100 text-gray-700'
+                      }`}>
+                        {act.isRegistrationOpen ? 'Registration Open' : 'Closed'}
+                      </span>
+                      <span className="px-2.5 py-1 bg-blue-50 text-nss-blue text-xs font-black rounded-lg">
+                        {act.hoursAllocated || act.workingHours || 0} Hours
+                      </span>
+                    </div>
+
+                    <h3 className="text-lg font-black text-gray-900 mb-2 line-clamp-1">{act.title}</h3>
+                    <p className="text-gray-600 text-xs md:text-sm line-clamp-2 mb-4 leading-relaxed flex-1">
+                      {act.description || 'Manage volunteers, edit details, and mark event attendance.'}
+                    </p>
+
+                    <div className="space-y-2 py-3 border-y border-gray-100 text-xs text-gray-500 font-medium mb-4">
+                      <div className="flex items-center gap-2">
+                        <Calendar size={14} className="text-nss-blue shrink-0" />
+                        <span>{act.date ? new Date(act.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'No date'}</span>
+                      </div>
+                      {act.venue && (
+                        <div className="flex items-center gap-2 truncate">
+                          <MapPin size={14} className="text-rose-500 shrink-0" />
+                          <span className="truncate">{act.venue}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    <Link
+                      href={`/dashboard/activities/${act._id}`}
+                      className="w-full inline-flex items-center justify-center gap-2 py-2.5 bg-nss-blue text-white font-bold text-sm rounded-xl hover:bg-blue-800 transition-colors shadow-sm"
+                    >
+                      Manage & Mark Attendance <ArrowRight size={16} />
+                    </Link>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
 }

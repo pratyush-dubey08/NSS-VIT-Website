@@ -121,7 +121,7 @@ export default function EditActivityPage({ params }: { params: Promise<{ id: str
         eventManagers: selectedManagers
       });
       alert('Activity updated successfully!');
-      router.push('/admin/activities');
+      router.push(`/admin/activities/${activityId}`);
     } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to update activity.');
       setIsSubmitting(false);
@@ -138,7 +138,7 @@ export default function EditActivityPage({ params }: { params: Promise<{ id: str
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-4">
-          <Link href="/admin/activities" className="p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+          <Link href={`/admin/activities/${activityId}`} className="p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
             <ArrowLeft size={20} />
           </Link>
           <div>

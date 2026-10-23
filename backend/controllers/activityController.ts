@@ -44,7 +44,7 @@ export const updateActivity = async (req: Request, res: Response) => {
     const userRole = (req as any).user.role;
     const userId = (req as any).user.userId;
 
-    if (userRole === 'EVENT_MANAGER') {
+    if (userRole === 'EVENT_MANAGER' || userRole === 'VOLUNTEER') {
       const isManager = activity.eventManagers.some(m => m.toString() === userId);
       if (!isManager) {
         return res.status(403).json({ message: 'You are not authorized to edit this event' });

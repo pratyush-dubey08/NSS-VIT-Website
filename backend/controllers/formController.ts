@@ -316,9 +316,9 @@ export const deleteRegistration = async (req: Request, res: Response) => {
 
 export const getMyRegistrations = async (req: Request, res: Response) => {
   try {
-    const userId = (req as any).user.id;
+    const userId = (req as any).user.userId || (req as any).user.id;
     const registrations = await Registration.find({ userId })
-      .populate('activityId', 'title date status isRegistrationOpen')
+      .populate('activityId', 'title date venue description bannerUrl hoursAllocated workingHours status isRegistrationOpen')
       .sort({ createdAt: -1 });
     
     res.json(registrations);
