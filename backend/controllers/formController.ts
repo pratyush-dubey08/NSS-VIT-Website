@@ -321,7 +321,9 @@ export const getMyRegistrations = async (req: Request, res: Response) => {
       .populate('activityId', 'title date venue description bannerUrl hoursAllocated workingHours status isRegistrationOpen')
       .sort({ createdAt: -1 });
     
-    res.json(registrations);
+    // Filter out orphaned registrations where activity was deleted
+    const validRegistrations = registrations.filter(r => r.activityId != null);
+    res.json(validRegistrations);
   } catch (error) {
     console.error('Error fetching my registrations:', error);
     res.status(500).json({ message: 'Server error' });

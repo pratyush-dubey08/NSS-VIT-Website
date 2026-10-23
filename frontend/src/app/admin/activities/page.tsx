@@ -10,18 +10,23 @@ export default function AdminActivities() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activities, setActivities] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchActivities = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const { data } = await api.get('/activities');
+      setActivities(Array.isArray(data) ? data : (data?.activities || []));
+    } catch (err: any) {
+      console.error('Error fetching activities:', err);
+      setError('Could not connect to the backend server. The server might be waking up.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchActivities = async () => {
-      try {
-        const { data } = await api.get('/activities');
-        setActivities(data);
-      } catch (error) {
-        console.error('Error fetching activities:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchActivities();
   }, []);
 
@@ -84,9 +89,26 @@ export default function AdminActivities() {
 
       {/* Activities Grid */}
       {loading ? (
-        <div className="text-center py-20 text-gray-500 font-bold">Loading Activities...</div>
+        <div className="flex flex-col items-center justify-center py-24 text-gray-400">
+          <div className="w-10 h-10 border-3 border-nss-blue border-t-transparent rounded-full animate-spin mb-3"></div>
+          <p className="font-bold text-gray-700 text-sm">Loading Activities...</p>
+          <p className="text-xs text-gray-400 mt-1">Connecting to server, please hold on</p>
+        </div>
+      ) : error ? (
+        <div className="text-center py-16 bg-white rounded-3xl border border-rose-100 p-8 max-w-lg mx-auto shadow-sm">
+          <p className="font-bold text-gray-900 text-lg mb-2">Failed to Load Activities</p>
+          <p className="text-gray-500 text-sm mb-6 leading-relaxed">{error}</p>
+          <button 
+            onClick={fetchActivities}
+            className="px-6 py-2.5 bg-nss-blue text-white font-bold rounded-xl hover:bg-blue-800 transition-colors shadow-sm text-sm"
+          >
+            Retry Loading
+          </button>
+        </div>
       ) : filteredActivities.length === 0 ? (
-        <div className="text-center py-20 text-gray-500 font-bold">No activities found.</div>
+        <div className="text-center py-20 bg-white rounded-2xl border border-gray-100 text-gray-500 font-medium">
+          No activities found matching your criteria.
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredActivities.map(activity => (

@@ -14,7 +14,7 @@ export const createActivity = async (req: Request, res: Response) => {
 
 export const getActivities = async (req: Request, res: Response) => {
   try {
-    const activities = await Activity.find().sort({ date: -1 });
+    const activities = await Activity.find().populate('eventManagers', 'name registrationNumber email department batch').sort({ date: -1 });
     res.status(200).json(activities);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching activities' });
@@ -23,7 +23,7 @@ export const getActivities = async (req: Request, res: Response) => {
 
 export const getActivityById = async (req: Request, res: Response) => {
   try {
-    const activity = await Activity.findById(req.params.id);
+    const activity = await Activity.findById(req.params.id).populate('eventManagers', 'name registrationNumber email department batch');
     if (!activity) {
       return res.status(404).json({ message: 'Activity not found' });
     }
@@ -45,7 +45,7 @@ export const updateActivity = async (req: Request, res: Response) => {
     const userId = (req as any).user.userId;
 
     if (userRole === 'EVENT_MANAGER' || userRole === 'VOLUNTEER') {
-      const isManager = activity.eventManagers.some(m => m.toString() === userId);
+      const isManager = activity.eventManagers.some(m => (m._id || m).toString() === userId);
       if (!isManager) {
         return res.status(403).json({ message: 'You are not authorized to edit this event' });
       }

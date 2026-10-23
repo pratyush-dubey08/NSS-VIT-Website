@@ -8,7 +8,9 @@ import api from '@/lib/axios';
 import { getImageUrl } from '@/lib/utils';
 
 const getAcademicYear = (dateString: string) => {
+  if (!dateString) return 'Current';
   const d = new Date(dateString);
+  if (isNaN(d.getTime())) return 'Current';
   const year = d.getFullYear();
   const month = d.getMonth() + 1; 
   if (month >= 4) {
@@ -22,19 +24,24 @@ export default function ActivitiesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activities, setActivities] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedYear, setSelectedYear] = useState<string>('All');
 
+  const fetchActivities = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const { data } = await api.get('/activities');
+      setActivities(Array.isArray(data) ? data : (data?.activities || []));
+    } catch (err: any) {
+      console.error('Error fetching activities:', err);
+      setError('Could not connect to the activities server. The server might be waking up.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchActivities = async () => {
-      try {
-        const { data } = await api.get('/activities');
-        setActivities(data);
-      } catch (error) {
-        console.error('Error fetching activities:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchActivities();
   }, []);
 
@@ -123,9 +130,24 @@ export default function ActivitiesPage() {
       {/* Activities Grid */}
       <section className="container mx-auto px-4">
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20 text-gray-400">
+          <div className="flex flex-col items-center justify-center py-24 text-gray-400">
             <div className="w-12 h-12 border-4 border-gray-200 border-t-nss-blue rounded-full animate-spin mb-4"></div>
-            <p className="font-bold">Loading Activities...</p>
+            <p className="font-bold text-gray-800 text-base">Loading Activities...</p>
+            <p className="text-xs text-gray-400 mt-1">Connecting to server, please wait a moment</p>
+          </div>
+        ) : error ? (
+          <div className="text-center py-24 bg-white rounded-3xl border border-rose-100 p-8 max-w-lg mx-auto shadow-sm">
+            <div className="w-16 h-16 bg-rose-50 text-rose-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Sparkles size={28} />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Unable to Load Activities</h3>
+            <p className="text-gray-500 text-sm mb-6 leading-relaxed">{error}</p>
+            <button 
+              onClick={fetchActivities} 
+              className="px-6 py-2.5 bg-nss-blue text-white font-bold rounded-xl hover:bg-blue-800 transition-colors shadow-sm"
+            >
+              Retry Loading
+            </button>
           </div>
         ) : filteredActivities.length === 0 ? (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-32 bg-white rounded-3xl border border-gray-100">

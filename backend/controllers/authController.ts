@@ -64,6 +64,7 @@ export const loginUser = async (req: Request, res: Response) => {
       token,
       user: {
         id: user._id,
+        _id: user._id,
         name: user.name,
         role: user.role,
         registrationNumber: user.registrationNumber,
@@ -122,6 +123,7 @@ export const googleLoginUser = async (req: Request, res: Response) => {
       token: authToken,
       user: {
         id: user._id,
+        _id: user._id,
         name: user.name,
         role: user.role,
         registrationNumber: user.registrationNumber,

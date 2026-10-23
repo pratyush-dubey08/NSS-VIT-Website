@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { 
   ArrowLeft, CheckCircle, XCircle, Clock, Save, Edit, Trash2, 
   Users, FileText, Upload, Download, Plus, Search, UserX, UserPlus, 
-  UploadCloud, AlertCircle, CheckCircle2 
+  UploadCloud, AlertCircle, CheckCircle2, Briefcase, ShieldCheck 
 } from 'lucide-react';
 import Link from 'next/link';
 import api from '@/lib/axios';
@@ -20,7 +20,58 @@ export default function ManageActivityPage() {
   const [registrations, setRegistrations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   
-  const [activeTab, setActiveTab] = useState<'volunteers' | 'registration'>('volunteers');
+  const [activeTab, setActiveTab] = useState<'volunteers' | 'managers' | 'registration'>('volunteers');
+  const [managerSearchQuery, setManagerSearchQuery] = useState('');
+  const [isUpdatingManagers, setIsUpdatingManagers] = useState(false);
+
+  const handleAssignManager = async (volunteerId: string) => {
+    setIsUpdatingManagers(true);
+    try {
+      const currentManagers = activity.eventManagers || [];
+      const currentIds = currentManagers.map((m: any) => (m._id || m).toString());
+      if (currentIds.includes(volunteerId)) {
+        alert('This volunteer is already an Event Manager.');
+        return;
+      }
+      const updatedIds = [...currentIds, volunteerId];
+      await api.put(`/activities/${id}`, { eventManagers: updatedIds });
+
+      const newManagerObj = allVolunteers.find(v => v._id === volunteerId);
+      setActivity({
+        ...activity,
+        eventManagers: [...currentManagers, newManagerObj || volunteerId]
+      });
+      alert('Event Manager appointed successfully! They can now manage this activity from their Volunteer Portal under "Events You Manage".');
+      setManagerSearchQuery('');
+    } catch (error) {
+      console.error('Error appointing manager:', error);
+      alert('Failed to appoint event manager');
+    } finally {
+      setIsUpdatingManagers(false);
+    }
+  };
+
+  const handleRemoveManager = async (managerId: string) => {
+    if (!window.confirm('Remove Event Manager permissions from this volunteer?')) return;
+    setIsUpdatingManagers(true);
+    try {
+      const currentManagers = activity.eventManagers || [];
+      const updatedManagers = currentManagers.filter((m: any) => (m._id || m).toString() !== managerId);
+      const updatedIds = updatedManagers.map((m: any) => (m._id || m).toString());
+      await api.put(`/activities/${id}`, { eventManagers: updatedIds });
+
+      setActivity({
+        ...activity,
+        eventManagers: updatedManagers
+      });
+      alert('Event Manager permissions removed.');
+    } catch (error) {
+      console.error('Error removing manager:', error);
+      alert('Failed to remove event manager');
+    } finally {
+      setIsUpdatingManagers(false);
+    }
+  };
   const [isSavingForm, setIsSavingForm] = useState(false);
   
   const [certificateUploadingFor, setCertificateUploadingFor] = useState<string | null>(null);
@@ -393,18 +444,32 @@ export default function ManageActivityPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-gray-200 gap-2">
+      <div className="flex border-b border-gray-200 gap-2 overflow-x-auto">
         <button
           onClick={() => setActiveTab('volunteers')}
-          className={`px-6 py-3 font-bold text-sm border-b-2 transition-colors flex items-center gap-2 ${
+          className={`px-5 py-3 font-bold text-sm border-b-2 transition-colors flex items-center gap-2 shrink-0 ${
             activeTab === 'volunteers' ? 'border-nss-blue text-nss-blue' : 'border-transparent text-gray-500 hover:text-gray-700'
           }`}
         >
           <Users size={18} /> Volunteers & Attendance
+          <span className="px-2 py-0.5 rounded-full text-xs bg-gray-100 text-gray-600 font-bold">
+            ${registrations.length}
+          </span>
+        </button>
+        <button
+          onClick={() => setActiveTab('managers')}
+          className={`px-5 py-3 font-bold text-sm border-b-2 transition-colors flex items-center gap-2 shrink-0 ${
+            activeTab === 'managers' ? 'border-nss-blue text-nss-blue' : 'border-transparent text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          <Briefcase size={18} /> Event Managers (Organizer Access)
+          <span className="px-2 py-0.5 rounded-full text-xs bg-blue-50 text-nss-blue font-bold">
+            ${activity.eventManagers?.length || 0}
+          </span>
         </button>
         <button
           onClick={() => setActiveTab('registration')}
-          className={`px-6 py-3 font-bold text-sm border-b-2 transition-colors flex items-center gap-2 ${
+          className={`px-5 py-3 font-bold text-sm border-b-2 transition-colors flex items-center gap-2 shrink-0 ${
             activeTab === 'registration' ? 'border-nss-blue text-nss-blue' : 'border-transparent text-gray-500 hover:text-gray-700'
           }`}
         >

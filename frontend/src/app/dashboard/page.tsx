@@ -18,14 +18,20 @@ export default function VolunteerDashboard() {
         try {
           // Fetch activities where user is event manager
           const { data: activitiesData } = await api.get('/activities');
-          const managing = activitiesData.filter((a: any) => 
-            a.eventManagers && a.eventManagers.some((m: any) => (m._id || m) === user._id)
+          const currentUserId = (user._id || user.id || '').toString();
+          const allActs = Array.isArray(activitiesData) ? activitiesData : (activitiesData?.activities || []);
+          const managing = allActs.filter((a: any) => 
+            a.eventManagers && a.eventManagers.some((m: any) => {
+              const mId = (m._id || m.id || m)?.toString();
+              return mId === currentUserId;
+            })
           );
           setManagedActivities(managing);
 
           // Fetch user's registrations (activities attended)
           const { data: myRegistrations } = await api.get('/forms/my-registrations');
-          setRegisteredActivities(myRegistrations || []);
+          const validRegs = (myRegistrations || []).filter((r: any) => r.activityId != null);
+          setRegisteredActivities(validRegs);
 
         } catch (error) {
           console.error("Error fetching dashboard data", error);
