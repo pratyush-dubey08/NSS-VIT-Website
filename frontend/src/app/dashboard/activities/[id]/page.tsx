@@ -49,12 +49,20 @@ export default function ManageActivityPage() {
 
   const fetchActivityData = async () => {
     try {
-      const [actRes, regRes] = await Promise.all([
-        api.get(`/activities/${id}`),
-        api.get(`/forms/activity/${id}/registrations`)
-      ]);
+      const actRes = await api.get(`/activities/${id}`);
       setActivity(actRes.data);
-      setRegistrations(regRes.data);
+
+      try {
+        const regRes = await api.get(`/forms/registrations/${id}`);
+        setRegistrations(Array.isArray(regRes.data) ? regRes.data : []);
+      } catch (e1) {
+        try {
+          const fallbackRes = await api.get(`/forms/activity/${id}/registrations`);
+          setRegistrations(Array.isArray(fallbackRes.data) ? fallbackRes.data : []);
+        } catch (e2) {
+          setRegistrations([]);
+        }
+      }
 
       setEditFormData({
         title: actRes.data.title || '',

@@ -368,27 +368,71 @@ export default function ManageActivityPage() {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchData = async () => {
+    if (!id) return;
+    try {
+      setLoading(true);
+      setError(null);
+
+      // 1. Fetch activity details first
+      const actRes = await api.get(`/activities/${id}`);
+      setActivity(actRes.data);
+
+      // 2. Fetch registrations (with fallback)
       try {
-        const [actRes, regRes] = await Promise.all([
-          api.get(`/activities/${id}`),
-          api.get(`/forms/activity/${id}/registrations`)
-        ]);
-        setActivity(actRes.data);
-        setRegistrations(regRes.data);
-        fetchVolunteers();
-      } catch (error) {
-        console.error('Error fetching activity details:', error);
-      } finally {
-        setLoading(false);
+        const regRes = await api.get(`/forms/registrations/${id}`);
+        setRegistrations(Array.isArray(regRes.data) ? regRes.data : []);
+      } catch (e1) {
+        try {
+          const fallbackRes = await api.get(`/forms/activity/${id}/registrations`);
+          setRegistrations(Array.isArray(fallbackRes.data) ? fallbackRes.data : []);
+        } catch (e2) {
+          console.warn('Could not fetch registrations:', e2);
+          setRegistrations([]);
+        }
       }
-    };
-    if (id) fetchData();
+
+      fetchVolunteers();
+    } catch (err: any) {
+      console.error('Error fetching activity details:', err);
+      setError('Activity could not be loaded. Please verify your connection or try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
   }, [id]);
 
-  if (loading) return <div className="p-8 text-center font-bold text-gray-500">Loading details...</div>;
-  if (!activity) return <div className="p-8 text-center font-bold text-red-500">Activity not found.</div>;
+  if (loading) return (
+    <div className="flex flex-col items-center justify-center py-28 text-gray-400">
+      <div className="w-10 h-10 border-3 border-nss-blue border-t-transparent rounded-full animate-spin mb-3"></div>
+      <p className="font-bold text-gray-700 text-sm">Loading activity details...</p>
+    </div>
+  );
+
+  if (error || !activity) return (
+    <div className="text-center py-20 bg-white rounded-3xl border border-rose-100 p-8 max-w-lg mx-auto shadow-sm my-10">
+      <div className="w-16 h-16 bg-rose-50 text-rose-600 rounded-full flex items-center justify-center mx-auto mb-4">
+        <AlertCircle size={32} />
+      </div>
+      <h3 className="text-xl font-bold text-gray-900 mb-2">{error || 'Activity Not Found'}</h3>
+      <p className="text-gray-500 text-sm mb-6 leading-relaxed">
+        The activity details could not be retrieved from the server.
+      </p>
+      <div className="flex justify-center gap-3">
+        <Link href="/admin/activities" className="px-5 py-2.5 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-colors text-sm">
+          Back to Activities
+        </Link>
+        <button onClick={fetchData} className="px-5 py-2.5 bg-nss-blue text-white font-bold rounded-xl hover:bg-blue-800 transition-colors text-sm">
+          Retry
+        </button>
+      </div>
+    </div>
+  );
 
   const filteredUnregisteredVolunteers = allVolunteers
     .filter(v => 

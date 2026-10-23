@@ -25,6 +25,7 @@ router.post('/register', authenticate, submitRegistration);
 router.post('/registrations/manual', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER, Role.EVENT_MANAGER, Role.VOLUNTEER]), addManualRegistration);
 router.get('/my-registrations', authenticate, getMyRegistrations);
 router.get('/registrations/:activityId', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER, Role.EVENT_MANAGER, Role.VOLUNTEER]), getRegistrationsByActivity);
+router.get('/activity/:activityId/registrations', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER, Role.EVENT_MANAGER, Role.VOLUNTEER]), getRegistrationsByActivity);
 router.put('/registrations/:registrationId/status', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER, Role.EVENT_MANAGER, Role.VOLUNTEER]), updateRegistrationStatus);
 router.put('/registrations/attendance/batch', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER, Role.EVENT_MANAGER, Role.VOLUNTEER]), batchMarkAttendance);
 router.put('/registrations/:registrationId/attendance', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER, Role.EVENT_MANAGER, Role.VOLUNTEER]), markAttendance);
