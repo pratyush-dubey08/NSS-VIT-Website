@@ -52,6 +52,9 @@ export const uploadFile = async (req: Request, res: Response): Promise<void> => 
         const result = await cloudinary.uploader.upload(req.file.path, {
           folder: 'nss_vit_website',
           resource_type: 'auto',
+          quality: 'auto:good',
+          fetch_format: 'auto',
+          flags: 'progressive',
         });
 
         // Delete temporary local file after successful upload to Cloudinary

@@ -2,8 +2,17 @@
  * Helper to resolve image URLs properly.
  * Fallbacks missing, "undefined", unsplash or broken links to local public gallery assets.
  * Replaces localhost origins with production backend API origin if applicable.
+ * Optimizes Cloudinary CDN assets with automatic WebP/AVIF format and responsive sizing.
  */
-export const getImageUrl = (url?: string | null): string => {
+export interface ImageUrlOptions {
+  width?: number;
+  quality?: string; // 'auto', 'auto:good', 'auto:eco', etc.
+}
+
+export const getImageUrl = (
+  url?: string | null,
+  options?: ImageUrlOptions
+): string => {
   const DEFAULT_PLACEHOLDER = '/images/gallery/events_2025/image1.png';
 
   if (
@@ -16,6 +25,20 @@ export const getImageUrl = (url?: string | null): string => {
     url.includes('placeholder.com')
   ) {
     return DEFAULT_PLACEHOLDER;
+  }
+
+  // Auto-optimize Cloudinary CDN assets with next-gen WebP/AVIF and responsive sizing
+  if (url.includes('res.cloudinary.com') && url.includes('/upload/')) {
+    const widthParam = options?.width ? `w_${options.width},c_limit,` : '';
+    const qualityParam = options?.quality ? `q_${options.quality}` : 'q_auto';
+    const transform = `${widthParam}f_auto,${qualityParam}`;
+
+    // If it already has transformations, avoid duplicating
+    if (url.includes('/upload/f_auto') || url.includes('/upload/w_') || url.includes('/upload/c_limit')) {
+      return url;
+    }
+
+    return url.replace('/upload/', `/upload/${transform}/`);
   }
 
   if (url.startsWith('/images/')) {
