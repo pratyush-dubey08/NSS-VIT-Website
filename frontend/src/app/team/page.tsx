@@ -23,8 +23,8 @@ interface ProgramOfficer {
 const leadershipData: Leader[] = [
   {
     name: 'Dr. G. Viswanathan',
-    designation: 'Founder & Chancellor',
-    institution: 'VIT Bhopal University, India',
+    designation: 'Chancellor',
+    institution: 'VIT University',
     tier: 1,
     image: '/images/leadership/chancellor.jpg'
   },
@@ -32,43 +32,37 @@ const leadershipData: Leader[] = [
   {
     name: 'Dr. Sankar Viswanathan',
     designation: 'Vice President',
-    institution: 'VIT Bhopal, India',
+    institution: 'VIT Bhopal University',
     tier: 2,
     image: '/images/leadership/vice-president.jpg'
   },
   {
     name: 'Ms. Kadhambari S. Viswanathan',
     designation: 'Assistant Vice President',
-    institution: 'VIT Bhopal, India',
+    institution: 'VIT Bhopal University',
     tier: 2,
     image: '/images/leadership/assistant-vice-president.jpg'
-  },
-  {
-    name: 'Mrs. Ramni Balasundaram',
-    designation: 'Trustee',
-    institution: 'VIT Bhopal, India',
-    tier: 2
   },
   
   {
     name: 'Prof. Satish Kumar Modh',
     designation: 'Vice-Chancellor',
-    institution: 'VIT Bhopal University, India',
+    institution: 'VIT Bhopal University',
     tier: 3,
     image: '/images/leadership/vice-chancellor.jpg'
   },
   {
     name: 'Prof. T. B. Sridharan',
     designation: 'Pro-Vice Chancellor',
-    institution: 'VIT Bhopal University, India',
-    tier: 3,
+    institution: 'VIT Bhopal University',
+    tier: 4,
     image: '/images/leadership/pro-vice-chancellor.jpeg'
   },
   {
     name: 'Dr. Gyan Prakash Mishra',
     designation: 'Registrar',
-    institution: 'VIT Bhopal University, India',
-    tier: 3,
+    institution: 'VIT Bhopal University',
+    tier: 4,
     image: '/images/leadership/registrar.png'
   },
 ];
@@ -185,6 +179,7 @@ export default function TeamPage() {
   const tier1 = leadershipData.filter(l => l.tier === 1);
   const tier2 = leadershipData.filter(l => l.tier === 2);
   const tier3 = leadershipData.filter(l => l.tier === 3);
+  const tier4 = leadershipData.filter(l => l.tier === 4);
 
   return (
     <div className="min-h-screen pt-24 bg-[#FAFAFA] pb-32 selection:bg-nss-blue selection:text-white">
@@ -206,23 +201,30 @@ export default function TeamPage() {
       <section className="container mx-auto px-4 mb-32 relative">
         <div className="max-w-5xl mx-auto space-y-8 relative z-10">
           
-          {/* Tier 1 */}
+          {/* Tier 1 - Chancellor */}
           <div className="flex justify-center">
             {tier1.map((leader, idx) => (
               <LeaderCard key={idx} leader={leader} delay={0.1} />
             ))}
           </div>
 
-          {/* Tier 2 */}
+          {/* Tier 2 - Vice President and AVP in one line */}
           <div className="flex flex-col md:flex-row justify-center gap-6 md:gap-8">
             {tier2.map((leader, idx) => (
               <LeaderCard key={idx} leader={leader} delay={0.2 + (idx * 0.1)} />
             ))}
           </div>
 
-          {/* Tier 3 */}
-          <div className="flex flex-col md:flex-row justify-center gap-6 md:gap-8">
+          {/* Tier 3 - Vice-Chancellor */}
+          <div className="flex justify-center">
             {tier3.map((leader, idx) => (
+              <LeaderCard key={idx} leader={leader} delay={0.4} />
+            ))}
+          </div>
+
+          {/* Tier 4 - Pro-Vice Chancellor and Registrar */}
+          <div className="flex flex-col md:flex-row justify-center gap-6 md:gap-8">
+            {tier4.map((leader, idx) => (
               <LeaderCard key={idx} leader={leader} delay={0.5 + (idx * 0.1)} />
             ))}
           </div>

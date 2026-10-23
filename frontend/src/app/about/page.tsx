@@ -162,7 +162,7 @@ export default function AboutPage() {
  "Mera Yuva Bharat evam Digital Saksharta ke liye Yuva"
  </p>
  <p className="text-gray-600 text-sm leading-relaxed">
- (Youth for My Youthful India and Digital Literacy). The official theme designated for regular and special camping activities.
+ (Youth for MY Bharat and Digital Literacy). The official theme designated for regular and special camping activities.
  </p>
  </motion.div>
  </div>

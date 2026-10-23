@@ -118,7 +118,7 @@ export default function AwardeesPage() {
                 Representing VIT Bhopal & Madhya Pradesh
               </h3>
               <p className="text-slate-600 text-lg md:text-xl leading-relaxed text-justify">
-                Rishabh Kabra was selected to be the esteemed representative of VIT Bhopal University and Madhya Pradesh for the National Level NSS National Integration Camp (NIC), promoting national harmony and cultural exchange.
+                Mr. Rishabh Kabra (21MSI10017) has been selected to be the representative of VIT Bhopal University and Madhya Pradesh for National Level NSS National Integration Camp (NIC). The camp took placed from 23rd to 29th October 2024 at C.C.S. Agricultural University, Hisar, Haryana under the Ministry of Youth Affairs and Sports, Government of India.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
                 <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 flex items-start gap-4">

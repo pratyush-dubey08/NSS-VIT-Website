@@ -87,13 +87,7 @@ export default function ContactPage() {
  </div>
  </section>
  
- {/* Map (Placeholder) */}
- <section className="container mx-auto px-4 mt-8">
- <div className="w-full h-96 bg-gray-200 rounded-3xl flex items-center justify-center text-gray-500 overflow-hidden relative">
- <div className="absolute inset-0 opacity-50 bg-[url('https://maps.googleapis.com/maps/api/staticmap?center=VIT+Bhopal&zoom=15&size=800x400&sensor=false')] bg-cover bg-center"></div>
- <span className="relative z-10 font-bold bg-white/80 px-4 py-2 rounded-full">Interactive Map Placeholder</span>
- </div>
- </section>
+ 
 
  </div>
  );
