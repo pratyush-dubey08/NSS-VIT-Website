@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FolderOpen, ArrowLeft, Image as ImageIcon, Loader2, Sparkles, ArrowRight, Layers, Camera } from 'lucide-react';
+import { ArrowLeft, ImageIcon, Loader2, Camera, ArrowRight } from 'lucide-react';
 import api from '@/lib/axios';
 import Link from 'next/link';
 import { getImageUrl } from '@/lib/utils';
@@ -55,72 +55,12 @@ const defaultCategoryCollages: Record<string, string[]> = {
 };
 
 const categories = [
-  {
-    id: 'camps',
-    title: 'Special Camps',
-    badge: 'Annual Outreaches',
-    description: 'Immersive 7-day community service, village development, rural surveys, and youth empowerment camps.',
-    accent: 'blue',
-    accentBg: 'bg-blue-50',
-    accentText: 'text-blue-700',
-    borderHover: 'hover:border-blue-400',
-    glowColor: 'rgba(37, 99, 235, 0.08)'
-  },
-  {
-    id: 'plantation',
-    title: 'Plantation & Environment',
-    badge: 'Eco Conservation',
-    description: 'Mega tree plantation drives, seed-ball making, bird feeder installations, and cleanliness marches.',
-    accent: 'emerald',
-    accentBg: 'bg-emerald-50',
-    accentText: 'text-emerald-700',
-    borderHover: 'hover:border-emerald-400',
-    glowColor: 'rgba(16, 185, 129, 0.08)'
-  },
-  {
-    id: 'blood',
-    title: 'Blood Donation Drives',
-    badge: 'Life Savers',
-    description: 'Mega voluntary blood donation camps, donor motivation rallies, and emergency donor support network.',
-    accent: 'rose',
-    accentBg: 'bg-rose-50',
-    accentText: 'text-rose-700',
-    borderHover: 'hover:border-rose-400',
-    glowColor: 'rgba(244, 63, 94, 0.08)'
-  },
-  {
-    id: 'awareness',
-    title: 'Awareness Campaigns',
-    badge: 'Social Advocacy',
-    description: 'Nukkad Nataks on voting rights, free eye & dental checkups, cloth donation, and women empowerment.',
-    accent: 'amber',
-    accentBg: 'bg-amber-50',
-    accentText: 'text-amber-700',
-    borderHover: 'hover:border-amber-400',
-    glowColor: 'rgba(245, 158, 11, 0.08)'
-  },
-  {
-    id: 'youth',
-    title: 'Youth Development',
-    badge: 'Future Leaders',
-    description: 'Viksit Bharat National Youth Parliament, parliamentary debates, leadership summits, and orientations.',
-    accent: 'indigo',
-    accentBg: 'bg-indigo-50',
-    accentText: 'text-indigo-700',
-    borderHover: 'hover:border-indigo-400',
-    glowColor: 'rgba(99, 102, 241, 0.08)'
-  },
-  {
-    id: 'cultural',
-    title: 'Cultural Events',
-    badge: 'Heritage & Spirit',
-    description: 'VIBGYOR celebrations, Nirvana bhajan clubbing, festive gatherings, and cultural unity showcases.',
-    accent: 'purple',
-    accentBg: 'bg-purple-50',
-    accentText: 'text-purple-700',
-    borderHover: 'hover:border-purple-400',
-    glowColor: 'rgba(168, 85, 247, 0.08)'
-  }
+  { id: 'camps', title: 'Special Camps', borderHover: 'hover:border-blue-300' },
+  { id: 'plantation', title: 'Plantation & Environment', borderHover: 'hover:border-emerald-300' },
+  { id: 'blood', title: 'Blood Donation Drives', borderHover: 'hover:border-rose-300' },
+  { id: 'awareness', title: 'Awareness Campaigns', borderHover: 'hover:border-amber-300' },
+  { id: 'youth', title: 'Youth Development', borderHover: 'hover:border-indigo-300' },
+  { id: 'cultural', title: 'Cultural Events', borderHover: 'hover:border-purple-300' }
 ];
 
 function GalleryContent() {
@@ -210,7 +150,6 @@ function GalleryContent() {
       if (dynamicPhotos.length >= 5) {
         return dynamicPhotos.slice(0, 5);
       }
-      // If fewer than 5 uploaded, fill remaining slots with default curated photos
       const fallback = defaultCategoryCollages[categoryId] || [];
       const combined = [...dynamicPhotos];
       for (const fb of fallback) {
@@ -222,23 +161,16 @@ function GalleryContent() {
     };
   }, [folders]);
 
-  // Total photos count across all albums
-  const totalPhotosCount = useMemo(() => {
-    return folders.reduce((sum, f) => sum + (f.images?.length || 0), 0);
-  }, [folders]);
-
   const selectedCategory = categories.find(c => c.id === selectedCategoryId);
   const filteredFolders = folders.filter(f => f.categoryId === selectedCategoryId);
 
   return (
     <div className="min-h-screen bg-slate-50/60 pt-20 pb-24">
       
-      {/* Light Theme Hero Section */}
-      <section className="relative w-full bg-gradient-to-b from-blue-50/80 via-white to-slate-50/60 pt-16 pb-14 px-4 border-b border-gray-100 overflow-hidden">
+      {/* Light Theme Hero Section (Clean, without the 3 stat cards) */}
+      <section className="relative w-full bg-gradient-to-b from-blue-50/70 via-white to-slate-50/50 pt-16 pb-12 px-4 border-b border-gray-100 overflow-hidden">
         {/* Subtle decorative radial glow accents */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-r from-blue-100/40 via-indigo-50/40 to-amber-50/30 blur-3xl pointer-events-none rounded-full" />
-        <div className="absolute -left-12 top-1/2 w-64 h-64 bg-yellow-100/20 rounded-full blur-2xl pointer-events-none" />
-        <div className="absolute -right-12 bottom-0 w-64 h-64 bg-blue-100/30 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-gradient-to-r from-blue-100/35 via-indigo-50/35 to-amber-50/25 blur-3xl pointer-events-none rounded-full" />
 
         <div className="relative z-10 text-center max-w-4xl mx-auto">
           <motion.div
@@ -262,39 +194,6 @@ function GalleryContent() {
             <p className="text-gray-600 text-base md:text-lg font-medium max-w-2xl mx-auto mt-3 leading-relaxed">
               Capturing moments of dedication, service, and youth leadership across all NSS social initiatives.
             </p>
-
-            {/* Quick Stats Badges */}
-            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 mt-8">
-              <div className="bg-white/90 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-gray-200/80 shadow-sm flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-blue-50 text-nss-blue flex items-center justify-center font-bold text-sm">
-                  {categories.length}
-                </div>
-                <div className="text-left">
-                  <p className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider">Categories</p>
-                  <p className="text-sm font-bold text-gray-900">All Initiatives</p>
-                </div>
-              </div>
-
-              <div className="bg-white/90 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-gray-200/80 shadow-sm flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-sm">
-                  {folders.length || 43}
-                </div>
-                <div className="text-left">
-                  <p className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider">Albums</p>
-                  <p className="text-sm font-bold text-gray-900">Event Archives</p>
-                </div>
-              </div>
-
-              <div className="bg-white/90 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-gray-200/80 shadow-sm flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm">
-                  {totalPhotosCount > 0 ? totalPhotosCount : '210+'}
-                </div>
-                <div className="text-left">
-                  <p className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider">Photos</p>
-                  <p className="text-sm font-bold text-gray-900">Moments Captured</p>
-                </div>
-              </div>
-            </div>
           </motion.div>
         </div>
       </section>
@@ -306,19 +205,16 @@ function GalleryContent() {
         ) : (
           <AnimatePresence mode="wait">
             {!selectedCategoryId ? (
-              /* Categories Menu View with Dynamic 4-5 Photos Angled Collage */
+              /* Categories Menu View with Clean Title Only and Full-Bleed 5-Photo Collage */
               <motion.div
                 key="categories-menu"
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
                 transition={{ duration: 0.3 }}
-                className="flex flex-col gap-8 max-w-5xl mx-auto"
+                className="flex flex-col gap-6 max-w-5xl mx-auto"
               >
                 {categories.map((category, index) => {
-                  const catFolders = folders.filter(f => f.categoryId === category.id);
-                  const albumCount = catFolders.length;
-                  const photoCount = catFolders.reduce((sum, f) => sum + (f.images?.length || 0), 0);
                   const collagePhotos = getCategoryPhotos(category.id);
 
                   return (
@@ -328,120 +224,90 @@ function GalleryContent() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.07 }}
                       onClick={() => handleSelectCategory(category.id)}
-                      className={`group relative bg-white rounded-3xl border border-gray-200/80 shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer flex flex-col lg:flex-row items-stretch ${category.borderHover}`}
+                      className={`group relative bg-white rounded-3xl border border-gray-200/80 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden cursor-pointer flex flex-col md:flex-row items-center ${category.borderHover}`}
                     >
-                      {/* Left: Category Content */}
-                      <div className="flex-1 p-6 sm:p-8 lg:p-10 flex flex-col justify-between z-10 bg-white/95">
-                        <div>
-                          {/* Badge */}
-                          <div className="flex items-center gap-2 mb-3">
-                            <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${category.accentBg} ${category.accentText}`}>
-                              {category.badge}
-                            </span>
-                            <span className="text-xs text-gray-400 font-medium flex items-center gap-1">
-                              <FolderOpen size={13} /> {albumCount} {albumCount === 1 ? 'Album' : 'Albums'}
-                            </span>
-                          </div>
-
-                          {/* Category Title */}
-                          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 tracking-tight group-hover:text-nss-blue transition-colors">
-                            {category.title}
-                          </h2>
-
-                          {/* Description */}
-                          <p className="text-gray-600 text-sm sm:text-base mt-2.5 leading-relaxed font-normal">
-                            {category.description}
-                          </p>
-                        </div>
-
-                        {/* Footer Info & Action */}
-                        <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
-                          <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 bg-gray-50 px-3 py-1.5 rounded-xl border border-gray-100">
-                            <ImageIcon size={14} className="text-gray-400" />
-                            <span>{photoCount > 0 ? `${photoCount} Photos` : 'Explore Archive'}</span>
-                          </div>
-
-                          <div className="flex items-center gap-2 text-sm font-bold text-nss-blue group-hover:translate-x-1.5 transition-transform duration-300">
-                            <span>View Albums</span>
-                            <ArrowRight size={18} />
-                          </div>
-                        </div>
+                      {/* Left: ONLY Category Title & Subtle Arrow */}
+                      <div className="w-full md:w-2/5 p-8 sm:p-10 flex items-center justify-between z-10 bg-white">
+                        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 tracking-tight group-hover:text-nss-blue transition-colors">
+                          {category.title}
+                        </h2>
+                        <ArrowRight size={22} className="text-gray-400 group-hover:text-nss-blue group-hover:translate-x-2 transition-all duration-300 shrink-0 ml-4 hidden md:block" />
                       </div>
 
-                      {/* Right: 4-5 Photos Angled Collage */}
-                      <div className="relative w-full lg:w-3/5 h-64 sm:h-72 lg:h-auto min-h-[260px] overflow-hidden flex items-center justify-center p-4 sm:p-6 bg-gradient-to-br from-slate-100/80 via-gray-50 to-blue-50/40 border-t lg:border-t-0 lg:border-l border-gray-100">
-                        {/* Soft decorative background circles */}
-                        <div className="absolute -right-8 -bottom-8 w-56 h-56 bg-blue-100/50 rounded-full blur-2xl pointer-events-none" />
-                        <div className="absolute left-8 top-0 w-44 h-44 bg-yellow-100/40 rounded-full blur-xl pointer-events-none" />
+                      {/* Right: 4-5 Photos Full-Bleed Angled Landscape Collage */}
+                      <div className="relative w-full md:w-3/5 h-56 sm:h-64 md:h-68 overflow-hidden flex items-center justify-center p-4 bg-gradient-to-r from-slate-50 via-gray-50/80 to-blue-50/30 border-t md:border-t-0 md:border-l border-gray-100">
+                        {/* Soft decorative background glows */}
+                        <div className="absolute right-0 bottom-0 w-48 h-48 bg-blue-100/40 rounded-full blur-2xl pointer-events-none" />
+                        <div className="absolute left-10 top-0 w-36 h-36 bg-yellow-100/30 rounded-full blur-xl pointer-events-none" />
 
-                        {/* Overlapping Angled Photos Stack */}
-                        <div className="relative flex items-center justify-center w-full max-w-lg h-full py-2 scale-[0.88] sm:scale-95 lg:scale-100 origin-center">
+                        {/* Overlapping Angled Photos Stack - Full Landscape Cards (aspect-[4/3]), Zero Empty Gray Spaces */}
+                        <div className="relative flex items-center justify-center w-full max-w-lg h-full py-4 scale-[0.88] sm:scale-95 md:scale-100 origin-center">
                           {/* Photo 1 (far left, tilted -8deg) */}
                           {collagePhotos[0] && (
-                            <div className="absolute left-[3%] sm:left-[5%] w-24 sm:w-28 md:w-32 aspect-[3/4] rounded-2xl overflow-hidden border-4 border-white shadow-lg transform -rotate-8 -translate-y-2 group-hover:-rotate-12 group-hover:-translate-x-3 transition-all duration-500 bg-gray-200">
+                            <div className="absolute left-[2%] sm:left-[4%] w-28 sm:w-36 md:w-40 aspect-[4/3] rounded-2xl overflow-hidden border-4 border-white shadow-md transform -rotate-8 -translate-y-2 group-hover:-rotate-12 group-hover:-translate-x-3 transition-all duration-500">
                               <img 
-                                src={getImageUrl(collagePhotos[0], { width: 400 })} 
+                                src={getImageUrl(collagePhotos[0], { width: 500 })} 
                                 alt={`${category.title} 1`} 
                                 loading="lazy"
                                 decoding="async"
                                 onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image1.png'; }}
-                                className="w-full h-full object-cover" 
+                                className="absolute inset-0 w-full h-full object-cover" 
                               />
                             </div>
                           )}
 
                           {/* Photo 2 (mid left, tilted -3deg) */}
                           {collagePhotos[1] && (
-                            <div className="absolute left-[20%] sm:left-[23%] w-24 sm:w-28 md:w-32 aspect-[3/4] rounded-2xl overflow-hidden border-4 border-white shadow-xl transform -rotate-3 translate-y-3 group-hover:-rotate-5 group-hover:-translate-y-1 transition-all duration-500 bg-gray-200">
+                            <div className="absolute left-[18%] sm:left-[22%] w-28 sm:w-36 md:w-40 aspect-[4/3] rounded-2xl overflow-hidden border-4 border-white shadow-lg transform -rotate-3 translate-y-3 group-hover:-rotate-5 group-hover:-translate-y-1 transition-all duration-500">
                               <img 
-                                src={getImageUrl(collagePhotos[1], { width: 400 })} 
+                                src={getImageUrl(collagePhotos[1], { width: 500 })} 
                                 alt={`${category.title} 2`} 
                                 loading="lazy"
                                 decoding="async"
                                 onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image2.png'; }}
-                                className="w-full h-full object-cover" 
+                                className="absolute inset-0 w-full h-full object-cover" 
                               />
                             </div>
                           )}
 
                           {/* Photo 3 (center hero, elevated z-10) */}
                           {collagePhotos[2] && (
-                            <div className="relative z-10 w-28 sm:w-32 md:w-36 aspect-[3/4] rounded-2xl overflow-hidden border-4 border-white shadow-2xl transform rotate-1 group-hover:scale-105 group-hover:rotate-0 transition-all duration-500 bg-gray-200">
+                            <div className="relative z-10 w-32 sm:w-40 md:w-44 aspect-[4/3] rounded-2xl overflow-hidden border-4 border-white shadow-2xl transform rotate-1 group-hover:scale-105 group-hover:rotate-0 transition-all duration-500">
                               <img 
-                                src={getImageUrl(collagePhotos[2], { width: 500 })} 
+                                src={getImageUrl(collagePhotos[2], { width: 600 })} 
                                 alt={`${category.title} 3`} 
                                 loading="lazy"
                                 decoding="async"
                                 onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image28.png'; }}
-                                className="w-full h-full object-cover" 
+                                className="absolute inset-0 w-full h-full object-cover" 
                               />
                             </div>
                           )}
 
                           {/* Photo 4 (mid right, tilted +5deg) */}
                           {collagePhotos[3] && (
-                            <div className="absolute right-[20%] sm:right-[23%] w-24 sm:w-28 md:w-32 aspect-[3/4] rounded-2xl overflow-hidden border-4 border-white shadow-xl transform rotate-5 translate-y-2 group-hover:rotate-8 group-hover:translate-x-2 transition-all duration-500 bg-gray-200">
+                            <div className="absolute right-[18%] sm:right-[22%] w-28 sm:w-36 md:w-40 aspect-[4/3] rounded-2xl overflow-hidden border-4 border-white shadow-lg transform rotate-5 translate-y-2 group-hover:rotate-8 group-hover:translate-x-2 transition-all duration-500">
                               <img 
-                                src={getImageUrl(collagePhotos[3], { width: 400 })} 
+                                src={getImageUrl(collagePhotos[3], { width: 500 })} 
                                 alt={`${category.title} 4`} 
                                 loading="lazy"
                                 decoding="async"
                                 onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image29.png'; }}
-                                className="w-full h-full object-cover" 
+                                className="absolute inset-0 w-full h-full object-cover" 
                               />
                             </div>
                           )}
 
                           {/* Photo 5 (far right, tilted +9deg) */}
                           {collagePhotos[4] && (
-                            <div className="absolute right-[3%] sm:right-[5%] w-24 sm:w-28 md:w-32 aspect-[3/4] rounded-2xl overflow-hidden border-4 border-white shadow-lg transform rotate-9 -translate-y-2 group-hover:rotate-14 group-hover:translate-x-4 transition-all duration-500 bg-gray-200">
+                            <div className="absolute right-[2%] sm:right-[4%] w-28 sm:w-36 md:w-40 aspect-[4/3] rounded-2xl overflow-hidden border-4 border-white shadow-md transform rotate-9 -translate-y-2 group-hover:rotate-14 group-hover:translate-x-4 transition-all duration-500">
                               <img 
-                                src={getImageUrl(collagePhotos[4], { width: 400 })} 
+                                src={getImageUrl(collagePhotos[4], { width: 500 })} 
                                 alt={`${category.title} 5`} 
                                 loading="lazy"
                                 decoding="async"
                                 onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image30.png'; }}
-                                className="w-full h-full object-cover" 
+                                className="absolute inset-0 w-full h-full object-cover" 
                               />
                             </div>
                           )}
@@ -471,13 +337,12 @@ function GalleryContent() {
                       Back to All Categories
                     </button>
                     <h2 className="text-3xl md:text-5xl font-black text-gray-900 mt-2">{selectedCategory?.title}</h2>
-                    <p className="text-gray-500 text-sm mt-1">{selectedCategory?.description}</p>
                   </div>
                   
                   <div className="h-1 w-24 bg-yellow-400 rounded-full md:hidden"></div>
                 </div>
 
-                {/* Grid of Albums with Instant Link Prefetch */}
+                {/* Grid of Albums with Instant Link Prefetch (Photo counts hidden as requested) */}
                 {filteredFolders.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     <AnimatePresence>
@@ -523,17 +388,13 @@ function GalleryContent() {
                               
                               <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col justify-end z-10">
                                 <h4 className="text-white font-bold text-lg md:text-xl leading-tight drop-shadow-md pr-4">{folder.title}</h4>
-                                <div className="flex items-center gap-2 mt-2">
-                                  {folder.eventDate && (
-                                    <>
-                                      <span className="text-white/80 text-xs md:text-sm font-medium">
-                                        {new Date(folder.eventDate).toLocaleDateString(undefined, { year: 'numeric', month: 'short' })}
-                                      </span>
-                                      <span className="text-white/50">•</span>
-                                    </>
-                                  )}
-                                  <p className="text-white/80 text-xs md:text-sm font-medium">{folder.images?.length || 0} Photos</p>
-                                </div>
+                                {folder.eventDate && (
+                                  <div className="flex items-center gap-2 mt-2">
+                                    <span className="text-white/80 text-xs md:text-sm font-medium">
+                                      {new Date(folder.eventDate).toLocaleDateString(undefined, { year: 'numeric', month: 'short' })}
+                                    </span>
+                                  </div>
+                                )}
                               </div>
                             </Link>
                           </motion.div>
@@ -543,7 +404,7 @@ function GalleryContent() {
                   </div>
                 ) : (
                   <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
-                    <FolderOpen size={48} className="mx-auto text-gray-300 mb-4" />
+                    <ImageIcon size={48} className="mx-auto text-gray-300 mb-4" />
                     <h3 className="text-xl font-bold text-gray-700">No albums found</h3>
                     <p className="text-gray-500 mt-1">Albums coming soon to this category!</p>
                   </div>

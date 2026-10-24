@@ -138,9 +138,7 @@ function AlbumPhotosContent() {
           
           <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
             <div className="flex flex-wrap items-center gap-3 mb-2">
-              <span className="inline-block px-3 py-1 bg-yellow-400 text-yellow-950 text-xs font-bold rounded-full uppercase tracking-wider shadow-sm">
-                {folder.images?.length || 0} {folder.images?.length === 1 ? 'Photo' : 'Photos'}
-              </span>
+              
               {folder.eventDate && (
                 <span className="text-white/80 text-sm font-semibold tracking-wide bg-black/40 px-3 py-0.5 rounded-full backdrop-blur-sm">
                   {new Date(folder.eventDate).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
