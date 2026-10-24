@@ -35,7 +35,8 @@ export default function Footer() {
       <li><Link href="/activities" className="text-gray-500 hover:text-nss-blue transition-colors">Activities & Events</Link></li>
       <li><Link href="/gallery" className="text-gray-500 hover:text-nss-blue transition-colors">Media Gallery</Link></li>
       <li><Link href="/team" className="text-gray-500 hover:text-nss-blue transition-colors">Leadership</Link></li>
-      <li><Link href="/achievements" className="text-gray-500 hover:text-nss-blue transition-colors">Achievements</Link></li>
+      <li><Link href="/highlights" className="text-gray-500 hover:text-nss-blue transition-colors">Unit Highlights</Link></li>
+      <li><Link href="/achievements" className="text-gray-500 hover:text-nss-blue transition-colors">Awardees & Campers</Link></li>
     </ul>
   </div>
 
