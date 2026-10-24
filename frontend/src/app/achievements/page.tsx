@@ -80,23 +80,6 @@ export default function AwardeesPage() {
             Honoring the exceptional dedication, leadership, and outstanding achievements of our NSS volunteers and program officers on State and National platforms.
           </motion.p>
 
-          {/* Quick Cross-Link Banner to Unit Flagship Highlights */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-8 inline-flex items-center gap-3 p-1.5 pl-4 pr-2 bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 rounded-full border border-blue-200/80 shadow-md shadow-blue-900/5 max-w-xl mx-auto"
-          >
-            <span className="text-xs sm:text-sm font-bold text-slate-700">
-              Looking for our 10,000 Tree Drive, Convocation & Village Initiatives?
-            </span>
-            <a
-              href="/highlights"
-              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-black uppercase tracking-wider transition-all duration-200 shadow-sm shrink-0"
-            >
-              Unit Highlights →
-            </a>
-          </motion.div>
         </div>
       </section>
 

@@ -2,30 +2,19 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Calendar, MapPin, ArrowRight, Sparkles } from 'lucide-react';
+import { Search, Calendar, MapPin, ArrowRight, Sparkles, CheckCircle, Clock } from 'lucide-react';
 import Link from 'next/link';
 import api from '@/lib/axios';
 import { getImageUrl } from '@/lib/utils';
-
-const getAcademicYear = (dateString: string) => {
-  if (!dateString) return 'Current';
-  const d = new Date(dateString);
-  if (isNaN(d.getTime())) return 'Current';
-  const year = d.getFullYear();
-  const month = d.getMonth() + 1; 
-  if (month >= 4) {
-    return `${year}-${(year + 1).toString().slice(2)}`;
-  } else {
-    return `${year - 1}-${year.toString().slice(2)}`;
-  }
-};
 
 export default function ActivitiesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activities, setActivities] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedYear, setSelectedYear] = useState<string>('All');
+  
+  // Tab filter: 'open' (Open for Registration) or 'all' (All Activities)
+  const [activeTab, setActiveTab] = useState<'open' | 'all'>('open');
 
   const fetchActivities = async () => {
     try {
@@ -45,81 +34,97 @@ export default function ActivitiesPage() {
     fetchActivities();
   }, []);
 
-  const academicYears = useMemo(() => {
-    const years = new Set<string>();
-    activities.forEach(a => {
-      years.add(getAcademicYear(a.date));
-    });
-    // Sort descending
-    return ['All', ...Array.from(years).sort((a, b) => b.localeCompare(a))];
+  const openActivitiesCount = useMemo(() => {
+    return activities.filter(a => a.isRegistrationOpen).length;
   }, [activities]);
 
   const filteredActivities = useMemo(() => {
     return activities
       .filter(a => {
-        const matchesSearch = a.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                              (a.description && a.description.toLowerCase().includes(searchQuery.toLowerCase()));
-        const matchesYear = selectedYear === 'All' || getAcademicYear(a.date) === selectedYear;
-        return matchesSearch && matchesYear;
+        const matchesSearch = 
+          a.title?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+          (a.description && a.description.toLowerCase().includes(searchQuery.toLowerCase()));
+        
+        const matchesTab = activeTab === 'all' || (activeTab === 'open' && a.isRegistrationOpen);
+
+        return matchesSearch && matchesTab;
       })
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  }, [activities, searchQuery, selectedYear]);
+  }, [activities, searchQuery, activeTab]);
 
   return (
-    <div className="min-h-screen pt-24 bg-[#FAFAFA] pb-20">
+    <div className="min-h-screen pt-28 bg-[#FAFAFA] pb-24 font-sans">
       
-      {/* Premium Header */}
-      <section className="relative overflow-hidden bg-white border-b border-gray-100 pt-8 pb-10 md:pt-12 md:pb-16">
-        {/* Subtle background decoration */}
+      {/* Header Section */}
+      <section className="relative overflow-hidden bg-white border-b border-gray-100 pt-8 pb-12 md:pt-12 md:pb-16">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-blue-50/50 to-transparent -z-10 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-1/2 h-full bg-gradient-to-tr from-red-50/30 to-transparent -z-10 pointer-events-none" />
         
         <div className="container mx-auto px-4 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto text-center">
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-nss-blue font-bold text-sm mb-6">
-              <Sparkles size={16} /> Our Initiatives
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-nss-blue font-bold text-xs uppercase tracking-wider mb-5">
+              <Sparkles size={14} /> Community Initiatives & Registrations
             </span>
-            <h1 className="text-5xl md:text-6xl font-black text-gray-900 mb-6 tracking-tight">
-              Impactful <span className="text-transparent bg-clip-text bg-gradient-to-r from-nss-blue to-nss-red">Activities</span>
+            <h1 className="text-4xl sm:text-6xl font-black text-gray-900 mb-5 tracking-tight">
+              NSS <span className="text-transparent bg-clip-text bg-gradient-to-r from-nss-blue to-nss-red">Activities</span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-              Explore our journey of social service. From mega plantation drives to rural empowerment, see how we are making a difference year by year.
+            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              Participate and register for upcoming NSS community initiatives, and explore the complete record of social service activities conducted by our unit.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Controls Area */}
-      <section className="sticky top-20 z-40 bg-[#FAFAFA]/90 backdrop-blur-md border-b border-gray-200/50 py-4 mb-12 shadow-sm">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+      {/* Filter Tabs & Search Controls */}
+      <section className="sticky top-20 z-40 bg-[#FAFAFA]/95 backdrop-blur-md border-b border-gray-200/50 py-4 mb-10 shadow-xs">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4">
             
-            {/* Year Filters */}
-            <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 hide-scrollbar scroll-smooth">
-              {academicYears.map((year) => (
-                <button
-                  key={year}
-                  onClick={() => setSelectedYear(year)}
-                  className={`whitespace-nowrap px-6 py-2.5 rounded-full font-bold text-sm transition-all duration-300 ${
-                    selectedYear === year 
-                      ? 'bg-gray-900 text-white shadow-md scale-105' 
-                      : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
-                  }`}
-                >
-                  {year === 'All' ? 'All Sessions' : `Session ${year}`}
-                </button>
-              ))}
+            {/* Dual Tabs: Open for Registration vs All Activities */}
+            <div className="flex items-center gap-2 p-1 bg-gray-200/60 rounded-2xl w-full sm:w-auto">
+              <button
+                onClick={() => setActiveTab('open')}
+                className={`flex-1 sm:flex-initial px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 ${
+                  activeTab === 'open'
+                    ? 'bg-white text-gray-900 shadow-sm scale-[1.01]'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse" />
+                <span>Open for Registration</span>
+                <span className={`text-xs px-2 py-0.5 rounded-full font-black ${
+                  activeTab === 'open' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'
+                }`}>
+                  {openActivitiesCount}
+                </span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('all')}
+                className={`flex-1 sm:flex-initial px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 ${
+                  activeTab === 'all'
+                    ? 'bg-white text-gray-900 shadow-sm scale-[1.01]'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <span>All Activities</span>
+                <span className={`text-xs px-2 py-0.5 rounded-full font-black ${
+                  activeTab === 'all' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500'
+                }`}>
+                  {activities.length}
+                </span>
+              </button>
             </div>
 
-            {/* Search */}
-            <div className="relative w-full md:w-80 shrink-0 group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-nss-blue transition-colors" size={20} />
+            {/* Search Input */}
+            <div className="relative w-full sm:w-72">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
               <input 
                 type="text" 
                 placeholder="Search activities..." 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-full border border-gray-200 bg-white focus:ring-2 focus:ring-nss-blue/20 focus:border-nss-blue outline-none transition-all shadow-sm"
+                className="w-full pl-10 pr-4 py-2 text-sm rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-nss-blue/20 focus:border-nss-blue shadow-xs"
               />
             </div>
 
@@ -128,114 +133,124 @@ export default function ActivitiesPage() {
       </section>
 
       {/* Activities Grid */}
-      <section className="container mx-auto px-4">
+      <div className="container mx-auto px-4 max-w-6xl">
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-24 text-gray-400">
-            <div className="w-12 h-12 border-4 border-gray-200 border-t-nss-blue rounded-full animate-spin mb-4"></div>
-            <p className="font-bold text-gray-800 text-base">Loading Activities...</p>
-            <p className="text-xs text-gray-400 mt-1">Connecting to server, please wait a moment</p>
+          <div className="text-center py-24 text-gray-500 font-bold">
+            Loading activities...
           </div>
         ) : error ? (
-          <div className="text-center py-24 bg-white rounded-3xl border border-rose-100 p-8 max-w-lg mx-auto shadow-sm">
-            <div className="w-16 h-16 bg-rose-50 text-rose-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Sparkles size={28} />
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Unable to Load Activities</h3>
-            <p className="text-gray-500 text-sm mb-6 leading-relaxed">{error}</p>
-            <button 
-              onClick={fetchActivities} 
-              className="px-6 py-2.5 bg-nss-blue text-white font-bold rounded-xl hover:bg-blue-800 transition-colors shadow-sm"
-            >
-              Retry Loading
-            </button>
+          <div className="text-center py-20 text-red-500 font-medium">
+            {error}
           </div>
         ) : filteredActivities.length === 0 ? (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-32 bg-white rounded-3xl border border-gray-100">
-            <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Search className="text-gray-300" size={32} />
+          <div className="text-center py-24 bg-white rounded-3xl border border-gray-100 p-8 shadow-xs max-w-md mx-auto">
+            <div className="w-16 h-16 rounded-full bg-blue-50 text-nss-blue flex items-center justify-center mx-auto mb-4 font-black">
+              NSS
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">No Activities Found</h3>
-            <p className="text-gray-500">We couldn't find any activities matching your filters.</p>
-            <button onClick={() => {setSearchQuery(''); setSelectedYear('All')}} className="mt-6 px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-900 font-bold rounded-full transition-colors">
-              Clear Filters
-            </button>
-          </motion.div>
+            <h3 className="text-lg font-black text-gray-900 mb-2">No Activities Found</h3>
+            <p className="text-sm text-gray-500">
+              {activeTab === 'open' 
+                ? 'There are currently no events open for public registration. Switch to "All Activities" to see our past initiatives.'
+                : 'No activities match your search criteria.'}
+            </p>
+            {activeTab === 'open' && (
+              <button
+                onClick={() => setActiveTab('all')}
+                className="mt-5 px-5 py-2 rounded-xl bg-nss-blue text-white text-xs font-bold hover:bg-blue-800 transition-colors"
+              >
+                View All Activities
+              </button>
+            )}
+          </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <AnimatePresence mode="popLayout">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            <AnimatePresence>
               {filteredActivities.map((activity, index) => (
                 <motion.div
-                  layout
                   key={activity._id}
-                  initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.3, delay: (index % 10) * 0.05 }}
-                  className="bg-white rounded-[2rem] overflow-hidden group hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-500 flex flex-col border border-gray-100"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.04 }}
+                  className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group"
                 >
-                  {/* Card Image Area */}
-                  <div className="h-56 relative overflow-hidden bg-gray-100 flex items-center justify-center">
-                    {activity.bannerUrl ? (
-                      <img 
-                        src={getImageUrl(activity.bannerUrl)} 
-                        alt={activity.title} 
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                        onError={(e) => {
-                          (e.currentTarget as HTMLElement).style.display = 'none';
-                        }}
-                      />
-                    ) : (
-                      <div className="absolute inset-0 bg-gradient-to-tr from-gray-100 to-gray-50 flex items-center justify-center">
-                        <Sparkles className="text-gray-300" size={40} />
-                      </div>
-                    )}
+                  {/* Activity Image Banner */}
+                  <div className="relative h-48 w-full overflow-hidden bg-gray-100">
+                    <img 
+                      src={getImageUrl(activity.image || activity.coverImage || '/images/gallery/events_2025/image1.png')} 
+                      alt={activity.title}
+                      onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image1.png'; }}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
                     
-                    {/* Session Badge */}
-                    <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-black text-gray-900 shadow-sm border border-white/20">
-                      {getAcademicYear(activity.date)}
+                    {/* Registration Status Pill */}
+                    <div className="absolute top-3 left-3">
+                      {activity.isRegistrationOpen ? (
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-green-500 text-white shadow-md">
+                          <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
+                          Registration Open
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-gray-900/80 text-white backdrop-blur-md">
+                          Completed
+                        </span>
+                      )}
                     </div>
                   </div>
-                  
-                  {/* Card Content Area */}
-                  <div className="p-8 flex-1 flex flex-col relative bg-white">
-                    <h3 className="text-2xl font-black text-gray-900 leading-tight mb-4 group-hover:text-nss-blue transition-colors">
-                      {activity.title}
-                    </h3>
-                    
-                    <div className="space-y-3 mb-8 flex-1">
-                      <div className="flex items-center text-sm font-medium text-gray-500 gap-3">
-                        <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-nss-blue">
-                          <Calendar size={14} />
+
+                  {/* Activity Content */}
+                  <div className="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                      {/* Date & Location */}
+                      <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500 font-medium mb-3">
+                        <div className="flex items-center gap-1">
+                          <Calendar size={13} className="text-nss-blue" />
+                          <span>{activity.date ? new Date(activity.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : 'TBA'}</span>
                         </div>
-                        <span>{new Date(activity.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                        {activity.location && (
+                          <>
+                            <span>•</span>
+                            <div className="flex items-center gap-1">
+                              <MapPin size={13} className="text-nss-red" />
+                              <span className="truncate max-w-[140px]">{activity.location}</span>
+                            </div>
+                          </>
+                        )}
                       </div>
-                      <div className="flex items-center text-sm font-medium text-gray-500 gap-3">
-                        <div className="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center text-nss-red">
-                          <MapPin size={14} />
-                        </div>
-                        <span className="truncate">{activity.venue}</span>
-                      </div>
+
+                      {/* Title */}
+                      <h3 className="text-lg font-black text-gray-900 mb-2 group-hover:text-nss-blue transition-colors line-clamp-2">
+                        {activity.title}
+                      </h3>
+
+                      {/* Justified Description snippet */}
+                      <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-justify line-clamp-3 mb-4">
+                        {activity.description}
+                      </p>
                     </div>
 
-                    {/* Footer Action Area */}
-                    <div className="flex items-center justify-between pt-6 border-t border-gray-100">
-                      <span className={`px-4 py-1.5 rounded-full text-xs font-black tracking-wide uppercase ${
-                        activity.isRegistrationOpen ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500'
-                      }`}>
-                        {activity.isRegistrationOpen ? 'Registration Open' : 'Closed'}
-                      </span>
-                      
-                      <Link href={`/activities/${activity._id}`} className="w-10 h-10 rounded-full bg-gray-50 group-hover:bg-nss-blue flex items-center justify-center text-gray-400 group-hover:text-white transition-all duration-300 transform group-hover:translate-x-1">
-                        <ArrowRight size={18} />
+                    {/* Action Button */}
+                    <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
+                      <Link 
+                        href={`/activities/${activity._id}`}
+                        className={`inline-flex items-center gap-2 text-xs font-bold transition-all px-4 py-2 rounded-xl ${
+                          activity.isRegistrationOpen 
+                            ? 'bg-nss-blue text-white hover:bg-blue-800 shadow-sm'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        <span>{activity.isRegistrationOpen ? 'Register Now' : 'View Event Details'}</span>
+                        <ArrowRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
                       </Link>
                     </div>
+
                   </div>
                 </motion.div>
               ))}
             </AnimatePresence>
           </div>
         )}
-      </section>
+      </div>
+
     </div>
   );
 }

@@ -266,24 +266,21 @@ function GalleryContent() {
                       className="group relative h-64 sm:h-72 md:h-80 rounded-[2rem] overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500 border border-slate-700/20"
                     >
                       {/* Full-Bleed 4-5 Photos Mosaic Background */}
-                      <div className="absolute inset-0 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-0.5 w-full h-full overflow-hidden bg-slate-900">
-                        {collagePhotos.slice(0, 5).map((img, i) => (
-                          <div key={i} className="relative h-full overflow-hidden">
-                            <img 
-                              src={getImageUrl(img, { width: 700 })} 
-                              alt={`${category.title} ${i + 1}`} 
-                              loading="lazy"
-                              decoding="async"
-                              onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image1.png'; }}
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                            />
-                          </div>
-                        ))}
+                      {/* Full-Bleed High-Res Cinematic Photo Background (Spanning 100% Width & Height) */}
+                      <div className="absolute inset-0 w-full h-full overflow-hidden bg-slate-900">
+                        <img 
+                          src={getImageUrl(collagePhotos[0] || '/images/gallery/events_2025/image1.png', { width: 1400 })} 
+                          alt={category.title} 
+                          loading="lazy"
+                          decoding="async"
+                          onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image1.png'; }}
+                          className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
+                        />
                       </div>
 
-                      {/* Cinematic Gradient Overlays (Ensures effortless text readability and stunning depth) */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-900/75 to-slate-950/35 group-hover:via-slate-900/60 transition-colors duration-500" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
+                      {/* Smooth Cinematic Vignette & Bottom Gradient (Full image visible with crisp text) */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent transition-opacity duration-500" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-slate-950/60 via-transparent to-slate-950/30" />
                       
                       {/* Accent glow on hover */}
                       <div className={`absolute inset-0 bg-gradient-to-r ${category.themeColor} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`} />

@@ -34,96 +34,93 @@ export default function Navbar() {
   ];
 
   const isHome = pathname === '/';
-  const isTransparent = isHome && !scrolled;
 
   if (pathname.startsWith('/admin')) {
     return null;
   }
 
   return (
-    <header className="fixed top-0 w-full z-50 pt-6 px-4 pointer-events-none">
-      <div className="container mx-auto max-w-7xl">
-        <div className={`pointer-events-auto rounded-full transition-all duration-500 flex justify-between items-center px-4 py-2.5 ${
-          scrolled || !isHome 
-            ? 'bg-white/90 backdrop-blur-xl shadow-lg shadow-gray-200/50 border border-gray-100/50' 
-            : 'bg-white/40 backdrop-blur-md shadow-lg border border-white/50'
-        }`}>
-          
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 shrink-0">
-            <div className={`p-1 rounded-full transition-all duration-500 ${scrolled || !isHome ? 'bg-gray-50' : 'bg-white/60'}`}>
-              <img src="/images/nss-logo.png" alt="NSS Logo" className="w-9 h-9 object-contain rounded-full" />
-            </div>
-            <span className="font-black tracking-tight text-lg hidden lg:block transition-colors duration-500 text-gray-900 drop-shadow-sm">
-              NSS Unit, VIT Bhopal University
-            </span>
+    <header className="fixed top-0 w-full z-50 pt-4 sm:pt-5 px-3 sm:px-6 pointer-events-none">
+      <div className="container mx-auto max-w-7xl flex items-center justify-between gap-3">
+        
+        {/* Left Box: Logo & Unit Title Pill */}
+        <Link 
+          href="/" 
+          className="pointer-events-auto flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-white/90 backdrop-blur-xl shadow-md border border-gray-100 hover:shadow-lg transition-all"
+        >
+          <div className="p-0.5 rounded-full bg-white shadow-xs">
+            <img src="/images/nss-logo.png" alt="NSS Logo" className="w-8 h-8 object-contain rounded-full" />
+          </div>
+          <span className="font-black tracking-tight text-sm sm:text-base text-gray-900 whitespace-nowrap">
+            NSS Unit<span className="hidden sm:inline font-semibold text-gray-500 text-xs ml-1.5">• VIT Bhopal</span>
+          </span>
+        </Link>
+
+        {/* Center Box: Main Navigation Links Pill (Distinct floating container) */}
+        <nav className="pointer-events-auto hidden lg:flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-white/90 backdrop-blur-xl shadow-md border border-gray-100">
+          {navLinks.map((link) => {
+            const isActive = pathname === link.path;
+            return (
+              <Link 
+                key={link.name} 
+                href={link.path}
+                className={`px-3 py-1.5 text-xs xl:text-sm font-bold rounded-full transition-all duration-200 whitespace-nowrap ${
+                  isActive 
+                    ? 'text-white bg-nss-blue shadow-sm' 
+                    : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100/70'
+                }`}
+              >
+                {link.name}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Right Box: Login / Dashboard Button in its Own Distinct Action Box */}
+        <div className="pointer-events-auto flex items-center gap-2">
+          <Link 
+            href={isAuthenticated ? (user?.role === 'admin' ? '/admin' : '/dashboard') : "/login"}
+            className="px-5 py-2 text-xs sm:text-sm font-black rounded-full transition-all duration-300 transform hover:scale-105 bg-gray-900 hover:bg-nss-blue text-white shadow-md hover:shadow-lg whitespace-nowrap"
+          >
+            {isAuthenticated ? 'Dashboard' : 'Login'}
           </Link>
 
-          {/* Desktop Nav */}
-          <nav className={`hidden md:flex items-center gap-1 p-1 rounded-full border transition-all duration-500 ${
-            scrolled || !isHome ? 'bg-gray-50/50 border-gray-100/50' : 'bg-white/30 border-white/40'
-          }`}>
-            {navLinks.map((link) => {
-              const isActive = pathname === link.path;
-              return (
-                <Link 
-                  key={link.name} 
-                  href={link.path}
-                  className={`relative px-4 py-1.5 text-sm font-bold rounded-full transition-all duration-300 ${
-                    isActive 
-                      ? 'text-white bg-nss-blue shadow-md' 
-                      : 'text-gray-800 hover:text-gray-900 hover:bg-white/60'
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              );
-            })}
-          </nav>
-
-          {/* Action / Auth */}
-          <div className="flex items-center gap-3">
-            <Link 
-              href={isAuthenticated ? (user?.role === 'admin' ? '/admin' : '/dashboard') : "/login"}
-              className="px-5 py-2 text-sm font-bold rounded-full transition-all duration-300 transform hover:scale-105 bg-gray-900 text-white shadow-lg hover:bg-nss-blue"
-            >
-              {isAuthenticated ? 'Dashboard' : 'Login'}
-            </Link>
-
-            {/* Mobile Nav Toggle */}
-            <button 
-              className={`md:hidden p-2 rounded-full transition-all ${
-                scrolled || !isHome ? 'bg-gray-100 text-gray-900' : 'bg-white/20 text-white'
-              }`}
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              {isOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
-          </div>
+          {/* Mobile Menu Toggle Button */}
+          <button 
+            className="lg:hidden p-2 rounded-full bg-white/90 backdrop-blur-xl border border-gray-100 text-gray-900 shadow-md hover:bg-gray-100 transition-colors"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle navigation menu"
+          >
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
 
-        {/* Mobile Menu Dropdown */}
-        {isOpen && (
-          <motion.div 
-            initial={{ opacity: 0, y: -20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 10, scale: 1 }}
-            className="absolute top-full left-4 right-4 bg-white/95 backdrop-blur-xl shadow-2xl border border-gray-100 p-4 rounded-3xl md:hidden flex flex-col gap-2 pointer-events-auto origin-top"
-          >
+      </div>
+
+      {/* Mobile Menu Dropdown */}
+      {isOpen && (
+        <motion.div 
+          initial={{ opacity: 0, y: -15, scale: 0.96 }}
+          animate={{ opacity: 1, y: 10, scale: 1 }}
+          className="container mx-auto max-w-7xl px-4 pointer-events-auto lg:hidden"
+        >
+          <div className="bg-white/95 backdrop-blur-2xl shadow-2xl border border-gray-100 p-4 rounded-3xl flex flex-col gap-1.5 mt-2">
             {navLinks.map((link) => (
               <Link 
                 key={link.name} 
                 href={link.path}
                 onClick={() => setIsOpen(false)}
-                className={`p-4 text-base font-bold rounded-2xl transition-colors ${
+                className={`p-3 text-sm font-bold rounded-2xl transition-colors flex items-center justify-between ${
                   pathname === link.path ? 'bg-blue-50 text-nss-blue' : 'text-gray-700 hover:bg-gray-50'
                 }`}
               >
-                {link.name}
+                <span>{link.name}</span>
+                {pathname === link.path && <span className="w-2 h-2 rounded-full bg-nss-blue" />}
               </Link>
             ))}
-          </motion.div>
-        )}
-      </div>
+          </div>
+        </motion.div>
+      )}
     </header>
   );
 }

@@ -77,7 +77,7 @@ export default function PublicEventPortal() {
               <h1 className="text-3xl md:text-5xl font-black text-gray-900 mb-4 leading-tight">
                 {event.title}
               </h1>
-              <p className="text-lg text-gray-600 leading-relaxed mb-6 whitespace-pre-line">
+              <p className="text-base sm:text-lg text-gray-700 leading-relaxed mb-6 whitespace-pre-line text-justify">
                 {event.description}
               </p>
             </motion.div>
