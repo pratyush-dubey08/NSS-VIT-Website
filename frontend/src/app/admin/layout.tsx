@@ -1,6 +1,8 @@
 'use client';
+import { MessageSquare } from 'lucide-react';
 
-import { useState, useEffect } from 'react';
+import {
+  useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -47,6 +49,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: 'Volunteers', path: '/admin/volunteers', icon: Users },
     { name: 'Gallery', path: '/admin/gallery', icon: ImageIcon },
     { name: 'Resources', path: '/admin/resources', icon: FileSpreadsheet },
+    { name: 'Contact Messages', path: '/admin/messages', icon: MessageSquare },
     { name: 'Settings', path: '/admin/settings', icon: Settings },
   ];
 

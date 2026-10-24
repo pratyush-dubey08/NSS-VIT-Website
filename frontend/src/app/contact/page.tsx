@@ -1,10 +1,12 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Mail, MapPin, Clock, MessageCircle, 
-  Sparkles, ExternalLink, HeartHandshake, Send, ArrowRight
+  Sparkles, ExternalLink, Send, ArrowRight, CheckCircle2
 } from 'lucide-react';
+import api from '@/lib/axios';
 
 const InstagramIcon = ({ size = 20, className = '' }: { size?: number; className?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -30,104 +32,113 @@ const YoutubeIcon = ({ size = 20, className = '' }: { size?: number; className?:
 );
 
 export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const socialChannels = [
     {
-      title: 'WhatsApp Community',
-      handle: 'Official Announcements',
-      badge: 'WhatsApp',
-      badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+      title: 'Official WhatsApp Community',
+      subtitle: 'Join our official community for instant event updates, drive circulars & announcements.',
       icon: MessageCircle,
-      iconColor: 'text-emerald-600 bg-emerald-50',
-      description: 'Join our official community for instant event updates, drive circulars & announcements.',
-      linkText: 'Join Community',
+      iconColor: 'text-emerald-600 bg-emerald-50 border-emerald-100',
+      buttonText: 'Join WhatsApp',
       linkUrl: 'https://www.whatsapp.com/channel/0029VbBFSgS8qIzvpLL2Ye1W',
-      cardHover: 'hover:border-emerald-400 hover:shadow-emerald-500/10'
+      hoverBorder: 'hover:border-emerald-400'
     },
     {
-      title: 'Official Instagram',
+      title: 'Official Instagram Handle',
       handle: '@nssvitbhopal',
-      badge: 'Flagship Handle',
-      badgeColor: 'bg-rose-50 text-rose-700 border-rose-200',
+      subtitle: 'Official Instagram handle for event highlights, notifications, drives & updates.',
       icon: InstagramIcon,
-      iconColor: 'text-rose-600 bg-rose-50',
-      description: 'Official Instagram handle for event highlights, notifications, drives & updates.',
-      linkText: 'Follow @nssvitbhopal',
+      iconColor: 'text-rose-600 bg-rose-50 border-rose-100',
+      buttonText: 'Follow @nssvitbhopal',
       linkUrl: 'https://www.instagram.com/nssvitbhopal/',
-      cardHover: 'hover:border-rose-400 hover:shadow-rose-500/10'
+      hoverBorder: 'hover:border-rose-400'
     },
     {
       title: 'NSS Unfiltered',
       handle: '@nssvitb_unfiltered',
-      badge: 'BTS & Campus',
-      badgeColor: 'bg-purple-50 text-purple-700 border-purple-200',
+      subtitle: 'Catch candid behind-the-scenes moments, campus volunteer life, fun reels & bloopers.',
       icon: Sparkles,
-      iconColor: 'text-purple-600 bg-purple-50',
-      description: 'Catch candid behind-the-scenes moments, campus volunteer life, fun reels & bloopers.',
-      linkText: 'Follow Unfiltered',
+      iconColor: 'text-purple-600 bg-purple-50 border-purple-100',
+      buttonText: 'Follow Unfiltered',
       linkUrl: 'https://www.instagram.com/nssvitb_unfiltered/',
-      cardHover: 'hover:border-purple-400 hover:shadow-purple-500/10'
+      hoverBorder: 'hover:border-purple-400'
     },
     {
       title: 'LinkedIn Network',
       handle: 'NSS Unit, VIT Bhopal',
-      badge: 'Professional',
-      badgeColor: 'bg-blue-50 text-blue-700 border-blue-200',
+      subtitle: 'Connect with us for professional outreach, alumni networking & societal impact reports.',
       icon: LinkedinIcon,
-      iconColor: 'text-blue-600 bg-blue-50',
-      description: 'Connect with us for professional outreach, alumni networking & societal impact reports.',
-      linkText: 'Connect on LinkedIn',
+      iconColor: 'text-blue-600 bg-blue-50 border-blue-100',
+      buttonText: 'Connect on LinkedIn',
       linkUrl: 'https://www.linkedin.com/company/nss-vitb/posts/',
-      cardHover: 'hover:border-blue-400 hover:shadow-blue-500/10'
+      hoverBorder: 'hover:border-blue-400'
     },
     {
-      title: 'YouTube Channel',
+      title: 'Join Us on YouTube',
       handle: 'NSS Unit VIT Bhopal',
-      badge: 'Documentaries',
-      badgeColor: 'bg-red-50 text-red-700 border-red-200',
+      subtitle: 'Watch event recaps, camp documentaries, awareness films & volunteer talk shows.',
       icon: YoutubeIcon,
-      iconColor: 'text-red-600 bg-red-50',
-      description: 'Watch event recaps, camp documentaries, awareness films & volunteer talk shows.',
-      linkText: 'Join Us on YouTube',
+      iconColor: 'text-red-600 bg-red-50 border-red-100',
+      buttonText: 'Join Us on YouTube',
       linkUrl: 'https://www.youtube.com/@nationalservicescheme-vitb5083',
-      cardHover: 'hover:border-red-400 hover:shadow-red-500/10'
+      hoverBorder: 'hover:border-red-400'
     }
   ];
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setErrorMessage('');
+
+    try {
+      await api.post('/contact', formData);
+      setSubmitSuccess(true);
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (err: any) {
+      console.error(err);
+      setErrorMessage(err.response?.data?.message || 'Failed to send message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen pt-24 sm:pt-28 bg-white pb-24 font-sans">
       
-      {/* Header */}
-      <section className="py-12 bg-white border-b border-gray-100">
+      {/* Header (Top Badge Removed as requested) */}
+      <section className="py-10 bg-white border-b border-gray-100">
         <div className="container mx-auto px-4 text-center max-w-3xl">
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-nss-blue text-xs font-bold mb-4">
-            <HeartHandshake size={14} /> NSS Unit • VIT Bhopal University
-          </motion.div>
-          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight text-center mb-3">
+          <motion.h1 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight text-center mb-3">
             Get in <span className="text-nss-blue">Touch</span> & Connect
           </motion.h1>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm sm:text-base text-slate-500 max-w-2xl mx-auto leading-relaxed font-normal text-center">
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm sm:text-base text-slate-500 max-w-2xl mx-auto leading-relaxed font-normal text-center">
             Have questions about volunteer recruitment, blood donation camps, or community service? We would love to hear from you.
           </motion.p>
         </div>
       </section>
 
-      {/* Official Community Hub - Modern, Sleek, Fresh Design */}
-      <section className="container mx-auto px-4 pt-12 max-w-6xl">
-        <div className="bg-gradient-to-b from-slate-50 via-white to-blue-50/40 rounded-3xl p-6 sm:p-10 border border-slate-200/90 shadow-sm mb-14">
-          <div className="text-center max-w-2xl mx-auto mb-8">
-            <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-blue-50 text-nss-blue border border-blue-200/60 inline-block mb-3">
-              Official Community Hub
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight mb-2">
+      {/* Official Community Hub - Modern Sleek Interactive Rows/Cards */}
+      <section className="container mx-auto px-4 pt-10 max-w-5xl">
+        <div className="bg-slate-50/80 rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-xs mb-14">
+          <div className="mb-6">
+            <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
               Connect With Our Community
             </h2>
-            <p className="text-xs sm:text-sm text-gray-600 font-normal">
-              Stay connected with NSS Unit, VIT Bhopal University across our official social channels for updates and opportunities.
+            <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
+              Follow our verified handles for active announcements, drives, and behind-the-scenes stories.
             </p>
           </div>
 
-          {/* Clean 5-Card Responsive Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-5">
+          <div className="space-y-3">
             {socialChannels.map((item, idx) => {
               const Icon = item.icon;
               return (
@@ -136,35 +147,33 @@ export default function ContactPage() {
                   href={item.linkUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={'bg-white p-5 rounded-2xl border border-gray-200/80 shadow-2xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between group transform hover:-translate-y-1 ' + item.cardHover}
+                  className={'p-4 sm:p-4.5 bg-white rounded-2xl border border-gray-200 shadow-2xs hover:shadow-md transition-all duration-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group ' + item.hoverBorder}
                 >
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className={'w-10 h-10 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform ' + item.iconColor}>
-                        <Icon size={20} />
-                      </div>
-                      <span className={'text-[10px] font-bold px-2.5 py-0.5 rounded-full border ' + item.badgeColor}>
-                        {item.badge}
-                      </span>
+                  <div className="flex items-start sm:items-center gap-3.5 flex-1 min-w-0">
+                    <div className={'w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border ' + item.iconColor}>
+                      <Icon size={22} />
                     </div>
 
-                    <div>
-                      <h3 className="font-bold text-gray-900 text-sm leading-snug group-hover:text-nss-blue transition-colors">
-                        {item.title}
-                      </h3>
-                      <p className="text-[11px] font-semibold text-nss-blue/80 mt-0.5">
-                        {item.handle}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h3 className="font-bold text-gray-900 text-sm sm:text-base group-hover:text-nss-blue transition-colors">
+                          {item.title}
+                        </h3>
+                        {item.handle && (
+                          <span className="text-[11px] font-semibold text-gray-400">
+                            ({item.handle})
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-gray-500 leading-relaxed mt-0.5">
+                        {item.subtitle}
                       </p>
                     </div>
-
-                    <p className="text-xs text-gray-500 leading-relaxed text-justify">
-                      {item.description}
-                    </p>
                   </div>
 
-                  <div className="pt-3 mt-3 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-nss-blue group-hover:text-blue-800 transition-colors">
-                    <span>{item.linkText}</span>
-                    <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-nss-blue group-hover:text-blue-800 transition-colors shrink-0 bg-blue-50/60 hover:bg-blue-100 px-4 py-2 rounded-xl border border-blue-100">
+                    <span>{item.buttonText}</span>
+                    <ExternalLink size={13} />
                   </div>
                 </a>
               );
@@ -174,12 +183,12 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Details & Message Form */}
-      <section className="container mx-auto px-4 max-w-6xl">
+      <section className="container mx-auto px-4 max-w-5xl">
         <div className="flex flex-col lg:flex-row gap-8 items-start">
           
           {/* Contact Information Cards (1/3) */}
           <div className="lg:w-1/3 space-y-4 w-full">
-            <motion.div initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="p-6 rounded-2xl border border-gray-200/80 shadow-xs flex gap-4 bg-white">
+            <div className="p-6 rounded-2xl border border-gray-200/80 shadow-xs flex gap-4 bg-white">
               <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center shrink-0 text-nss-blue">
                 <MapPin size={22} />
               </div>
@@ -189,9 +198,9 @@ export default function ContactPage() {
                   AB-323 (AB-01), VIT Bhopal University, Bhopal-Indore Highway, Kothrikalan, Sehore, Madhya Pradesh - 466114
                 </p>
               </div>
-            </motion.div>
+            </div>
             
-            <motion.div initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="p-6 rounded-2xl border border-gray-200/80 shadow-xs flex gap-4 bg-white">
+            <div className="p-6 rounded-2xl border border-gray-200/80 shadow-xs flex gap-4 bg-white">
               <div className="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center shrink-0 text-nss-red">
                 <Mail size={22} />
               </div>
@@ -202,9 +211,9 @@ export default function ContactPage() {
                 </a>
                 <p className="text-[11px] text-gray-400">For student drives and collaborations</p>
               </div>
-            </motion.div>
+            </div>
             
-            <motion.div initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-6 rounded-2xl border border-gray-200/80 shadow-xs flex gap-4 bg-white">
+            <div className="p-6 rounded-2xl border border-gray-200/80 shadow-xs flex gap-4 bg-white">
               <div className="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center shrink-0 text-amber-600">
                 <Clock size={22} />
               </div>
@@ -213,69 +222,100 @@ export default function ContactPage() {
                 <p className="text-xs text-gray-600">Monday - Friday</p>
                 <p className="text-xs font-semibold text-gray-800">9:00 AM - 5:00 PM</p>
               </div>
-            </motion.div>
+            </div>
           </div>
 
-          {/* Contact Message Form (2/3) */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="lg:w-2/3 w-full bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-xs">
+          {/* Contact Message Form (2/3) - Connected to Backend Admin Portal! */}
+          <div className="lg:w-2/3 w-full bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-xs">
             <h3 className="text-xl font-black text-gray-900 mb-2">Send us a Direct Message</h3>
             <p className="text-xs sm:text-sm text-gray-500 mb-6">
-              Fill out this form and a student coordinator will get back to your query via college email.
+              Fill out this form and your message will be forwarded directly to the NSS Admin desk.
             </p>
 
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              alert('Message sent successfully! Our NSS representative will get back to you shortly.');
-            }} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {submitSuccess ? (
+              <div className="p-6 bg-emerald-50 border border-emerald-200 rounded-2xl text-center space-y-3">
+                <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
+                  <CheckCircle2 size={26} />
+                </div>
+                <h4 className="text-base font-black text-emerald-900">Message Received!</h4>
+                <p className="text-xs text-emerald-700 max-w-md mx-auto">
+                  Thank you for reaching out. Your inquiry has been sent to our NSS administrators, and we will follow up with you via college email.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setSubmitSuccess(false)}
+                  className="px-4 py-2 bg-white text-emerald-800 font-bold text-xs rounded-xl border border-emerald-300 hover:bg-emerald-50 transition-colors"
+                >
+                  Send Another Message
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {errorMessage && (
+                  <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold rounded-xl">
+                    {errorMessage}
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 mb-1">Your Full Name</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder="e.g. John Doe"
+                      className="w-full p-3 bg-gray-50/50 border border-gray-200 rounded-xl text-xs font-medium focus:bg-white focus:outline-none focus:border-nss-blue transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 mb-1">Email Address</label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      placeholder="e.g. yourname@vitbhopal.ac.in"
+                      className="w-full p-3 bg-gray-50/50 border border-gray-200 rounded-xl text-xs font-medium focus:bg-white focus:outline-none focus:border-nss-blue transition-all"
+                    />
+                  </div>
+                </div>
+
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Your Full Name</label>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Subject</label>
                   <input
                     type="text"
                     required
-                    placeholder="e.g. John Doe"
+                    value={formData.subject}
+                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                    placeholder="e.g. Query regarding Blood Donation Volunteer Hours"
                     className="w-full p-3 bg-gray-50/50 border border-gray-200 rounded-xl text-xs font-medium focus:bg-white focus:outline-none focus:border-nss-blue transition-all"
                   />
                 </div>
+
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Email Address</label>
-                  <input
-                    type="email"
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Your Message</label>
+                  <textarea
+                    rows={4}
                     required
-                    placeholder="e.g. yourname@vitbhopal.ac.in"
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    placeholder="Write your message or inquiry here..."
                     className="w-full p-3 bg-gray-50/50 border border-gray-200 rounded-xl text-xs font-medium focus:bg-white focus:outline-none focus:border-nss-blue transition-all"
                   />
                 </div>
-              </div>
 
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">Subject</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Query regarding Blood Donation Volunteer Hours"
-                  className="w-full p-3 bg-gray-50/50 border border-gray-200 rounded-xl text-xs font-medium focus:bg-white focus:outline-none focus:border-nss-blue transition-all"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">Your Message</label>
-                <textarea
-                  rows={4}
-                  required
-                  placeholder="Write your message or inquiry here..."
-                  className="w-full p-3 bg-gray-50/50 border border-gray-200 rounded-xl text-xs font-medium focus:bg-white focus:outline-none focus:border-nss-blue transition-all"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="px-8 py-3 bg-nss-blue hover:bg-blue-900 text-white font-black text-xs sm:text-sm rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <Send size={15} /> Send Message
-              </button>
-            </form>
-          </motion.div>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="px-8 py-3 bg-nss-blue hover:bg-blue-900 text-white font-black text-xs sm:text-sm rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                >
+                  <Send size={15} /> {isSubmitting ? 'Sending...' : 'Send Message'}
+                </button>
+              </form>
+            )}
+          </div>
 
         </div>
       </section>
