@@ -66,24 +66,65 @@ export const bulkAddVolunteers = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'Invalid data format' });
     }
 
-    // Process array
-    const toInsert = volunteers.map(v => ({
-      ...v,
-      registrationNumber: v.registrationNumber ? v.registrationNumber.toUpperCase() : '',
-      gender: v.gender,
-      residenceType: v.residenceType,
-      role: Role.VOLUNTEER,
-      accumulatedHours: 0,
-      bunks: 0
-    }));
+    // Process array with clean field sanitation
+    const toInsert = volunteers
+      .filter((v: any) => v && (v.name || v.registrationNumber))
+      .map((v: any) => {
+        const item: any = {
+          name: (v.name || 'Volunteer').trim(),
+          registrationNumber: (v.registrationNumber || '').trim().toUpperCase(),
+          role: Role.VOLUNTEER,
+          accumulatedHours: 0,
+          bunks: 0
+        };
 
-    await User.insertMany(toInsert, { ordered: false });
+        if (v.email && String(v.email).trim()) {
+          item.email = String(v.email).trim().toLowerCase();
+        }
 
-    res.status(201).json({ message: 'Volunteers added successfully' });
-  } catch (error) {
+        if (v.phoneNumber && String(v.phoneNumber).trim()) {
+          item.phoneNumber = String(v.phoneNumber).trim();
+        }
+
+        if (v.batch && String(v.batch).trim()) {
+          item.batch = String(v.batch).trim();
+        }
+
+        const validGenders = ['Male', 'Female', 'Other'];
+        if (v.gender && validGenders.includes(v.gender)) {
+          item.gender = v.gender;
+        }
+
+        const validResidence = ['Hosteller', 'Day Scholar'];
+        if (v.residenceType && validResidence.includes(v.residenceType)) {
+          item.residenceType = v.residenceType;
+        }
+
+        return item;
+      });
+
+    if (toInsert.length === 0) {
+      return res.status(400).json({ message: 'No valid volunteer records to insert.' });
+    }
+
+    const result = await User.insertMany(toInsert, { ordered: false });
+
+    res.status(201).json({ 
+      message: `Successfully added ${result.length} volunteer(s).`,
+      count: result.length
+    });
+  } catch (error: any) {
     console.error('Error bulk adding volunteers:', error);
-    // Ignore duplicate key errors on insertMany
-    res.status(500).json({ message: 'Server Error (Some duplicates may have been skipped)' });
+    // When ordered: false, duplicate keys throw error but non-duplicates are inserted
+    if (error?.code === 11000 || error?.writeErrors?.length > 0) {
+      const insertedCount = error?.insertedDocs?.length || 0;
+      return res.status(200).json({ 
+        message: 'Volunteers imported. Existing duplicates (Reg No / Email) were skipped automatically.',
+        insertedCount,
+        partial: true 
+      });
+    }
+    res.status(500).json({ message: error.message || 'Server Error while importing volunteers' });
   }
 };
 
