@@ -40,43 +40,47 @@ export default function Navbar() {
   }
 
   return (
-    <header className="fixed top-0 w-full z-50 pt-4 sm:pt-5 px-3 sm:px-6 pointer-events-none">
+    <header className="fixed top-0 w-full z-50 pt-3 sm:pt-4 px-3 sm:px-6 pointer-events-none font-sans">
       <div className="container mx-auto max-w-7xl flex items-center justify-between gap-3">
         
-        {/* Left Box: Logo & Unit Title Pill */}
-        <Link 
-          href="/" 
-          className="pointer-events-auto flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-white/90 backdrop-blur-xl shadow-md border border-gray-100 hover:shadow-lg transition-all"
-        >
-          <div className="p-0.5 rounded-full bg-white shadow-xs">
-            <img src="/images/nss-logo.png" alt="NSS Logo" className="w-8 h-8 object-contain rounded-full" />
-          </div>
-          <span className="font-black tracking-tight text-sm sm:text-base text-gray-900 whitespace-nowrap">
-            NSS Unit<span className="hidden sm:inline font-semibold text-gray-500 text-xs ml-1.5">• VIT Bhopal</span>
-          </span>
-        </Link>
+        {/* Main Unified Navbar Pill: Logo + NSS Unit Brand + Nav Links (All in One Box) */}
+        <div className="pointer-events-auto flex items-center gap-1 sm:gap-2 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-xl shadow-md border border-gray-100 hover:shadow-lg transition-all">
+          
+          {/* Logo & Brand Name */}
+          <Link href="/" className="flex items-center gap-2 pl-1 pr-2 shrink-0">
+            <div className="p-0.5 rounded-full bg-white shadow-xs">
+              <img src="/images/nss-logo.png" alt="NSS Logo" className="w-8 h-8 object-contain rounded-full" />
+            </div>
+            <span className="font-black tracking-tight text-sm text-gray-900 whitespace-nowrap hidden sm:inline">
+              NSS Unit<span className="font-semibold text-gray-500 text-xs ml-1">• VIT Bhopal</span>
+            </span>
+          </Link>
 
-        {/* Center Box: Main Navigation Links Pill (Distinct floating container) */}
-        <nav className="pointer-events-auto hidden lg:flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-white/90 backdrop-blur-xl shadow-md border border-gray-100">
-          {navLinks.map((link) => {
-            const isActive = pathname === link.path;
-            return (
-              <Link 
-                key={link.name} 
-                href={link.path}
-                className={`px-3 py-1.5 text-xs xl:text-sm font-bold rounded-full transition-all duration-200 whitespace-nowrap ${
-                  isActive 
-                    ? 'text-white bg-nss-blue shadow-sm' 
-                    : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100/70'
-                }`}
-              >
-                {link.name}
-              </Link>
-            );
-          })}
-        </nav>
+          {/* Vertical Divider */}
+          <div className="h-5 w-px bg-gray-200 hidden lg:block mx-1 shrink-0" />
 
-        {/* Right Box: Login / Dashboard Button in its Own Distinct Action Box */}
+          {/* Desktop Nav Links */}
+          <nav className="hidden lg:flex items-center gap-0.5">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.path;
+              return (
+                <Link 
+                  key={link.name} 
+                  href={link.path}
+                  className={`px-2.5 xl:px-3 py-1 text-xs xl:text-sm font-bold rounded-full transition-all duration-200 whitespace-nowrap ${
+                    isActive 
+                      ? 'text-white bg-nss-blue shadow-sm' 
+                      : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100/70'
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+
+        {/* Standalone Dashboard / Login Pill on Right */}
         <div className="pointer-events-auto flex items-center gap-2">
           <Link 
             href={isAuthenticated ? (user?.role === 'admin' ? '/admin' : '/dashboard') : "/login"}
@@ -87,11 +91,11 @@ export default function Navbar() {
 
           {/* Mobile Menu Toggle Button */}
           <button 
-            className="lg:hidden p-2 rounded-full bg-white/90 backdrop-blur-xl border border-gray-100 text-gray-900 shadow-md hover:bg-gray-100 transition-colors"
+            className="lg:hidden p-2 rounded-full bg-white/95 backdrop-blur-xl border border-gray-100 text-gray-900 shadow-md hover:bg-gray-100 transition-colors"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle navigation menu"
           >
-            {isOpen ? <X size={20} /> : <Menu size={20} />}
+            {isOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
         </div>
 

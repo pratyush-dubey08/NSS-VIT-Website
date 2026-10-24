@@ -69,6 +69,16 @@ export default function PublicEventPortal() {
             <ArrowLeft size={16} /> Back to Activities
           </Link>
           
+          {event.bannerUrl && (
+            <div className="w-full h-64 sm:h-80 rounded-2xl overflow-hidden mb-8 shadow-md border border-gray-100">
+              <img 
+                src={event.bannerUrl} 
+                alt={event.title} 
+                className="w-full h-full object-cover" 
+                onError={(e: any) => { e.currentTarget.style.display = 'none'; }}
+              />
+            </div>
+          )}
           <div className="flex flex-col md:flex-row md:items-start gap-8 justify-between">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex-1">
               <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold mb-4 uppercase tracking-wider ${event.isRegistrationOpen ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>

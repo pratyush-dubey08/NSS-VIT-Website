@@ -195,7 +195,7 @@ function GalleryContent() {
   const filteredFolders = folders.filter(f => f.categoryId === selectedCategoryId);
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-gray-900 pt-20 pb-24 relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-[#F8FAFC] text-gray-900 pt-16 sm:pt-20 pb-20 relative overflow-hidden font-sans">
       
       {/* Soft Ambient Background Glows & Texture */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[400px] bg-gradient-to-b from-blue-100/50 via-indigo-50/30 to-transparent pointer-events-none blur-3xl -z-10" />
@@ -204,7 +204,7 @@ function GalleryContent() {
       <div className="absolute inset-0 bg-[radial-gradient(#94a3b8_0.75px,transparent_0.75px)] [background-size:24px_24px] opacity-[0.18] pointer-events-none -z-10" />
 
       {/* Hero Header Section */}
-      <section className="relative w-full pt-14 pb-10 px-4 text-center max-w-4xl mx-auto">
+      <section className="relative w-full pt-6 pb-2 sm:pt-8 sm:pb-3 px-4 text-center max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -221,7 +221,7 @@ function GalleryContent() {
           </p>
 
           {/* Quick Category Filter Pills */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-3 sm:mt-4">
             {categories.map((cat) => (
               <button
                 key={cat.id}
@@ -236,7 +236,7 @@ function GalleryContent() {
       </section>
 
       {/* Main Content Area */}
-      <section className="container mx-auto px-4 py-6 max-w-6xl">
+      <section className="container mx-auto px-4 pt-2 pb-12 max-w-6xl">
         {isLoading ? (
           <div className="flex justify-center py-20"><Loader2 className="animate-spin text-nss-blue" size={40} /></div>
         ) : (

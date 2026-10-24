@@ -53,10 +53,10 @@ export default function ActivitiesPage() {
   }, [activities, searchQuery, activeTab]);
 
   return (
-    <div className="min-h-screen pt-28 bg-[#FAFAFA] pb-24 font-sans">
+    <div className="min-h-screen pt-16 sm:pt-20 bg-[#FAFAFA] pb-20 font-sans">
       
       {/* Header Section */}
-      <section className="relative overflow-hidden bg-white border-b border-gray-100 pt-8 pb-12 md:pt-12 md:pb-16">
+      <section className="relative overflow-hidden bg-white border-b border-gray-100 pt-6 pb-6 md:pt-8 md:pb-8">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-blue-50/50 to-transparent -z-10 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-1/2 h-full bg-gradient-to-tr from-red-50/30 to-transparent -z-10 pointer-events-none" />
         
@@ -76,7 +76,7 @@ export default function ActivitiesPage() {
       </section>
 
       {/* Filter Tabs & Search Controls */}
-      <section className="sticky top-20 z-40 bg-[#FAFAFA]/95 backdrop-blur-md border-b border-gray-200/50 py-4 mb-10 shadow-xs">
+      <section className="sticky top-16 sm:top-20 z-40 bg-[#FAFAFA]/95 backdrop-blur-md border-b border-gray-200/50 py-3 mb-6 shadow-xs">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4">
             
@@ -176,7 +176,7 @@ export default function ActivitiesPage() {
                   {/* Activity Image Banner */}
                   <div className="relative h-48 w-full overflow-hidden bg-gray-100">
                     <img 
-                      src={getImageUrl(activity.image || activity.coverImage || '/images/gallery/events_2025/image1.png')} 
+                      src={getImageUrl(activity.bannerUrl || activity.banner || activity.image || activity.coverImage || (activity.photos && activity.photos[0]) || '/images/gallery/events_2025/image1.png')} 
                       alt={activity.title}
                       onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image1.png'; }}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -206,12 +206,12 @@ export default function ActivitiesPage() {
                           <Calendar size={13} className="text-nss-blue" />
                           <span>{activity.date ? new Date(activity.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : 'TBA'}</span>
                         </div>
-                        {activity.location && (
+                        {(activity.venue || activity.location) && (
                           <>
                             <span>•</span>
                             <div className="flex items-center gap-1">
-                              <MapPin size={13} className="text-nss-red" />
-                              <span className="truncate max-w-[140px]">{activity.location}</span>
+                              <MapPin size={13} className="text-nss-red shrink-0" />
+                              <span className="truncate max-w-[140px]">{activity.venue || activity.location}</span>
                             </div>
                           </>
                         )}

@@ -38,7 +38,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
       value: '10,000',
       label: 'Trees Planted in 1 Day'
     },
-    badges: ['Largest Drive in Sehore', '1,000 Student Volunteers', 'Official District Milestone'],
+    badges: ['Largest Drive in Sehore', '1,000 Student Volunteers'],
     motto: '“Go Green, NSS! Go Green, VIT! Go Green, Bharat!”',
     dignitaries: [
       'District Magistrate (DM) of Sehore',
@@ -73,7 +73,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
       value: '200+',
       label: 'NSS Volunteers Deployed'
     },
-    badges: ['State Dignitary Protocol', '1,800+ Attendees & Parents', '5 Core Operations Wings'],
+    badges: ['State Dignitary Protocol', '5 Core Operational Wings'],
     motto: '“Not Me, But You — Professionalism, Leadership & Institutional Trust”',
     dignitaries: [
       'Dr. Mohan Yadav (Hon’ble Chief Minister of Madhya Pradesh)',
@@ -110,7 +110,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
       value: '14 Days',
       label: 'Nationwide Action Campaign'
     },
-    badges: ['Culminated on Gandhi Jayanti', 'Laboratory Complex Upcycling', 'Multi-Disciplinary Engagement'],
+    badges: ['Culminated on Gandhi Jayanti'],
     motto: '“Cleanliness is Civic Duty — Transforming Daily Habits for a Sustainable Future”',
     paragraphs: [
       'From 19 September to 2 October 2024, NSS Unit, VIT Bhopal University, actively participated in the Swachhta Hi Seva Abhiyan 2024 — a comprehensive multi-day nationwide initiative focused on sanitation, civic awareness, and environmental responsibility across Sehore district and campus.',
@@ -439,7 +439,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   {
     id: 'vibgyor-2026',
     title: 'VIBGYOR 2026 — Ancient Wisdom & Modern Struggles',
-    subtitle: 'Bridging Timeless Indian Epics with Contemporary Psychological & Social Challenges',
+    subtitle: 'Ancient Stories. Modern Questions. Timeless Answers.',
     category: 'culture',
     categoryLabel: 'Philosophical Theatre & Social Dialogue',
     date: '2026 Grand Cultural Showcase',
@@ -448,7 +448,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
       value: '7 Epics',
       label: 'Thematic Productions'
     },
-    badges: ['SHAKTI & PRASHNA', 'SANGHARSH & ABHIMANYU', 'MANTHAN, VASUKI & TANDAVA'],
+    badges: ['Mythology Meets Modernity'],
     motto: '“Ancient Stories. Modern Struggles. Timeless Lessons.”',
     paragraphs: [
       'Building upon the foundation of 2025, VIBGYOR 2026 elevated NSS cultural performances into an intellectual and emotional tour de force by connecting ancient Indian epics with the most pressing dilemmas faced by modern youth.',
