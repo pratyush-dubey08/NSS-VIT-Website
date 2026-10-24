@@ -6,7 +6,7 @@ import {
   ArrowLeft, Save, Trash2, Users, Search, XCircle, Edit, 
   UserX, CheckCircle2, AlertCircle, Clock, Calendar, MapPin, 
   Upload, Image as ImageIcon, FileText, FileSpreadsheet, 
-  ToggleLeft, ToggleRight, RefreshCw, ExternalLink, Download, Plus
+  ToggleLeft, ToggleRight, RefreshCw, ExternalLink, Download, Plus, Lock, Unlock
 } from 'lucide-react';
 import Link from 'next/link';
 import api from '@/lib/axios';
@@ -37,6 +37,7 @@ export default function ManageActivityPage() {
 
   // Form Builder & Settings States
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(true);
+  const [isFormLockedForManagers, setIsFormLockedForManagers] = useState(false);
   const [formBannerUrl, setFormBannerUrl] = useState('');
   const [confirmationMessage, setConfirmationMessage] = useState('Thank you for filling out the form! Our team will contact you shortly.');
   const [isSavingFormSettings, setIsSavingFormSettings] = useState(false);
@@ -72,6 +73,7 @@ export default function ManageActivityPage() {
       const actData = actRes.data;
       setActivity(actData);
       setIsRegistrationOpen(actData.isRegistrationOpen !== false);
+      setIsFormLockedForManagers(actData.isFormLockedForManagers === true);
       setFormBannerUrl(actData.formBannerUrl || '/images/default-event-banner.png');
       setConfirmationMessage(actData.confirmationMessage || 'Thank you for filling out the form! Our team will contact you shortly.');
 
@@ -665,6 +667,21 @@ export default function ManageActivityPage() {
         {activeTab === 'form_builder' && (
           <motion.div key="form_builder" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-6">
             
+            {/* View-Only Banner if Locked by Admin */}
+            {isFormLockedForManagers && (
+              <div className="p-4 bg-amber-50 border border-amber-200 rounded-2xl flex items-center gap-3 shadow-xs">
+                <div className="p-2.5 bg-amber-100 text-amber-800 rounded-xl shrink-0">
+                  <Lock size={20} />
+                </div>
+                <div>
+                  <h4 className="text-sm font-black text-amber-950">Form Editing Locked by Admin (View-Only Mode)</h4>
+                  <p className="text-xs text-amber-800 mt-0.5">
+                    The Admin has enabled <strong>View-Only</strong> mode for Event Managers. You can inspect all questions, test the form preview, and download responses, but form edits cannot be saved.
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* 1. Registration Status & Banner Settings Card */}
             <div className="bg-white rounded-2xl shadow-xs border border-gray-200/80 p-6 space-y-6">
               
@@ -686,14 +703,23 @@ export default function ManageActivityPage() {
 
                 <button
                   type="button"
+                  disabled={isFormLockedForManagers}
                   onClick={handleToggleRegistration}
-                  className={'px-5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-xs ' + (
-                    isRegistrationOpen 
-                      ? 'bg-emerald-600 hover:bg-emerald-700 text-white' 
-                      : 'bg-rose-600 hover:bg-rose-700 text-white'
+                  className={'px-5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all shadow-xs ' + (
+                    isFormLockedForManagers
+                      ? 'bg-gray-100 text-gray-500 border border-gray-200 cursor-not-allowed'
+                      : isRegistrationOpen 
+                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer' 
+                        : 'bg-rose-600 hover:bg-rose-700 text-white cursor-pointer'
                   )}
                 >
-                  {isRegistrationOpen ? '✓ Registrations OPEN (Accepting Responses)' : '✕ Registrations CLOSED (Turn On)'}
+                  {isFormLockedForManagers ? (
+                    <>
+                      <Lock size={13} /> {isRegistrationOpen ? 'Registrations OPEN (Locked by Admin)' : 'Registrations CLOSED (Locked by Admin)'}
+                    </>
+                  ) : (
+                    isRegistrationOpen ? '✓ Registrations OPEN (Accepting Responses)' : '✕ Registrations CLOSED (Turn On)'
+                  )}
                 </button>
               </div>
 
@@ -709,6 +735,11 @@ export default function ManageActivityPage() {
                     </p>
                   </div>
 
+                  {isFormLockedForManagers ? (
+                    <span className="text-[11px] font-bold text-gray-400 flex items-center gap-1">
+                      <Lock size={12} /> Banner settings locked by Admin
+                    </span>
+                  ) : (
                   <div className="flex items-center gap-2">
                     <label className="px-3.5 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-bold rounded-xl cursor-pointer transition-colors inline-flex items-center gap-1.5">
                       <Upload size={13} /> {isUploadingBanner ? 'Uploading...' : 'Upload Custom Banner'}
@@ -732,6 +763,7 @@ export default function ManageActivityPage() {
                       <RefreshCw size={13} /> Reset to Official Default
                     </button>
                   </div>
+                  )}
                 </div>
 
                 {/* Banner Live Preview Container */}
@@ -760,9 +792,10 @@ export default function ManageActivityPage() {
                 <textarea
                   rows={2}
                   value={confirmationMessage}
+                  disabled={isFormLockedForManagers}
                   onChange={(e) => setConfirmationMessage(e.target.value)}
                   placeholder="Thank you for filling out the form! Our team will contact you shortly."
-                  className="w-full p-3 bg-gray-50/50 border border-gray-200 rounded-xl text-xs font-medium text-gray-800 focus:bg-white focus:outline-none focus:border-nss-blue transition-all"
+                  className="w-full p-3 bg-gray-50/50 border border-gray-200 rounded-xl text-xs font-medium text-gray-800 focus:bg-white focus:outline-none focus:border-nss-blue transition-all disabled:opacity-60 disabled:cursor-not-allowed"
                 />
                 <p className="text-[11px] text-gray-400 mt-1">
                   This message is displayed to the student upon successful form submission along with links to NSS official handles.
@@ -776,6 +809,7 @@ export default function ManageActivityPage() {
                 initialFields={activity.formSchema || []}
                 onSave={handleSaveFormSchema}
                 isSaving={isSavingFormSettings}
+                readOnly={isFormLockedForManagers}
               />
             </div>
           </motion.div>

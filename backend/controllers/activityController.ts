@@ -49,6 +49,18 @@ export const updateActivity = async (req: Request, res: Response) => {
       if (!isManager) {
         return res.status(403).json({ message: 'You are not authorized to edit this event' });
       }
+
+      // Managers cannot change their own lock status
+      if (req.body.isFormLockedForManagers !== undefined) {
+        delete req.body.isFormLockedForManagers;
+      }
+
+      // If form is locked by admin for managers, block form edits
+      if (activity.isFormLockedForManagers) {
+        if (req.body.formSchema !== undefined || req.body.formBannerUrl !== undefined) {
+          return res.status(403).json({ message: 'Form editing is currently locked by Admin for Event Managers.' });
+        }
+      }
     }
 
     const updatedActivity = await Activity.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate("eventManagers", "name registrationNumber email department batch");

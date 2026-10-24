@@ -38,6 +38,10 @@ export const saveFormSchema = async (req: Request, res: Response) => {
       if (!isManager && userRole !== 'SUPER_ADMIN' && userRole !== 'PROGRAM_OFFICER') {
         return res.status(403).json({ message: 'You are not authorized to edit the form schema for this event' });
       }
+
+      if (activity.isFormLockedForManagers) {
+        return res.status(403).json({ message: 'Form editing is currently locked by Admin for Event Managers.' });
+      }
     }
     
     // Upsert the schema

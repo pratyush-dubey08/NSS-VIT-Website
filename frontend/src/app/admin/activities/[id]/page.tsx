@@ -6,7 +6,7 @@ import {
   ArrowLeft, CheckCircle, XCircle, Clock, Save, Edit, Trash2, 
   Users, FileText, Upload, Download, Plus, Search, UserX, UserPlus, 
   AlertCircle, CheckCircle2, Briefcase, ShieldCheck, ToggleLeft, ToggleRight,
-  FileSpreadsheet, Image as ImageIcon, ExternalLink, RefreshCw, Eye
+  FileSpreadsheet, Image as ImageIcon, ExternalLink, RefreshCw, Eye, Lock, Unlock
 } from 'lucide-react';
 import Link from 'next/link';
 import api from '@/lib/axios';
@@ -34,6 +34,8 @@ export default function ManageActivityPage() {
 
   // Form Builder & Settings states
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(true);
+  const [isFormLockedForManagers, setIsFormLockedForManagers] = useState(false);
+  const [isUpdatingLock, setIsUpdatingLock] = useState(false);
   const [formBannerUrl, setFormBannerUrl] = useState('');
   const [confirmationMessage, setConfirmationMessage] = useState('Thank you for filling out the form! Our team will contact you shortly.');
   const [isSavingFormSettings, setIsSavingFormSettings] = useState(false);
@@ -83,6 +85,7 @@ export default function ManageActivityPage() {
       const actData = actRes.data;
       setActivity(actData);
       setIsRegistrationOpen(actData.isRegistrationOpen !== false);
+      setIsFormLockedForManagers(actData.isFormLockedForManagers === true);
       setFormBannerUrl(actData.formBannerUrl || '/images/default-event-banner.png');
       setConfirmationMessage(actData.confirmationMessage || 'Thank you for filling out the form! Our team will contact you shortly.');
 
@@ -165,6 +168,26 @@ export default function ManageActivityPage() {
   };
 
   // Form Builder & Settings Handlers
+  const handleToggleLockForManagers = async () => {
+    const nextState = !isFormLockedForManagers;
+    setIsUpdatingLock(true);
+    try {
+      await api.put('/activities/' + id, { isFormLockedForManagers: nextState });
+      setIsFormLockedForManagers(nextState);
+      setActivity((prev: any) => ({ ...prev, isFormLockedForManagers: nextState }));
+      alert(
+        nextState 
+          ? 'Form editing has been locked for Event Managers. Managers now have view-only access.' 
+          : 'Form editing unlocked. Event Managers can now edit and save questions.'
+      );
+    } catch (error) {
+      console.error('Error toggling manager lock:', error);
+      alert('Failed to update form lock status');
+    } finally {
+      setIsUpdatingLock(false);
+    }
+  };
+
   const handleToggleRegistration = async () => {
     const nextState = !isRegistrationOpen;
     setIsRegistrationOpen(nextState);
@@ -917,6 +940,57 @@ export default function ManageActivityPage() {
             {/* 1. Registration Status & Banner Settings Card */}
             <div className="bg-white rounded-2xl shadow-xs border border-gray-200/80 p-6 space-y-6">
               
+              {/* Event Manager Form Lock / Permission Switch */}
+              <div className={'p-4 sm:p-5 rounded-2xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 ' + (
+                isFormLockedForManagers 
+                  ? 'bg-amber-50/70 border-amber-200' 
+                  : 'bg-slate-50/70 border-gray-200'
+              )}>
+                <div className="flex items-start gap-3">
+                  <div className={'p-2.5 rounded-xl shrink-0 mt-0.5 ' + (
+                    isFormLockedForManagers ? 'bg-amber-100 text-amber-800' : 'bg-gray-200 text-gray-700'
+                  )}>
+                    {isFormLockedForManagers ? <Lock size={20} /> : <Unlock size={20} />}
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h4 className="text-sm font-black text-gray-900">Event Manager Form Edit Access</h4>
+                      <span className={'px-2 py-0.5 rounded-full text-[10px] font-bold ' + (
+                        isFormLockedForManagers ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'
+                      )}>
+                        {isFormLockedForManagers ? 'Locked (View-Only)' : 'Unlocked (Managers Can Edit)'}
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-600 mt-1">
+                      {isFormLockedForManagers
+                        ? 'Event Managers can only view and preview the registration form in their portal. Form editing and schema saving are locked.'
+                        : 'Event Managers are permitted to edit questions, upload banners, and save form schema in their portal.'}
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  disabled={isUpdatingLock}
+                  onClick={handleToggleLockForManagers}
+                  className={'px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-xs whitespace-nowrap shrink-0 disabled:opacity-50 ' + (
+                    isFormLockedForManagers
+                      ? 'bg-amber-600 hover:bg-amber-700 text-white'
+                      : 'bg-white hover:bg-gray-50 border border-gray-300 text-gray-800'
+                  )}
+                >
+                  {isFormLockedForManagers ? (
+                    <>
+                      <Unlock size={14} /> Unlock Form for Managers
+                    </>
+                  ) : (
+                    <>
+                      <Lock size={14} /> Lock Form (Manager View-Only)
+                    </>
+                  )}
+                </button>
+              </div>
+
               {/* Registration Toggle */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-100">
                 <div>

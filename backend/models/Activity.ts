@@ -20,6 +20,7 @@ export interface IActivity extends Document {
   workingHours: number;
   formSchema?: any[];
   confirmationMessage?: string;
+  isFormLockedForManagers?: boolean;
 }
 
 const ActivitySchema: Schema = new Schema({
@@ -41,7 +42,8 @@ const ActivitySchema: Schema = new Schema({
   hoursAllocated: { type: Number, required: true, default: 0 },
   workingHours: { type: Number, default: 0 },
   formSchema: { type: [mongoose.Schema.Types.Mixed] },
-  confirmationMessage: { type: String, default: "Thank you for filling out the form! Our team will contact you shortly." }
+  confirmationMessage: { type: String, default: "Thank you for filling out the form! Our team will contact you shortly." },
+  isFormLockedForManagers: { type: Boolean, default: false }
 }, {
   timestamps: true
 });

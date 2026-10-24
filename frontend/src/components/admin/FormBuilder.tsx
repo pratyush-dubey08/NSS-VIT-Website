@@ -5,7 +5,7 @@ import {
   Plus, Trash2, Copy, Eye, CheckCircle2, 
   ChevronUp, ChevronDown, Settings2, FileText, CheckSquare, ListFilter,
   Type, AlignLeft, Mail, Hash, Phone, UploadCloud, CheckCheck,
-  QrCode, Image as ImageIcon, Bold, Italic, Underline, Palette, X
+  QrCode, Image as ImageIcon, Bold, Italic, Underline, Palette, X, Lock, Unlock
 } from 'lucide-react';
 import api from '@/lib/axios';
 
@@ -45,6 +45,7 @@ interface FormBuilderProps {
   initialFields?: IFormField[];
   onSave: (fields: IFormField[]) => void;
   isSaving?: boolean;
+  readOnly?: boolean;
 }
 
 // Preset color options
@@ -81,7 +82,7 @@ export function renderRichText(text: string, formatting?: { bold?: boolean; ital
   );
 }
 
-export default function FormBuilder({ initialFields = [], onSave, isSaving = false }: FormBuilderProps) {
+export default function FormBuilder({ initialFields = [], onSave, isSaving = false, readOnly = false }: FormBuilderProps) {
   const [fields, setFields] = useState<IFormField[]>(() => {
     if (initialFields && initialFields.length > 0) return initialFields;
     return [
@@ -247,14 +248,20 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
           >
             <Eye size={15} /> Preview Form ({fields.length} questions)
           </button>
-          <button
-            type="button"
-            disabled={isSaving}
-            onClick={() => onSave(fields)}
-            className="px-5 py-2 rounded-xl bg-nss-blue hover:bg-blue-800 text-white text-xs font-bold flex items-center gap-2 transition-colors shadow-xs cursor-pointer disabled:opacity-50"
-          >
-            <CheckCircle2 size={15} /> {isSaving ? 'Saving...' : 'Save Form Schema'}
-          </button>
+          {readOnly ? (
+            <span className="px-4 py-2 rounded-xl bg-amber-50 text-amber-800 border border-amber-200 text-xs font-bold flex items-center gap-2">
+              <Lock size={14} /> View-Only (Locked by Admin)
+            </span>
+          ) : (
+            <button
+              type="button"
+              disabled={isSaving}
+              onClick={() => onSave(fields)}
+              className="px-5 py-2 rounded-xl bg-nss-blue hover:bg-blue-800 text-white text-xs font-bold flex items-center gap-2 transition-colors shadow-xs cursor-pointer disabled:opacity-50"
+            >
+              <CheckCircle2 size={15} /> {isSaving ? 'Saving...' : 'Save Form Schema'}
+            </button>
+          )}
         </div>
       </div>
 
@@ -301,6 +308,11 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
                     </div>
 
                     {/* Rich Formatting Toolbar (Bold, Italic, Underline) & Card BG Picker */}
+                    {readOnly ? (
+                      <span className="text-[11px] font-bold text-gray-400 flex items-center gap-1">
+                        <Lock size={12} /> View-Only
+                      </span>
+                    ) : (
                     <div className="flex items-center gap-1.5 flex-wrap">
                       {/* Bold button */}
                       <button
@@ -400,9 +412,18 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
                         <Trash2 size={15} />
                       </button>
                     </div>
+                    )}
                   </div>
 
                   {/* Question Title & Type Row */}
+                  {readOnly ? (
+                    <div className="mb-2">
+                      <h4 className="text-base text-gray-900 font-bold">
+                        {renderRichText(field.label, { bold: field.bold, italic: field.italic, underline: field.underline })}
+                        {field.required && <span className="text-rose-500 ml-1 font-bold">*</span>}
+                      </h4>
+                    </div>
+                  ) : (
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
                     <div className="md:col-span-2">
                       <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider block mb-1">
@@ -443,8 +464,16 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
                       </select>
                     </div>
                   </div>
+                  )}
 
-                  {/* Question Description / Helper Text Input */}
+                  {/* Question Description / Helper Text */}
+                  {readOnly ? (
+                    field.description ? (
+                      <div className="mb-3 text-xs text-gray-600 bg-black/5 p-2.5 rounded-xl">
+                        {renderRichText(field.description)}
+                      </div>
+                    ) : null
+                  ) : (
                   <div className="mb-3">
                     <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider block mb-1">
                       Question Description / Instructions (Optional)
@@ -457,8 +486,25 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
                       className="w-full px-3 py-1.5 text-xs text-gray-700 bg-white/90 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:border-nss-blue transition-all resize-y"
                     />
                   </div>
+                  )}
 
                   {/* Attached Image / QR Code Section */}
+                  {readOnly ? (
+                    field.imageUrl ? (
+                      <div className="mb-4 bg-white/80 p-3.5 rounded-xl border border-gray-200/80 flex flex-col items-center justify-center max-w-xs mx-auto">
+                        {field.imageTitle && (
+                          <p className="text-xs font-bold text-gray-800 mb-1.5 flex items-center gap-1">
+                            <QrCode size={13} className="text-nss-blue" /> {field.imageTitle}
+                          </p>
+                        )}
+                        <img 
+                          src={field.imageUrl} 
+                          alt={field.imageTitle || 'Attached'} 
+                          className="max-h-48 object-contain rounded-lg border border-gray-100 shadow-2xs"
+                        />
+                      </div>
+                    ) : null
+                  ) : (
                   <div className="mb-4 bg-white/80 p-3.5 rounded-xl border border-gray-200/80 space-y-2.5">
                     <div className="flex items-center justify-between">
                       <span className="text-[11px] font-bold text-gray-700 flex items-center gap-1.5">
@@ -523,6 +569,7 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
                       </div>
                     )}
                   </div>
+                  )}
 
                   {/* Placeholder (For text inputs) */}
                   {[FieldType.SHORT_TEXT, FieldType.LONG_TEXT, FieldType.EMAIL, FieldType.REG_NUMBER, FieldType.MOBILE].includes(field.type) && (
@@ -630,46 +677,69 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
           )}
         </div>
 
-        {/* Right: Quick Add Palette (4 cols) */}
+        {/* Right: Quick Add Palette or View-Only Information (4 cols) */}
         <div className="lg:col-span-4 sticky top-24 space-y-4">
-          <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-xs">
-            <h4 className="text-sm font-black text-gray-900 mb-1 flex items-center gap-2">
-              <Plus size={16} className="text-nss-blue" /> Add Elements
-            </h4>
-            <p className="text-xs text-gray-500 mb-4">Click any question type or element to add to your form:</p>
-
-            <div className="space-y-1.5">
-              {fieldTypeOptions.map(opt => {
-                const Icon = opt.icon;
-                return (
-                  <button
-                    key={opt.type}
-                    type="button"
-                    onClick={() => addField(opt.type)}
-                    className="w-full text-left p-2.5 rounded-xl border border-gray-200 hover:border-nss-blue/60 hover:bg-blue-50/30 transition-all flex items-center gap-3 group cursor-pointer"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-gray-50 group-hover:bg-blue-100 text-gray-600 group-hover:text-nss-blue flex items-center justify-center shrink-0 transition-colors">
-                      <Icon size={16} />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs font-bold text-gray-800 group-hover:text-nss-blue">{opt.label}</p>
-                      <p className="text-[11px] text-gray-400 truncate">{opt.desc}</p>
-                    </div>
-                  </button>
-                );
-              })}
+          {readOnly ? (
+            <div className="bg-amber-50/70 border border-amber-200 p-5 rounded-2xl text-xs space-y-3.5 shadow-xs">
+              <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center">
+                <Lock size={20} />
+              </div>
+              <div>
+                <h4 className="font-black text-amber-950 text-sm">Form Editing Locked</h4>
+                <p className="text-amber-800 text-xs mt-1 leading-relaxed">
+                  The Admin has set this form to <strong>View-Only</strong> mode for Event Managers. You can inspect all questions and preview how the form looks, but modifications are restricted.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowPreviewModal(true)}
+                className="w-full py-2.5 px-3 bg-white border border-amber-200 hover:bg-amber-100/50 text-amber-900 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-2xs"
+              >
+                <Eye size={14} /> Interactive Form Preview
+              </button>
             </div>
-          </div>
+          ) : (
+            <>
+              <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-xs">
+                <h4 className="text-sm font-black text-gray-900 mb-1 flex items-center gap-2">
+                  <Plus size={16} className="text-nss-blue" /> Add Elements
+                </h4>
+                <p className="text-xs text-gray-500 mb-4">Click any question type or element to add to your form:</p>
 
-          {/* Quick Info Card */}
-          <div className="bg-emerald-50/70 border border-emerald-200/70 p-4 rounded-2xl text-xs space-y-1.5 text-emerald-900">
-            <p className="font-bold flex items-center gap-1.5">
-              <CheckCircle2 size={14} className="text-emerald-600" /> Rich Design Controls
-            </p>
-            <p className="text-emerald-800/80 leading-relaxed text-[11px]">
-              Use the top toolbar on each card to toggle <strong>Bold</strong>, <em>Italic</em>, <u>Underline</u>, pick a custom card background color, add descriptions, or attach QR codes and payment posters.
-            </p>
-          </div>
+                <div className="space-y-1.5">
+                  {fieldTypeOptions.map(opt => {
+                    const Icon = opt.icon;
+                    return (
+                      <button
+                        key={opt.type}
+                        type="button"
+                        onClick={() => addField(opt.type)}
+                        className="w-full text-left p-2.5 rounded-xl border border-gray-200 hover:border-nss-blue/60 hover:bg-blue-50/30 transition-all flex items-center gap-3 group cursor-pointer"
+                      >
+                        <div className="w-8 h-8 rounded-lg bg-gray-50 group-hover:bg-blue-100 text-gray-600 group-hover:text-nss-blue flex items-center justify-center shrink-0 transition-colors">
+                          <Icon size={16} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-bold text-gray-800 group-hover:text-nss-blue">{opt.label}</p>
+                          <p className="text-[11px] text-gray-400 truncate">{opt.desc}</p>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Quick Info Card */}
+              <div className="bg-emerald-50/70 border border-emerald-200/70 p-4 rounded-2xl text-xs space-y-1.5 text-emerald-900">
+                <p className="font-bold flex items-center gap-1.5">
+                  <CheckCircle2 size={14} className="text-emerald-600" /> Rich Design Controls
+                </p>
+                <p className="text-emerald-800/80 leading-relaxed text-[11px]">
+                  Use the top toolbar on each card to toggle <strong>Bold</strong>, <em>Italic</em>, <u>Underline</u>, pick a custom card background color, add descriptions, or attach QR codes and payment posters.
+                </p>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
