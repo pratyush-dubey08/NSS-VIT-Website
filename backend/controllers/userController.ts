@@ -1,3 +1,4 @@
+import Registration from '../models/Registration';
 import { Request, Response } from 'express';
 import User, { Role } from '../models/User';
 import bcrypt from 'bcryptjs';
@@ -174,5 +175,60 @@ export const updateMyProfile = async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Error updating profile:', error);
     res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+
+// Get full report card and activity attendance for a single volunteer
+export const getVolunteerReport = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const volunteer = await User.findById(id).select('-password');
+    if (!volunteer) {
+      return res.status(404).json({ message: 'Volunteer not found' });
+    }
+
+    // Find all registrations for this volunteer across all activities
+    const registrations = await Registration.find({ userId: id })
+      .populate('activityId', 'title date category hours venue bannerUrl')
+      .sort({ createdAt: -1 });
+
+    const totalEvents = registrations.length;
+    const attendedEvents = registrations.filter(r => r.attendanceStatus === 'ATTENDED').length;
+    const bunkedEvents = registrations.filter(r => r.attendanceStatus === 'BUNKED').length;
+    const pendingEvents = registrations.filter(r => r.attendanceStatus === 'PENDING').length;
+    
+    const calculatedHours = registrations
+      .filter(r => r.attendanceStatus === 'ATTENDED')
+      .reduce((sum, r: any) => sum + (Number(r.activityId?.hours) || 0), 0);
+
+    const totalHours = calculatedHours > 0 ? calculatedHours : (volunteer.accumulatedHours || 0);
+
+    res.status(200).json({
+      volunteer,
+      stats: {
+        totalEvents,
+        attendedEvents,
+        bunkedEvents,
+        pendingEvents,
+        attendanceRate: totalEvents > 0 ? Math.round((attendedEvents / totalEvents) * 100) : 100,
+        totalHours
+      },
+      activities: registrations.map((r: any) => ({
+        id: r._id,
+        activityId: r.activityId?._id,
+        title: r.activityId?.title || 'Community Service Activity',
+        date: r.activityId?.date ? new Date(r.activityId.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A',
+        category: r.activityId?.category || 'General',
+        venue: r.activityId?.venue || 'Campus',
+        hours: r.activityId?.hours || 0,
+        registrationStatus: r.status,
+        attendanceStatus: r.attendanceStatus, // 'ATTENDED' | 'BUNKED' | 'PENDING'
+        registeredAt: r.createdAt
+      }))
+    });
+  } catch (error) {
+    console.error('Error fetching volunteer report:', error);
+    res.status(500).json({ message: 'Server error fetching volunteer report' });
   }
 };

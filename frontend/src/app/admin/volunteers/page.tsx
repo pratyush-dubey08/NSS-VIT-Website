@@ -17,13 +17,16 @@ import {
   Check,
   X,
   AlertTriangle,
-  RefreshCw
+  RefreshCw,
+  MoreVertical,
+  FileText
 } from 'lucide-react';
 import api from '@/lib/axios';
 
 import AddVolunteerModal from '@/components/admin/AddVolunteerModal';
 import BulkAddModal from '@/components/admin/BulkAddModal';
 import EditVolunteerModal from '@/components/admin/EditVolunteerModal';
+import VolunteerReportModal from '@/components/admin/VolunteerReportModal';
 
 export default function AdminVolunteers() {
   const [volunteers, setVolunteers] = useState<any[]>([]);
@@ -32,6 +35,7 @@ export default function AdminVolunteers() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
   const [editingVolunteer, setEditingVolunteer] = useState<any>(null);
+  const [selectedReportVolunteer, setSelectedReportVolunteer] = useState<any>(null);
 
   // Multi-select state
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -327,6 +331,14 @@ export default function AdminVolunteers() {
                       <td className="p-4 text-right">
                         <div className="flex justify-end gap-2">
                           <button 
+                            onClick={() => setSelectedReportVolunteer(volunteer)}
+                            className="p-2 text-slate-700 hover:text-nss-blue hover:bg-blue-50 rounded-lg transition-all inline-flex items-center gap-1 border border-slate-200/80 shadow-2xs hover:shadow-xs cursor-pointer"
+                            title="View Volunteer Info & Attendance Report Card"
+                          >
+                            <MoreVertical size={16} className="text-slate-700" />
+                            <span className="text-xs font-bold hidden xl:inline">Info & Report</span>
+                          </button>
+                          <button 
                             onClick={() => setEditingVolunteer(volunteer)}
                             className="p-2 text-gray-500 hover:text-nss-blue hover:bg-blue-50 rounded-lg transition-colors inline-flex items-center gap-1"
                             title="Edit Volunteer"
@@ -370,6 +382,13 @@ export default function AdminVolunteers() {
         onClose={() => setEditingVolunteer(null)}
         onSuccess={fetchVolunteers}
         volunteer={editingVolunteer}
+      />
+
+      {/* Volunteer Info & Attendance Report Card Modal */}
+      <VolunteerReportModal
+        isOpen={!!selectedReportVolunteer}
+        onClose={() => setSelectedReportVolunteer(null)}
+        volunteer={selectedReportVolunteer}
       />
 
       {/* Header */}
