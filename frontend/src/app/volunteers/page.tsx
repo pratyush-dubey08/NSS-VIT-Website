@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { staticVolunteers } from '@/data/volunteers';
 import api from '@/lib/axios';
 
 interface Volunteer {
@@ -11,24 +12,22 @@ interface Volunteer {
 }
 
 export default function VolunteersPage() {
-  const [volunteers, setVolunteers] = useState<Volunteer[]>([]);
+  const [dynamicVolunteers, setDynamicVolunteers] = useState<Volunteer[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchVolunteers = async () => {
       try {
         setLoading(true);
-        // Fetch dynamic volunteers from backend with timestamp to prevent caching
+        // Fetch dynamic 2024 and 2025 volunteers directly from backend
         const response = await api.get('/users/public', {
           params: { _t: Date.now() }
         });
-        const backendVolunteers: any[] = Array.isArray(response.data) ? response.data : [];
+        const backendData: any[] = Array.isArray(response.data) ? response.data : [];
 
-        // Deduplicate and ensure clean batch
-        const uniqueVolunteersMap = new Map<string, Volunteer>();
+        const uniqueMap = new Map<string, Volunteer>();
 
-        backendVolunteers.forEach(v => {
+        backendData.forEach(v => {
           if (!v || !v.registrationNumber) return;
           const regNo = v.registrationNumber.trim().toUpperCase();
 
@@ -38,27 +37,19 @@ export default function VolunteersPage() {
             cleanBatch = m ? '20' + m[1] : '2024';
           }
 
-          uniqueVolunteersMap.set(regNo, {
+          uniqueMap.set(regNo, {
             name: v.name?.trim() || 'Volunteer',
             registrationNumber: regNo,
             batch: cleanBatch
           });
         });
 
-        const uniqueVolunteers = Array.from(uniqueVolunteersMap.values());
-
-        // Sort: First by batch (descending e.g. 2025, 2024), then by name (ascending)
-        uniqueVolunteers.sort((a, b) => {
-          const batchDiff = (parseInt(b.batch) || 0) - (parseInt(a.batch) || 0);
-          if (batchDiff !== 0) return batchDiff;
-          return a.name.localeCompare(b.name);
-        });
-
-        setVolunteers(uniqueVolunteers);
-        setLoading(false);
+        const list = Array.from(uniqueMap.values());
+        list.sort((a, b) => a.name.localeCompare(b.name));
+        setDynamicVolunteers(list);
       } catch (err: any) {
-        console.error('Error fetching volunteers:', err);
-        setError('Failed to load volunteers.');
+        console.error('Error fetching dynamic volunteers:', err);
+      } finally {
         setLoading(false);
       }
     };
@@ -66,17 +57,30 @@ export default function VolunteersPage() {
     fetchVolunteers();
   }, []);
 
-  // Group by batch
-  const groupedVolunteers = volunteers.reduce((acc, volunteer) => {
-    if (!acc[volunteer.batch]) {
-      acc[volunteer.batch] = [];
-    }
-    acc[volunteer.batch].push(volunteer);
-    return acc;
-  }, {} as Record<string, Volunteer[]>);
+  // Dynamic linked batches (from database)
+  const batch2025 = dynamicVolunteers.filter(v => v.batch === '2025');
+  const batch2024 = dynamicVolunteers.filter(v => v.batch === '2024');
 
-  // Get sorted batches (e.g. 2025, 2024...)
-  const batches = Object.keys(groupedVolunteers).sort((a, b) => (parseInt(b) || 0) - (parseInt(a) || 0));
+  // Static historical batches (display only: 2023, 2022, 2021)
+  const batch2023 = (staticVolunteers as Volunteer[])
+    .filter(v => v.batch === '2023')
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const batch2022 = (staticVolunteers as Volunteer[])
+    .filter(v => v.batch === '2022')
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const batch2021 = (staticVolunteers as Volunteer[])
+    .filter(v => v.batch === '2021')
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const sections = [
+    { batch: '2025', list: batch2025 },
+    { batch: '2024', list: batch2024 },
+    { batch: '2023', list: batch2023 },
+    { batch: '2022', list: batch2022 },
+    { batch: '2021', list: batch2021 },
+  ].filter(s => s.list.length > 0);
 
   return (
     <div className="min-h-screen bg-gray-50 pt-32 pb-20 px-4">
@@ -99,22 +103,18 @@ export default function VolunteersPage() {
           <div className="flex justify-center items-center h-40">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-nss-blue"></div>
           </div>
-        ) : error ? (
-          <div className="text-center text-red-500 font-bold p-8 bg-red-50 rounded-2xl border border-red-100 max-w-lg mx-auto">
-            {error}
-          </div>
         ) : (
           <div className="space-y-16">
-            {batches.map((batch) => (
-              <div key={batch} className="bg-white rounded-3xl p-6 md:p-10 shadow-xl shadow-gray-200/50 border border-gray-100">
+            {sections.map((section) => (
+              <div key={section.batch} className="bg-white rounded-3xl p-6 md:p-10 shadow-xl shadow-gray-200/50 border border-gray-100">
                 <div className="flex items-center gap-4 mb-8 pb-4 border-b border-gray-100">
                   <h2 className="text-2xl md:text-3xl font-black text-gray-900">
-                    Batch of {batch}
+                    Batch of {section.batch}
                   </h2>
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {groupedVolunteers[batch].map((volunteer, index) => (
+                  {section.list.map((volunteer, index) => (
                     <motion.div
                       key={volunteer.registrationNumber}
                       initial={{ opacity: 0, scale: 0.95 }}
