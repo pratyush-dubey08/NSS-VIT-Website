@@ -42,11 +42,7 @@ export default function BloodDonationPage() {
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                 alt={bloodGallery[0].title} 
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent flex items-end p-5">
-                <span className="text-white text-sm sm:text-base font-bold drop-shadow-md">
-                  {bloodGallery[0].title}
-                </span>
-              </div>
+
             </div>
             
             <div className="grid grid-cols-1 gap-3 h-72 sm:h-96">

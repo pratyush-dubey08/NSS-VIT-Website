@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Tent, Newspaper } from 'lucide-react';
+import { Newspaper } from 'lucide-react';
 
 export default function AnnualCampPage() {
   return (
@@ -34,12 +34,10 @@ export default function AnnualCampPage() {
             </div>
           </div>
           
-          <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-white px-6 md:px-10 py-3 md:py-4 rounded-full shadow-xl border border-orange-100 flex items-center gap-4 w-[90%] md:w-auto justify-center max-w-full overflow-hidden">
-            <Tent className="text-orange-500 hidden md:block flex-shrink-0" size={32} fill="currentColor" />
+          <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-white px-6 md:px-10 py-3 md:py-4 rounded-full shadow-xl border border-orange-100 flex items-center justify-center w-[90%] md:w-auto max-w-full overflow-hidden">
             <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-black text-orange-600 tracking-tight text-center uppercase whitespace-nowrap">
               Annual NSS Camp
             </h1>
-            <Tent className="text-orange-500 hidden md:block flex-shrink-0" size={32} fill="currentColor" />
           </div>
         </motion.div>
 
