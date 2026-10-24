@@ -265,7 +265,7 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
         <div>
           <h3 className="text-base font-black text-gray-900 flex items-center gap-2">
             <Settings2 size={18} className="text-nss-blue" />
-            Google Forms Style Form Builder
+            Form Builder
           </h3>
           <p className="text-xs text-gray-500 mt-0.5">
             Add questions, QR codes/images, descriptions, card background colors, and rich text formatting (bold, italic, underline).
@@ -353,9 +353,7 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
                       <span className="w-6 h-6 rounded-lg bg-black/5 text-gray-700 font-bold text-xs flex items-center justify-center">
                         {index + 1}
                       </span>
-                      <span className="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-50 text-nss-blue border border-blue-200/60">
-                        {field.type.replace('_', ' ')}
-                      </span>
+                      
                       {field.required && (
                         <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-rose-50 text-rose-600 border border-rose-200/60">
                           Required

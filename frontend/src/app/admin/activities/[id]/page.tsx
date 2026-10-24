@@ -53,7 +53,7 @@ export default function ManageActivityPage() {
       });
       setActivity((prev: any) => prev ? { ...prev, registrationMode: 'GOOGLE_FORM', googleFormUrl, isRegistrationOpen: true } : null);
       setIsRegistrationOpen(true);
-      alert('✓ Google Form registration link saved successfully! Students will see "Click Here to Register Now".');
+      alert('Google Form registration link saved successfully! Students will see "Click Here to Register Now".');
     } catch (err: any) {
       console.error(err);
       alert(err.response?.data?.message || 'Failed to save Google Form link');
@@ -1182,7 +1182,7 @@ export default function ManageActivityPage() {
                         : 'text-gray-600 hover:text-gray-900'
                     )}
                   >
-                    🛠️ Built-in Form Builder
+                    Built-in Form Builder
                   </button>
                   <button
                     type="button"
@@ -1199,7 +1199,7 @@ export default function ManageActivityPage() {
                         : 'text-gray-600 hover:text-gray-900'
                     )}
                   >
-                    🔗 Google Form Link
+                    Google Form Link
                   </button>
                 </div>
               </div>
@@ -1246,14 +1246,16 @@ export default function ManageActivityPage() {
               )}
             </div>
 
-            {/* 3. Embedded FormBuilder (Only if Built-in Form is active or as secondary) */}
-            <div className="bg-white rounded-2xl shadow-xs border border-gray-200/80 p-6">
-              <FormBuilder
-                initialFields={activity.formSchema || []}
-                onSave={handleSaveFormSchema}
-                isSaving={isSavingFormSettings}
-              />
-            </div>
+            {/* 3. Embedded FormBuilder (Only shown when Built-in Form mode is active) */}
+            {registrationMode === 'CUSTOM' && (
+              <div className="bg-white rounded-2xl shadow-xs border border-gray-200/80 p-6">
+                <FormBuilder
+                  initialFields={activity.formSchema || []}
+                  onSave={handleSaveFormSchema}
+                  isSaving={isSavingFormSettings}
+                />
+              </div>
+            )}
           </motion.div>
         )}
 

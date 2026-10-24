@@ -56,7 +56,7 @@ export default function ManageActivityPage() {
       });
       setActivity((prev: any) => prev ? { ...prev, registrationMode: 'GOOGLE_FORM', googleFormUrl, isRegistrationOpen: true } : null);
       setIsRegistrationOpen(true);
-      alert('✓ Google Form registration link saved successfully!');
+      alert('Google Form registration link saved successfully!');
     } catch (err: any) {
       console.error(err);
       alert(err.response?.data?.message || 'Failed to save Google Form link');
@@ -886,7 +886,7 @@ export default function ManageActivityPage() {
                         : 'text-gray-600 hover:text-gray-900'
                     )}
                   >
-                    🛠️ Built-in Form Builder
+                    Built-in Form Builder
                   </button>
                   <button
                     type="button"
@@ -906,7 +906,7 @@ export default function ManageActivityPage() {
                         : 'text-gray-600 hover:text-gray-900'
                     )}
                   >
-                    🔗 Google Form Link
+                    Google Form Link
                   </button>
                 </div>
               </div>
@@ -954,15 +954,17 @@ export default function ManageActivityPage() {
               )}
             </div>
 
-            {/* 3. Embedded FormBuilder */}
-            <div className="bg-white rounded-2xl shadow-xs border border-gray-200/80 p-6">
-              <FormBuilder
-                initialFields={activity.formSchema || []}
-                onSave={handleSaveFormSchema}
-                isSaving={isSavingFormSettings}
-                readOnly={isFormLockedForManagers}
-              />
-            </div>
+            {/* 3. Embedded FormBuilder (Only shown when Built-in Form mode is active) */}
+            {registrationMode === 'CUSTOM' && (
+              <div className="bg-white rounded-2xl shadow-xs border border-gray-200/80 p-6">
+                <FormBuilder
+                  initialFields={activity.formSchema || []}
+                  onSave={handleSaveFormSchema}
+                  isSaving={isSavingFormSettings}
+                  readOnly={isFormLockedForManagers}
+                />
+              </div>
+            )}
           </motion.div>
         )}
 

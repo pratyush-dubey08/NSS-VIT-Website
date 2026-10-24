@@ -329,14 +329,11 @@ export default function PublicEventPortal() {
                             <FileText size={32} />
                           </div>
                           <div className="max-w-md mx-auto space-y-2">
-                            <span className="inline-block px-3 py-1 bg-blue-50 text-nss-blue rounded-full text-xs font-bold uppercase tracking-wider">
-                              Official Event Registration
-                            </span>
                             <h2 className="text-2xl font-black text-gray-900">
                               Register for {event.title}
                             </h2>
                             <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                              Participant registration for this activity is being collected via Google Forms. Please click the button below to complete the official registration form.
+                              Please click the button below to complete the official registration form.
                             </p>
                           </div>
 
@@ -350,15 +347,6 @@ export default function PublicEventPortal() {
                               <span>Click Here to Register Now</span>
                               <ExternalLink size={18} />
                             </a>
-                          </div>
-
-                          <div className="flex flex-wrap items-center justify-center gap-4 text-[11px] font-bold text-gray-500 pt-3 border-t border-gray-100 max-w-sm mx-auto">
-                            <span className="flex items-center gap-1 text-emerald-600">
-                              ✓ Verified Official NSS Form
-                            </span>
-                            <span className="flex items-center gap-1">
-                              ↗ Opens in a new tab
-                            </span>
                           </div>
                         </div>
                       ) : (
