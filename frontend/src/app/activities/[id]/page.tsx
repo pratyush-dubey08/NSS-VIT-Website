@@ -358,14 +358,7 @@ export default function PublicEventPortal() {
                 </div>
               ) : null}
 
-              <div className="p-4 bg-slate-50 rounded-2xl border border-gray-100 text-xs space-y-1.5">
-                <p className="font-bold text-gray-800 flex items-center gap-1.5">
-                  <HeartHandshake size={15} className="text-nss-blue" /> Official NSS Initiative
-                </p>
-                <p className="text-gray-500 text-[11px] leading-relaxed">
-                  Conducted by NSS Unit, VIT Bhopal University under the motto "Not Me But You" (स्वयं से पहले आप).
-                </p>
-              </div>
+
             </div>
           </div>
 

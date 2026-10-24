@@ -40,7 +40,7 @@ export default function DynamicForm({ schema, onSubmit, isSubmitting }: DynamicF
     e.preventDefault();
     setEmailError('');
 
-    // 1. Locate email in fields or form data
+    // 1. Locate email, full name, reg no, phone across all fields
     let userEmail = '';
     let userFullName = '';
     let userRegNo = '';
@@ -50,29 +50,31 @@ export default function DynamicForm({ schema, onSubmit, isSubmitting }: DynamicF
       const val = formData[f.id];
       if (typeof val === 'string' && val.trim()) {
         const trimmed = val.trim();
-        if (f.type === FieldType.EMAIL || (!userEmail && trimmed.includes('@'))) {
-          userEmail = trimmed.toLowerCase();
+        const lbl = f.label.toLowerCase();
+
+        if (f.type === FieldType.EMAIL || lbl.includes('email') || (!userEmail && trimmed.includes('@'))) {
+          if (!userEmail) userEmail = trimmed.toLowerCase();
         }
-        if (f.type === FieldType.REG_NUMBER || (!userRegNo && /^[0-9]{2}[A-Za-z]{3}[0-9]{4,5}$/i.test(trimmed))) {
-          userRegNo = trimmed.toUpperCase();
+        if (f.type === FieldType.REG_NUMBER || lbl.includes('reg') || (!userRegNo && /^[0-9]{2}[A-Za-z]{3}[0-9]{4,5}$/i.test(trimmed))) {
+          if (!userRegNo) userRegNo = trimmed.toUpperCase();
         }
-        if (f.type === FieldType.SHORT_TEXT && f.label.toLowerCase().includes('name') && !userFullName) {
+        if (f.type === FieldType.SHORT_TEXT && (lbl.includes('name') || lbl.includes('full name')) && !userFullName) {
           userFullName = trimmed;
         }
-        if (f.type === FieldType.MOBILE || (f.label.toLowerCase().includes('phone') || f.label.toLowerCase().includes('whatsapp'))) {
-          userPhone = trimmed;
+        if (f.type === FieldType.MOBILE || lbl.includes('phone') || lbl.includes('whatsapp') || lbl.includes('mobile')) {
+          if (!userPhone) userPhone = trimmed;
         }
       }
     }
 
     // 2. Strict VIT Bhopal Email Validation
     if (!userEmail) {
-      setEmailError('Please enter your official VIT Bhopal email address.');
+      setEmailError('Please enter your official VIT Bhopal email address (@vitbhopal.ac.in).');
       return;
     }
 
-    if (!userEmail.endsWith('@vitbhopal.ac.in')) {
-      setEmailError('Registration is strictly restricted to @vitbhopal.ac.in email addresses. Please enter your college email.');
+    if (!userEmail.endsWith('@vitbhopal.ac.in') || userEmail === '@vitbhopal.ac.in') {
+      setEmailError('Registration is strictly restricted to @vitbhopal.ac.in email addresses. Personal emails (e.g. gmail.com) are not accepted.');
       return;
     }
 
@@ -96,22 +98,35 @@ export default function DynamicForm({ schema, onSubmit, isSubmitting }: DynamicF
     });
   };
 
+  const handleFileUpload = async (fieldId: string, file: File) => {
+    try {
+      setUploadingField(fieldId);
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: fd
+      });
+      const data = await res.json();
+      if (data.url) {
+        handleChange(fieldId, data.url);
+      } else {
+        alert('File upload failed. Please try again.');
+      }
+    } catch (err) {
+      console.error('File upload error:', err);
+      alert('Error uploading file. Please try again.');
+    } finally {
+      setUploadingField(null);
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Notice Banner */}
-      <div className="bg-blue-50/80 border border-blue-200/80 rounded-2xl p-4 flex items-start gap-3">
-        <CheckCircle2 size={18} className="text-nss-blue shrink-0 mt-0.5" />
-        <div className="text-xs text-blue-950">
-          <p className="font-bold">VIT Bhopal University Event Registration</p>
-          <p className="text-blue-800/90 mt-0.5 leading-relaxed">
-            Please enter your official <strong>@vitbhopal.ac.in</strong> email ID. Only one submission is permitted per student.
-          </p>
-        </div>
-      </div>
-
+      {/* Email Error Banner (Shows only on error) */}
       {emailError && (
-        <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl flex items-center gap-3 text-rose-700 text-xs font-bold">
-          <AlertCircle size={16} className="shrink-0" />
+        <div className="p-4 bg-rose-50 border border-rose-200 rounded-2xl flex items-center gap-3 text-rose-800 text-xs font-bold shadow-xs">
+          <AlertCircle size={18} className="shrink-0 text-rose-600" />
           <span>{emailError}</span>
         </div>
       )}
@@ -127,7 +142,7 @@ export default function DynamicForm({ schema, onSubmit, isSubmitting }: DynamicF
               style={{ backgroundColor: cardBg }}
               className="p-5 sm:p-6 rounded-2xl border border-gray-200 shadow-xs space-y-3"
             >
-              <h3 className="text-base text-gray-900">
+              <h3 className="text-base text-gray-900 font-bold">
                 {renderRichText(field.label, { bold: field.bold ?? true, italic: field.italic, underline: field.underline })}
               </h3>
 
@@ -154,6 +169,10 @@ export default function DynamicForm({ schema, onSubmit, isSubmitting }: DynamicF
         }
 
         // 2. Standard Input Questions
+        const isEmailField = field.type === FieldType.EMAIL || field.label.toLowerCase().includes('email');
+        const currentVal = typeof formData[field.id] === 'string' ? formData[field.id].trim() : '';
+        const isInvalidVitEmail = isEmailField && currentVal && (!currentVal.toLowerCase().endsWith('@vitbhopal.ac.in') || currentVal === '@vitbhopal.ac.in');
+
         return (
           <div 
             key={field.id}
@@ -171,36 +190,33 @@ export default function DynamicForm({ schema, onSubmit, isSubmitting }: DynamicF
               </p>
             )}
 
-            {/* Attached Image / QR Code */}
-            {field.imageUrl && (
-              <div className="p-3 bg-white rounded-2xl border border-gray-200/90 max-w-sm mx-auto shadow-xs text-center my-2">
-                {field.imageTitle && (
-                  <p className="text-xs font-bold text-gray-800 mb-1.5">{field.imageTitle}</p>
-                )}
-                <img 
-                  src={field.imageUrl} 
-                  alt={field.imageTitle || field.label} 
-                  className="max-h-60 object-contain mx-auto rounded-xl shadow-2xs"
-                />
-              </div>
-            )}
-
             {/* Short Text, Email, Reg Number, Mobile */}
             {[FieldType.SHORT_TEXT, FieldType.EMAIL, FieldType.REG_NUMBER, FieldType.MOBILE].includes(field.type) && (
               <div>
                 <input
-                  type={field.type === FieldType.EMAIL ? 'email' : 'text'}
+                  type={isEmailField ? 'email' : 'text'}
                   required={field.required}
-                  placeholder={field.placeholder || (field.type === FieldType.EMAIL ? 'e.g. name2024@vitbhopal.ac.in' : '')}
+                  placeholder={field.placeholder || (isEmailField ? 'e.g. student2024@vitbhopal.ac.in' : '')}
                   value={formData[field.id] || ''}
                   onChange={(e) => {
                     handleChange(field.id, e.target.value);
-                    if (field.type === FieldType.EMAIL && emailError) setEmailError('');
+                    if (isEmailField && emailError) setEmailError('');
                   }}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 text-sm focus:ring-2 focus:ring-nss-blue/20 focus:border-nss-blue outline-none transition-all font-medium shadow-2xs"
+                  className={'w-full px-4 py-3 rounded-xl border text-gray-900 text-sm outline-none transition-all font-medium shadow-2xs ' + (
+                    isInvalidVitEmail 
+                      ? 'border-rose-400 focus:border-rose-500 focus:ring-2 focus:ring-rose-200 bg-rose-50/20' 
+                      : 'border-gray-200 focus:border-nss-blue focus:ring-2 focus:ring-nss-blue/20 bg-white'
+                  )}
                 />
-                {field.type === FieldType.EMAIL && (
-                  <p className="text-[11px] text-gray-400 mt-1">Must end with @vitbhopal.ac.in</p>
+                {isEmailField && (
+                  isInvalidVitEmail ? (
+                    <p className="text-[11px] text-rose-600 font-bold mt-1.5 flex items-center gap-1">
+                      <AlertCircle size={13} className="shrink-0 text-rose-600" />
+                      Only official VIT Bhopal University emails (@vitbhopal.ac.in) are accepted.
+                    </p>
+                  ) : (
+                    <p className="text-[11px] text-gray-400 mt-1">Official @vitbhopal.ac.in email required</p>
+                  )
                 )}
               </div>
             )}
@@ -213,38 +229,23 @@ export default function DynamicForm({ schema, onSubmit, isSubmitting }: DynamicF
                 rows={4}
                 value={formData[field.id] || ''}
                 onChange={(e) => handleChange(field.id, e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 text-sm focus:ring-2 focus:ring-nss-blue/20 focus:border-nss-blue outline-none transition-all resize-y font-medium shadow-2xs"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 text-sm focus:ring-2 focus:ring-nss-blue/20 focus:border-nss-blue outline-none transition-all font-medium shadow-2xs"
               />
             )}
 
-            {/* Dropdown */}
-            {field.type === FieldType.DROPDOWN && (
-              <select
-                required={field.required}
-                value={formData[field.id] || ''}
-                onChange={(e) => handleChange(field.id, e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 text-sm focus:ring-2 focus:ring-nss-blue/20 focus:border-nss-blue outline-none transition-all font-medium cursor-pointer shadow-2xs"
-              >
-                <option value="">Select an option...</option>
-                {field.options?.map(opt => (
-                  <option key={opt} value={opt}>{opt}</option>
-                ))}
-              </select>
-            )}
-
-            {/* Radio */}
-            {field.type === FieldType.RADIO && (
+            {/* Radio / Multiple Choice */}
+            {field.type === FieldType.RADIO && field.options && (
               <div className="space-y-2 pt-1">
-                {field.options?.map(opt => (
-                  <label key={opt} className="flex items-center gap-3 p-3 bg-white/90 hover:bg-white rounded-xl cursor-pointer transition-colors border border-gray-200/70 shadow-2xs">
+                {field.options.map((opt, i) => (
+                  <label key={i} className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:border-gray-200 hover:bg-black/5 cursor-pointer transition-all">
                     <input
                       type="radio"
-                      name={'radio_' + field.id}
-                      value={opt}
+                      name={field.id}
                       required={field.required}
+                      value={opt}
                       checked={formData[field.id] === opt}
                       onChange={() => handleChange(field.id, opt)}
-                      className="w-4 h-4 text-nss-blue focus:ring-nss-blue cursor-pointer"
+                      className="w-4 h-4 text-nss-blue focus:ring-nss-blue"
                     />
                     <span className="text-sm font-medium text-gray-800">{opt}</span>
                   </label>
@@ -252,19 +253,20 @@ export default function DynamicForm({ schema, onSubmit, isSubmitting }: DynamicF
               </div>
             )}
 
-            {/* Checkbox */}
-            {field.type === FieldType.CHECKBOX && (
+            {/* Checkboxes */}
+            {field.type === FieldType.CHECKBOX && field.options && (
               <div className="space-y-2 pt-1">
-                {field.options?.map(opt => {
-                  const isChecked = (formData[field.id] || []).includes(opt);
+                {field.options.map((opt, i) => {
+                  const currentVals = formData[field.id] || [];
+                  const isChecked = currentVals.includes(opt);
                   return (
-                    <label key={opt} className="flex items-center gap-3 p-3 bg-white/90 hover:bg-white rounded-xl cursor-pointer transition-colors border border-gray-200/70 shadow-2xs">
+                    <label key={i} className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:border-gray-200 hover:bg-black/5 cursor-pointer transition-all">
                       <input
                         type="checkbox"
                         value={opt}
                         checked={isChecked}
                         onChange={(e) => handleCheckboxChange(field.id, opt, e.target.checked)}
-                        className="w-4 h-4 text-nss-blue rounded focus:ring-nss-blue cursor-pointer"
+                        className="w-4 h-4 text-nss-blue rounded-md focus:ring-nss-blue"
                       />
                       <span className="text-sm font-medium text-gray-800">{opt}</span>
                     </label>
@@ -273,70 +275,76 @@ export default function DynamicForm({ schema, onSubmit, isSubmitting }: DynamicF
               </div>
             )}
 
-            {/* Declaration */}
-            {field.type === FieldType.DECLARATION && (
-              <div className="p-4 bg-blue-50/60 border border-blue-200/60 rounded-xl">
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    required={field.required}
-                    checked={!!formData[field.id]}
-                    onChange={(e) => handleChange(field.id, e.target.checked)}
-                    className="w-4 h-4 text-nss-blue mt-0.5 rounded focus:ring-nss-blue cursor-pointer"
-                  />
-                  <span className="text-xs text-gray-700 leading-relaxed font-medium">
-                    {field.placeholder || "I hereby declare that all details filled above are accurate and I agree to the NSS Unit VIT Bhopal event guidelines."}
-                  </span>
-                </label>
-              </div>
+            {/* Dropdown */}
+            {field.type === FieldType.DROPDOWN && field.options && (
+              <select
+                required={field.required}
+                value={formData[field.id] || ''}
+                onChange={(e) => handleChange(field.id, e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 text-sm focus:ring-2 focus:ring-nss-blue/20 focus:border-nss-blue outline-none transition-all font-medium shadow-2xs"
+              >
+                <option value="">-- Select an option --</option>
+                {field.options.map((opt, i) => (
+                  <option key={i} value={opt}>{opt}</option>
+                ))}
+              </select>
             )}
 
             {/* File Upload */}
             {field.type === FieldType.FILE_UPLOAD && (
-              <div className="space-y-2">
-                <input
-                  type="file"
-                  required={field.required && !formData[field.id]}
-                  accept={field.allowedTypes}
-                  onChange={async (e) => {
-                    const file = e.target.files?.[0];
-                    if (!file) return;
-
-                    const maxMB = field.maxSizeInMB || 10;
-                    if (file.size > maxMB * 1024 * 1024) {
-                      alert('File exceeds the maximum allowed size of ' + maxMB + 'MB.');
-                      e.target.value = '';
-                      return;
-                    }
-
-                    try {
-                      setUploadingField(field.id);
-                      const fd = new FormData();
-                      fd.append('file', file);
-
-                      const { default: api } = await import('@/lib/axios');
-                      const res = await api.post('/upload', fd, {
-                        headers: { 'Content-Type': 'multipart/form-data' }
-                      });
-
-                      handleChange(field.id, res.data.url);
-                    } catch (error) {
-                      console.error('File upload failed:', error);
-                      alert('Failed to upload file. Please try again.');
-                    } finally {
-                      setUploadingField(null);
-                    }
-                  }}
-                  className="w-full px-4 py-2 rounded-xl border border-gray-200 bg-white text-gray-900 text-xs focus:ring-2 focus:ring-nss-blue outline-none transition-shadow file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-nss-blue hover:file:bg-blue-100 cursor-pointer"
-                />
-                {uploadingField === field.id && (
-                  <p className="text-xs text-blue-600 font-bold animate-pulse">Uploading file to secure cloud...</p>
+              <div className="space-y-2 pt-1">
+                {formData[field.id] ? (
+                  <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between text-xs">
+                    <span className="font-bold text-emerald-800 flex items-center gap-1.5 truncate">
+                      <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                      File uploaded successfully
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => handleChange(field.id, undefined)}
+                      className="text-rose-600 font-bold hover:underline shrink-0 ml-2"
+                    >
+                      Change File
+                    </button>
+                  </div>
+                ) : (
+                  <label className="border-2 border-dashed border-gray-200 hover:border-nss-blue rounded-2xl p-6 text-center flex flex-col items-center justify-center cursor-pointer transition-colors bg-white/60 hover:bg-blue-50/20">
+                    <UploadCloud size={24} className="text-nss-blue mb-1" />
+                    <span className="text-xs font-bold text-gray-700">
+                      {uploadingField === field.id ? 'Uploading file...' : 'Click to select and upload document / image'}
+                    </span>
+                    <span className="text-[11px] text-gray-400 mt-0.5">Images, PDF, or Docs up to 10MB</span>
+                    <input
+                      type="file"
+                      required={field.required}
+                      disabled={uploadingField === field.id}
+                      className="hidden"
+                      onChange={(e) => {
+                        if (e.target.files?.[0]) {
+                          handleFileUpload(field.id, e.target.files[0]);
+                        }
+                      }}
+                    />
+                  </label>
                 )}
-                {formData[field.id] && (
-                  <p className="text-xs text-emerald-600 font-bold flex items-center gap-1">
-                    ✓ File uploaded successfully
-                  </p>
-                )}
+              </div>
+            )}
+
+            {/* Declaration Checkbox */}
+            {field.type === FieldType.DECLARATION && (
+              <div className="pt-2">
+                <label className="flex items-start gap-3 p-3.5 bg-gray-50/80 border border-gray-200 rounded-xl cursor-pointer">
+                  <input
+                    type="checkbox"
+                    required={field.required}
+                    checked={formData[field.id] === true}
+                    onChange={(e) => handleChange(field.id, e.target.checked)}
+                    className="w-4 h-4 text-nss-blue rounded-md focus:ring-nss-blue mt-0.5"
+                  />
+                  <span className="text-xs text-gray-700 font-medium leading-relaxed">
+                    I confirm that the details provided above are authentic and complete. I agree to abide by the event guidelines and attendance requirements set by NSS Unit VIT Bhopal.
+                  </span>
+                </label>
               </div>
             )}
           </div>

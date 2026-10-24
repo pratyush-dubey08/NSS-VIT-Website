@@ -113,7 +113,7 @@ export const submitRegistration = async (req: Request, res: Response) => {
       });
     }
 
-    // Check for duplicate registration for this activity
+    // Check for duplicate registration for this activity (Strict one submission per student / email)
     const duplicateQuery: any = {
       activityId,
       $or: [
@@ -123,11 +123,14 @@ export const submitRegistration = async (req: Request, res: Response) => {
     if (userId) {
       duplicateQuery.$or.push({ userId });
     }
+    if (registrationNumber && registrationNumber.trim()) {
+      duplicateQuery.$or.push({ registrationNumber: registrationNumber.toUpperCase().trim() });
+    }
 
     const existingReg = await Registration.findOne(duplicateQuery);
     if (existingReg) {
       return res.status(400).json({ 
-        message: 'This email address (' + normalizedEmail + ') has already registered for this event. Only one submission per student is allowed.' 
+        message: 'A response has already been recorded for ' + normalizedEmail + '. Only one submission per student is allowed.' 
       });
     }
 
