@@ -123,6 +123,22 @@ export const updateVolunteer = async (req: Request, res: Response) => {
 };
 
 // Delete volunteer
+
+// Bulk delete volunteers
+export const bulkDeleteVolunteers = async (req: Request, res: Response) => {
+  try {
+    const { ids } = req.body;
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ message: 'No volunteer IDs provided' });
+    }
+    const result = await User.deleteMany({ _id: { $in: ids }, role: { $ne: Role.SUPER_ADMIN } });
+    res.status(200).json({ message: `${result.deletedCount} volunteers removed`, deletedCount: result.deletedCount });
+  } catch (error) {
+    console.error('Error bulk deleting volunteers:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
 export const deleteVolunteer = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
