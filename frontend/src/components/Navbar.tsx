@@ -48,11 +48,11 @@ export default function Navbar() {
             <img src="/images/nss-logo.png" alt="NSS Logo" className="w-8 h-8 object-contain" />
           </div>
           <div className="flex flex-col justify-center">
-            <span className="font-black text-slate-900 text-[17px] xl:text-[19px] tracking-tight leading-tight">
+            <span className="font-black text-slate-900 text-lg sm:text-xl xl:text-2xl tracking-tight leading-none">
               NSS Unit
             </span>
-            <span className="text-[11px] xl:text-[12px] font-bold text-slate-500 tracking-wide leading-none mt-0.5">
-              VIT Bhopal
+            <span className="text-[11px] sm:text-xs xl:text-[13px] font-bold text-slate-500 tracking-wide leading-none mt-1">
+              VIT Bhopal University
             </span>
           </div>
         </Link>

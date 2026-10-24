@@ -6,6 +6,7 @@ export interface IActivity extends Document {
   date: Date;
   venue: string;
   bannerUrl?: string;
+  formBannerUrl?: string;
   description: string;
   brief?: string;
   photos?: string[];
@@ -27,6 +28,7 @@ const ActivitySchema: Schema = new Schema({
   date: { type: Date, required: true },
   venue: { type: String, required: true },
   bannerUrl: { type: String },
+  formBannerUrl: { type: String },
   description: { type: String, required: true },
   brief: { type: String },
   photos: [{ type: String }],

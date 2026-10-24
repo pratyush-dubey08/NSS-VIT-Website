@@ -34,7 +34,7 @@ export default function ManageActivityPage() {
 
   // Form Builder & Settings states
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(true);
-  const [bannerUrl, setBannerUrl] = useState('');
+  const [formBannerUrl, setFormBannerUrl] = useState('');
   const [confirmationMessage, setConfirmationMessage] = useState('Thank you for filling out the form! Our team will contact you shortly.');
   const [isSavingFormSettings, setIsSavingFormSettings] = useState(false);
   const [isUploadingBanner, setIsUploadingBanner] = useState(false);
@@ -83,7 +83,7 @@ export default function ManageActivityPage() {
       const actData = actRes.data;
       setActivity(actData);
       setIsRegistrationOpen(actData.isRegistrationOpen !== false);
-      setBannerUrl(actData.bannerUrl || '/images/default-event-banner.png');
+      setFormBannerUrl(actData.formBannerUrl || '/images/default-event-banner.png');
       setConfirmationMessage(actData.confirmationMessage || 'Thank you for filling out the form! Our team will contact you shortly.');
 
       // 2. Fetch registrations
@@ -187,10 +187,10 @@ export default function ManageActivityPage() {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       const uploadedUrl = res.data.url;
-      setBannerUrl(uploadedUrl);
-      await api.put('/activities/' + id, { bannerUrl: uploadedUrl });
-      setActivity((prev: any) => ({ ...prev, bannerUrl: uploadedUrl }));
-      alert('Custom event banner uploaded and saved!');
+      setFormBannerUrl(uploadedUrl);
+      await api.put('/activities/' + id, { formBannerUrl: uploadedUrl });
+      setActivity((prev: any) => ({ ...prev, formBannerUrl: uploadedUrl }));
+      alert('Custom registration form banner uploaded and saved!');
     } catch (error) {
       console.error('Banner upload failed:', error);
       alert('Failed to upload banner image. Please try again.');
@@ -201,11 +201,11 @@ export default function ManageActivityPage() {
 
   const handleResetToDefaultBanner = async () => {
     const defaultUrl = '/images/default-event-banner.png';
-    setBannerUrl(defaultUrl);
+    setFormBannerUrl(defaultUrl);
     try {
-      await api.put('/activities/' + id, { bannerUrl: defaultUrl });
-      setActivity((prev: any) => ({ ...prev, bannerUrl: defaultUrl }));
-      alert('Banner reset to official default NSS & VIT Bhopal banner.');
+      await api.put('/activities/' + id, { formBannerUrl: defaultUrl });
+      setActivity((prev: any) => ({ ...prev, formBannerUrl: defaultUrl }));
+      alert('Registration form banner reset to official default NSS & VIT Bhopal banner.');
     } catch (error) {
       console.error('Error resetting banner:', error);
     }
@@ -216,7 +216,7 @@ export default function ManageActivityPage() {
     try {
       const payload = {
         formSchema: newSchema,
-        bannerUrl: bannerUrl || '/images/default-event-banner.png',
+        formBannerUrl: formBannerUrl || '/images/default-event-banner.png',
         isRegistrationOpen,
         confirmationMessage
       };
@@ -954,7 +954,7 @@ export default function ManageActivityPage() {
                       <ImageIcon size={16} className="text-nss-blue" /> Event Banner
                     </h4>
                     <p className="text-xs text-gray-500">
-                      Upload a custom banner or use the official default VIT Bhopal & NSS Unit banner.
+                      Upload a custom banner for the registration form or use the official default VIT Bhopal & NSS Unit banner. (Event card poster is set in Edit Details).
                     </p>
                   </div>
 
@@ -987,15 +987,15 @@ export default function ManageActivityPage() {
                 <div className="w-full bg-slate-50 border border-gray-200 rounded-2xl p-3 flex flex-col items-center justify-center">
                   <div className="w-full max-w-3xl max-h-[220px] rounded-xl overflow-hidden bg-white shadow-xs border border-gray-100 flex items-center justify-center p-2">
                     <img
-                      src={bannerUrl || '/images/default-event-banner.png'}
+                      src={formBannerUrl || '/images/default-event-banner.png'}
                       alt="Banner Preview"
                       className="w-full max-h-[190px] object-contain rounded-lg"
                     />
                   </div>
                   <div className="mt-2 flex items-center gap-2 text-[11px] font-bold text-gray-500">
                     <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                    {bannerUrl && bannerUrl !== '/images/default-event-banner.png' 
-                      ? 'Custom Event Banner Active' 
+                    {formBannerUrl && formBannerUrl !== '/images/default-event-banner.png' 
+                      ? 'Custom Registration Form Banner Active' 
                       : 'Official VIT Bhopal & NSS Unit Default Banner Active'}
                   </div>
                 </div>

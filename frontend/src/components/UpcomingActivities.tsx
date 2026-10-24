@@ -62,7 +62,7 @@ export default function UpcomingActivities() {
               <div className="h-48 relative overflow-hidden bg-gray-200 flex items-center justify-center">
                 {activity.bannerUrl ? (
                   <img 
-                    src={getImageUrl(activity.bannerUrl)} 
+                    src={getImageUrl((activity.bannerUrl && activity.bannerUrl !== '/images/default-event-banner.png') ? activity.bannerUrl : ((activity.photos && activity.photos[0]) || '/images/gallery/events_2025/image1.png'))} 
                     alt={activity.title} 
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     onError={(e) => {
@@ -97,8 +97,11 @@ export default function UpcomingActivities() {
                     Registrations Open
                   </span>
                   
-                  <Link href={`/activities/${activity._id}`} className="text-nss-blue font-semibold text-sm hover:underline">
-                    Register Now →
+                  <Link 
+                    href={`/activities/${activity._id}`} 
+                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-900 hover:bg-nss-blue text-white font-bold rounded-xl text-xs transition-all shadow-xs hover:shadow-md"
+                  >
+                    Register Now <ArrowRight size={14} />
                   </Link>
                 </div>
               </div>

@@ -176,7 +176,7 @@ export default function ActivitiesPage() {
                   {/* Activity Image Banner */}
                   <div className="relative h-48 w-full overflow-hidden bg-gray-100">
                     <img 
-                      src={getImageUrl(activity.bannerUrl || activity.banner || activity.image || activity.coverImage || (activity.photos && activity.photos[0]) || '/images/gallery/events_2025/image1.png')} 
+                      src={getImageUrl((activity.bannerUrl && activity.bannerUrl !== '/images/default-event-banner.png') ? activity.bannerUrl : ((activity.photos && activity.photos[0]) || '/images/gallery/events_2025/image1.png'))} 
                       alt={activity.title}
                       onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image1.png'; }}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"

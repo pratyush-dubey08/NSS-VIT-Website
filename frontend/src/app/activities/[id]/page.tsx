@@ -117,7 +117,7 @@ export default function PublicEventPortal() {
     ? { activityId: event._id, fields: event.formSchema } 
     : defaultFormSchema;
 
-  const eventBanner = event.bannerUrl || '/images/default-event-banner.png';
+  const eventBanner = event.formBannerUrl || '/images/default-event-banner.png';
 
   return (
     <div className="min-h-screen pt-24 bg-slate-50/50 pb-24">
