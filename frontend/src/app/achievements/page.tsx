@@ -66,7 +66,7 @@ export default function AwardeesPage() {
             initial={{ opacity: 0, y: 30 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-5xl md:text-7xl lg:text-8xl font-black text-slate-900 mb-6 tracking-tighter leading-none"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight text-center mb-3"
           >
             Awardees & <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-nss-blue to-indigo-600">Campers</span>
           </motion.h1>
@@ -75,7 +75,7 @@ export default function AwardeesPage() {
             initial={{ opacity: 0, y: 30 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-xl md:text-2xl text-slate-600 max-w-3xl mx-auto leading-relaxed font-medium"
+            className="text-sm sm:text-base text-slate-500 max-w-2xl mx-auto mt-2.5 leading-relaxed font-normal text-center"
           >
             Honoring the exceptional dedication, leadership, and outstanding achievements of our NSS volunteers and program officers on State and National platforms.
           </motion.p>
@@ -92,7 +92,7 @@ export default function AwardeesPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.7 }}
-            className="bg-white rounded-[3rem] p-8 md:p-12 lg:p-16 shadow-2xl shadow-blue-900/5 border border-slate-100 flex flex-col lg:flex-row gap-12 items-center relative overflow-hidden"
+            className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl shadow-blue-900/5 border border-slate-100 flex flex-col lg:flex-row gap-8 sm:gap-10 items-center relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-blue-50 to-transparent rounded-bl-full -z-10"></div>
             
@@ -112,13 +112,13 @@ export default function AwardeesPage() {
             </div>
             
             <div className="w-full lg:w-2/3 space-y-6 flex flex-col items-start text-left">
-              <div className="inline-flex w-fit mr-auto items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-xl text-sm font-black uppercase tracking-widest">
+              <div className="inline-flex w-fit mr-auto items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-700 rounded-lg text-xs font-bold uppercase tracking-wider">
                 <Flag size={18} /> National Integration Camp (NIC)
               </div>
-              <h3 className="text-3xl lg:text-5xl font-black text-slate-900 leading-tight tracking-tight">
+              <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-snug tracking-tight">
                 Representing VIT Bhopal & Madhya Pradesh
               </h3>
-              <p className="text-slate-600 text-lg md:text-xl leading-relaxed text-justify">
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed text-justify">
                 Mr. Rishabh Kabra (21MSI10017) has been selected to be the representative of VIT Bhopal University and Madhya Pradesh for National Level NSS National Integration Camp (NIC). The camp took placed from 23rd to 29th October 2024 at C.C.S. Agricultural University, Hisar, Haryana under the Ministry of Youth Affairs and Sports, Government of India.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
@@ -142,7 +142,7 @@ export default function AwardeesPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.7 }}
-            className="bg-slate-900 rounded-[3rem] p-8 md:p-12 lg:p-16 shadow-2xl shadow-emerald-900/20 border border-slate-800 flex flex-col lg:flex-row-reverse gap-12 items-center relative overflow-hidden text-white"
+            className="bg-slate-900 rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl shadow-emerald-900/20 border border-slate-800 flex flex-col lg:flex-row-reverse gap-8 sm:gap-10 items-center relative overflow-hidden text-white"
           >
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-emerald-900/40 to-transparent rounded-tr-full -z-10"></div>
             
@@ -167,7 +167,7 @@ export default function AwardeesPage() {
               <div className="inline-flex w-fit mr-auto items-center gap-2 px-4 py-2 bg-emerald-500/20 text-emerald-400 rounded-xl text-sm font-black uppercase tracking-widest border border-emerald-500/30">
                 <Award size={18} /> State Level Leadership Training Camp 2024
               </div>
-              <h3 className="text-3xl lg:text-5xl font-black leading-tight tracking-tight text-white">
+              <h3 className="text-xl sm:text-2xl font-black leading-snug tracking-tight text-white">
                 Excellence in Public Awareness & Leadership
               </h3>
               <p className="text-slate-300 text-lg md:text-xl leading-relaxed text-justify">
@@ -187,7 +187,7 @@ export default function AwardeesPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.7 }}
-            className="bg-slate-900 rounded-[3rem] p-8 md:p-12 lg:p-16 shadow-2xl shadow-rose-900/20 border border-slate-800 flex flex-col lg:flex-row gap-12 items-center relative overflow-hidden text-white"
+            className="bg-slate-900 rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl shadow-rose-900/20 border border-slate-800 flex flex-col lg:flex-row gap-8 sm:gap-10 items-center relative overflow-hidden text-white"
           >
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-rose-900/40 to-transparent rounded-bl-full -z-10"></div>
             
@@ -195,7 +195,7 @@ export default function AwardeesPage() {
               <div className="inline-flex w-fit mr-auto items-center gap-2 px-4 py-2 bg-rose-500/20 text-rose-400 rounded-xl text-sm font-black uppercase tracking-widest border border-rose-500/30">
                 <Award size={18} /> State Level Leadership Training Camp 2026
               </div>
-              <h3 className="text-3xl lg:text-5xl font-black leading-tight tracking-tight text-white">
+              <h3 className="text-xl sm:text-2xl font-black leading-snug tracking-tight text-white">
                 Excellence in Social Welfare & Leadership
               </h3>
               <p className="text-slate-300 text-lg md:text-xl leading-relaxed text-justify">
@@ -255,7 +255,7 @@ export default function AwardeesPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.7 }}
-            className="bg-indigo-900 rounded-[3rem] p-8 md:p-12 lg:p-16 shadow-2xl shadow-indigo-900/20 border border-indigo-800 flex flex-col lg:flex-row-reverse gap-12 items-center relative overflow-hidden text-white"
+            className="bg-indigo-900 rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl shadow-indigo-900/20 border border-indigo-800 flex flex-col lg:flex-row-reverse gap-8 sm:gap-10 items-center relative overflow-hidden text-white"
           >
             <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-indigo-500/20 to-transparent rounded-bl-full -z-10"></div>
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl -z-10"></div>
@@ -278,7 +278,7 @@ export default function AwardeesPage() {
               <div className="inline-flex w-fit mr-auto items-center gap-2 px-4 py-2 bg-yellow-400/20 text-yellow-400 rounded-xl text-sm font-black uppercase tracking-widest border border-yellow-400/30">
                 <Trophy size={18} /> National Youth Parliament 2025
               </div>
-              <h3 className="text-3xl lg:text-5xl font-black leading-tight tracking-tight text-white">
+              <h3 className="text-xl sm:text-2xl font-black leading-snug tracking-tight text-white">
                 Top 10 at Nodal Level: <span className="text-indigo-300">Viksit Bharat Youth Parliament</span>
               </h3>
               <p className="text-indigo-100 text-lg md:text-xl leading-relaxed text-justify">
@@ -301,7 +301,7 @@ export default function AwardeesPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.7 }}
-            className="bg-indigo-950 rounded-[3rem] p-8 md:p-12 lg:p-16 shadow-2xl shadow-indigo-900/20 border border-indigo-800 flex flex-col lg:flex-row-reverse gap-12 items-center relative overflow-hidden text-white"
+            className="bg-indigo-950 rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl shadow-indigo-900/20 border border-indigo-800 flex flex-col lg:flex-row-reverse gap-8 sm:gap-10 items-center relative overflow-hidden text-white"
           >
             <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-gradient-to-br from-indigo-500/20 to-transparent rounded-br-full -z-10"></div>
             <div className="absolute bottom-0 right-0 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl -z-10"></div>
@@ -324,7 +324,7 @@ export default function AwardeesPage() {
               <div className="inline-flex w-fit mr-auto items-center gap-2 px-4 py-2 bg-yellow-400/20 text-yellow-400 rounded-xl text-sm font-black uppercase tracking-widest border border-yellow-400/30">
                 <Trophy size={18} /> National Youth Parliament 2026
               </div>
-              <h3 className="text-3xl lg:text-5xl font-black leading-tight tracking-tight text-white">
+              <h3 className="text-xl sm:text-2xl font-black leading-snug tracking-tight text-white">
                 Representing <span className="text-indigo-300">Sehore District</span>
               </h3>
               <p className="text-indigo-100 text-lg md:text-xl leading-relaxed text-justify">
@@ -347,7 +347,7 @@ export default function AwardeesPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.7 }}
-            className="bg-white rounded-[3rem] p-8 md:p-12 lg:p-16 shadow-2xl shadow-orange-900/5 border border-slate-100 flex flex-col lg:flex-row gap-12 items-center relative overflow-hidden"
+            className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl shadow-orange-900/5 border border-slate-100 flex flex-col lg:flex-row gap-8 sm:gap-10 items-center relative overflow-hidden"
           >
             <div className="absolute top-1/2 left-0 w-96 h-96 bg-orange-100/50 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2 -z-10"></div>
             
@@ -369,10 +369,10 @@ export default function AwardeesPage() {
               <div className="inline-flex w-fit mr-auto items-center gap-2 px-4 py-2 bg-orange-50 text-orange-600 rounded-xl text-sm font-black uppercase tracking-widest border border-orange-100">
                 <BookOpen size={18} /> My Bharat Budget Quest 2026
               </div>
-              <h3 className="text-3xl lg:text-5xl font-black text-slate-900 leading-tight tracking-tight">
+              <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-snug tracking-tight">
                 Selected for the <span className="text-orange-600">Final Round</span>
               </h3>
-              <p className="text-slate-600 text-lg md:text-xl leading-relaxed text-justify">
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed text-justify">
                 Maulik Dubey has showcased exceptional analytical and financial acumen, earning a highly coveted spot in the final round of the prestigious My Bharat Budget Quest. His achievement is a matter of immense pride for the NSS Unit, VIT Bhopal University.
               </p>
               <div className="grid grid-cols-1 gap-4 pt-4">
@@ -395,7 +395,7 @@ export default function AwardeesPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.7 }}
-            className="bg-slate-900 rounded-[3rem] p-8 md:p-12 lg:p-16 shadow-2xl shadow-purple-900/20 border border-slate-800 flex flex-col lg:flex-row-reverse gap-12 items-center relative overflow-hidden text-white"
+            className="bg-slate-900 rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl shadow-purple-900/20 border border-slate-800 flex flex-col lg:flex-row-reverse gap-8 sm:gap-10 items-center relative overflow-hidden text-white"
           >
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-purple-900/40 to-transparent rounded-tr-full -z-10"></div>
             
@@ -420,7 +420,7 @@ export default function AwardeesPage() {
               <div className="inline-flex w-fit mr-auto items-center gap-2 px-4 py-2 bg-purple-500/20 text-purple-400 rounded-xl text-sm font-black uppercase tracking-widest border border-purple-500/30">
                 <Award size={18} /> Pre-Republic Day Camp 2025
               </div>
-              <h3 className="text-3xl lg:text-5xl font-black leading-tight tracking-tight text-white">
+              <h3 className="text-xl sm:text-2xl font-black leading-snug tracking-tight text-white">
                 District-Level <span className="text-purple-400">Selections</span>
               </h3>
               <p className="text-slate-300 text-lg md:text-xl leading-relaxed text-justify">
@@ -440,7 +440,7 @@ export default function AwardeesPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.7 }}
-            className="bg-white rounded-[3rem] p-8 md:p-12 lg:p-16 shadow-2xl shadow-blue-900/5 border border-slate-100 flex flex-col gap-12 items-center relative overflow-hidden"
+            className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl shadow-blue-900/5 border border-slate-100 flex flex-col gap-8 sm:gap-10 items-center relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-blue-50 to-transparent rounded-bl-full -z-10"></div>
             
@@ -448,10 +448,10 @@ export default function AwardeesPage() {
               <div className="inline-flex w-fit mx-auto items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-xl text-sm font-black uppercase tracking-widest border border-blue-100">
                 <Award size={18} /> Pre-RDC Camp Zonal Level Selections
               </div>
-              <h3 className="text-3xl lg:text-5xl font-black leading-tight tracking-tight text-slate-900">
+              <h3 className="text-xl sm:text-2xl font-black leading-snug tracking-tight text-slate-900">
                 A Proud Moment for <span className="text-blue-600">VIT Bhopal University</span>
               </h3>
-              <p className="text-slate-600 text-lg md:text-xl leading-relaxed text-justify">
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed text-justify">
                 Our exceptional volunteers — <strong className="text-slate-900 font-bold">Shagun Singh, Maulik Dubey, Kshitika Atri, Soumya Mishra, Pragati,</strong> and <strong className="text-slate-900 font-bold">Riya Singh</strong> — showcased outstanding leadership, discipline, and dedication at the <strong className="text-slate-900 font-bold">Pre-RDC Zonal Level Selections</strong>. Their phenomenal performance proudly represents VIT Bhopal University and reflects the true essence of NSS — <span className="italic text-blue-600 font-semibold">"Not Me But You"</span>.
               </p>
 
