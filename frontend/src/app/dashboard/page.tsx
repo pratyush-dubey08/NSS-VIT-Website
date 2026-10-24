@@ -10,6 +10,7 @@ export default function VolunteerDashboard() {
   const { user } = useAuthStore();
   const [managedActivities, setManagedActivities] = useState<any[]>([]);
   const [registeredActivities, setRegisteredActivities] = useState<any[]>([]);
+  const [activeVolunteerForms, setActiveVolunteerForms] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -32,6 +33,16 @@ export default function VolunteerDashboard() {
           const { data: myRegistrations } = await api.get('/forms/my-registrations');
           const validRegs = (myRegistrations || []).filter((r: any) => r.activityId != null);
           setRegisteredActivities(validRegs);
+
+          // Fetch active volunteer forms so volunteer never misses filling them
+          try {
+            const { data: vfData } = await api.get('/volunteer-forms');
+            const now = new Date();
+            const pendingForms = (vfData || []).filter((f: any) => 
+              f.isActive && (!f.deadline || new Date(f.deadline) >= now)
+            );
+            setActiveVolunteerForms(pendingForms);
+          } catch (e) {}
 
         } catch (error) {
           console.error("Error fetching dashboard data", error);
@@ -81,6 +92,69 @@ export default function VolunteerDashboard() {
         {/* Decorative elements */}
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-white opacity-10 rounded-full blur-3xl pointer-events-none"></div>
       </div>
+
+      {/* Action Required: Volunteer Forms Alert */}
+      {activeVolunteerForms.length > 0 && (
+        <div className="space-y-4">
+          {activeVolunteerForms.map((vf) => (
+            <div
+              key={vf._id}
+              className="p-5 sm:p-6 bg-gradient-to-r from-amber-50 via-white to-blue-50 border-2 border-amber-300 rounded-3xl shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-5 relative overflow-hidden"
+            >
+              <div className="space-y-2 flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-0.5 bg-amber-500 text-white text-[10px] font-black uppercase tracking-wider rounded-full flex items-center gap-1 shadow-2xs">
+                    ⚡ Action Required
+                  </span>
+                  {vf.deadline && (
+                    <span className="text-xs font-bold text-amber-900 flex items-center gap-1">
+                      <Clock size={13} /> Closes: {new Date(vf.deadline).toLocaleDateString()}
+                    </span>
+                  )}
+                </div>
+
+                <h3
+                  style={{
+                    color: vf.titleColor || '#111827',
+                    fontWeight: vf.titleBold ? 'bold' : 'normal',
+                    fontStyle: vf.titleItalic ? 'italic' : 'normal',
+                    textDecoration: vf.titleUnderline ? 'underline' : 'none'
+                  }}
+                  className="text-lg sm:text-xl leading-snug"
+                >
+                  {vf.title}
+                </h3>
+
+                {vf.description && (
+                  <p
+                    style={{
+                      color: vf.descriptionColor || '#4b5563',
+                      fontWeight: vf.descriptionBold ? 'bold' : 'normal',
+                      fontStyle: vf.descriptionItalic ? 'italic' : 'normal',
+                      textDecoration: vf.descriptionUnderline ? 'underline' : 'none'
+                    }}
+                    className="text-xs sm:text-sm max-w-2xl leading-relaxed"
+                  >
+                    {vf.description}
+                  </p>
+                )}
+              </div>
+
+              <div className="flex items-center gap-3 shrink-0">
+                <a
+                  href={vf.googleFormUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3.5 bg-gradient-to-r from-nss-blue to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-black text-xs sm:text-sm rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer"
+                >
+                  <span>Click Here to Fill Form Now</span>
+                  <ExternalLink size={16} />
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Stats Grid - 3 Cards Side by Side */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -7,7 +7,7 @@ import {
   Calendar, MapPin, CheckCircle2, ArrowLeft, Clock, AlertCircle,
   ExternalLink, MessageCircle, Sparkles, HeartHandshake,
   Share2
-} from 'lucide-react';
+, FileText } from 'lucide-react';
 import Link from 'next/link';
 import DynamicForm from '@/components/DynamicForm';
 import { FieldType } from '@/components/admin/FormBuilder';
@@ -121,6 +121,7 @@ export default function PublicEventPortal() {
     </div>
   );
 
+  const isGoogleFormMode = event?.registrationMode === 'GOOGLE_FORM' || (Boolean(event?.googleFormUrl) && (!event?.formSchema || event?.formSchema.length === 0 || event?.registrationMode !== 'CUSTOM'));
   const formSchemaToUse = (event.formSchema && event.formSchema.length > 0) 
     ? { activityId: event._id, fields: event.formSchema } 
     : defaultFormSchema;
@@ -322,11 +323,51 @@ export default function PublicEventPortal() {
                         </div>
                       )}
 
-                      <DynamicForm 
-                        schema={formSchemaToUse} 
-                        onSubmit={handleRegistrationSubmit} 
-                        isSubmitting={isSubmitting} 
-                      />
+                      {isGoogleFormMode ? (
+                        <div className="py-8 px-4 text-center space-y-6">
+                          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center mx-auto shadow-md">
+                            <FileText size={32} />
+                          </div>
+                          <div className="max-w-md mx-auto space-y-2">
+                            <span className="inline-block px-3 py-1 bg-blue-50 text-nss-blue rounded-full text-xs font-bold uppercase tracking-wider">
+                              Official Event Registration
+                            </span>
+                            <h2 className="text-2xl font-black text-gray-900">
+                              Register for {event.title}
+                            </h2>
+                            <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                              Participant registration for this activity is being collected via Google Forms. Please click the button below to complete the official registration form.
+                            </p>
+                          </div>
+
+                          <div className="pt-2">
+                            <a
+                              href={event.googleFormUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 bg-gradient-to-r from-nss-blue to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-black text-sm rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 cursor-pointer"
+                            >
+                              <span>Click Here to Register Now</span>
+                              <ExternalLink size={18} />
+                            </a>
+                          </div>
+
+                          <div className="flex flex-wrap items-center justify-center gap-4 text-[11px] font-bold text-gray-500 pt-3 border-t border-gray-100 max-w-sm mx-auto">
+                            <span className="flex items-center gap-1 text-emerald-600">
+                              ✓ Verified Official NSS Form
+                            </span>
+                            <span className="flex items-center gap-1">
+                              ↗ Opens in a new tab
+                            </span>
+                          </div>
+                        </div>
+                      ) : (
+                        <DynamicForm 
+                          schema={formSchemaToUse} 
+                          onSubmit={handleRegistrationSubmit} 
+                          isSubmitting={isSubmitting} 
+                        />
+                      )}
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -379,7 +420,7 @@ export default function PublicEventPortal() {
                     <Clock size={18} />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Volunteer Hours</p>
+                    <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Allocated NSS Hours</p>
                     <p className="font-bold text-gray-900 text-xs sm:text-sm">{event.hoursAllocated} Hours</p>
                   </div>
                 </div>

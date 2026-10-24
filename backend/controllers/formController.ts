@@ -10,8 +10,18 @@ import { AuthRequest } from '../middleware/authMiddleware';
 export const getFormSchemaByActivity = async (req: Request, res: Response) => {
   try {
     const { activityId } = req.params;
-    const schema = await FormSchema.findOne({ activityId });
+    let schema = await FormSchema.findOne({ activityId });
     if (!schema) {
+      const activity = await Activity.findById(activityId);
+      if (activity) {
+        return res.status(200).json({
+          activityId: activity._id,
+          fields: activity.formSchema || [],
+          isActive: activity.isRegistrationOpen !== false,
+          googleFormUrl: activity.googleFormUrl || '',
+          registrationMode: activity.registrationMode || 'CUSTOM'
+        });
+      }
       return res.status(404).json({ message: 'Form schema not found for this activity' });
     }
     res.status(200).json(schema);
@@ -23,7 +33,7 @@ export const getFormSchemaByActivity = async (req: Request, res: Response) => {
 export const saveFormSchema = async (req: Request, res: Response) => {
   try {
     const activityId = req.params.activityId || req.body.activityId;
-    const { fields, isActive } = req.body;
+    const { fields, isActive, googleFormUrl, registrationMode } = req.body;
 
     const userRole = (req as any).user?.role;
     const userId = (req as any).user?.userId || (req as any).user?.id;
@@ -45,18 +55,34 @@ export const saveFormSchema = async (req: Request, res: Response) => {
     }
     
     // Upsert the schema
+    const updateData: any = {};
+    if (fields !== undefined) updateData.fields = fields;
+    if (isActive !== undefined) updateData.isActive = isActive;
+    if (googleFormUrl !== undefined) updateData.googleFormUrl = googleFormUrl;
+    if (registrationMode !== undefined) updateData.registrationMode = registrationMode;
+
     const schema = await FormSchema.findOneAndUpdate(
       { activityId },
-      { fields, isActive },
+      updateData,
       { new: true, upsert: true }
     );
 
-    // Keep Activity.formSchema and isRegistrationOpen in sync as well
+    // Keep Activity in sync as well
     if (fields && Array.isArray(fields)) {
       activity.formSchema = fields;
-      activity.isRegistrationOpen = true;
-      await activity.save();
     }
+    if (googleFormUrl !== undefined) {
+      activity.googleFormUrl = googleFormUrl;
+    }
+    if (registrationMode !== undefined) {
+      activity.registrationMode = registrationMode;
+    }
+    if (isActive !== undefined) {
+      activity.isRegistrationOpen = isActive;
+    } else {
+      activity.isRegistrationOpen = true;
+    }
+    await activity.save();
     
     res.status(200).json(schema);
   } catch (error) {
@@ -436,7 +462,7 @@ export const getMyRegistrations = async (req: Request, res: Response) => {
   try {
     const userId = (req as any).user.userId || (req as any).user.id;
     const registrations = await Registration.find({ userId })
-      .populate('activityId', 'title date venue description bannerUrl hoursAllocated workingHours status isRegistrationOpen')
+      .populate('activityId', 'title date venue description bannerUrl hoursAllocated workingHours status isRegistrationOpen googleFormUrl registrationMode')
       .sort({ createdAt: -1 });
     
     // Filter out orphaned registrations where activity was deleted

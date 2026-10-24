@@ -38,6 +38,8 @@ export interface IFormSchema extends Document {
   activityId: mongoose.Types.ObjectId;
   fields: IFormField[];
   isActive: boolean;
+  googleFormUrl?: string;
+  registrationMode?: string;
 }
 
 const FormFieldSchema = new Schema({
@@ -60,7 +62,9 @@ const FormFieldSchema = new Schema({
 const FormSchemaSchema: Schema = new Schema({
   activityId: { type: mongoose.Schema.Types.ObjectId, ref: 'Activity', required: true, unique: true },
   fields: [FormFieldSchema],
-  isActive: { type: Boolean, default: true }
+  isActive: { type: Boolean, default: true },
+  googleFormUrl: { type: String, default: '' },
+  registrationMode: { type: String, default: 'CUSTOM' }
 }, {
   timestamps: true
 });

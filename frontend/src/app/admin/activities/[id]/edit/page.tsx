@@ -248,7 +248,7 @@ export default function EditActivityPage({ params }: { params: Promise<{ id: str
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700">Allocated Working Hours</label>
+                <label className="text-sm font-bold text-gray-700">Allocated NSS Hours</label>
                 <input 
                   type="number"
                   name="hoursAllocated"

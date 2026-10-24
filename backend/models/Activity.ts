@@ -16,6 +16,8 @@ export interface IActivity extends Document {
   participantLimit?: number;
   registrationDeadline?: Date;
   isRegistrationOpen: boolean;
+  googleFormUrl?: string;
+  registrationMode?: 'CUSTOM' | 'GOOGLE_FORM';
   eventManagers: mongoose.Types.ObjectId[];
   hoursAllocated: number;
   workingHours: number;
@@ -40,6 +42,8 @@ const ActivitySchema: Schema = new Schema({
   participantLimit: { type: Number },
   registrationDeadline: { type: Date },
   isRegistrationOpen: { type: Boolean, default: true },
+  googleFormUrl: { type: String, default: '' },
+  registrationMode: { type: String, enum: ['CUSTOM', 'GOOGLE_FORM'], default: 'CUSTOM' },
   eventManagers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   hoursAllocated: { type: Number, required: true, default: 0 },
   workingHours: { type: Number, default: 0 },

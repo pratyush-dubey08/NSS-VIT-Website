@@ -41,6 +41,31 @@ export default function ManageActivityPage() {
   const [formBannerUrl, setFormBannerUrl] = useState('');
   const [confirmationMessage, setConfirmationMessage] = useState('Thank you for filling out the form! Our team will contact you shortly.');
   const [isSavingFormSettings, setIsSavingFormSettings] = useState(false);
+  const [registrationMode, setRegistrationMode] = useState<'CUSTOM' | 'GOOGLE_FORM'>(
+    activity.registrationMode || (activity.googleFormUrl ? 'GOOGLE_FORM' : 'CUSTOM')
+  );
+  const [googleFormUrl, setGoogleFormUrl] = useState<string>(activity.googleFormUrl || '');
+  const [isSavingGoogleForm, setIsSavingGoogleForm] = useState(false);
+
+  const handleSaveGoogleFormUrl = async () => {
+    if (isFormLockedForManagers) return;
+    setIsSavingGoogleForm(true);
+    try {
+      await api.put(`/activities/${id}`, {
+        registrationMode: 'GOOGLE_FORM',
+        googleFormUrl,
+        isRegistrationOpen: true
+      });
+      setActivity((prev: any) => prev ? { ...prev, registrationMode: 'GOOGLE_FORM', googleFormUrl, isRegistrationOpen: true } : null);
+      setIsRegistrationOpen(true);
+      alert('✓ Google Form registration link saved successfully!');
+    } catch (err: any) {
+      console.error(err);
+      alert(err.response?.data?.message || 'Failed to save Google Form link');
+    } finally {
+      setIsSavingGoogleForm(false);
+    }
+  };
   const [isUploadingBanner, setIsUploadingBanner] = useState(false);
 
   // Edit Event Details States (Modal)
@@ -524,7 +549,7 @@ export default function ManageActivityPage() {
             <p className="font-bold text-gray-900 text-xs sm:text-sm truncate">{activity.venue || 'Campus'}</p>
           </div>
           <div>
-            <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Hours Credited</p>
+            <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Allocated NSS Hours</p>
             <p className="font-bold text-gray-900 text-xs sm:text-sm">{activity.hoursAllocated || activity.workingHours || 0} Hours</p>
           </div>
           <div>
@@ -830,7 +855,106 @@ export default function ManageActivityPage() {
               </div>
             </div>
 
-            {/* 2. Embedded FormBuilder */}
+            {/* 2. Registration Method Switcher */}
+            <div className="bg-white rounded-2xl shadow-xs border border-gray-200/80 p-6 space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gray-100">
+                <div>
+                  <h3 className="text-sm font-black text-gray-900 flex items-center gap-2">
+                    <FileText size={17} className="text-nss-blue" /> Registration Form Mode
+                  </h3>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    Choose whether to design custom questions with the Form Builder or provide a direct Google Form link.
+                  </p>
+                </div>
+
+                <div className="flex items-center bg-gray-100 p-1 rounded-xl shrink-0">
+                  <button
+                    type="button"
+                    disabled={isFormLockedForManagers}
+                    onClick={async () => {
+                      setRegistrationMode('CUSTOM');
+                      try {
+                        await api.put(`/activities/${id}`, { registrationMode: 'CUSTOM' });
+                        setActivity((prev: any) => prev ? { ...prev, registrationMode: 'CUSTOM' } : null);
+                      } catch (e) {}
+                    }}
+                    className={'px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ' + (
+                      isFormLockedForManagers ? 'opacity-50 cursor-not-allowed ' : 'cursor-pointer '
+                    ) + (
+                      registrationMode === 'CUSTOM'
+                        ? 'bg-white text-nss-blue shadow-xs font-black'
+                        : 'text-gray-600 hover:text-gray-900'
+                    )}
+                  >
+                    🛠️ Built-in Form Builder
+                  </button>
+                  <button
+                    type="button"
+                    disabled={isFormLockedForManagers}
+                    onClick={async () => {
+                      setRegistrationMode('GOOGLE_FORM');
+                      try {
+                        await api.put(`/activities/${id}`, { registrationMode: 'GOOGLE_FORM' });
+                        setActivity((prev: any) => prev ? { ...prev, registrationMode: 'GOOGLE_FORM' } : null);
+                      } catch (e) {}
+                    }}
+                    className={'px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ' + (
+                      isFormLockedForManagers ? 'opacity-50 cursor-not-allowed ' : 'cursor-pointer '
+                    ) + (
+                      registrationMode === 'GOOGLE_FORM'
+                        ? 'bg-white text-nss-blue shadow-xs font-black'
+                        : 'text-gray-600 hover:text-gray-900'
+                    )}
+                  >
+                    🔗 Google Form Link
+                  </button>
+                </div>
+              </div>
+
+              {registrationMode === 'GOOGLE_FORM' && (
+                <div className="p-5 bg-blue-50/60 border border-blue-200/80 rounded-2xl space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="text-xs font-black text-blue-950 uppercase tracking-wider">Google Form Registration Setup</h4>
+                      <p className="text-xs text-blue-800 mt-0.5">
+                        Students visiting this activity page will see a prominent <strong>"Click Here to Register Now"</strong> button that opens your Google Form.
+                      </p>
+                    </div>
+                    {googleFormUrl && (
+                      <a
+                        href={googleFormUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-bold text-nss-blue hover:underline inline-flex items-center gap-1 bg-white px-3 py-1.5 rounded-lg border border-blue-200 shadow-2xs"
+                      >
+                        Preview Form <ExternalLink size={13} />
+                      </a>
+                    )}
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-2.5">
+                    <input
+                      type="url"
+                      disabled={isFormLockedForManagers}
+                      value={googleFormUrl}
+                      onChange={(e) => setGoogleFormUrl(e.target.value)}
+                      placeholder="https://forms.gle/... or https://docs.google.com/forms/d/e/.../viewform"
+                      className="flex-1 p-3 bg-white border border-gray-300 rounded-xl text-xs font-medium text-gray-900 focus:outline-none focus:border-nss-blue shadow-2xs disabled:opacity-60 disabled:cursor-not-allowed"
+                    />
+                    <button
+                      type="button"
+                      disabled={isFormLockedForManagers || isSavingGoogleForm || !googleFormUrl.trim()}
+                      onClick={handleSaveGoogleFormUrl}
+                      className="px-6 py-3 bg-nss-blue hover:bg-blue-900 text-white font-bold text-xs rounded-xl transition-all shadow-xs disabled:opacity-50 flex items-center justify-center gap-1.5 shrink-0 cursor-pointer"
+                    >
+                      {isSavingGoogleForm ? 'Saving...' : 'Save Google Form Link'}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 3. Embedded FormBuilder */}
             <div className="bg-white rounded-2xl shadow-xs border border-gray-200/80 p-6">
               <FormBuilder
                 initialFields={activity.formSchema || []}
@@ -1100,7 +1224,7 @@ export default function ManageActivityPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Hours Credited</label>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Allocated NSS Hours</label>
                   <input
                     type="number"
                     required
