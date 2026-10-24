@@ -42,8 +42,27 @@ const RegistrationSchema: Schema = new Schema({
   timestamps: true
 });
 
-// Indices
-RegistrationSchema.index({ activityId: 1, email: 1 });
-RegistrationSchema.index({ activityId: 1, userId: 1 });
+// Indices: Distinct partial unique constraints
+RegistrationSchema.index(
+  { activityId: 1, userId: 1 },
+  {
+    unique: true,
+    partialFilterExpression: {
+      userId: { $exists: true, $type: 'objectId' },
+      registrationType: 'VOLUNTEER'
+    }
+  }
+);
+
+RegistrationSchema.index(
+  { activityId: 1, email: 1 },
+  {
+    unique: true,
+    partialFilterExpression: {
+      registrationType: 'PARTICIPANT',
+      email: { $exists: true, $type: 'string' }
+    }
+  }
+);
 
 export default mongoose.model<IRegistration>('Registration', RegistrationSchema);

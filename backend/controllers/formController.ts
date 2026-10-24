@@ -70,8 +70,6 @@ export const saveFormSchema = async (req: Request, res: Response) => {
 export const submitRegistration = async (req: Request, res: Response) => {
   try {
     const { activityId, responses, email: directEmail, fullName: directFullName, registrationNumber: directRegNo, phoneNumber: directPhone } = req.body;
-    const authUser = (req as any).user;
-    let userId = authUser?.userId || authUser?.id;
 
     const activity = await Activity.findById(activityId);
     if (!activity) {
@@ -82,11 +80,11 @@ export const submitRegistration = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'Registrations are currently closed for this activity.' });
     }
 
-    // Extract email from body, authUser, or responses
-    let email = directEmail || authUser?.email || '';
-    let fullName = directFullName || authUser?.name || '';
-    let registrationNumber = directRegNo || authUser?.registrationNumber || '';
-    let phoneNumber = directPhone || authUser?.phoneNumber || '';
+    // Extract email, name, regNo from responses or direct body
+    let email = directEmail || '';
+    let fullName = directFullName || '';
+    let registrationNumber = directRegNo || '';
+    let phoneNumber = directPhone || '';
 
     // Search responses if not directly provided
     if (Array.isArray(responses)) {
@@ -97,6 +95,9 @@ export const submitRegistration = async (req: Request, res: Response) => {
         }
         if (!registrationNumber && /^[0-9]{2}[A-Za-z]{3}[0-9]{4,5}$/i.test(val)) {
           registrationNumber = val.toUpperCase();
+        }
+        if (!phoneNumber && /^[0-9]{10}$/.test(val)) {
+          phoneNumber = val;
         }
       }
     }
@@ -113,42 +114,31 @@ export const submitRegistration = async (req: Request, res: Response) => {
       });
     }
 
-    // Check for duplicate registration for this activity (Strict one submission per student / email)
-    const duplicateQuery: any = {
+    // Strict one submission per student email for this activity
+    const existingReg = await Registration.findOne({
       activityId,
       registrationType: 'PARTICIPANT',
-      $or: [
-        { email: normalizedEmail }
-      ]
-    };
-    if (userId) {
-      duplicateQuery.$or.push({ userId });
-    }
-    if (registrationNumber && registrationNumber.trim()) {
-      duplicateQuery.$or.push({ registrationNumber: registrationNumber.toUpperCase().trim() });
-    }
-
-    const existingReg = await Registration.findOne(duplicateQuery);
+      email: normalizedEmail
+    });
     if (existingReg) {
       return res.status(400).json({ 
         message: 'A response has already been recorded for ' + normalizedEmail + '. Only one submission per student is allowed.' 
       });
     }
 
-    // If userId not present, see if a user already exists with this email
-    if (!userId) {
-      const existingUser = await User.findOne({ email: normalizedEmail });
-      if (existingUser) {
-        userId = existingUser._id;
-        if (!fullName) fullName = existingUser.name;
-        if (!registrationNumber) registrationNumber = existingUser.registrationNumber;
-        if (!phoneNumber) phoneNumber = existingUser.phoneNumber;
-      }
+    // Only link to an existing user if this specific email belongs to a registered user
+    let participantUserId: any = undefined;
+    const existingUser = await User.findOne({ email: normalizedEmail });
+    if (existingUser) {
+      participantUserId = existingUser._id;
+      if (!fullName) fullName = existingUser.name;
+      if (!registrationNumber) registrationNumber = existingUser.registrationNumber;
+      if (!phoneNumber) phoneNumber = existingUser.phoneNumber;
     }
 
     const registration = new Registration({
       activityId,
-      userId: userId || undefined,
+      userId: participantUserId || undefined,
       fullName: fullName || 'VIT Student',
       email: normalizedEmail,
       registrationNumber: registrationNumber || '',
@@ -171,9 +161,9 @@ export const submitRegistration = async (req: Request, res: Response) => {
   } catch (error: any) {
     console.error('Error submitting registration:', error);
     if (error.code === 11000) {
-      return res.status(400).json({ message: 'You have already registered for this activity with this email address.' });
+      return res.status(400).json({ message: 'A response has already been recorded for this email address.' });
     }
-    res.status(500).json({ message: 'Error submitting registration' });
+    res.status(500).json({ message: 'Error submitting registration. Please try again.' });
   }
 };
 
