@@ -5,7 +5,7 @@ import {
   Plus, Trash2, Copy, Eye, CheckCircle2, 
   ChevronUp, ChevronDown, Settings2, FileText, CheckSquare, ListFilter,
   Type, AlignLeft, Mail, Hash, Phone, UploadCloud, CheckCheck,
-  QrCode, Image as ImageIcon, Bold, Italic, Underline, Palette, X, Lock, Unlock
+  QrCode, Image as ImageIcon, Bold, Italic, Underline, Palette, X, Lock, Unlock, GripVertical, ArrowUp, ArrowDown
 } from 'lucide-react';
 import api from '@/lib/axios';
 
@@ -96,6 +96,8 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
   const [activeFieldId, setActiveFieldId] = useState<string | null>(null);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [uploadingImageFor, setUploadingImageFor] = useState<string | null>(null);
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
   const fieldTypeOptions = [
     { type: FieldType.SHORT_TEXT, label: 'Short Answer', icon: Type, desc: 'Single-line text' },
@@ -181,6 +183,36 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
     updated[index] = updated[targetIndex];
     updated[targetIndex] = temp;
     setFields(updated);
+  };
+
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    setDraggedIndex(index);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', index.toString());
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    if (dragOverIndex !== index) {
+      setDragOverIndex(index);
+    }
+  };
+
+  const handleDragLeave = () => {
+    setDragOverIndex(null);
+  };
+
+  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault();
+    setDragOverIndex(null);
+    if (draggedIndex === null || draggedIndex === dropIndex) return;
+
+    const updated = [...fields];
+    const [draggedItem] = updated.splice(draggedIndex, 1);
+    updated.splice(dropIndex, 0, draggedItem);
+    setFields(updated);
+    setDraggedIndex(null);
   };
 
   const addOption = (fieldId: string) => {
@@ -281,19 +313,43 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
               const isSelected = activeFieldId === field.id;
               const hasOptions = [FieldType.RADIO, FieldType.CHECKBOX, FieldType.DROPDOWN].includes(field.type);
               const cardBg = field.bgColor || '#ffffff';
+              const isBeingDragged = draggedIndex === index;
+              const isTargetedByDrag = dragOverIndex === index;
 
               return (
                 <div
                   key={field.id}
                   onClick={() => setActiveFieldId(field.id)}
+                  draggable={!readOnly}
+                  onDragStart={(e) => handleDragStart(e, index)}
+                  onDragOver={(e) => handleDragOver(e, index)}
+                  onDragLeave={handleDragLeave}
+                  onDrop={(e) => handleDrop(e, index)}
                   style={{ backgroundColor: cardBg }}
                   className={'rounded-2xl border-2 transition-all p-5 shadow-xs relative ' + (
+                    isBeingDragged ? 'opacity-40 border-dashed border-nss-blue' :
+                    isTargetedByDrag ? 'border-nss-blue ring-4 ring-nss-blue/20 scale-[1.01]' :
                     isSelected ? 'border-nss-blue ring-2 ring-nss-blue/10 shadow-md' : 'border-gray-200/90 hover:border-gray-300'
                   )}
                 >
+                  {/* Google Forms Style Drag Handle Strip */}
+                  {!readOnly && (
+                    <div 
+                      className="flex items-center justify-center py-1 -mt-2 mb-2 text-gray-400 hover:text-nss-blue cursor-grab active:cursor-grabbing select-none transition-colors group"
+                      title="Click and drag up/down to rearrange question order"
+                    >
+                      <div className="flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-black/[0.03] group-hover:bg-blue-50 transition-colors">
+                        <GripVertical size={16} className="text-gray-400 group-hover:text-nss-blue" />
+                        <span className="text-[10px] font-black text-gray-400 group-hover:text-nss-blue uppercase tracking-wider">
+                          Drag to Rearrange
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Card Header & Controls */}
                   <div className="flex flex-wrap items-center justify-between gap-3 mb-3 border-b border-black/5 pb-2.5">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <span className="w-6 h-6 rounded-lg bg-black/5 text-gray-700 font-bold text-xs flex items-center justify-center">
                         {index + 1}
                       </span>
@@ -304,6 +360,33 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
                         <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-rose-50 text-rose-600 border border-rose-200/60">
                           Required
                         </span>
+                      )}
+
+                      {/* Prominent Rearrange Up / Down Buttons */}
+                      {!readOnly && fields.length > 1 && (
+                        <div className="flex items-center gap-1 bg-white/90 border border-gray-200 rounded-lg p-0.5 shadow-2xs ml-1" onClick={(e) => e.stopPropagation()}>
+                          <button
+                            type="button"
+                            disabled={index === 0}
+                            onClick={(e) => { e.stopPropagation(); moveField(index, 'UP'); }}
+                            title="Move Question Up"
+                            className="px-2 py-1 rounded-md text-[11px] font-bold text-gray-700 hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent flex items-center gap-1 transition-colors cursor-pointer"
+                          >
+                            <ArrowUp size={12} className="text-nss-blue" />
+                            <span>Up</span>
+                          </button>
+                          <div className="w-px h-3.5 bg-gray-200" />
+                          <button
+                            type="button"
+                            disabled={index === fields.length - 1}
+                            onClick={(e) => { e.stopPropagation(); moveField(index, 'DOWN'); }}
+                            title="Move Question Down"
+                            className="px-2 py-1 rounded-md text-[11px] font-bold text-gray-700 hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent flex items-center gap-1 transition-colors cursor-pointer"
+                          >
+                            <ArrowDown size={12} className="text-nss-blue" />
+                            <span>Down</span>
+                          </button>
+                        </div>
                       )}
                     </div>
 
