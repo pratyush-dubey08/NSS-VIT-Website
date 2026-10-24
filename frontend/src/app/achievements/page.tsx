@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { Award, Star, Trophy, Target, MapPin, Calendar, Users, Flag, Shield, Medal, BookOpen } from 'lucide-react';
 
-const CamperCard = ({ name, regNo, role, image, delay = 0, color = "blue" }: any) => {
+const CamperCard = ({ name, regNo, role, image, delay = 0, color = "blue", imgPos = "object-center" }: any) => {
   const colorMap: Record<string, string> = {
     blue: "from-blue-500/10 to-nss-blue/10 border-blue-100 text-nss-blue",
     purple: "from-purple-500/10 to-indigo-500/10 border-purple-100 text-purple-600",
@@ -29,7 +29,7 @@ const CamperCard = ({ name, regNo, role, image, delay = 0, color = "blue" }: any
             <img 
               src={image} 
               alt={name} 
-              className="w-full h-full object-cover object-top" 
+              className={`w-full h-full object-cover ${imgPos}`} 
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=2563EB&color=fff&size=256&bold=true`;
               }}
@@ -261,10 +261,10 @@ export default function AwardeesPage() {
                   <div className="absolute inset-0 bg-yellow-400 rounded-3xl -rotate-6 opacity-20 transition-transform duration-500 hover:-rotate-12"></div>
                   <div className="absolute inset-0 bg-white/10 backdrop-blur-md p-2 rounded-3xl shadow-2xl border border-white/20 flex flex-col items-center justify-center">
                     <CamperCard 
-                      name="Nandini Pandey" 
+                      name="Nandine Pandey" 
                       role="State Representative"
                       color="amber"
-                      image="/images/achievements/nandini-pandey.png"
+                      image="/images/achievements/nandine-pandey.png"
                     />
                   </div>
                </div>
@@ -283,7 +283,7 @@ export default function AwardeesPage() {
               <div className="mt-6 bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 flex items-start gap-5 shadow-inner">
                 <Medal className="text-yellow-400 shrink-0 mt-1" size={32} />
                 <p className="text-white font-medium text-lg leading-relaxed text-justify">
-                  Amidst fierce competition, Nandini Pandey's outstanding performance earned her the honour of representing the Nodal District (Bhopal) at the State Youth Parliament in the Madhya Pradesh Assembly.
+                  Amidst fierce competition, Nandine Pandey's outstanding performance earned her the honour of representing the Nodal District (Bhopal) at the State Youth Parliament in the Madhya Pradesh Assembly.
                 </p>
               </div>
             </div>
@@ -307,10 +307,10 @@ export default function AwardeesPage() {
                   <div className="absolute inset-0 bg-yellow-400 rounded-3xl rotate-6 opacity-20 transition-transform duration-500 hover:rotate-12"></div>
                   <div className="absolute inset-0 bg-white/10 backdrop-blur-md p-2 rounded-3xl shadow-2xl border border-white/20 flex flex-col items-center justify-center">
                     <CamperCard 
-                      name="Nandini Pandey" 
+                      name="Nandine Pandey" 
                       role="Sehore Representative"
                       color="amber"
-                      image="/images/achievements/nandini-pandey.png"
+                      image="/images/achievements/nandine-pandey.png"
                     />
                   </div>
                </div>
@@ -324,7 +324,7 @@ export default function AwardeesPage() {
                 Representing <span className="text-indigo-300">Sehore District</span>
               </h3>
               <p className="text-indigo-100 text-lg md:text-xl leading-relaxed text-justify">
-                Continuing her outstanding journey in youth advocacy and democratic discourse, Nandini Pandey was once again selected for the prestigious National Youth Parliament.
+                Continuing her outstanding journey in youth advocacy and democratic discourse, Nandine Pandey was once again selected for the prestigious National Youth Parliament.
               </p>
               <div className="mt-6 bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 flex items-start gap-5 shadow-inner">
                 <Medal className="text-yellow-400 shrink-0 mt-1" size={32} />
