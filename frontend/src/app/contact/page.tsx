@@ -23,39 +23,46 @@ const LinkedinIcon = ({ size = 20, className = '' }: { size?: number; className?
   </svg>
 );
 
+const YoutubeIcon = ({ size = 20, className = '' }: { size?: number; className?: string }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
+    <polygon points="10 15 15 12 10 9 10 15" fill="currentColor" />
+  </svg>
+);
+
 export default function ContactPage() {
   const socialChannels = [
     {
-      title: 'Official WhatsApp Community',
-      badge: 'Student Volunteer Hub',
+      title: 'Official WhatsApp Channel',
+      badge: 'Official Announcements',
       badgeColor: 'bg-emerald-100 text-emerald-800',
       icon: MessageCircle,
       iconBg: 'bg-emerald-50 text-emerald-600',
-      description: 'Get instant notifications about new drives, event registrations, volunteer hours, and campus updates.',
-      linkText: 'Join WhatsApp Community',
-      linkUrl: 'https://linktr.ee/nssunit__vitbhopal',
+      description: 'Get instant official notifications about new drives, event registrations, volunteer hours, and campus updates.',
+      linkText: 'Join WhatsApp Channel',
+      linkUrl: 'https://www.whatsapp.com/channel/0029VbBFSgS8qIzvpLL2Ye1W',
       highlightBorder: 'hover:border-emerald-300'
     },
     {
-      title: '@nssunit_vitbhopal',
-      badge: 'Main Instagram',
+      title: '@nssvitbhopal',
+      badge: 'Official Instagram',
       badgeColor: 'bg-rose-100 text-rose-800',
       icon: InstagramIcon,
       iconBg: 'bg-rose-50 text-rose-600',
       description: 'Official flagship handle for event highlights, guest inaugurations, blood donation drives, and official circulars.',
-      linkText: 'Follow @nssunit_vitbhopal',
-      linkUrl: 'https://www.instagram.com/nssunit_vitbhopal/',
+      linkText: 'Follow @nssvitbhopal',
+      linkUrl: 'https://www.instagram.com/nssvitbhopal/',
       highlightBorder: 'hover:border-rose-300'
     },
     {
-      title: 'NSS Unfiltered',
-      badge: 'BTS & Campus Vibes',
+      title: '@nssvitb_unfiltered',
+      badge: 'BTS & Campus Life',
       badgeColor: 'bg-purple-100 text-purple-800',
       icon: Sparkles,
       iconBg: 'bg-purple-50 text-purple-600',
-      description: 'The candid, behind-the-scenes side of NSS! Fun reels, volunteer moments, prep bloopers, camp diaries & student life.',
-      linkText: 'Follow NSS Unfiltered',
-      linkUrl: 'https://linktr.ee/nssunit__vitbhopal',
+      description: 'The candid, behind-the-scenes side of NSS! Fun reels, volunteer moments, prep bloopers, camp diaries & volunteer life.',
+      linkText: 'Follow @nssvitb_unfiltered',
+      linkUrl: 'https://www.instagram.com/nssvitb_unfiltered/',
       highlightBorder: 'hover:border-purple-300'
     },
     {
@@ -66,8 +73,19 @@ export default function ContactPage() {
       iconBg: 'bg-blue-50 text-blue-600',
       description: 'Connect professionally for organizational outreach, alumni network, certificates, and societal impact reports.',
       linkText: 'Connect on LinkedIn',
-      linkUrl: 'https://www.linkedin.com/company/nss-vit-bhopal/',
+      linkUrl: 'https://www.linkedin.com/company/nss-vitb/posts/',
       highlightBorder: 'hover:border-blue-300'
+    },
+    {
+      title: 'NSS Unit YouTube Channel',
+      badge: 'Video Documentaries',
+      badgeColor: 'bg-red-100 text-red-800',
+      icon: YoutubeIcon,
+      iconBg: 'bg-red-50 text-red-600',
+      description: 'Watch event recaps, camp documentaries, awareness films, volunteer testimonials, and keynote talks.',
+      linkText: 'Subscribe on YouTube',
+      linkUrl: 'https://www.youtube.com/@nationalservicescheme-vitb5083',
+      highlightBorder: 'hover:border-red-300'
     }
   ];
 
@@ -120,7 +138,7 @@ export default function ContactPage() {
           </div>
 
           {/* Social Media Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8 pt-8 border-t border-white/10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-8 pt-8 border-t border-white/10">
             {socialChannels.map((item, idx) => {
               const Icon = item.icon;
               return (

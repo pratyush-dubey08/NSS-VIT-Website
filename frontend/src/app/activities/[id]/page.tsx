@@ -30,6 +30,14 @@ const LinkedinIcon = ({ size = 20, className = '' }: { size?: number; className?
   </svg>
 );
 
+const YoutubeIcon = ({ size = 20, className = '' }: { size?: number; className?: string }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
+    <polygon points="10 15 15 12 10 9 10 15" fill="currentColor" />
+  </svg>
+);
+
+
 export default function PublicEventPortal() {
   const params = useParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -199,78 +207,85 @@ export default function PublicEventPortal() {
                         </div>
                       </div>
 
-                      {/* Official Linktree & Social Channels Hub */}
+                      {/* Official Social Channels Hub */}
                       <div className="bg-gradient-to-br from-blue-50/70 via-indigo-50/40 to-purple-50/50 border border-blue-200/80 rounded-3xl p-6 max-w-lg mx-auto text-left space-y-4 shadow-xs">
                         <div className="flex items-center gap-2">
-                          <Sparkles size={18} className="text-nss-blue" />
-                          <h4 className="font-black text-gray-900 text-sm">Stay Connected with NSS Unit VIT Bhopal!</h4>
+                          <Sparkles size={18} className="text-nss-blue shrink-0" />
+                          <h4 className="font-black text-gray-900 text-sm">Stay Connected with NSS Unit, VIT Bhopal University!</h4>
                         </div>
                         <p className="text-xs text-gray-600 leading-relaxed">
-                          Follow our official handles to receive event updates, volunteer opportunities, attendance sheets, and behind-the-scenes moments:
+                          Stay connected with us for further updates, activities, volunteer drives, and upcoming opportunities:
                         </p>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                          {/* 1. WhatsApp Channel */}
                           <a
-                            href="https://linktr.ee/nssunit__vitbhopal"
+                            href="https://www.whatsapp.com/channel/0029VbBFSgS8qIzvpLL2Ye1W"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-3 bg-white hover:bg-emerald-50 border border-gray-200 hover:border-emerald-300 rounded-xl text-xs font-bold text-gray-800 hover:text-emerald-700 flex items-center gap-2.5 transition-all shadow-xs"
                           >
-                            <MessageCircle size={16} className="text-emerald-600 shrink-0" />
+                            <MessageCircle size={17} className="text-emerald-600 shrink-0" />
                             <div className="truncate">
-                              <p className="truncate">WhatsApp Community</p>
-                              <p className="text-[10px] font-normal text-gray-400">Join Student Community</p>
+                              <p className="truncate">WhatsApp Channel</p>
+                              <p className="text-[10px] font-normal text-gray-400">Official Announcements</p>
                             </div>
                           </a>
 
+                          {/* 2. Official Instagram */}
                           <a
-                            href="https://www.instagram.com/nssunit_vitbhopal/"
+                            href="https://www.instagram.com/nssvitbhopal/"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-3 bg-white hover:bg-rose-50 border border-gray-200 hover:border-rose-300 rounded-xl text-xs font-bold text-gray-800 hover:text-rose-700 flex items-center gap-2.5 transition-all shadow-xs"
                           >
-                            <InstagramIcon size={16} className="text-rose-600 shrink-0" />
+                            <InstagramIcon size={17} className="text-rose-600 shrink-0" />
                             <div className="truncate">
-                              <p className="truncate">@nssunit_vitbhopal</p>
+                              <p className="truncate">@nssvitbhopal</p>
                               <p className="text-[10px] font-normal text-gray-400">Official Events & Drives</p>
                             </div>
                           </a>
 
+                          {/* 3. NSS Unfiltered Instagram */}
                           <a
-                            href="https://linktr.ee/nssunit__vitbhopal"
+                            href="https://www.instagram.com/nssvitb_unfiltered/"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-3 bg-white hover:bg-purple-50 border border-gray-200 hover:border-purple-300 rounded-xl text-xs font-bold text-gray-800 hover:text-purple-700 flex items-center gap-2.5 transition-all shadow-xs"
                           >
-                            <Sparkles size={16} className="text-purple-600 shrink-0" />
+                            <InstagramIcon size={17} className="text-purple-600 shrink-0" />
                             <div className="truncate">
-                              <p className="truncate">NSS Unfiltered</p>
-                              <p className="text-[10px] font-normal text-gray-400">BTS, Fun & Volunteer Life</p>
+                              <p className="truncate">@nssvitb_unfiltered</p>
+                              <p className="text-[10px] font-normal text-gray-400">BTS & Volunteer Life</p>
                             </div>
                           </a>
 
+                          {/* 4. LinkedIn */}
                           <a
-                            href="https://www.linkedin.com/company/nss-vit-bhopal/"
+                            href="https://www.linkedin.com/company/nss-vitb/posts/"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-3 bg-white hover:bg-blue-50 border border-gray-200 hover:border-blue-300 rounded-xl text-xs font-bold text-gray-800 hover:text-blue-700 flex items-center gap-2.5 transition-all shadow-xs"
                           >
-                            <LinkedinIcon size={16} className="text-blue-600 shrink-0" />
+                            <LinkedinIcon size={17} className="text-blue-600 shrink-0" />
                             <div className="truncate">
                               <p className="truncate">LinkedIn Unit</p>
                               <p className="text-[10px] font-normal text-gray-400">Professional Network</p>
                             </div>
                           </a>
-                        </div>
 
-                        <div className="pt-2 text-center">
+                          {/* 5. YouTube Channel */}
                           <a
-                            href="https://linktr.ee/nssunit__vitbhopal"
+                            href="https://www.youtube.com/@nationalservicescheme-vitb5083"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-full py-2.5 px-4 bg-nss-blue hover:bg-blue-800 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition-colors shadow-xs"
+                            className="p-3 bg-white hover:bg-red-50 border border-gray-200 hover:border-red-300 rounded-xl text-xs font-bold text-gray-800 hover:text-red-700 flex items-center gap-2.5 transition-all shadow-xs sm:col-span-2"
                           >
-                            <ExternalLink size={14} /> Open Official NSS Linktree Hub
+                            <YoutubeIcon size={17} className="text-red-600 shrink-0" />
+                            <div className="truncate">
+                              <p className="truncate">NSS Unit YouTube Channel</p>
+                              <p className="text-[10px] font-normal text-gray-400">Event Documentaries, Drives & Highlights</p>
+                            </div>
                           </a>
                         </div>
                       </div>
