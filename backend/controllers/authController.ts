@@ -69,6 +69,10 @@ export const loginUser = async (req: Request, res: Response) => {
         role: user.role,
         registrationNumber: user.registrationNumber,
         email: user.email,
+        phoneNumber: user.phoneNumber || '',
+        batch: user.batch || '',
+        gender: user.gender || '',
+        residenceType: user.residenceType || '',
         accumulatedHours: user.accumulatedHours || 0,
         bunks: user.bunks || 0,
         certificates: user.certificates || []
@@ -128,6 +132,10 @@ export const googleLoginUser = async (req: Request, res: Response) => {
         role: user.role,
         registrationNumber: user.registrationNumber,
         email: user.email,
+        phoneNumber: user.phoneNumber || '',
+        batch: user.batch || '',
+        gender: user.gender || '',
+        residenceType: user.residenceType || '',
         accumulatedHours: user.accumulatedHours || 0,
         bunks: user.bunks || 0,
         certificates: user.certificates || []

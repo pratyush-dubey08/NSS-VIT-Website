@@ -1,5 +1,5 @@
 import express from 'express';
-import { getVolunteers, addVolunteer, bulkAddVolunteers, updateVolunteer, deleteVolunteer, bulkDeleteVolunteers, updateMyProfile, getPublicVolunteers, getVolunteerReport } from '../controllers/userController';
+import { getVolunteers, addVolunteer, bulkAddVolunteers, updateVolunteer, deleteVolunteer, bulkDeleteVolunteers, getMyProfile, updateMyProfile, getPublicVolunteers, getVolunteerReport } from '../controllers/userController';
 import { authenticate, authorize } from '../middleware/authMiddleware';
 import { Role } from '../models/User';
 
@@ -11,6 +11,7 @@ router.get('/', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER]
 router.post('/', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER]), addVolunteer);
 router.post('/bulk', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER]), bulkAddVolunteers);
 router.post('/bulk-delete', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER]), bulkDeleteVolunteers);
+router.get('/me/profile', authenticate, getMyProfile);
 router.put('/me/profile', authenticate, updateMyProfile);
 router.put('/:id', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER]), updateVolunteer);
 router.delete('/:id', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER]), deleteVolunteer);

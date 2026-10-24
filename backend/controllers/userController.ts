@@ -14,15 +14,32 @@ export const getVolunteers = async (req: Request, res: Response) => {
   }
 };
 
-// Get public list of volunteers (only basic info)
+// Get public list of volunteers (only basic info, no-cache so newly added volunteers appear instantly)
 export const getPublicVolunteers = async (req: Request, res: Response) => {
   try {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     const volunteers = await User.find({ role: { $ne: Role.SUPER_ADMIN } })
-      .select('name registrationNumber batch')
+      .select('name registrationNumber batch phoneNumber gender residenceType')
       .sort({ name: 1 });
     res.status(200).json(volunteers);
   } catch (error) {
     console.error('Error fetching public volunteers:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+// Get current volunteer / user's own profile
+export const getMyProfile = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.userId;
+    const user = await User.findById(userId).select('-password');
+    if (!user) {
+      return res.status(404).json({ message: 'Volunteer profile not found' });
+    }
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.status(200).json(user);
+  } catch (error) {
+    console.error('Error fetching profile:', error);
     res.status(500).json({ message: 'Server Error' });
   }
 };
