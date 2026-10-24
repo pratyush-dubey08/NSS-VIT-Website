@@ -488,87 +488,99 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
                   </div>
                   )}
 
-                  {/* Attached Image / QR Code Section */}
-                  {readOnly ? (
-                    field.imageUrl ? (
-                      <div className="mb-4 bg-white/80 p-3.5 rounded-xl border border-gray-200/80 flex flex-col items-center justify-center max-w-xs mx-auto">
-                        {field.imageTitle && (
-                          <p className="text-xs font-bold text-gray-800 mb-1.5 flex items-center gap-1">
-                            <QrCode size={13} className="text-nss-blue" /> {field.imageTitle}
-                          </p>
-                        )}
-                        <img 
-                          src={field.imageUrl} 
-                          alt={field.imageTitle || 'Attached'} 
-                          className="max-h-48 object-contain rounded-lg border border-gray-100 shadow-2xs"
-                        />
-                      </div>
-                    ) : null
-                  ) : (
-                  <div className="mb-4 bg-white/80 p-3.5 rounded-xl border border-gray-200/80 space-y-2.5">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold text-gray-700 flex items-center gap-1.5">
-                        <QrCode size={14} className="text-nss-blue" />
-                        Attached Image / QR Code (Optional)
-                      </span>
-
-                      <div className="flex items-center gap-2">
-                        <label className="px-2.5 py-1 bg-blue-50 text-nss-blue hover:bg-blue-100 rounded-lg text-[11px] font-bold cursor-pointer transition-colors flex items-center gap-1">
-                          <UploadCloud size={12} /> {uploadingImageFor === field.id ? 'Uploading...' : 'Upload Image / QR'}
-                          <input
-                            type="file"
-                            accept="image/*"
-                            className="hidden"
-                            onChange={(e) => {
-                              if (e.target.files?.[0]) {
-                                handleUploadImageForField(field.id, e.target.files[0]);
-                              }
-                            }}
+                  {/* Dedicated Image / QR Code Section - ONLY shown for FieldType.IMAGE element */}
+                  {field.type === FieldType.IMAGE && (
+                    readOnly ? (
+                      field.imageUrl ? (
+                        <div className="mb-4 bg-white/90 p-4 rounded-xl border border-gray-200 flex flex-col items-center justify-center max-w-sm mx-auto shadow-xs">
+                          {field.imageTitle && (
+                            <p className="text-xs font-black text-gray-800 mb-2 flex items-center gap-1.5">
+                              <QrCode size={14} className="text-nss-blue" /> {field.imageTitle}
+                            </p>
+                          )}
+                          <img 
+                            src={field.imageUrl} 
+                            alt={field.imageTitle || 'Attached QR / Image'} 
+                            className="max-h-56 object-contain rounded-lg border border-gray-100 shadow-xs"
                           />
-                        </label>
+                        </div>
+                      ) : (
+                        <div className="mb-4 p-4 text-center text-xs text-gray-400 bg-black/5 rounded-xl">
+                          No image or QR uploaded for this block.
+                        </div>
+                      )
+                    ) : (
+                      <div className="mb-4 bg-white/90 p-4 rounded-xl border-2 border-dashed border-blue-200 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-black text-gray-800 flex items-center gap-1.5">
+                            <QrCode size={15} className="text-nss-blue" />
+                            Image / QR Code Source
+                          </span>
+
+                          <div className="flex items-center gap-2">
+                            <label className="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-nss-blue rounded-xl text-xs font-bold cursor-pointer transition-colors flex items-center gap-1.5 shadow-2xs">
+                              <UploadCloud size={13} /> {uploadingImageFor === field.id ? 'Uploading...' : 'Upload Image / QR'}
+                              <input
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                onChange={(e) => {
+                                  if (e.target.files?.[0]) {
+                                    handleUploadImageForField(field.id, e.target.files[0]);
+                                  }
+                                }}
+                              />
+                            </label>
+                            {field.imageUrl && (
+                              <button
+                                type="button"
+                                onClick={() => updateField(field.id, { imageUrl: undefined, imageTitle: undefined })}
+                                className="text-rose-600 hover:text-rose-700 text-xs font-bold flex items-center gap-0.5"
+                              >
+                                <X size={13} /> Remove
+                              </button>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                          <div>
+                            <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-0.5">Image URL</label>
+                            <input
+                              type="text"
+                              value={field.imageUrl || ''}
+                              onChange={(e) => updateField(field.id, { imageUrl: e.target.value })}
+                              placeholder="https://... or /images/..."
+                              className="w-full px-3 py-1.5 text-xs bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-nss-blue font-mono"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-0.5">Image Caption / QR Title</label>
+                            <input
+                              type="text"
+                              value={field.imageTitle || ''}
+                              onChange={(e) => updateField(field.id, { imageTitle: e.target.value })}
+                              placeholder="e.g. Scan to Pay via UPI"
+                              className="w-full px-3 py-1.5 text-xs bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-nss-blue"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Image Preview Box */}
                         {field.imageUrl && (
-                          <button
-                            type="button"
-                            onClick={() => updateField(field.id, { imageUrl: undefined, imageTitle: undefined })}
-                            className="text-rose-600 hover:text-rose-700 text-[11px] font-bold flex items-center gap-0.5"
-                          >
-                            <X size={12} /> Remove Image
-                          </button>
+                          <div className="p-3 bg-slate-50 rounded-xl border border-gray-200 flex flex-col items-center justify-center max-w-sm mx-auto">
+                            {field.imageTitle && (
+                              <p className="text-xs font-black text-gray-800 mb-2">{field.imageTitle}</p>
+                            )}
+                            <img 
+                              src={field.imageUrl} 
+                              alt={field.imageTitle || 'Preview'} 
+                              className="max-h-52 object-contain rounded-lg border border-gray-200 bg-white shadow-xs"
+                            />
+                          </div>
                         )}
                       </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                      <input
-                        type="text"
-                        value={field.imageUrl || ''}
-                        onChange={(e) => updateField(field.id, { imageUrl: e.target.value })}
-                        placeholder="Or paste Image URL (e.g. https://... or /images/qr.png)"
-                        className="px-3 py-1.5 text-xs bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-nss-blue font-mono"
-                      />
-                      <input
-                        type="text"
-                        value={field.imageTitle || ''}
-                        onChange={(e) => updateField(field.id, { imageTitle: e.target.value })}
-                        placeholder="Image Caption / QR Title (e.g. 'UPI Payment QR')"
-                        className="px-3 py-1.5 text-xs bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-nss-blue"
-                      />
-                    </div>
-
-                    {/* Image Preview Box */}
-                    {field.imageUrl && (
-                      <div className="p-3 bg-white rounded-xl border border-gray-200 flex flex-col items-center justify-center max-w-xs mx-auto">
-                        {field.imageTitle && (
-                          <p className="text-xs font-bold text-gray-800 mb-1.5">{field.imageTitle}</p>
-                        )}
-                        <img 
-                          src={field.imageUrl} 
-                          alt={field.imageTitle || 'Attached'} 
-                          className="max-h-48 object-contain rounded-lg border border-gray-100 shadow-2xs"
-                        />
-                      </div>
-                    )}
-                  </div>
+                    )
                   )}
 
                   {/* Placeholder (For text inputs) */}

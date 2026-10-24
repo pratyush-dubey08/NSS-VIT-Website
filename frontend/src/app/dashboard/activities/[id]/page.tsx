@@ -265,10 +265,14 @@ export default function ManageActivityPage() {
   const handleSaveFormSchema = async (newSchema: IFormField[]) => {
     setIsSavingFormSettings(true);
     try {
+      // Auto open registrations when saving form schema
+      const openState = true;
+      setIsRegistrationOpen(true);
+
       const payload = {
         formSchema: newSchema,
         formBannerUrl: formBannerUrl || '/images/default-event-banner.png',
-        isRegistrationOpen,
+        isRegistrationOpen: openState,
         confirmationMessage
       };
       const { data } = await api.put('/activities/' + id, payload);
@@ -278,14 +282,14 @@ export default function ManageActivityPage() {
         await api.put('/forms/schema/' + id, {
           activityId: id,
           fields: newSchema,
-          isActive: isRegistrationOpen
+          isActive: openState
         });
       } catch (errSchema) {
         console.warn('FormSchema collection sync note:', errSchema);
       }
 
-      setActivity(data);
-      alert('Registration form & settings saved successfully!');
+      setActivity({ ...data, isRegistrationOpen: true });
+      alert('Registration form saved and published live! Registrations are now open.');
     } catch (error) {
       console.error('Error saving form:', error);
       alert('Failed to save form schema');

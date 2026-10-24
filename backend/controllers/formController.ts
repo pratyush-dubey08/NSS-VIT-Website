@@ -51,9 +51,10 @@ export const saveFormSchema = async (req: Request, res: Response) => {
       { new: true, upsert: true }
     );
 
-    // Keep Activity.formSchema in sync as well
+    // Keep Activity.formSchema and isRegistrationOpen in sync as well
     if (fields && Array.isArray(fields)) {
       activity.formSchema = fields;
+      activity.isRegistrationOpen = true;
       await activity.save();
     }
     
