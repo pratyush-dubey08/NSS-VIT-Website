@@ -21,7 +21,15 @@ router.get('/schema/:activityId', getFormSchemaByActivity);
 router.put('/schema/:activityId', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER, Role.EVENT_MANAGER]), saveFormSchema);
 
 // Registrations
-router.post('/register', authenticate, submitRegistration);
+router.post('/register', (req, res, next) => {
+  // Optional auth: if header present, authenticate; otherwise proceed as public
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    return authenticate(req, res, next);
+  }
+  next();
+}, submitRegistration);
+router.post('/public-register', submitRegistration);
 router.post('/registrations/manual', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER, Role.EVENT_MANAGER, Role.VOLUNTEER]), addManualRegistration);
 router.get('/my-registrations', authenticate, getMyRegistrations);
 router.get('/registrations/:activityId', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER, Role.EVENT_MANAGER, Role.VOLUNTEER]), getRegistrationsByActivity);

@@ -7,10 +7,17 @@ export interface IRegistrationResponse {
 
 export interface IRegistration extends Document {
   activityId: mongoose.Types.ObjectId;
-  userId: mongoose.Types.ObjectId;
+  userId?: mongoose.Types.ObjectId;
+  fullName?: string;
+  email?: string;
+  registrationNumber?: string;
+  phoneNumber?: string;
   responses: IRegistrationResponse[];
   status: 'PENDING' | 'APPROVED' | 'REJECTED';
   attendanceStatus: 'PENDING' | 'ATTENDED' | 'BUNKED';
+  certificateUrl?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const RegistrationResponseSchema = new Schema({
@@ -20,15 +27,21 @@ const RegistrationResponseSchema = new Schema({
 
 const RegistrationSchema: Schema = new Schema({
   activityId: { type: mongoose.Schema.Types.ObjectId, ref: 'Activity', required: true },
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false },
+  fullName: { type: String },
+  email: { type: String, lowercase: true, trim: true },
+  registrationNumber: { type: String, uppercase: true, trim: true },
+  phoneNumber: { type: String },
   responses: [RegistrationResponseSchema],
   status: { type: String, enum: ['PENDING', 'APPROVED', 'REJECTED'], default: 'PENDING' },
-  attendanceStatus: { type: String, enum: ['PENDING', 'ATTENDED', 'BUNKED'], default: 'PENDING' }
+  attendanceStatus: { type: String, enum: ['PENDING', 'ATTENDED', 'BUNKED'], default: 'PENDING' },
+  certificateUrl: { type: String }
 }, {
   timestamps: true
 });
 
-// Ensure a user can only register once for an activity
-RegistrationSchema.index({ activityId: 1, userId: 1 }, { unique: true });
+// Indices
+RegistrationSchema.index({ activityId: 1, email: 1 });
+RegistrationSchema.index({ activityId: 1, userId: 1 });
 
 export default mongoose.model<IRegistration>('Registration', RegistrationSchema);

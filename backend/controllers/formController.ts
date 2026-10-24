@@ -39,31 +39,106 @@ export const saveFormSchema = async (req: Request, res: Response) => {
 
 // --- Registration Operations ---
 
-export const submitRegistration = async (req: AuthRequest, res: Response) => {
+export const submitRegistration = async (req: Request, res: Response) => {
   try {
-    const { activityId, responses } = req.body;
-    const userId = req.user?.userId;
+    const { activityId, responses, email: directEmail, fullName: directFullName, registrationNumber: directRegNo, phoneNumber: directPhone } = req.body;
+    const authUser = (req as any).user;
+    let userId = authUser?.userId || authUser?.id;
 
-    if (!userId) return res.status(401).json({ message: 'Unauthorized' });
+    const activity = await Activity.findById(activityId);
+    if (!activity) {
+      return res.status(404).json({ message: 'Activity not found' });
+    }
 
-    // Verify schema exists and is active
-    const schema = await FormSchema.findOne({ activityId });
-    if (!schema || !schema.isActive) {
-      return res.status(400).json({ message: 'Registration is not currently open for this activity' });
+    if (!activity.isRegistrationOpen) {
+      return res.status(400).json({ message: 'Registrations are currently closed for this activity.' });
+    }
+
+    // Extract email from body, authUser, or responses
+    let email = directEmail || authUser?.email || '';
+    let fullName = directFullName || authUser?.name || '';
+    let registrationNumber = directRegNo || authUser?.registrationNumber || '';
+    let phoneNumber = directPhone || authUser?.phoneNumber || '';
+
+    // Search responses if not directly provided
+    if (Array.isArray(responses)) {
+      for (const r of responses) {
+        const val = typeof r.value === 'string' ? r.value.trim() : '';
+        if (!email && val.toLowerCase().includes('@')) {
+          email = val;
+        }
+        if (!registrationNumber && /^[0-9]{2}[A-Za-z]{3}[0-9]{4,5}$/i.test(val)) {
+          registrationNumber = val.toUpperCase();
+        }
+      }
+    }
+
+    const normalizedEmail = (email || '').toLowerCase().trim();
+    if (!normalizedEmail) {
+      return res.status(400).json({ message: 'A valid email address is required.' });
+    }
+
+    // Strict VIT Bhopal email validation
+    if (!normalizedEmail.endsWith('@vitbhopal.ac.in')) {
+      return res.status(400).json({ 
+        message: 'Only official VIT Bhopal email addresses ending in @vitbhopal.ac.in are allowed to register.' 
+      });
+    }
+
+    // Check for duplicate registration for this activity
+    const duplicateQuery: any = {
+      activityId,
+      $or: [
+        { email: normalizedEmail }
+      ]
+    };
+    if (userId) {
+      duplicateQuery.$or.push({ userId });
+    }
+
+    const existingReg = await Registration.findOne(duplicateQuery);
+    if (existingReg) {
+      return res.status(400).json({ 
+        message: 'This email address (' + normalizedEmail + ') has already registered for this event. Only one submission per student is allowed.' 
+      });
+    }
+
+    // If userId not present, see if a user already exists with this email
+    if (!userId) {
+      const existingUser = await User.findOne({ email: normalizedEmail });
+      if (existingUser) {
+        userId = existingUser._id;
+        if (!fullName) fullName = existingUser.name;
+        if (!registrationNumber) registrationNumber = existingUser.registrationNumber;
+        if (!phoneNumber) phoneNumber = existingUser.phoneNumber;
+      }
     }
 
     const registration = new Registration({
       activityId,
-      userId,
-      responses,
-      status: 'PENDING'
+      userId: userId || undefined,
+      fullName: fullName || 'VIT Student',
+      email: normalizedEmail,
+      registrationNumber: registrationNumber || '',
+      phoneNumber: phoneNumber || '',
+      responses: Array.isArray(responses) ? responses : [],
+      status: 'APPROVED',
+      attendanceStatus: 'PENDING'
     });
 
     await registration.save();
-    res.status(201).json({ message: 'Registration submitted successfully', registration });
+
+    const confirmationMessage = activity.confirmationMessage || 'Thank you for filling out the form! Our team will contact you shortly.';
+
+    res.status(201).json({ 
+      message: 'Registration submitted successfully', 
+      registration,
+      confirmationMessage
+    });
   } catch (error: any) {
+    console.error('Error submitting registration:', error);
     if (error.code === 11000) {
-      return res.status(400).json({ message: 'You have already registered for this activity' });
+      return res.status(400).json({ message: 'You have already registered for this activity with this email address.' });
     }
     res.status(500).json({ message: 'Error submitting registration' });
   }
@@ -73,30 +148,26 @@ export const getRegistrationsByActivity = async (req: Request, res: Response) =>
   try {
     const { activityId } = req.params;
     
-    const userRole = (req as any).user.role;
-    const userId = (req as any).user.userId;
+    const userRole = (req as any).user?.role;
+    const userId = (req as any).user?.userId || (req as any).user?.id;
     
     if (userRole === 'VOLUNTEER' || userRole === 'EVENT_MANAGER') {
       const activity = await Activity.findById(activityId);
       if (!activity) return res.status(404).json({ message: 'Activity not found' });
       
-      const isManager = activity.eventManagers.some(m => (m._id || m).toString() === userId);
-      if (!isManager) return res.status(403).json({ message: 'Not authorized' });
+      const isManager = activity.eventManagers?.some(m => (m._id || m).toString() === userId);
+      if (!isManager && userRole !== 'SUPER_ADMIN' && userRole !== 'PROGRAM_OFFICER') {
+        return res.status(403).json({ message: 'Not authorized' });
+      }
     }
 
-    const registrations = await Registration.find({ activityId }).populate('userId', 'name registrationNumber department email phoneNumber gender batch residenceType');
-    
-    // Filter out orphaned registrations where user was deleted
-    const validRegistrations = registrations.filter(r => r.userId != null);
+    const registrations = await Registration.find({ activityId })
+      .populate('userId', 'name registrationNumber department email phoneNumber gender batch residenceType')
+      .sort({ createdAt: -1 });
 
-    // Clean up orphaned registrations from database in the background so "Unknown" never persists
-    const orphanedIds = registrations.filter(r => r.userId == null).map(r => r._id);
-    if (orphanedIds.length > 0) {
-      Registration.deleteMany({ _id: { $in: orphanedIds } }).catch(err => console.error('Error cleaning orphaned registrations:', err));
-    }
-
-    res.status(200).json(validRegistrations);
+    res.status(200).json(registrations);
   } catch (error) {
+    console.error('Error fetching registrations:', error);
     res.status(500).json({ message: 'Error fetching registrations' });
   }
 };
@@ -275,7 +346,7 @@ export const addManualRegistration = async (req: Request, res: Response) => {
       userId: { $in: userIds }
     }).select('userId');
     
-    const existingSet = new Set(existing.map(r => r.userId.toString()));
+    const existingSet = new Set(existing.filter(r => r.userId != null).map(r => (r.userId as any).toString()));
     const newIds = userIds.filter(id => !existingSet.has(id.toString()));
 
     if (newIds.length === 0) {

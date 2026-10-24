@@ -51,7 +51,7 @@ export const updateActivity = async (req: Request, res: Response) => {
       }
     }
 
-    const updatedActivity = await Activity.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedActivity = await Activity.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate("eventManagers", "name registrationNumber email department batch");
     res.status(200).json(updatedActivity);
   } catch (error) {
     res.status(500).json({ message: 'Error updating activity' });
