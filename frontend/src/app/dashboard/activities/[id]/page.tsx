@@ -5,11 +5,13 @@ import { useParams, useRouter } from 'next/navigation';
 import { 
   ArrowLeft, Save, Trash2, Users, Search, XCircle, Edit, 
   UserX, CheckCircle2, AlertCircle, Clock, Calendar, MapPin, 
-  Upload, Image as ImageIcon 
+  Upload, Image as ImageIcon, FileText, FileSpreadsheet, 
+  ToggleLeft, ToggleRight, RefreshCw, ExternalLink, Download, Plus
 } from 'lucide-react';
 import Link from 'next/link';
 import api from '@/lib/axios';
 import { useAuthStore } from '@/store/useAuthStore';
+import FormBuilder, { IFormField } from '@/components/admin/FormBuilder';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function ManageActivityPage() {
@@ -20,14 +22,30 @@ export default function ManageActivityPage() {
   const [activity, setActivity] = useState<any>(null);
   const [registrations, setRegistrations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Active Tab: volunteers | form_builder | responses
+  const [activeTab, setActiveTab] = useState<'volunteers' | 'form_builder' | 'responses'>('volunteers');
   
+  // Search States
+  const [volunteerSearch, setVolunteerSearch] = useState('');
+  const [responseSearchQuery, setResponseSearchQuery] = useState('');
+  
+  // Attendance States
   const [attendanceUpdates, setAttendanceUpdates] = useState<Record<string, string>>({});
   const [isSavingAttendance, setIsSavingAttendance] = useState(false);
 
-  // Edit Event Details States
+  // Form Builder & Settings States
+  const [isRegistrationOpen, setIsRegistrationOpen] = useState(true);
+  const [formBannerUrl, setFormBannerUrl] = useState('');
+  const [confirmationMessage, setConfirmationMessage] = useState('Thank you for filling out the form! Our team will contact you shortly.');
+  const [isSavingFormSettings, setIsSavingFormSettings] = useState(false);
+  const [isUploadingBanner, setIsUploadingBanner] = useState(false);
+
+  // Edit Event Details States (Modal)
   const [showEditDetailsModal, setShowEditDetailsModal] = useState(false);
   const [isSavingDetails, setIsSavingDetails] = useState(false);
-  const [isUploadingBanner, setIsUploadingBanner] = useState(false);
+  const [isUploadingPoster, setIsUploadingPoster] = useState(false);
   const [editFormData, setEditFormData] = useState({
     title: '',
     date: '',
@@ -44,37 +62,45 @@ export default function ManageActivityPage() {
   const [markOthersPresent, setMarkOthersPresent] = useState(true);
   const [isBulkMarkingAbsent, setIsBulkMarkingAbsent] = useState(false);
 
-  // Table Search Filter
-  const [volunteerSearch, setVolunteerSearch] = useState('');
-
   const fetchActivityData = async () => {
     try {
-      const actRes = await api.get(`/activities/${id}`);
-      setActivity(actRes.data);
+      setLoading(true);
+      setError(null);
 
+      // 1. Fetch activity details
+      const actRes = await api.get('/activities/' + id);
+      const actData = actRes.data;
+      setActivity(actData);
+      setIsRegistrationOpen(actData.isRegistrationOpen !== false);
+      setFormBannerUrl(actData.formBannerUrl || '/images/default-event-banner.png');
+      setConfirmationMessage(actData.confirmationMessage || 'Thank you for filling out the form! Our team will contact you shortly.');
+
+      setEditFormData({
+        title: actData.title || '',
+        date: actData.date ? new Date(actData.date).toISOString().split('T')[0] : '',
+        venue: actData.venue || '',
+        hoursAllocated: actData.hoursAllocated || actData.workingHours || 0,
+        description: actData.description || '',
+        isRegistrationOpen: actData.isRegistrationOpen !== false,
+        bannerUrl: actData.bannerUrl || ''
+      });
+
+      // 2. Fetch registrations
       try {
-        const regRes = await api.get(`/forms/registrations/${id}`);
+        const regRes = await api.get('/forms/registrations/' + id);
         setRegistrations(Array.isArray(regRes.data) ? regRes.data : []);
       } catch (e1) {
         try {
-          const fallbackRes = await api.get(`/forms/activity/${id}/registrations`);
+          const fallbackRes = await api.get('/forms/activity/' + id + '/registrations');
           setRegistrations(Array.isArray(fallbackRes.data) ? fallbackRes.data : []);
         } catch (e2) {
+          console.warn('Could not fetch registrations:', e2);
           setRegistrations([]);
         }
       }
-
-      setEditFormData({
-        title: actRes.data.title || '',
-        date: actRes.data.date ? new Date(actRes.data.date).toISOString().split('T')[0] : '',
-        venue: actRes.data.venue || '',
-        hoursAllocated: actRes.data.hoursAllocated || actRes.data.workingHours || 0,
-        description: actRes.data.description || '',
-        isRegistrationOpen: actRes.data.isRegistrationOpen ?? true,
-        bannerUrl: actRes.data.bannerUrl || ''
-      });
-    } catch (error) {
-      console.error('Error fetching activity details:', error);
+    } catch (err: any) {
+      console.error('Error fetching activity details:', err);
+      setError('Activity could not be loaded. Please verify your connection or manager permissions.');
     } finally {
       setLoading(false);
     }
@@ -84,6 +110,7 @@ export default function ManageActivityPage() {
     if (id) fetchActivityData();
   }, [id]);
 
+  // Attendance Handlers
   const handleAttendanceChange = (regId: string, status: string) => {
     setAttendanceUpdates(prev => ({ ...prev, [regId]: status }));
   };
@@ -131,8 +158,8 @@ export default function ManageActivityPage() {
     tokens.forEach(token => {
       const cleanToken = token.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
       registrations.forEach(r => {
-        const regNo = (r.userId?.registrationNumber || '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
-        const name = (r.userId?.name || '').toLowerCase();
+        const regNo = (r.userId?.registrationNumber || r.registrationNumber || '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+        const name = (r.userId?.name || r.fullName || '').toLowerCase();
         if ((cleanToken.length >= 6 && regNo.includes(cleanToken)) || regNo === cleanToken || name.includes(token.toLowerCase())) {
           absentMatchIds.add(r._id);
         }
@@ -156,12 +183,10 @@ export default function ManageActivityPage() {
     try {
       const updates: Array<{ registrationId: string; attendanceStatus: string }> = [];
 
-      // Mark matched as Absent (BUNKED)
       absentMatches.forEach(r => {
         updates.push({ registrationId: r._id, attendanceStatus: 'BUNKED' });
       });
 
-      // If markOthersPresent is true, mark everyone else as Present (ATTENDED)
       if (markOthersPresent) {
         otherRegistrations.forEach(r => {
           updates.push({ registrationId: r._id, attendanceStatus: 'ATTENDED' });
@@ -170,7 +195,6 @@ export default function ManageActivityPage() {
 
       await api.put('/forms/registrations/attendance/batch', { updates });
 
-      // Update local state
       const updatesMap = new Map(updates.map(u => [u.registrationId, u.attendanceStatus]));
       setRegistrations(registrations.map(r => ({
         ...r,
@@ -189,12 +213,168 @@ export default function ManageActivityPage() {
     }
   };
 
-  // Edit Event Details Handler
+  // Form Builder & Settings Handlers
+  const handleToggleRegistration = async () => {
+    const nextState = !isRegistrationOpen;
+    setIsRegistrationOpen(nextState);
+    try {
+      await api.put('/activities/' + id, { isRegistrationOpen: nextState });
+      setActivity((prev: any) => ({ ...prev, isRegistrationOpen: nextState }));
+    } catch (error) {
+      console.error('Error toggling registration:', error);
+      setIsRegistrationOpen(!nextState);
+      alert('Failed to update registration status');
+    }
+  };
+
+  const handleBannerUpload = async (file: File) => {
+    setIsUploadingBanner(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await api.post('/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      const uploadedUrl = res.data.url;
+      setFormBannerUrl(uploadedUrl);
+      await api.put('/activities/' + id, { formBannerUrl: uploadedUrl });
+      setActivity((prev: any) => ({ ...prev, formBannerUrl: uploadedUrl }));
+      alert('Custom registration form banner uploaded and saved!');
+    } catch (error) {
+      console.error('Banner upload failed:', error);
+      alert('Failed to upload banner image. Please try again.');
+    } finally {
+      setIsUploadingBanner(false);
+    }
+  };
+
+  const handleResetToDefaultBanner = async () => {
+    const defaultUrl = '/images/default-event-banner.png';
+    setFormBannerUrl(defaultUrl);
+    try {
+      await api.put('/activities/' + id, { formBannerUrl: defaultUrl });
+      setActivity((prev: any) => ({ ...prev, formBannerUrl: defaultUrl }));
+      alert('Registration form banner reset to official default NSS & VIT Bhopal banner.');
+    } catch (error) {
+      console.error('Error resetting banner:', error);
+    }
+  };
+
+  const handleSaveFormSchema = async (newSchema: IFormField[]) => {
+    setIsSavingFormSettings(true);
+    try {
+      const payload = {
+        formSchema: newSchema,
+        formBannerUrl: formBannerUrl || '/images/default-event-banner.png',
+        isRegistrationOpen,
+        confirmationMessage
+      };
+      const { data } = await api.put('/activities/' + id, payload);
+      
+      // Also sync to formSchema endpoint
+      try {
+        await api.put('/forms/schema/' + id, {
+          activityId: id,
+          fields: newSchema,
+          isActive: isRegistrationOpen
+        });
+      } catch (errSchema) {
+        console.warn('FormSchema collection sync note:', errSchema);
+      }
+
+      setActivity(data);
+      alert('Registration form & settings saved successfully!');
+    } catch (error) {
+      console.error('Error saving form:', error);
+      alert('Failed to save form schema');
+    } finally {
+      setIsSavingFormSettings(false);
+    }
+  };
+
+  // Export Responses to CSV / Excel
+  const handleExportCSV = () => {
+    if (registrations.length === 0) {
+      alert('No responses found to export.');
+      return;
+    }
+
+    const dynamicFields: IFormField[] = activity?.formSchema || [];
+    const headers = [
+      '#',
+      'Student Name',
+      'Registration Number',
+      'Official VIT Email',
+      'Phone Number',
+      'Submission Date & Time',
+      'Attendance Status',
+      ...dynamicFields.map(f => f.label || f.id)
+    ];
+
+    const escapeCSV = (val: any) => {
+      if (val === null || val === undefined) return '""';
+      const str = String(val).replace(/"/g, '""');
+      return '"' + str + '"';
+    };
+
+    const rows = registrations.map((reg, index) => {
+      const name = reg.userId?.name || reg.fullName || 'Unknown';
+      const regNo = reg.userId?.registrationNumber || reg.registrationNumber || '-';
+      const email = reg.userId?.email || reg.email || '-';
+      const phone = reg.userId?.phoneNumber || reg.phoneNumber || '-';
+      const date = reg.createdAt ? new Date(reg.createdAt).toLocaleString() : '-';
+      const attStatus = reg.attendanceStatus || 'PENDING';
+
+      const dynamicVals = dynamicFields.map(f => {
+        const resp = reg.responses?.find((r: any) => r.fieldId === f.id);
+        if (!resp || resp.value === undefined) return '';
+        if (Array.isArray(resp.value)) return resp.value.join(', ');
+        return resp.value;
+      });
+
+      return [
+        index + 1,
+        escapeCSV(name),
+        escapeCSV(regNo),
+        escapeCSV(email),
+        escapeCSV(phone),
+        escapeCSV(date),
+        escapeCSV(attStatus),
+        ...dynamicVals.map(escapeCSV)
+      ].join(',');
+    });
+
+    const csvContent = '\uFEFF' + [headers.map(escapeCSV).join(','), ...rows].join('\r\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    const filename = (activity?.title || 'Event').replace(/[^a-zA-Z0-9_-]/g, '_') + '_Responses.csv';
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // Delete Response Handler
+  const handleDeleteResponse = async (regId: string) => {
+    if (!window.confirm('Are you sure you want to delete this response record? This action cannot be undone.')) return;
+    try {
+      await api.delete('/forms/registrations/' + regId);
+      setRegistrations(prev => prev.filter(r => r._id !== regId));
+      alert('Registration response deleted successfully.');
+    } catch (err) {
+      console.error('Error deleting registration:', err);
+      alert('Failed to delete registration response');
+    }
+  };
+
+  // Edit Event Details (Modal) Handlers
   const handleSaveEventDetails = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSavingDetails(true);
     try {
-      const { data } = await api.put(`/activities/${id}`, editFormData);
+      const { data } = await api.put('/activities/' + id, editFormData);
       setActivity(data);
       alert('Event details updated successfully!');
       setShowEditDetailsModal(false);
@@ -206,11 +386,11 @@ export default function ManageActivityPage() {
     }
   };
 
-  const handleBannerUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePosterUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setIsUploadingBanner(true);
+    setIsUploadingPoster(true);
     const formData = new FormData();
     formData.append('file', file);
 
@@ -221,10 +401,10 @@ export default function ManageActivityPage() {
       const fileUrl = res.data.url || res.data.fileUrl;
       setEditFormData(prev => ({ ...prev, bannerUrl: fileUrl }));
     } catch (err) {
-      console.error('Error uploading banner:', err);
-      alert('Failed to upload banner');
+      console.error('Error uploading poster:', err);
+      alert('Failed to upload poster image');
     } finally {
-      setIsUploadingBanner(false);
+      setIsUploadingPoster(false);
     }
   };
 
@@ -237,435 +417,678 @@ export default function ManageActivityPage() {
     );
   }
 
-  if (!activity) {
+  if (error || !activity) {
     return (
-      <div className="p-8 text-center text-red-500 font-bold bg-white rounded-2xl border border-gray-100">
-        Activity not found.
+      <div className="p-8 text-center text-red-500 font-bold bg-white rounded-2xl border border-gray-100 shadow-xs">
+        {error || 'Activity not found.'}
       </div>
     );
   }
 
-  const filteredRegistrations = registrations.filter(r => {
+  // Filtered lists
+  const filteredVolunteers = registrations.filter(r => {
     const q = volunteerSearch.toLowerCase();
-    const name = (r.userId?.name || '').toLowerCase();
-    const regNo = (r.userId?.registrationNumber || '').toLowerCase();
+    const name = (r.userId?.name || r.fullName || '').toLowerCase();
+    const regNo = (r.userId?.registrationNumber || r.registrationNumber || '').toLowerCase();
     return name.includes(q) || regNo.includes(q);
   });
 
-  const { absentMatches: bulkAbsentMatches, otherRegistrations: bulkOtherRegistrations } = parseBulkAbsent();
+  const filteredResponses = registrations.filter(r => {
+    const q = responseSearchQuery.toLowerCase();
+    const name = (r.userId?.name || r.fullName || '').toLowerCase();
+    const regNo = (r.userId?.registrationNumber || r.registrationNumber || '').toLowerCase();
+    const email = (r.userId?.email || r.email || '').toLowerCase();
+    return name.includes(q) || regNo.includes(q) || email.includes(q);
+  });
 
   return (
     <div className="space-y-6">
       {/* Top Header */}
-      <div className="flex items-center gap-4 mb-4">
-        <Link 
-          href="/dashboard/activities" 
-          className="p-2.5 bg-white rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors shadow-2xs"
-        >
-          <ArrowLeft size={20} />
-        </Link>
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 bg-blue-50 text-nss-blue text-xs font-black rounded-md uppercase tracking-wider">
-              Event Manager Control
-            </span>
-          </div>
-          <h1 className="text-2xl font-black text-gray-900 tracking-tight mt-1">{activity.title}</h1>
-        </div>
-      </div>
-
-      {/* Activity Overview & Edit Details Banner */}
-      <div className="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-        <div className="space-y-4 flex-1">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div>
-              <p className="text-xs text-gray-400 font-bold uppercase tracking-wider mb-1">Date</p>
-              <p className="font-bold text-gray-900">{activity.date ? new Date(activity.date).toLocaleDateString() : 'N/A'}</p>
-            </div>
-            <div>
-              <p className="text-xs text-gray-400 font-bold uppercase tracking-wider mb-1">Venue</p>
-              <p className="font-bold text-gray-900 truncate">{activity.venue || 'Campus'}</p>
-            </div>
-            <div>
-              <p className="text-xs text-gray-400 font-bold uppercase tracking-wider mb-1">Hours Credited</p>
-              <p className="font-bold text-gray-900">{activity.hoursAllocated || activity.workingHours || 0} Hours</p>
-            </div>
-            <div>
-              <p className="text-xs text-gray-400 font-bold uppercase tracking-wider mb-1">Registration</p>
-              <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold ${
-                activity.isRegistrationOpen 
-                  ? 'bg-emerald-100 text-emerald-800' 
-                  : 'bg-gray-100 text-gray-600'
-              }`}>
-                {activity.isRegistrationOpen ? 'Open' : 'Closed'}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
+        <div className="flex items-center gap-3">
+          <Link 
+            href="/dashboard/activities" 
+            className="p-2.5 bg-white rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors shadow-2xs"
+          >
+            <ArrowLeft size={18} />
+          </Link>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="px-2.5 py-0.5 bg-blue-50 text-nss-blue text-[11px] font-black rounded-md uppercase tracking-wider">
+                Event Manager Control
+              </span>
+              <span className={'px-2 py-0.5 rounded-full text-[10px] font-bold ' + (isRegistrationOpen ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700')}>
+                {isRegistrationOpen ? '● Registrations Open' : '○ Closed'}
               </span>
             </div>
+            <h1 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight mt-0.5">{activity.title}</h1>
           </div>
         </div>
 
-        {/* Edit Event Details Button */}
-        <div>
+        <div className="flex items-center gap-2">
+          <a
+            href={'/activities/' + id}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3.5 py-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-bold text-xs rounded-xl transition-all shadow-2xs flex items-center gap-1.5"
+          >
+            <ExternalLink size={13} /> View Live Form
+          </a>
           <button
             onClick={() => setShowEditDetailsModal(true)}
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 hover:bg-black text-white rounded-xl text-sm font-bold transition-colors shadow-sm"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-black text-white rounded-xl text-xs font-bold transition-colors shadow-xs cursor-pointer"
           >
-            <Edit size={16} /> Edit Event Details
+            <Edit size={14} /> Edit Event Details
           </button>
         </div>
       </div>
 
-      {/* Volunteers & Attendance Section */}
-      <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-        {/* Table Toolbar */}
-        <div className="p-6 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-50/40">
+      {/* Activity Overview Summary Card */}
+      <div className="bg-white p-5 sm:p-6 rounded-2xl shadow-xs border border-gray-200/80">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div>
-            <h2 className="text-lg font-black text-gray-900">Registered Volunteers ({registrations.length})</h2>
-            <p className="text-xs text-gray-500 mt-0.5">
-              Volunteers are added via Admin Portal. Mark attendance (Present/Absent) below.
-            </p>
+            <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Date</p>
+            <p className="font-bold text-gray-900 text-xs sm:text-sm">{activity.date ? new Date(activity.date).toLocaleDateString() : 'N/A'}</p>
           </div>
-
-          <div className="flex flex-wrap items-center gap-3">
-            {/* Search Box */}
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={15} />
-              <input
-                type="text"
-                placeholder="Search volunteer..."
-                value={volunteerSearch}
-                onChange={(e) => setVolunteerSearch(e.target.value)}
-                className="pl-9 pr-3 py-1.5 text-xs bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-nss-blue/30 focus:border-nss-blue"
-              />
-            </div>
-
-            {/* Bulk Mark Absent */}
-            <button
-              onClick={() => {
-                setShowBulkAbsentModal(true);
-                setBulkAbsentInput('');
-              }}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-rose-50 text-rose-700 font-bold text-sm rounded-xl hover:bg-rose-100 transition-colors"
-            >
-              <UserX size={16} /> Bulk Mark Absent
-            </button>
-
-            {/* Save Attendance */}
-            <button
-              disabled={isSavingAttendance || Object.keys(attendanceUpdates).length === 0}
-              onClick={handleBatchAttendanceSave}
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-600 text-white font-bold text-sm rounded-xl hover:bg-emerald-700 transition-colors disabled:opacity-50 shadow-sm"
-            >
-              <Save size={16} /> {isSavingAttendance ? 'Saving...' : 'Save Attendance'}
-            </button>
+          <div>
+            <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Venue</p>
+            <p className="font-bold text-gray-900 text-xs sm:text-sm truncate">{activity.venue || 'Campus'}</p>
           </div>
-        </div>
-
-        {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-gray-50/80 border-b border-gray-100 text-xs font-bold text-gray-500 uppercase tracking-wider">
-                <th className="p-4">Volunteer</th>
-                <th className="p-4">Registration No.</th>
-                <th className="p-4">Attendance Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {filteredRegistrations.length === 0 ? (
-                <tr>
-                  <td colSpan={3} className="p-12 text-center text-gray-400 font-medium">
-                    {volunteerSearch ? 'No volunteers match your search.' : 'No volunteers registered for this activity yet.'}
-                  </td>
-                </tr>
-              ) : filteredRegistrations.map((reg) => {
-                const currentStatus = attendanceUpdates[reg._id] || reg.attendanceStatus;
-                const isPresent = currentStatus === 'ATTENDED' || currentStatus === 'Present';
-                const isAbsent = currentStatus === 'BUNKED' || currentStatus === 'Absent';
-
-                return (
-                  <tr key={reg._id} className="hover:bg-slate-50/60 transition-colors">
-                    <td className="p-4 font-bold text-gray-900">{reg.userId?.name || 'Volunteer'}</td>
-                    <td className="p-4 text-gray-600 font-mono text-sm">{reg.userId?.registrationNumber || '-'}</td>
-                    
-                    <td className="p-4">
-                      <div className="flex items-center gap-5">
-                        <label className="flex items-center gap-2 cursor-pointer">
-                          <input 
-                            type="radio" 
-                            name={`attendance-${reg._id}`}
-                            value="ATTENDED"
-                            checked={isPresent}
-                            onChange={() => handleAttendanceChange(reg._id, 'ATTENDED')}
-                            className="w-4 h-4 text-emerald-600 focus:ring-emerald-600 cursor-pointer"
-                          />
-                          <span className={`text-sm font-medium ${isPresent ? 'text-emerald-700 font-bold' : 'text-gray-600'}`}>Present</span>
-                        </label>
-                        <label className="flex items-center gap-2 cursor-pointer">
-                          <input 
-                            type="radio" 
-                            name={`attendance-${reg._id}`}
-                            value="BUNKED"
-                            checked={isAbsent}
-                            onChange={() => handleAttendanceChange(reg._id, 'BUNKED')}
-                            className="w-4 h-4 text-rose-600 focus:ring-rose-600 cursor-pointer"
-                          />
-                          <span className={`text-sm font-medium ${isAbsent ? 'text-rose-700 font-bold' : 'text-gray-600'}`}>Absent</span>
-                        </label>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <div>
+            <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Hours Credited</p>
+            <p className="font-bold text-gray-900 text-xs sm:text-sm">{activity.hoursAllocated || activity.workingHours || 0} Hours</p>
+          </div>
+          <div>
+            <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Registration Status</p>
+            <span className={'inline-block px-2.5 py-0.5 rounded-full text-xs font-bold ' + (
+              isRegistrationOpen ? 'bg-emerald-50 text-emerald-700' : 'bg-gray-100 text-gray-600'
+            )}>
+              {isRegistrationOpen ? 'Active / Open' : 'Closed'}
+            </span>
+          </div>
         </div>
       </div>
 
-      {/* Modal 1: Edit Event Details Modal */}
-      {showEditDetailsModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      {/* Main Tabs Navigation */}
+      <div className="flex border-b border-gray-200 gap-2 overflow-x-auto">
+        <button
+          onClick={() => setActiveTab('volunteers')}
+          className={'px-4 py-3 font-bold text-xs sm:text-sm border-b-2 transition-colors flex items-center gap-2 shrink-0 cursor-pointer ' + (
+            activeTab === 'volunteers' ? 'border-nss-blue text-nss-blue' : 'border-transparent text-gray-500 hover:text-gray-800'
+          )}
+        >
+          <Users size={17} /> Registered Volunteers ({registrations.length})
+        </button>
+
+        <button
+          onClick={() => setActiveTab('form_builder')}
+          className={'px-4 py-3 font-bold text-xs sm:text-sm border-b-2 transition-colors flex items-center gap-2 shrink-0 cursor-pointer ' + (
+            activeTab === 'form_builder' ? 'border-nss-blue text-nss-blue' : 'border-transparent text-gray-500 hover:text-gray-800'
+          )}
+        >
+          <FileText size={17} /> Registration Portal & Form Builder
+        </button>
+
+        <button
+          onClick={() => setActiveTab('responses')}
+          className={'px-4 py-3 font-bold text-xs sm:text-sm border-b-2 transition-colors flex items-center gap-2 shrink-0 cursor-pointer ' + (
+            activeTab === 'responses' ? 'border-nss-blue text-nss-blue' : 'border-transparent text-gray-500 hover:text-gray-800'
+          )}
+        >
+          <FileSpreadsheet size={17} /> Form Responses
+          <span className="px-2 py-0.5 rounded-full text-xs bg-purple-50 text-purple-700 font-bold">
+            ({registrations.length})
+          </span>
+        </button>
+      </div>
+
+      <AnimatePresence mode="wait">
+        
+        {/* TAB 1: REGISTERED VOLUNTEERS & ATTENDANCE */}
+        {activeTab === 'volunteers' && (
+          <motion.div key="volunteers" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-4">
+            <div className="bg-white rounded-2xl shadow-xs border border-gray-200/80 overflow-hidden">
+              {/* Table Toolbar */}
+              <div className="p-5 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-50/50">
+                <div>
+                  <h2 className="text-base font-black text-gray-900">Volunteer Attendance ({filteredVolunteers.length})</h2>
+                  <p className="text-xs text-gray-500">Record volunteer attendance (Present/Absent). Mark changes and save below.</p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto">
+                  <div className="relative flex-1 sm:w-60">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={15} />
+                    <input
+                      type="text"
+                      placeholder="Search volunteer..."
+                      value={volunteerSearch}
+                      onChange={(e) => setVolunteerSearch(e.target.value)}
+                      className="w-full pl-9 pr-3 py-2 text-xs bg-white border border-gray-200 rounded-xl outline-none focus:border-nss-blue transition-all"
+                    />
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      setShowBulkAbsentModal(true);
+                      setBulkAbsentInput('');
+                    }}
+                    className="px-3.5 py-2 bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <UserX size={14} /> Bulk Mark Absent
+                  </button>
+
+                  <button
+                    disabled={isSavingAttendance || Object.keys(attendanceUpdates).length === 0}
+                    onClick={handleBatchAttendanceSave}
+                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 disabled:opacity-50 shadow-xs cursor-pointer"
+                  >
+                    <Save size={14} /> {isSavingAttendance ? 'Saving...' : 'Save Attendance'}
+                  </button>
+                </div>
+              </div>
+
+              {/* Attendance Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse min-w-[700px]">
+                  <thead>
+                    <tr className="bg-gray-50/80 border-b border-gray-100 text-[11px] font-bold text-gray-500 uppercase tracking-wider">
+                      <th className="p-4">Volunteer</th>
+                      <th className="p-4">Registration No.</th>
+                      <th className="p-4">Attendance Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {filteredVolunteers.length === 0 ? (
+                      <tr>
+                        <td colSpan={3} className="p-12 text-center text-gray-400 font-medium text-xs">
+                          {volunteerSearch ? 'No volunteers match your search.' : 'No volunteers registered for this activity yet.'}
+                        </td>
+                      </tr>
+                    ) : filteredVolunteers.map((reg) => {
+                      const currentStatus = attendanceUpdates[reg._id] || reg.attendanceStatus;
+                      const isPresent = currentStatus === 'ATTENDED' || currentStatus === 'Present';
+                      const isAbsent = currentStatus === 'BUNKED' || currentStatus === 'Absent';
+
+                      return (
+                        <tr key={reg._id} className="hover:bg-slate-50/60 transition-colors text-xs">
+                          <td className="p-4 font-bold text-gray-900">{reg.userId?.name || reg.fullName || 'Unknown'}</td>
+                          <td className="p-4 text-gray-600 font-mono">{reg.userId?.registrationNumber || reg.registrationNumber || '-'}</td>
+                          
+                          <td className="p-4">
+                            <div className="flex items-center gap-4">
+                              <label className="flex items-center gap-1.5 cursor-pointer">
+                                <input
+                                  type="radio"
+                                  name={'attendance_' + reg._id}
+                                  value="ATTENDED"
+                                  checked={isPresent}
+                                  onChange={() => handleAttendanceChange(reg._id, 'ATTENDED')}
+                                  className="w-4 h-4 text-emerald-600 focus:ring-emerald-500"
+                                />
+                                <span className={'font-bold text-xs ' + (isPresent ? 'text-emerald-700' : 'text-gray-500')}>
+                                  Present
+                                </span>
+                              </label>
+
+                              <label className="flex items-center gap-1.5 cursor-pointer">
+                                <input
+                                  type="radio"
+                                  name={'attendance_' + reg._id}
+                                  value="BUNKED"
+                                  checked={isAbsent}
+                                  onChange={() => handleAttendanceChange(reg._id, 'BUNKED')}
+                                  className="w-4 h-4 text-rose-600 focus:ring-rose-500"
+                                />
+                                <span className={'font-bold text-xs ' + (isAbsent ? 'text-rose-700' : 'text-gray-500')}>
+                                  Absent
+                                </span>
+                              </label>
+
+                              {attendanceUpdates[reg._id] && (
+                                <span className="text-[10px] bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-md font-bold">
+                                  Unsaved
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* TAB 2: REGISTRATION PORTAL & FORM BUILDER */}
+        {activeTab === 'form_builder' && (
+          <motion.div key="form_builder" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-6">
+            
+            {/* 1. Registration Status & Banner Settings Card */}
+            <div className="bg-white rounded-2xl shadow-xs border border-gray-200/80 p-6 space-y-6">
+              
+              {/* Registration Toggle */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-100">
+                <div>
+                  <h3 className="text-base font-black text-gray-900 flex items-center gap-2">
+                    {isRegistrationOpen ? (
+                      <ToggleRight size={22} className="text-emerald-600" />
+                    ) : (
+                      <ToggleLeft size={22} className="text-gray-400" />
+                    )}
+                    Registration Status (Form Publish ON / OFF)
+                  </h3>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    Toggle whether students can access and submit the registration form for this activity.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleToggleRegistration}
+                  className={'px-5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-xs ' + (
+                    isRegistrationOpen 
+                      ? 'bg-emerald-600 hover:bg-emerald-700 text-white' 
+                      : 'bg-rose-600 hover:bg-rose-700 text-white'
+                  )}
+                >
+                  {isRegistrationOpen ? '✓ Registrations OPEN (Accepting Responses)' : '✕ Registrations CLOSED (Turn On)'}
+                </button>
+              </div>
+
+              {/* Event Banner Management */}
+              <div className="space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <h4 className="text-sm font-black text-gray-900 flex items-center gap-2">
+                      <ImageIcon size={16} className="text-nss-blue" /> Registration Form Header Banner
+                    </h4>
+                    <p className="text-xs text-gray-500">
+                      Upload a custom banner for the registration form or use the official default VIT Bhopal & NSS Unit banner.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <label className="px-3.5 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-bold rounded-xl cursor-pointer transition-colors inline-flex items-center gap-1.5">
+                      <Upload size={13} /> {isUploadingBanner ? 'Uploading...' : 'Upload Custom Banner'}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          if (e.target.files?.[0]) {
+                            handleBannerUpload(e.target.files[0]);
+                          }
+                        }}
+                      />
+                    </label>
+
+                    <button
+                      type="button"
+                      onClick={handleResetToDefaultBanner}
+                      className="px-3.5 py-1.5 bg-blue-50 text-nss-blue hover:bg-blue-100 text-xs font-bold rounded-xl transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <RefreshCw size={13} /> Reset to Official Default
+                    </button>
+                  </div>
+                </div>
+
+                {/* Banner Live Preview Container */}
+                <div className="w-full bg-slate-50 border border-gray-200 rounded-2xl p-3 flex flex-col items-center justify-center">
+                  <div className="w-full max-w-3xl max-h-[220px] rounded-xl overflow-hidden bg-white shadow-xs border border-gray-100 flex items-center justify-center p-2">
+                    <img
+                      src={formBannerUrl || '/images/default-event-banner.png'}
+                      alt="Banner Preview"
+                      className="w-full max-h-[190px] object-contain rounded-lg"
+                    />
+                  </div>
+                  <div className="mt-2 flex items-center gap-2 text-[11px] font-bold text-gray-500">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    {formBannerUrl && formBannerUrl !== '/images/default-event-banner.png' 
+                      ? 'Custom Registration Form Banner Active' 
+                      : 'Official VIT Bhopal & NSS Unit Default Banner Active'}
+                  </div>
+                </div>
+              </div>
+
+              {/* Confirmation / Thank You Message Input */}
+              <div className="pt-4 border-t border-gray-100">
+                <label className="block text-xs font-bold text-gray-800 mb-1">
+                  Custom Confirmation / Thank You Message:
+                </label>
+                <textarea
+                  rows={2}
+                  value={confirmationMessage}
+                  onChange={(e) => setConfirmationMessage(e.target.value)}
+                  placeholder="Thank you for filling out the form! Our team will contact you shortly."
+                  className="w-full p-3 bg-gray-50/50 border border-gray-200 rounded-xl text-xs font-medium text-gray-800 focus:bg-white focus:outline-none focus:border-nss-blue transition-all"
+                />
+                <p className="text-[11px] text-gray-400 mt-1">
+                  This message is displayed to the student upon successful form submission along with links to NSS official handles.
+                </p>
+              </div>
+            </div>
+
+            {/* 2. Embedded FormBuilder */}
+            <div className="bg-white rounded-2xl shadow-xs border border-gray-200/80 p-6">
+              <FormBuilder
+                initialFields={activity.formSchema || []}
+                onSave={handleSaveFormSchema}
+                isSaving={isSavingFormSettings}
+              />
+            </div>
+          </motion.div>
+        )}
+
+        {/* TAB 3: FORM RESPONSES */}
+        {activeTab === 'responses' && (
+          <motion.div key="responses" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-4">
+            <div className="bg-white rounded-2xl shadow-xs border border-gray-200/80 overflow-hidden">
+              
+              {/* Responses Toolbar */}
+              <div className="p-5 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-50/50">
+                <div>
+                  <h2 className="text-base font-black text-gray-900 flex items-center gap-2">
+                    <FileSpreadsheet size={18} className="text-nss-blue" />
+                    Form Responses ({filteredResponses.length})
+                  </h2>
+                  <p className="text-xs text-gray-500">
+                    Real-time responses submitted by students via the public registration form
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
+                  <div className="relative flex-1 sm:w-64">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={15} />
+                    <input
+                      type="text"
+                      placeholder="Search responses..."
+                      value={responseSearchQuery}
+                      onChange={(e) => setResponseSearchQuery(e.target.value)}
+                      className="w-full pl-9 pr-3 py-2 text-xs bg-white border border-gray-200 rounded-xl outline-none focus:border-nss-blue transition-all"
+                    />
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleExportCSV}
+                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 shadow-xs cursor-pointer"
+                  >
+                    <Download size={14} /> Download Responses (Excel)
+                  </button>
+                </div>
+              </div>
+
+              {/* Responses Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse min-w-[800px]">
+                  <thead>
+                    <tr className="bg-gray-50/80 border-b border-gray-100 text-[11px] font-bold text-gray-500 uppercase tracking-wider">
+                      <th className="p-4 pl-5">#</th>
+                      <th className="p-4">Student</th>
+                      <th className="p-4">Reg Number</th>
+                      <th className="p-4">Official Email</th>
+                      <th className="p-4">Phone Number</th>
+                      <th className="p-4">Submitted At</th>
+                      {(activity.formSchema || []).map((field: any) => (
+                        <th key={field.id} className="p-4 whitespace-nowrap">{field.label}</th>
+                      ))}
+                      <th className="p-4 text-right pr-5">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {filteredResponses.length === 0 ? (
+                      <tr>
+                        <td colSpan={(activity.formSchema?.length || 0) + 7} className="p-12 text-center text-gray-400 font-medium text-xs">
+                          {responseSearchQuery ? 'No responses match your search.' : 'No responses submitted yet. Share the event registration link with students!'}
+                        </td>
+                      </tr>
+                    ) : filteredResponses.map((reg, index) => (
+                      <tr key={reg._id} className="hover:bg-slate-50/60 transition-colors text-xs">
+                        <td className="p-4 pl-5 font-mono text-gray-400">{index + 1}</td>
+                        <td className="p-4 font-bold text-gray-900">{reg.userId?.name || reg.fullName || 'Student'}</td>
+                        <td className="p-4 font-mono text-gray-600">{reg.userId?.registrationNumber || reg.registrationNumber || '-'}</td>
+                        <td className="p-4 font-mono text-blue-600">{reg.userId?.email || reg.email || '-'}</td>
+                        <td className="p-4 text-gray-600 font-mono">{reg.userId?.phoneNumber || reg.phoneNumber || '-'}</td>
+                        <td className="p-4 text-gray-500 whitespace-nowrap">
+                          {reg.createdAt ? new Date(reg.createdAt).toLocaleDateString() : '-'}
+                        </td>
+
+                        {/* Dynamic Questions Answers */}
+                        {(activity.formSchema || []).map((field: any) => {
+                          const resp = reg.responses?.find((r: any) => r.fieldId === field.id);
+                          const isFile = field.type === 'FILE_UPLOAD';
+
+                          return (
+                            <td key={field.id} className="p-4 text-gray-700 max-w-xs truncate">
+                              {resp && resp.value !== undefined ? (
+                                isFile ? (
+                                  <a
+                                    href={resp.value}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-nss-blue hover:underline inline-flex items-center gap-1 font-bold"
+                                  >
+                                    <Download size={12} /> View File
+                                  </a>
+                                ) : Array.isArray(resp.value) ? (
+                                  resp.value.join(', ')
+                                ) : (
+                                  String(resp.value)
+                                )
+                              ) : (
+                                '-'
+                              )}
+                            </td>
+                          );
+                        })}
+
+                        <td className="p-4 text-right pr-5">
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteResponse(reg._id)}
+                            className="p-1.5 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                            title="Delete Response"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* MODAL 1: Bulk Mark Absent */}
+      {showBulkAbsentModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col">
             <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-              <div>
-                <h3 className="text-xl font-black text-gray-900 flex items-center gap-2">
-                  <Edit className="text-nss-blue" size={20} /> Edit Event Details
-                </h3>
-                <p className="text-xs text-gray-500 mt-0.5">Update information for this specific event</p>
+              <div className="flex items-center gap-2.5 text-rose-600">
+                <UserX size={20} />
+                <h3 className="font-black text-gray-900 text-lg">Bulk Mark Absent</h3>
+              </div>
+              <button 
+                onClick={() => setShowBulkAbsentModal(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <XCircle size={20} />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <p className="text-xs text-gray-500">
+                Paste registration numbers or volunteer names who were <strong>absent</strong> (separated by commas, spaces, or new lines).
+              </p>
+
+              <textarea
+                rows={5}
+                placeholder="24BCY10379, 24BCY10380, etc."
+                value={bulkAbsentInput}
+                onChange={(e) => setBulkAbsentInput(e.target.value)}
+                className="w-full p-3.5 text-xs bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-rose-500 font-mono"
+              />
+
+              <label className="flex items-center gap-2 cursor-pointer pt-1">
+                <input
+                  type="checkbox"
+                  checked={markOthersPresent}
+                  onChange={(e) => setMarkOthersPresent(e.target.checked)}
+                  className="w-4 h-4 text-emerald-600 rounded-sm focus:ring-emerald-500"
+                />
+                <span className="text-xs font-bold text-gray-700">
+                  Mark all other registered volunteers as <span className="text-emerald-600">Present</span>
+                </span>
+              </label>
+
+              {bulkAbsentInput.trim() && (
+                <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-1">
+                  <p className="font-bold text-gray-700">
+                    Preview: {parseBulkAbsent().absentMatches.length} volunteers matched as Absent.
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div className="p-4 border-t border-gray-100 bg-gray-50/50 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setShowBulkAbsentModal(false)}
+                className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-bold rounded-xl transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={isBulkMarkingAbsent || !bulkAbsentInput.trim()}
+                onClick={handleExecuteBulkAbsent}
+                className="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 disabled:opacity-50 cursor-pointer shadow-xs"
+              >
+                <UserX size={14} /> {isBulkMarkingAbsent ? 'Applying...' : 'Confirm Bulk Absent'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 2: Edit Event Details */}
+      {showEditDetailsModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+              <div className="flex items-center gap-2.5 text-gray-900">
+                <Edit size={20} className="text-nss-blue" />
+                <h3 className="font-black text-gray-900 text-lg">Edit Event Details</h3>
               </div>
               <button 
                 onClick={() => setShowEditDetailsModal(false)}
                 className="text-gray-400 hover:text-gray-600 transition-colors"
               >
-                <XCircle size={24} />
+                <XCircle size={20} />
               </button>
             </div>
 
-            <form onSubmit={handleSaveEventDetails} className="p-6 space-y-4 flex-1 overflow-y-auto">
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-gray-700 uppercase">Event Title *</label>
+            <form onSubmit={handleSaveEventDetails} className="p-6 space-y-4 overflow-y-auto flex-1">
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">Event Title</label>
                 <input
                   type="text"
                   required
                   value={editFormData.title}
                   onChange={(e) => setEditFormData({ ...editFormData, title: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-nss-blue outline-none text-sm font-medium"
+                  className="w-full p-2.5 text-xs bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-nss-blue outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-gray-700 uppercase">Date *</label>
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Date</label>
                   <input
                     type="date"
                     required
                     value={editFormData.date}
                     onChange={(e) => setEditFormData({ ...editFormData, date: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-nss-blue outline-none text-sm"
+                    className="w-full p-2.5 text-xs bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-nss-blue outline-none"
                   />
                 </div>
-
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-gray-700 uppercase">Venue *</label>
-                  <input
-                    type="text"
-                    required
-                    value={editFormData.venue}
-                    onChange={(e) => setEditFormData({ ...editFormData, venue: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-nss-blue outline-none text-sm"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-gray-700 uppercase">Working Hours *</label>
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Hours Credited</label>
                   <input
                     type="number"
-                    min="0"
                     required
+                    min={0}
                     value={editFormData.hoursAllocated}
                     onChange={(e) => setEditFormData({ ...editFormData, hoursAllocated: Number(e.target.value) })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-nss-blue outline-none text-sm"
+                    className="w-full p-2.5 text-xs bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-nss-blue outline-none"
                   />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-gray-700 uppercase">Registration Status</label>
-                  <select
-                    value={editFormData.isRegistrationOpen ? 'Open' : 'Closed'}
-                    onChange={(e) => setEditFormData({ ...editFormData, isRegistrationOpen: e.target.value === 'Open' })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-nss-blue outline-none text-sm font-medium"
-                  >
-                    <option value="Open">Open (Accepting Registrations)</option>
-                    <option value="Closed">Closed</option>
-                  </select>
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-gray-700 uppercase">Event Description *</label>
-                <textarea
-                  rows={4}
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">Venue</label>
+                <input
+                  type="text"
                   required
-                  value={editFormData.description}
-                  onChange={(e) => setEditFormData({ ...editFormData, description: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-nss-blue outline-none text-sm resize-y"
-                ></textarea>
+                  value={editFormData.venue}
+                  onChange={(e) => setEditFormData({ ...editFormData, venue: e.target.value })}
+                  className="w-full p-2.5 text-xs bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-nss-blue outline-none"
+                />
               </div>
 
-              {/* Banner Upload */}
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-gray-700 uppercase">Banner Image</label>
-                <div className="flex items-center gap-4">
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">Event Poster / Card Image</label>
+                <div className="flex items-center gap-3">
                   <input
-                    type="file"
-                    id="manager-banner-upload"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleBannerUpload}
+                    type="text"
+                    value={editFormData.bannerUrl}
+                    onChange={(e) => setEditFormData({ ...editFormData, bannerUrl: e.target.value })}
+                    placeholder="https://..."
+                    className="flex-1 p-2.5 text-xs bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-nss-blue outline-none"
                   />
-                  <label
-                    htmlFor="manager-banner-upload"
-                    className={`inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-xl cursor-pointer transition-colors ${
-                      isUploadingBanner ? 'opacity-50 cursor-not-allowed' : ''
-                    }`}
-                  >
-                    <ImageIcon size={14} /> {isUploadingBanner ? 'Uploading...' : 'Upload New Banner'}
+                  <label className="px-3.5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-bold rounded-xl cursor-pointer transition-colors inline-flex items-center gap-1.5 shrink-0">
+                    <Upload size={14} /> {isUploadingPoster ? 'Uploading...' : 'Upload'}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handlePosterUpload}
+                    />
                   </label>
                 </div>
-                {editFormData.bannerUrl && (
-                  <div className="mt-2 h-24 w-44 rounded-xl border border-gray-200 overflow-hidden relative">
-                    <img src={editFormData.bannerUrl} alt="Preview" className="w-full h-full object-cover" />
-                  </div>
-                )}
               </div>
 
-              <div className="p-4 border-t border-gray-100 flex justify-end gap-3 pt-4">
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">Description</label>
+                <textarea
+                  rows={4}
+                  value={editFormData.description}
+                  onChange={(e) => setEditFormData({ ...editFormData, description: e.target.value })}
+                  className="w-full p-2.5 text-xs bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-nss-blue outline-none"
+                />
+              </div>
+
+              <div className="p-4 border-t border-gray-100 bg-gray-50/50 flex justify-end gap-2 -mx-6 -mb-6 mt-6">
                 <button
                   type="button"
                   onClick={() => setShowEditDetailsModal(false)}
-                  className="px-5 py-2 rounded-xl border border-gray-200 text-gray-600 font-bold hover:bg-gray-100 text-xs transition-colors"
+                  className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-bold rounded-xl transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSavingDetails}
-                  className="px-6 py-2 bg-nss-blue hover:bg-blue-800 text-white font-bold rounded-xl text-xs transition-colors disabled:opacity-50 shadow-sm"
+                  className="px-5 py-2 bg-nss-blue hover:bg-blue-800 text-white text-xs font-bold rounded-xl transition-colors disabled:opacity-50 cursor-pointer shadow-xs"
                 >
                   {isSavingDetails ? 'Saving...' : 'Save Changes'}
                 </button>
               </div>
             </form>
-          </div>
-        </div>
-      )}
-
-      {/* Modal 2: Bulk Mark Absent Modal */}
-      {showBulkAbsentModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[85vh]">
-            <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-              <div>
-                <h3 className="text-xl font-black text-gray-900 flex items-center gap-2">
-                  <UserX className="text-rose-600" size={22} /> Bulk Mark Absent
-                </h3>
-                <p className="text-xs text-gray-500 mt-1">Paste absent volunteers list — their attendance will be set to Absent.</p>
-              </div>
-              <button onClick={() => setShowBulkAbsentModal(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
-                <XCircle size={24} />
-              </button>
-            </div>
-
-            <div className="p-6 space-y-4 flex-1 overflow-y-auto">
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-bold text-gray-700">Paste Registration Numbers or Names of Absent Volunteers:</label>
-                <div className="relative">
-                  <input
-                    type="file"
-                    id="volunteer-bulk-absent-csv"
-                    accept=".csv,.txt"
-                    className="hidden"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        const reader = new FileReader();
-                        reader.onload = (ev) => {
-                          setBulkAbsentInput(ev.target?.result as string || '');
-                        };
-                        reader.readAsText(file);
-                      }
-                    }}
-                  />
-                  <label htmlFor="volunteer-bulk-absent-csv" className="text-xs font-bold text-rose-600 hover:underline cursor-pointer flex items-center gap-1">
-                    <Upload size={12} /> Upload .CSV / .TXT
-                  </label>
-                </div>
-              </div>
-
-              <textarea
-                rows={5}
-                value={bulkAbsentInput}
-                onChange={(e) => setBulkAbsentInput(e.target.value)}
-                placeholder="Paste absent registration numbers, e.g.:&#10;24BCY10379&#10;21BCE10101"
-                className="w-full p-4 bg-gray-50 border border-gray-200 rounded-2xl font-mono text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500 transition-all resize-y"
-              ></textarea>
-
-              <label className="flex items-center gap-3 p-3 bg-slate-50 border border-gray-200 rounded-xl cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={markOthersPresent}
-                  onChange={(e) => setMarkOthersPresent(e.target.checked)}
-                  className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-600 cursor-pointer"
-                />
-                <div>
-                  <p className="text-sm font-bold text-gray-800">Mark all other registered volunteers as Present</p>
-                  <p className="text-xs text-gray-500">Volunteers not in this absent list will automatically be set to Present.</p>
-                </div>
-              </label>
-
-              {bulkAbsentInput.trim() && (
-                <div className="bg-rose-50/50 border border-rose-200/60 rounded-2xl p-4 space-y-2">
-                  <div className="flex items-center justify-between text-xs font-bold">
-                    <span className="text-rose-700 flex items-center gap-1">
-                      <AlertCircle size={14} /> {bulkAbsentMatches.length} Registered Volunteers will be marked ABSENT
-                    </span>
-                    {markOthersPresent && (
-                      <span className="text-emerald-700">
-                        {bulkOtherRegistrations.length} will be marked PRESENT
-                      </span>
-                    )}
-                  </div>
-
-                  {bulkAbsentMatches.length > 0 && (
-                    <div className="max-h-36 overflow-y-auto space-y-1 border-t border-rose-200/60 pt-2">
-                      {bulkAbsentMatches.map(r => (
-                        <div key={r._id} className="text-xs flex justify-between items-center text-rose-900 py-1">
-                          <span className="font-bold">{r.userId?.name}</span>
-                          <span className="font-mono">{r.userId?.registrationNumber}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            <div className="p-6 border-t border-gray-100 bg-gray-50/50 flex justify-end gap-3">
-              <button
-                onClick={() => setShowBulkAbsentModal(false)}
-                className="px-5 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-bold hover:bg-gray-100 text-sm transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                disabled={isBulkMarkingAbsent || bulkAbsentMatches.length === 0}
-                onClick={handleExecuteBulkAbsent}
-                className="px-6 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-sm transition-colors disabled:opacity-50 shadow-sm"
-              >
-                {isBulkMarkingAbsent ? 'Applying...' : `Apply Attendance (${bulkAbsentMatches.length} Absent)`}
-              </button>
-            </div>
           </div>
         </div>
       )}

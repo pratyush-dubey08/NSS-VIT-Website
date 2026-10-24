@@ -22,7 +22,23 @@ export const getFormSchemaByActivity = async (req: Request, res: Response) => {
 
 export const saveFormSchema = async (req: Request, res: Response) => {
   try {
-    const { activityId, fields, isActive } = req.body;
+    const activityId = req.params.activityId || req.body.activityId;
+    const { fields, isActive } = req.body;
+
+    const userRole = (req as any).user?.role;
+    const userId = (req as any).user?.userId || (req as any).user?.id;
+
+    const activity = await Activity.findById(activityId);
+    if (!activity) {
+      return res.status(404).json({ message: 'Activity not found' });
+    }
+
+    if (userRole === 'EVENT_MANAGER' || userRole === 'VOLUNTEER') {
+      const isManager = activity.eventManagers?.some(m => (m._id || m).toString() === userId?.toString());
+      if (!isManager && userRole !== 'SUPER_ADMIN' && userRole !== 'PROGRAM_OFFICER') {
+        return res.status(403).json({ message: 'You are not authorized to edit the form schema for this event' });
+      }
+    }
     
     // Upsert the schema
     const schema = await FormSchema.findOneAndUpdate(
@@ -30,9 +46,16 @@ export const saveFormSchema = async (req: Request, res: Response) => {
       { fields, isActive },
       { new: true, upsert: true }
     );
+
+    // Keep Activity.formSchema in sync as well
+    if (fields && Array.isArray(fields)) {
+      activity.formSchema = fields;
+      await activity.save();
+    }
     
     res.status(200).json(schema);
   } catch (error) {
+    console.error('Error saving form schema:', error);
     res.status(500).json({ message: 'Error saving form schema' });
   }
 };
@@ -188,7 +211,7 @@ export const updateRegistrationStatus = async (req: Request, res: Response) => {
     if (userRole === 'VOLUNTEER' || userRole === 'EVENT_MANAGER') {
       const activity = await Activity.findById(registration.activityId);
       if (!activity) return res.status(404).json({ message: 'Activity not found' });
-      const isManager = activity.eventManagers.some(m => m.toString() === userId);
+      const isManager = activity.eventManagers?.some(m => (m._id || m).toString() === userId?.toString());
       if (!isManager) return res.status(403).json({ message: 'Not authorized' });
     }
 

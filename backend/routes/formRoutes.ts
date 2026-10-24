@@ -18,7 +18,7 @@ const router = express.Router();
 
 // Form Schema
 router.get('/schema/:activityId', getFormSchemaByActivity);
-router.put('/schema/:activityId', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER, Role.EVENT_MANAGER]), saveFormSchema);
+router.put('/schema/:activityId', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER, Role.EVENT_MANAGER, Role.VOLUNTEER]), saveFormSchema);
 
 // Registrations
 router.post('/register', (req, res, next) => {
