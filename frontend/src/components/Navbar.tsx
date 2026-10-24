@@ -33,8 +33,6 @@ export default function Navbar() {
     { name: 'Contact', path: '/contact' },
   ];
 
-  const isHome = pathname === '/';
-
   if (pathname.startsWith('/admin')) {
     return null;
   }
@@ -43,12 +41,12 @@ export default function Navbar() {
     <header className="fixed top-0 w-full z-50 pt-3 sm:pt-4 px-3 sm:px-6 pointer-events-none font-sans">
       <div className="container mx-auto max-w-7xl flex items-center justify-between gap-3">
         
-        {/* Main Unified Navbar Pill: Logo + NSS Unit Brand + Nav Links (All in One Box) */}
-        <div className="pointer-events-auto flex items-center gap-1 sm:gap-2 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-xl shadow-md border border-gray-100 hover:shadow-lg transition-all">
+        {/* Main Unified Pill: Logo + Brand + Equally Distributed Nav Links */}
+        <div className="pointer-events-auto flex-1 max-w-5xl flex items-center justify-between px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-xl shadow-md border border-gray-100 hover:shadow-lg transition-all">
           
-          {/* Logo & Brand Name */}
-          <Link href="/" className="flex items-center gap-2 pl-1 pr-2 shrink-0">
-            <div className="p-0.5 rounded-full bg-white shadow-xs">
+          {/* Logo & Brand */}
+          <Link href="/" className="flex items-center gap-2.5 pl-1 pr-3 shrink-0 group">
+            <div className="p-0.5 rounded-full bg-white shadow-xs group-hover:scale-105 transition-transform">
               <img src="/images/nss-logo.png" alt="NSS Logo" className="w-8 h-8 object-contain rounded-full" />
             </div>
             <span className="font-black tracking-tight text-sm text-gray-900 whitespace-nowrap hidden sm:inline">
@@ -56,18 +54,18 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Vertical Divider */}
+          {/* Divider */}
           <div className="h-5 w-px bg-gray-200 hidden lg:block mx-1 shrink-0" />
 
-          {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center gap-0.5">
+          {/* Nav Links - Equally Distributed across the bar */}
+          <nav className="hidden lg:flex items-center justify-between flex-1 pl-2 pr-1">
             {navLinks.map((link) => {
               const isActive = pathname === link.path;
               return (
                 <Link 
                   key={link.name} 
                   href={link.path}
-                  className={`px-2.5 xl:px-3 py-1 text-xs xl:text-sm font-bold rounded-full transition-all duration-200 whitespace-nowrap ${
+                  className={`px-2.5 py-1 text-xs xl:text-sm font-bold rounded-full transition-all duration-200 whitespace-nowrap text-center flex-1 ${
                     isActive 
                       ? 'text-white bg-nss-blue shadow-sm' 
                       : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100/70'
@@ -80,8 +78,8 @@ export default function Navbar() {
           </nav>
         </div>
 
-        {/* Standalone Dashboard / Login Pill on Right */}
-        <div className="pointer-events-auto flex items-center gap-2">
+        {/* Standalone Dashboard / Login Pill */}
+        <div className="pointer-events-auto flex items-center gap-2 shrink-0">
           <Link 
             href={isAuthenticated ? (user?.role === 'admin' ? '/admin' : '/dashboard') : "/login"}
             className="px-5 py-2 text-xs sm:text-sm font-black rounded-full transition-all duration-300 transform hover:scale-105 bg-gray-900 hover:bg-nss-blue text-white shadow-md hover:shadow-lg whitespace-nowrap"
