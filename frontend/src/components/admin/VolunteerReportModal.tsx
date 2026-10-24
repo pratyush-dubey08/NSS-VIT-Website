@@ -9,8 +9,7 @@ import {
   Phone, 
   Home, 
   Calendar, 
-  Award, 
-  Clock, 
+  Award,
   CheckCircle2, 
   XCircle, 
   AlertCircle, 
@@ -210,15 +209,15 @@ export default function VolunteerReportModal({ isOpen, onClose, volunteer }: Vol
       doc.setFontSize(13);
       doc.text(String(stats.bunkedEvents), 14 + (boxW + 3) * 2 + boxW / 2, boxY + 16, { align: 'center' });
 
-      // Card 4: Service Hours
+      // Card 4: Attendance Rate
       doc.setFillColor(254, 243, 199);
       doc.setDrawColor(253, 230, 138);
       doc.roundedRect(14 + (boxW + 3) * 3, boxY, boxW, boxH, 2, 2, 'FD');
       doc.setFontSize(8);
       doc.setTextColor(146, 64, 14);
-      doc.text('SERVICE HOURS', 14 + (boxW + 3) * 3 + boxW / 2, boxY + 7, { align: 'center' });
+      doc.text('ATTENDANCE RATE', 14 + (boxW + 3) * 3 + boxW / 2, boxY + 7, { align: 'center' });
       doc.setFontSize(13);
-      doc.text(`${stats.totalHours} hrs`, 14 + (boxW + 3) * 3 + boxW / 2, boxY + 16, { align: 'center' });
+      doc.text(`${stats.attendanceRate}%`, 14 + (boxW + 3) * 3 + boxW / 2, boxY + 16, { align: 'center' });
 
       // 5. Activities Attendance Table
       doc.setTextColor(15, 23, 42);
@@ -233,14 +232,13 @@ export default function VolunteerReportModal({ isOpen, onClose, volunteer }: Vol
             act.date || 'N/A',
             act.category || 'General',
             act.venue || 'Campus',
-            `${act.hours || 0} hrs`,
             act.attendanceStatus === 'ATTENDED' ? 'PRESENT' : act.attendanceStatus === 'BUNKED' ? 'ABSENT' : 'PENDING'
           ])
-        : [['-', 'No activity records registered yet for this volunteer', '-', '-', '-', '-', '-']];
+        : [['-', 'No activity records registered yet for this volunteer', '-', '-', '-', '-']];
 
       autoTable(doc, {
         startY: 135,
-        head: [['#', 'Activity / Event Name', 'Date', 'Category', 'Venue', 'Hours', 'Attendance Status']],
+        head: [['#', 'Activity / Event Name', 'Date', 'Category', 'Venue', 'Attendance Status']],
         body: tableRows,
         theme: 'striped',
         headStyles: {
@@ -255,15 +253,14 @@ export default function VolunteerReportModal({ isOpen, onClose, volunteer }: Vol
         },
         columnStyles: {
           0: { cellWidth: 10, halign: 'center' },
-          1: { cellWidth: 55 },
-          2: { cellWidth: 26 },
-          3: { cellWidth: 26 },
-          4: { cellWidth: 25 },
-          5: { cellWidth: 16, halign: 'center' },
-          6: { cellWidth: 24, fontStyle: 'bold', halign: 'center' }
+          1: { cellWidth: 65 },
+          2: { cellWidth: 28 },
+          3: { cellWidth: 27 },
+          4: { cellWidth: 28 },
+          5: { cellWidth: 24, fontStyle: 'bold', halign: 'center' }
         },
         didParseCell: (data) => {
-          if (data.section === 'body' && data.column.index === 6) {
+          if (data.section === 'body' && data.column.index === 5) {
             const val = String(data.cell.raw);
             if (val === 'PRESENT') {
               data.cell.styles.textColor = [16, 185, 129]; // Emerald
@@ -403,16 +400,6 @@ export default function VolunteerReportModal({ isOpen, onClose, volunteer }: Vol
                     <span className="font-semibold text-slate-800">{vol.phoneNumber || 'Not provided'}</span>
                   </div>
 
-                  {/* Email */}
-                  <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-2xs">
-                    <span className="text-[11px] font-bold text-slate-400 uppercase block mb-1 flex items-center gap-1">
-                      <Mail size={12} /> Email
-                    </span>
-                    <span className="font-medium text-slate-800 truncate block" title={vol.email}>
-                      {vol.email || 'Not provided'}
-                    </span>
-                  </div>
-
                   {/* Gender */}
                   <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-2xs">
                     <span className="text-[11px] font-bold text-slate-400 uppercase block mb-1">Gender</span>
@@ -441,12 +428,14 @@ export default function VolunteerReportModal({ isOpen, onClose, volunteer }: Vol
                     <span className="font-semibold text-slate-800">{vol.batch ? `Batch of ${vol.batch}` : 'Active'}</span>
                   </div>
 
-                  {/* Verified Service Hours */}
-                  <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-2xs">
+                  {/* Email (Spans 2 columns for full visibility) */}
+                  <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-2xs sm:col-span-2 md:col-span-2">
                     <span className="text-[11px] font-bold text-slate-400 uppercase block mb-1 flex items-center gap-1">
-                      <Clock size={12} /> Total Hours
+                      <Mail size={12} /> Email
                     </span>
-                    <span className="font-black text-nss-blue">{stats.totalHours} hrs</span>
+                    <span className="font-medium text-slate-800 break-all block" title={vol.email}>
+                      {vol.email || 'Not provided'}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -514,7 +503,6 @@ export default function VolunteerReportModal({ isOpen, onClose, volunteer }: Vol
                           <th className="py-3 px-4">Date</th>
                           <th className="py-3 px-4">Category</th>
                           <th className="py-3 px-4">Venue</th>
-                          <th className="py-3 px-4 text-center">Hours</th>
                           <th className="py-3 px-4 text-center">Attendance Status</th>
                         </tr>
                       </thead>
@@ -534,7 +522,6 @@ export default function VolunteerReportModal({ isOpen, onClose, volunteer }: Vol
                                 </span>
                               </td>
                               <td className="py-3 px-4 text-slate-600">{act.venue}</td>
-                              <td className="py-3 px-4 text-center font-bold text-slate-800">{act.hours} hrs</td>
                               <td className="py-3 px-4 text-center">
                                 {isAttended ? (
                                   <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
