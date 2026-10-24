@@ -19,7 +19,7 @@ export default function VolunteersPage() {
     const fetchVolunteers = async () => {
       try {
         setLoading(true);
-        // Fetch dynamic 2024 and 2025 volunteers directly from backend
+        // Fetch dynamic volunteers directly from backend
         const response = await api.get('/users/public', {
           params: { _t: Date.now() }
         });
@@ -57,30 +57,38 @@ export default function VolunteersPage() {
     fetchVolunteers();
   }, []);
 
-  // Dynamic linked batches (from database)
-  const batch2025 = dynamicVolunteers.filter(v => v.batch === '2025');
-  const batch2024 = dynamicVolunteers.filter(v => v.batch === '2024');
+  // Dynamically group all live volunteers from the database by batch
+  const dynamicBatchMap = new Map<string, Volunteer[]>();
+  dynamicVolunteers.forEach(v => {
+    const b = (v.batch || '').trim();
+    if (!b) return;
+    if (!dynamicBatchMap.has(b)) dynamicBatchMap.set(b, []);
+    dynamicBatchMap.get(b)!.push(v);
+  });
+
+  // Sort live database batches in descending order (e.g. 2026, 2025, 2024)
+  const dynamicBatchYears = Array.from(dynamicBatchMap.keys()).sort((a, b) => {
+    const numA = parseInt(a) || 0;
+    const numB = parseInt(b) || 0;
+    return numB - numA;
+  });
+
+  const dynamicSections = dynamicBatchYears.map(year => ({
+    batch: year,
+    list: (dynamicBatchMap.get(year) || []).sort((a, b) => a.name.localeCompare(b.name))
+  }));
 
   // Static historical batches (display only: 2023, 2022, 2021)
-  const batch2023 = (staticVolunteers as Volunteer[])
-    .filter(v => v.batch === '2023')
-    .sort((a, b) => a.name.localeCompare(b.name));
+  const staticYears = ['2023', '2022', '2021'];
+  const staticSections = staticYears.map(year => ({
+    batch: year,
+    list: (staticVolunteers as Volunteer[])
+      .filter(v => v.batch === year)
+      .sort((a, b) => a.name.localeCompare(b.name))
+  }));
 
-  const batch2022 = (staticVolunteers as Volunteer[])
-    .filter(v => v.batch === '2022')
-    .sort((a, b) => a.name.localeCompare(b.name));
-
-  const batch2021 = (staticVolunteers as Volunteer[])
-    .filter(v => v.batch === '2021')
-    .sort((a, b) => a.name.localeCompare(b.name));
-
-  const sections = [
-    { batch: '2025', list: batch2025 },
-    { batch: '2024', list: batch2024 },
-    { batch: '2023', list: batch2023 },
-    { batch: '2022', list: batch2022 },
-    { batch: '2021', list: batch2021 },
-  ].filter(s => s.list.length > 0);
+  // Combine dynamic sections with static sections, keeping only non-empty
+  const sections = [...dynamicSections, ...staticSections].filter(s => s.list.length > 0);
 
   return (
     <div className="min-h-screen bg-gray-50 pt-32 pb-20 px-4">

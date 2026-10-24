@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   X, 
@@ -20,6 +20,7 @@ interface BulkAddModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
+  defaultBatch?: string;
 }
 
 export interface ParsedVolunteer {
@@ -34,12 +35,20 @@ export interface ParsedVolunteer {
   rawText: string;
 }
 
-export default function BulkAddModal({ isOpen, onClose, onSuccess }: BulkAddModalProps) {
+export default function BulkAddModal({ isOpen, onClose, onSuccess, defaultBatch = '' }: BulkAddModalProps) {
   const [csvData, setCsvData] = useState('');
+  const [targetBatch, setTargetBatch] = useState(defaultBatch || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
   const [showPreview, setShowPreview] = useState(true);
+
+  // Sync defaultBatch when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      if (defaultBatch) setTargetBatch(defaultBatch);
+    }
+  }, [isOpen, defaultBatch]);
 
   // Smart Parser Function
   const parsedVolunteers = useMemo(() => {
@@ -212,10 +221,11 @@ export default function BulkAddModal({ isOpen, onClose, onSuccess }: BulkAddModa
   const validCount = parsedVolunteers.filter(v => v.isValid).length;
 
   const handleInsertSample = () => {
+    const yr = targetBatch.trim() || '2026';
     setCsvData(
-`Aditi Prakash, 24BAI10589, aditi@vitbhopal.ac.in, 9470042709, 2024, Female, Hosteller
-Rahul Sharma, 22BCG10055, rahul@vitbhopal.ac.in, 9988776655, 2024, , Hosteller
-Jane Smith, 21BCE10001, jane@vitbhopal.ac.in, 9123456780, 2023, Female, Day Scholar`
+`Aditi Prakash, ${yr.slice(2)}BAI10589, aditi@vitbhopal.ac.in, 9470042709, ${yr}, Female, Hosteller
+Rahul Sharma, ${yr.slice(2)}BCG10055, rahul@vitbhopal.ac.in, 9988776655, ${yr}, Male, Hosteller
+Ananya Sen, ${yr.slice(2)}BCE10001, ananya@vitbhopal.ac.in, 9123456780, ${yr}, Female, Day Scholar`
     );
     setError('');
   };
@@ -230,7 +240,7 @@ Jane Smith, 21BCE10001, jane@vitbhopal.ac.in, 9123456780, 2023, Female, Day Scho
       registrationNumber: v.registrationNumber,
       email: v.email || undefined,
       phoneNumber: v.phoneNumber || undefined,
-      batch: v.batch || undefined,
+      batch: v.batch || (targetBatch.trim() ? targetBatch.trim() : undefined),
       gender: v.gender || undefined,
       residenceType: v.residenceType || undefined,
     }));
@@ -338,6 +348,32 @@ Jane Smith, 21BCE10001, jane@vitbhopal.ac.in, 9123456780, 2023, Female, Day Scho
                 <span>{successMsg}</span>
               </div>
             )}
+
+            {/* Batch Selector / Preset Toolbar */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-slate-50 border border-slate-200 rounded-xl">
+              <div className="flex items-center gap-2 text-xs font-bold text-slate-700">
+                <Sparkles size={14} className="text-nss-blue" />
+                <span>Batch Assignment:</span>
+                <span className="font-normal text-slate-500">(Auto-detected from CSV or specify target batch)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <label className="text-xs font-bold text-slate-600">Batch:</label>
+                <input 
+                  type="text"
+                  list="bulk-batch-list"
+                  value={targetBatch}
+                  onChange={e => setTargetBatch(e.target.value)}
+                  placeholder="e.g. 2026"
+                  className="w-28 px-2.5 py-1 text-xs font-bold bg-white border border-slate-300 rounded-lg outline-none focus:border-nss-blue"
+                />
+                <datalist id="bulk-batch-list">
+                  <option value="2026" />
+                  <option value="2025" />
+                  <option value="2024" />
+                  <option value="2023" />
+                </datalist>
+              </div>
+            </div>
 
             {/* CSV Input Textarea */}
             <div className="space-y-1.5">
