@@ -650,6 +650,12 @@ export default function ManageActivityPage() {
             <p className="text-gray-400 font-bold uppercase tracking-wider mb-1">Date</p>
             <p className="font-bold text-gray-900 text-sm">{new Date(activity.date).toLocaleDateString()}</p>
           </div>
+          {activity.time ? (
+            <div>
+              <p className="text-gray-400 font-bold uppercase tracking-wider mb-1">Timing</p>
+              <p className="font-bold text-gray-900 text-sm truncate">{activity.time}</p>
+            </div>
+          ) : null}
           <div>
             <p className="text-gray-400 font-bold uppercase tracking-wider mb-1">Venue</p>
             <p className="font-bold text-gray-900 text-sm truncate">{activity.venue || 'Campus'}</p>

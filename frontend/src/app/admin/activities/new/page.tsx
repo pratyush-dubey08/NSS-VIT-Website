@@ -18,6 +18,7 @@ export default function NewActivityPage() {
     title: '',
     category: 'General',
     date: '',
+    time: '',
     venue: '',
     status: 'Draft',
     hoursAllocated: 0,
@@ -175,6 +176,18 @@ export default function NewActivityPage() {
                   value={formData.date}
                   onChange={handleChange}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-nss-blue outline-none transition-shadow"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-gray-700">Event Timing (e.g. 10:00 AM - 4:00 PM)</label>
+                <input 
+                  type="text"
+                  name="time"
+                  value={formData.time}
+                  onChange={handleChange}
+                  placeholder="e.g. 10:00 AM - 4:00 PM"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-nss-blue outline-none transition-shadow font-medium"
                 />
               </div>
 

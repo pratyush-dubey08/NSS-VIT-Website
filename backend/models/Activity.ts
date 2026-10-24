@@ -5,6 +5,7 @@ export interface IActivity extends Document {
   category: string;
   date: Date;
   venue: string;
+  time?: string;
   bannerUrl?: string;
   formBannerUrl?: string;
   description: string;
@@ -28,6 +29,7 @@ const ActivitySchema: Schema = new Schema({
   category: { type: String, required: true },
   date: { type: Date, required: true },
   venue: { type: String, required: true },
+  time: { type: String, default: '' },
   bannerUrl: { type: String },
   formBannerUrl: { type: String },
   description: { type: String, required: true },

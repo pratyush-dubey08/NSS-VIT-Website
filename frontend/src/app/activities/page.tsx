@@ -206,6 +206,15 @@ export default function ActivitiesPage() {
                           <Calendar size={13} className="text-nss-blue" />
                           <span>{activity.date ? new Date(activity.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : 'TBA'}</span>
                         </div>
+                        {activity.time && (
+                          <>
+                            <span>•</span>
+                            <div className="flex items-center gap-1">
+                              <Clock size={13} className="text-amber-600 shrink-0" />
+                              <span>{activity.time}</span>
+                            </div>
+                          </>
+                        )}
                         {(activity.venue || activity.location) && (
                           <>
                             <span>•</span>

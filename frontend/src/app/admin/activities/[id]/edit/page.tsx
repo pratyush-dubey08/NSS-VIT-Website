@@ -22,6 +22,7 @@ export default function EditActivityPage({ params }: { params: Promise<{ id: str
     title: '',
     category: 'General',
     date: '',
+    time: '',
     venue: '',
     status: 'Draft',
     hoursAllocated: 0,
@@ -49,6 +50,7 @@ export default function EditActivityPage({ params }: { params: Promise<{ id: str
           title: data.title,
           category: data.category || 'General',
           date: data.date ? new Date(data.date).toISOString().split('T')[0] : '',
+          time: data.time || '',
           venue: data.venue,
           status: data.isRegistrationOpen ? 'Open' : 'Closed',
           hoursAllocated: data.hoursAllocated || 0,
@@ -219,6 +221,18 @@ export default function EditActivityPage({ params }: { params: Promise<{ id: str
                   value={formData.date}
                   onChange={handleChange}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-nss-blue outline-none transition-shadow"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-gray-700">Event Timing (e.g. 10:00 AM - 4:00 PM)</label>
+                <input 
+                  type="text"
+                  name="time"
+                  value={formData.time}
+                  onChange={handleChange}
+                  placeholder="e.g. 10:00 AM - 4:00 PM"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-nss-blue outline-none transition-shadow font-medium"
                 />
               </div>
 

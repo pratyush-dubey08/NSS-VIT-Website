@@ -351,6 +351,18 @@ export default function PublicEventPortal() {
                 </div>
               </div>
 
+              {event.time && (
+                <div className="flex gap-3.5 items-start">
+                  <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 shrink-0">
+                    <Clock size={18} />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Timing</p>
+                    <p className="font-bold text-gray-900 text-xs sm:text-sm">{event.time}</p>
+                  </div>
+                </div>
+              )}
+
               <div className="flex gap-3.5 items-start">
                 <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center text-nss-red shrink-0">
                   <MapPin size={18} />
