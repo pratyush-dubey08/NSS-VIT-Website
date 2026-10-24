@@ -41,10 +41,8 @@ export default function ManageActivityPage() {
   const [formBannerUrl, setFormBannerUrl] = useState('');
   const [confirmationMessage, setConfirmationMessage] = useState('Thank you for filling out the form! Our team will contact you shortly.');
   const [isSavingFormSettings, setIsSavingFormSettings] = useState(false);
-  const [registrationMode, setRegistrationMode] = useState<'CUSTOM' | 'GOOGLE_FORM'>(
-    activity.registrationMode || (activity.googleFormUrl ? 'GOOGLE_FORM' : 'CUSTOM')
-  );
-  const [googleFormUrl, setGoogleFormUrl] = useState<string>(activity.googleFormUrl || '');
+  const [registrationMode, setRegistrationMode] = useState<'CUSTOM' | 'GOOGLE_FORM'>('CUSTOM');
+  const [googleFormUrl, setGoogleFormUrl] = useState<string>('');
   const [isSavingGoogleForm, setIsSavingGoogleForm] = useState(false);
 
   const handleSaveGoogleFormUrl = async () => {
@@ -101,6 +99,8 @@ export default function ManageActivityPage() {
       setIsFormLockedForManagers(actData.isFormLockedForManagers === true);
       setFormBannerUrl(actData.formBannerUrl || '/images/default-event-banner.png');
       setConfirmationMessage(actData.confirmationMessage || 'Thank you for filling out the form! Our team will contact you shortly.');
+      setRegistrationMode(actData.registrationMode || (actData.googleFormUrl ? 'GOOGLE_FORM' : 'CUSTOM'));
+      setGoogleFormUrl(actData.googleFormUrl || '');
 
       setEditFormData({
         title: actData.title || '',

@@ -146,7 +146,7 @@ export default function EditActivityPage({ params }: { params: Promise<{ id: str
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Edit Activity</h1>
             <p className="text-sm text-gray-500">
-              {step === 1 ? 'Step 1: Edit Event Details' : 'Step 2: Edit Registration Form'}
+              Edit Event Details
             </p>
           </div>
         </div>
@@ -166,23 +166,13 @@ export default function EditActivityPage({ params }: { params: Promise<{ id: str
               Back to Details
             </button>
           )}
-          {step === 1 && (
-            <>
-              <button 
-                onClick={() => handleSave()}
-                disabled={isSubmitting}
-                className="flex items-center gap-2 px-6 py-2.5 bg-gray-900 text-white font-bold rounded-xl hover:bg-black transition-colors"
-              >
-                <Save size={18} /> Save Details
-              </button>
-              <button 
-                onClick={() => setStep(2)}
-                className="flex items-center gap-2 px-6 py-2.5 bg-nss-blue text-white font-bold rounded-xl hover:bg-blue-800 transition-colors"
-              >
-                Edit Form <ArrowRight size={18} />
-              </button>
-            </>
-          )}
+          <button 
+            onClick={() => handleSave()}
+            disabled={isSubmitting}
+            className="flex items-center gap-2 px-6 py-2.5 bg-gray-900 text-white font-bold rounded-xl hover:bg-black transition-colors cursor-pointer"
+          >
+            <Save size={18} /> Save Details
+          </button>
         </div>
       </div>
 
@@ -203,7 +193,7 @@ export default function EditActivityPage({ params }: { params: Promise<{ id: str
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div className="space-y-2 md:col-span-2">
-                <label className="text-sm font-bold text-gray-700">Event Title *</label>
+                <label className="text-sm font-bold text-gray-700">Event Title</label>
                 <input 
                   type="text"
                   name="title"
@@ -214,7 +204,7 @@ export default function EditActivityPage({ params }: { params: Promise<{ id: str
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700">Date *</label>
+                <label className="text-sm font-bold text-gray-700">Date</label>
                 <input 
                   type="date"
                   name="date"
@@ -237,7 +227,7 @@ export default function EditActivityPage({ params }: { params: Promise<{ id: str
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700">Venue *</label>
+                <label className="text-sm font-bold text-gray-700">Venue</label>
                 <input 
                   type="text"
                   name="venue"
@@ -275,7 +265,7 @@ export default function EditActivityPage({ params }: { params: Promise<{ id: str
             </div>
 
             <div className="space-y-2 mb-8">
-              <label className="text-sm font-bold text-gray-700">Event Brief (Description) *</label>
+              <label className="text-sm font-bold text-gray-700">Event Brief (Description)</label>
               <textarea 
                 name="description"
                 value={formData.description}
