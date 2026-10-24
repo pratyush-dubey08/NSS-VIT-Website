@@ -445,46 +445,46 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
     date: '2026 Grand Cultural Showcase',
     location: 'VIT Bhopal University Auditorium',
     highlightStat: {
-      value: '7 Epics',
-      label: 'Thematic Productions'
+      value: '7 Acts',
+      label: 'Thematic Performances'
     },
     badges: ['Mythology Meets Modernity'],
-    motto: '“Ancient Stories. Modern Struggles. Timeless Lessons.”',
+    motto: '“Ancient Stories. Modern Questions. Timeless Answers.”',
     paragraphs: [
       'Building upon the foundation of 2025, VIBGYOR 2026 elevated NSS cultural performances into an intellectual and emotional tour de force by connecting ancient Indian epics with the most pressing dilemmas faced by modern youth.',
-      'Rather than treating mythology and contemporary life as separate entities, VIBGYOR 2026 used iconic archetypes from Indian literature as artistic allegories to explore mental health, cyber harassment, performance anxiety, and social conditioning.',
-      'Through scripting, original choreography, theatrical acting, and evocative lighting, each segment delivered a profound social commentary that sparked deep introspection among the audience.'
+      'Rather than treating mythology and contemporary life as separate entities, VIBGYOR 2026 used iconic archetypes from Indian literature as artistic allegories to explore women’s safety, systemic justice, educational equality, mental health anxiety, resisting oppression, and overcoming burnout.',
+      'Through seven powerful thematic performances—Shakti, Prashna, Adhikaar, Sangharsh, Sahas, Astitva, and Taandav—the production delivered an evocative social commentary inspiring deep introspection and transformative change.'
     ],
     customHighlights: {
-      heading: '7 Interconnected Thematic Productions',
+      heading: 'The Seven Thematic Performances',
       items: [
         {
-          title: '1. SHAKTI (Parvati to Kali)',
-          desc: 'Women’s empowerment, innate resilience, bodily autonomy, and the courage to confront oppression.'
+          title: '1. SHAKTI | Kali – Women Empowerment & Safety',
+          desc: "Women transformation into Kali represents the awakening of inner strength, connecting with women's safety, dignity, equality and courage against injustice."
         },
         {
-          title: '2. PRASHNA (Inspired by Draupadi)',
-          desc: 'Justice, questioning institutional complicity, breaking silence against harassment, and demanding accountability.'
+          title: '2. PRASHNA | Draupadi – Justice, Harassment & Silence',
+          desc: "Draupadi's humiliation connects with modern-day harassment and bystander silence, questioning our responsibility towards those facing injustice."
         },
         {
-          title: '3. SANGHARSH (Inspired by Arjuna)',
-          desc: 'Addressing mental health, debilitating anxiety, inner doubt, and overcoming paralyzing expectations.'
+          title: '3. ADHIKAAR | Eklavya – Inequality & Equal Opportunity',
+          desc: "Eklavya's journey reflects educational inequality, privilege and unequal access to opportunities, highlighting the need for inclusion and equal opportunity."
         },
         {
-          title: '4. ABHIMANYU (The Chakravyuha of Youth)',
-          desc: 'The suffocating burden of academic and peer expectations, isolation, and the vital need for emotional support systems.'
+          title: '4. SANGHARSH | Arjuna – Mental Health, Anxiety & Pressure',
+          desc: "Arjuna's inner conflict mirrors the anxiety, academic pressure, comparison and uncertainty faced by today's students, emphasising empathy and support."
         },
         {
-          title: '5. MANTHAN (Samudra Manthan in Digital Age)',
-          desc: 'Examining digital technology, algorithmic addiction, viral misinformation, and ethical responsibility in the social media era.'
+          title: '5. SAHAS | Prahlada – Oppression, Bullying & Standing Against Fear',
+          desc: "Prahlada's courage against oppression connects with modern bullying, intimidation and misuse of power, encouraging people to stand up against fear and injustice."
         },
         {
-          title: '6. VASUKI (The Churning of Self-Worth)',
-          desc: 'Exploring systemic exploitation, modern corporate/academic burnout, toxic people-pleasing, and recovering self-worth.'
+          title: '6. ASTITVA | Vasuki – Exploitation, Burnout & People-Pleasing',
+          desc: "Vasuki's forgotten contribution represents those who constantly give and carry others' expectations, highlighting self-worth, boundaries and compassion."
         },
         {
-          title: '7. TANDAVA (Shiva’s Cosmic Dissolution)',
-          desc: 'Dismantling toxic societal dogmas, questioning prejudices, and destroying harmful conventions to create a just order.'
+          title: '7. TAANDAV | Shiva – Breaking Toxic Social Norms',
+          desc: "Shiva's Tandava represents the destruction of harmful social patterns, stereotypes and expectations, concluding the thematic performances with a message of transformation and change."
         }
       ]
     }
