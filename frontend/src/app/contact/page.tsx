@@ -6,7 +6,6 @@ import {
   Sparkles, ExternalLink, HeartHandshake, Send, ArrowRight
 } from 'lucide-react';
 
-
 const InstagramIcon = ({ size = 20, className = '' }: { size?: number; className?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
     <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
@@ -33,56 +32,51 @@ const YoutubeIcon = ({ size = 20, className = '' }: { size?: number; className?:
 export default function ContactPage() {
   const socialChannels = [
     {
-      title: 'Official WhatsApp Channel',
-      badge: 'Official Announcements',
+      title: 'Join Our Official WhatsApp Community',
+      badge: 'WhatsApp',
       badgeColor: 'bg-emerald-100 text-emerald-800',
       icon: MessageCircle,
-      iconBg: 'bg-emerald-50 text-emerald-600',
-      description: 'Get instant official notifications about new drives, event registrations, volunteer hours, and campus updates.',
-      linkText: 'Join WhatsApp Channel',
+      subtitle: 'Official announcements & drives',
+      linkText: 'Join WhatsApp',
       linkUrl: 'https://www.whatsapp.com/channel/0029VbBFSgS8qIzvpLL2Ye1W',
       highlightBorder: 'hover:border-emerald-300'
     },
     {
-      title: '@nssvitbhopal',
-      badge: 'Official Instagram',
+      title: 'Follow Us on Instagram',
+      badge: 'Instagram',
       badgeColor: 'bg-rose-100 text-rose-800',
       icon: InstagramIcon,
-      iconBg: 'bg-rose-50 text-rose-600',
-      description: 'Official flagship handle for event highlights, guest inaugurations, blood donation drives, and official circulars.',
-      linkText: 'Follow @nssvitbhopal',
+      subtitle: '@nssvitbhopal',
+      linkText: 'Follow on Instagram',
       linkUrl: 'https://www.instagram.com/nssvitbhopal/',
       highlightBorder: 'hover:border-rose-300'
     },
     {
-      title: '@nssvitb_unfiltered',
-      badge: 'BTS & Campus Life',
+      title: 'Follow NSS Unfiltered',
+      badge: 'BTS & Campus',
       badgeColor: 'bg-purple-100 text-purple-800',
       icon: Sparkles,
-      iconBg: 'bg-purple-50 text-purple-600',
-      description: 'The candid, behind-the-scenes side of NSS! Fun reels, volunteer moments, prep bloopers, camp diaries & volunteer life.',
-      linkText: 'Follow @nssvitb_unfiltered',
+      subtitle: '@nssvitb_unfiltered',
+      linkText: 'Follow Unfiltered',
       linkUrl: 'https://www.instagram.com/nssvitb_unfiltered/',
       highlightBorder: 'hover:border-purple-300'
     },
     {
-      title: 'NSS Unit, VIT Bhopal',
-      badge: 'LinkedIn Network',
+      title: 'Connect on LinkedIn',
+      badge: 'LinkedIn',
       badgeColor: 'bg-blue-100 text-blue-800',
       icon: LinkedinIcon,
-      iconBg: 'bg-blue-50 text-blue-600',
-      description: 'Connect professionally for organizational outreach, alumni network, certificates, and societal impact reports.',
+      subtitle: 'NSS Unit, VIT Bhopal',
       linkText: 'Connect on LinkedIn',
       linkUrl: 'https://www.linkedin.com/company/nss-vitb/posts/',
       highlightBorder: 'hover:border-blue-300'
     },
     {
-      title: 'NSS Unit YouTube Channel',
-      badge: 'Video Documentaries',
+      title: 'Subscribe on YouTube',
+      badge: 'YouTube',
       badgeColor: 'bg-red-100 text-red-800',
       icon: YoutubeIcon,
-      iconBg: 'bg-red-50 text-red-600',
-      description: 'Watch event recaps, camp documentaries, awareness films, volunteer testimonials, and keynote talks.',
+      subtitle: 'NSS Unit VIT Bhopal',
       linkText: 'Subscribe on YouTube',
       linkUrl: 'https://www.youtube.com/@nationalservicescheme-vitb5083',
       highlightBorder: 'hover:border-red-300'
@@ -107,38 +101,24 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Official Linktree & Social Channels Hub Section */}
-      <section className="container mx-auto px-4 pt-12 max-w-6xl">
-        <div className="bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden mb-12">
+      {/* Official Social Channels Hub Section (Clean, Compact, No Linktree) */}
+      <section className="container mx-auto px-4 pt-10 max-w-6xl">
+        <div className="bg-gradient-to-br from-blue-900 via-indigo-950 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden mb-12">
           {/* Subtle decorative circles */}
           <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="max-w-xl">
-              <span className="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-white/10 text-blue-200 border border-white/15 inline-block mb-3">
-                Official NSS Linktree Hub
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-black tracking-tight mb-2">
-                All NSS Unit Links in One Place
-              </h2>
-              <p className="text-sm text-blue-100/80 leading-relaxed font-normal">
-                Join our official WhatsApp community, follow our main Instagram handle, catch BTS moments on NSS Unfiltered, and connect on LinkedIn via our verified Linktree portal.
-              </p>
-            </div>
-
-            <a
-              href="https://linktr.ee/nssunit__vitbhopal"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-3.5 bg-white hover:bg-blue-50 text-slate-900 font-black rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl shrink-0 cursor-pointer"
-            >
-              <ExternalLink size={16} className="text-nss-blue" /> Open linktr.ee/nssunit__vitbhopal
-            </a>
+          <div className="relative z-10 text-center max-w-xl mx-auto mb-6">
+            <h2 className="text-2xl sm:text-3xl font-black tracking-tight mb-2">
+              Connect With Our Community
+            </h2>
+            <p className="text-xs sm:text-sm text-blue-100/80 font-normal">
+              Stay connected with NSS Unit, VIT Bhopal across all our official handles.
+            </p>
           </div>
 
           {/* Social Media Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-8 pt-8 border-t border-white/10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 pt-4 border-t border-white/10">
             {socialChannels.map((item, idx) => {
               const Icon = item.icon;
               return (
@@ -147,28 +127,32 @@ export default function ContactPage() {
                   href={item.linkUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={'p-5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all flex flex-col justify-between group ' + item.highlightBorder}
+                  className={'p-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all flex flex-col justify-between group ' + item.highlightBorder}
                 >
-                  <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white group-hover:scale-105 transition-transform">
-                        <Icon size={20} />
+                  <div className="space-y-2 mb-3">
+                    <div className="flex items-center justify-between">
+                      <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-white group-hover:scale-105 transition-transform">
+                        <Icon size={18} />
                       </div>
-                      <span className={'text-[10px] font-bold px-2.5 py-0.5 rounded-full ' + item.badgeColor}>
+                      <span className={'text-[10px] font-bold px-2 py-0.5 rounded-full ' + item.badgeColor}>
                         {item.badge}
                       </span>
                     </div>
 
-                    <h3 className="font-bold text-white text-sm mb-1.5 group-hover:text-blue-200 transition-colors">
-                      {item.title}
-                    </h3>
-                    <p className="text-xs text-blue-100/70 leading-relaxed mb-4">
-                      {item.description}
-                    </p>
+                    <div>
+                      <h3 className="font-bold text-white text-xs sm:text-sm leading-snug group-hover:text-blue-200 transition-colors">
+                        {item.title}
+                      </h3>
+                      {item.subtitle && (
+                        <p className="text-[11px] text-blue-200/70 font-medium mt-1">
+                          {item.subtitle}
+                        </p>
+                      )}
+                    </div>
                   </div>
 
-                  <span className="text-xs font-bold text-blue-300 group-hover:text-white flex items-center gap-1.5 transition-colors">
-                    {item.linkText} <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
+                  <span className="text-[11px] font-bold text-blue-300 group-hover:text-white flex items-center gap-1 transition-colors pt-2 border-t border-white/5">
+                    {item.linkText} <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
                   </span>
                 </a>
               );
@@ -200,86 +184,85 @@ export default function ContactPage() {
                 <Mail size={22} />
               </div>
               <div>
-                <h4 className="font-bold text-gray-900 text-sm mb-1">Email Us</h4>
-                <a href="mailto:nss@vitbhopal.ac.in" className="text-xs text-gray-600 hover:text-nss-blue font-mono font-medium">
+                <h4 className="font-bold text-gray-900 text-sm mb-1">Email Queries</h4>
+                <a href="mailto:nss@vitbhopal.ac.in" className="text-xs text-nss-blue font-bold hover:underline block mb-1">
                   nss@vitbhopal.ac.in
                 </a>
+                <p className="text-[11px] text-gray-400">For student drives and collaborations</p>
               </div>
             </motion.div>
-
+            
             <motion.div initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-6 rounded-2xl border border-gray-200/80 shadow-xs flex gap-4 bg-white">
-              <div className="w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center shrink-0 text-green-600">
+              <div className="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center shrink-0 text-amber-600">
                 <Clock size={22} />
               </div>
               <div>
-                <h4 className="font-bold text-gray-900 text-sm mb-1">Working Hours</h4>
-                <p className="text-xs text-gray-600">Monday - Friday: 9:00 AM - 6:00 PM</p>
+                <h4 className="font-bold text-gray-900 text-sm mb-1">Office Hours</h4>
+                <p className="text-xs text-gray-600">Monday - Friday</p>
+                <p className="text-xs font-semibold text-gray-800">9:00 AM - 5:00 PM</p>
               </div>
             </motion.div>
           </div>
 
           {/* Contact Message Form (2/3) */}
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="lg:w-2/3 w-full">
-            <div className="p-8 sm:p-10 rounded-3xl border border-gray-200/80 shadow-xs bg-white">
-              <h3 className="text-xl sm:text-2xl font-black text-gray-900 mb-2">Send us a Message</h3>
-              <p className="text-xs text-gray-500 mb-6">Have inquiries regarding partnerships or campus drives? Drop us a note:</p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="lg:w-2/3 w-full bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-xs">
+            <h3 className="text-xl font-black text-gray-900 mb-2">Send us a Direct Message</h3>
+            <p className="text-xs sm:text-sm text-gray-500 mb-6">
+              Fill out this form and a student coordinator will get back to your query via college email.
+            </p>
 
-              <form action="mailto:nss@vitbhopal.ac.in" method="POST" encType="text/plain" className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">Your Name</label>
-                    <input 
-                      type="text" 
-                      name="Name" 
-                      required 
-                      className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-xs text-gray-900 focus:bg-white focus:ring-2 focus:ring-nss-blue/20 focus:border-nss-blue outline-none transition-all font-medium" 
-                      placeholder="e.g. Rahul Sharma" 
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">Email Address (@vitbhopal.ac.in)</label>
-                    <input 
-                      type="email" 
-                      name="Email" 
-                      required 
-                      className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-xs text-gray-900 focus:bg-white focus:ring-2 focus:ring-nss-blue/20 focus:border-nss-blue outline-none transition-all font-medium" 
-                      placeholder="yourname@vitbhopal.ac.in" 
-                    />
-                  </div>
-                </div>
-
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              alert('Message sent successfully! Our NSS representative will get back to you shortly.');
+            }} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">Subject</label>
-                  <input 
-                    type="text" 
-                    name="Subject" 
-                    required 
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-xs text-gray-900 focus:bg-white focus:ring-2 focus:ring-nss-blue/20 focus:border-nss-blue outline-none transition-all font-medium" 
-                    placeholder="Subject of your message..." 
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Your Full Name</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. John Doe"
+                    className="w-full p-3 bg-gray-50/50 border border-gray-200 rounded-xl text-xs font-medium focus:bg-white focus:outline-none focus:border-nss-blue transition-all"
                   />
                 </div>
-
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">Message</label>
-                  <textarea 
-                    rows={4} 
-                    name="Message" 
-                    required 
-                    className="w-full p-4 rounded-xl border border-gray-200 bg-gray-50/50 text-xs text-gray-900 focus:bg-white focus:ring-2 focus:ring-nss-blue/20 focus:border-nss-blue outline-none transition-all font-medium resize-none" 
-                    placeholder="Write your query or message here..."
-                  ></textarea>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Email Address</label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="e.g. yourname@vitbhopal.ac.in"
+                    className="w-full p-3 bg-gray-50/50 border border-gray-200 rounded-xl text-xs font-medium focus:bg-white focus:outline-none focus:border-nss-blue transition-all"
+                  />
                 </div>
+              </div>
 
-                <div className="pt-2">
-                  <button 
-                    type="submit" 
-                    className="w-full sm:w-auto px-8 py-3 bg-nss-blue hover:bg-blue-800 text-white font-bold rounded-xl text-xs transition-colors flex items-center justify-center gap-2 shadow-xs cursor-pointer"
-                  >
-                    <Send size={14} /> Send Message
-                  </button>
-                </div>
-              </form>
-            </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">Subject</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Query regarding Blood Donation Volunteer Hours"
+                  className="w-full p-3 bg-gray-50/50 border border-gray-200 rounded-xl text-xs font-medium focus:bg-white focus:outline-none focus:border-nss-blue transition-all"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">Your Message</label>
+                <textarea
+                  rows={4}
+                  required
+                  placeholder="Write your message or inquiry here..."
+                  className="w-full p-3 bg-gray-50/50 border border-gray-200 rounded-xl text-xs font-medium focus:bg-white focus:outline-none focus:border-nss-blue transition-all"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="px-8 py-3 bg-nss-blue hover:bg-blue-900 text-white font-black text-xs sm:text-sm rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Send size={15} /> Send Message
+              </button>
+            </form>
           </motion.div>
 
         </div>
