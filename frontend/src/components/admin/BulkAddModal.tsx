@@ -358,20 +358,19 @@ Ananya Sen, ${yr.slice(2)}BCE10001, ananya@vitbhopal.ac.in, 9123456780, ${yr}, F
               </div>
               <div className="flex items-center gap-2">
                 <label className="text-xs font-bold text-slate-600">Batch:</label>
-                <input 
-                  type="text"
-                  list="bulk-batch-list"
+                <select
                   value={targetBatch}
                   onChange={e => setTargetBatch(e.target.value)}
-                  placeholder="e.g. 2026"
-                  className="w-28 px-2.5 py-1 text-xs font-bold bg-white border border-slate-300 rounded-lg outline-none focus:border-nss-blue"
-                />
-                <datalist id="bulk-batch-list">
-                  <option value="2026" />
-                  <option value="2025" />
-                  <option value="2024" />
-                  <option value="2023" />
-                </datalist>
+                  className="px-2.5 py-1 text-xs font-bold bg-white border border-slate-300 rounded-lg outline-none focus:border-nss-blue cursor-pointer"
+                >
+                  <option value="">Auto-Detect from CSV</option>
+                  <option value="2026">Batch 2026</option>
+                  <option value="2025">Batch 2025</option>
+                  <option value="2024">Batch 2024</option>
+                  <option value="2023">Batch 2023</option>
+                  <option value="2022">Batch 2022</option>
+                  <option value="2021">Batch 2021</option>
+                </select>
               </div>
             </div>
 
