@@ -13,7 +13,8 @@ export enum FieldType {
   CHECKBOX = 'CHECKBOX',
   DATE = 'DATE',
   FILE_UPLOAD = 'FILE_UPLOAD',
-  DECLARATION = 'DECLARATION'
+  DECLARATION = 'DECLARATION',
+  IMAGE = 'IMAGE'
 }
 
 export interface IFormField {
@@ -23,7 +24,14 @@ export interface IFormField {
   required: boolean;
   options?: string[]; // For dropdown, radio, checkbox
   placeholder?: string;
-  order: number;
+  description?: string;
+  imageUrl?: string;
+  imageTitle?: string;
+  bgColor?: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  order?: number;
 }
 
 export interface IFormSchema extends Document {
@@ -39,7 +47,14 @@ const FormFieldSchema = new Schema({
   required: { type: Boolean, default: false },
   options: [{ type: String }],
   placeholder: { type: String },
-  order: { type: Number, required: true }
+  description: { type: String },
+  imageUrl: { type: String },
+  imageTitle: { type: String },
+  bgColor: { type: String },
+  bold: { type: Boolean },
+  italic: { type: Boolean },
+  underline: { type: Boolean },
+  order: { type: Number, required: false }
 });
 
 const FormSchemaSchema: Schema = new Schema({

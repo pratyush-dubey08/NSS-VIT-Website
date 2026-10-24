@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { 
   Plus, Trash2, Copy, Eye, CheckCircle2, 
   ChevronUp, ChevronDown, Settings2, FileText, CheckSquare, ListFilter,
-  Type, AlignLeft, Mail, Hash, Phone, UploadCloud, CheckCheck
+  Type, AlignLeft, Mail, Hash, Phone, UploadCloud, CheckCheck,
+  QrCode, Image as ImageIcon, Bold, Italic, Underline, Palette, X
 } from 'lucide-react';
+import api from '@/lib/axios';
 
 export enum FieldType {
   SHORT_TEXT = 'SHORT_TEXT',
@@ -17,7 +19,8 @@ export enum FieldType {
   RADIO = 'RADIO',
   CHECKBOX = 'CHECKBOX',
   FILE_UPLOAD = 'FILE_UPLOAD',
-  DECLARATION = 'DECLARATION'
+  DECLARATION = 'DECLARATION',
+  IMAGE = 'IMAGE'
 }
 
 export interface IFormField {
@@ -25,10 +28,17 @@ export interface IFormField {
   type: FieldType;
   label: string;
   required: boolean;
+  description?: string;
   options?: string[];
   placeholder?: string;
   allowedTypes?: string;
   maxSizeInMB?: number;
+  imageUrl?: string;
+  imageTitle?: string;
+  bgColor?: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
 }
 
 interface FormBuilderProps {
@@ -37,12 +47,46 @@ interface FormBuilderProps {
   isSaving?: boolean;
 }
 
+// Preset color options
+export const PRESET_BG_COLORS = [
+  { name: 'White', value: '#ffffff', border: '#e2e8f0' },
+  { name: 'Soft Blue', value: '#eff6ff', border: '#bfdbfe' },
+  { name: 'Soft Green', value: '#ecfdf5', border: '#a7f3d0' },
+  { name: 'Soft Purple', value: '#f5f3ff', border: '#ddd6fe' },
+  { name: 'Soft Amber', value: '#fffbeb', border: '#fde68a' },
+  { name: 'Soft Rose', value: '#fff1f2', border: '#fecdd3' },
+  { name: 'Soft Slate', value: '#f8fafc', border: '#cbd5e1' }
+];
+
+export function renderRichText(text: string, formatting?: { bold?: boolean; italic?: boolean; underline?: boolean }) {
+  if (!text) return null;
+
+  // Replace markdown-style formatting: **bold**, *italic*, <u>underline</u>
+  let formatted = text
+    .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+    .replace(/\*(.*?)\*/g, '<i>$1</i>')
+    .replace(/__(.*?)__/g, '<u>$1</u>');
+
+  const classes = [
+    formatting?.bold ? 'font-black' : '',
+    formatting?.italic ? 'italic' : '',
+    formatting?.underline ? 'underline underline-offset-2' : ''
+  ].filter(Boolean).join(' ');
+
+  return (
+    <span 
+      className={classes}
+      dangerouslySetInnerHTML={{ __html: formatted }}
+    />
+  );
+}
+
 export default function FormBuilder({ initialFields = [], onSave, isSaving = false }: FormBuilderProps) {
   const [fields, setFields] = useState<IFormField[]>(() => {
     if (initialFields && initialFields.length > 0) return initialFields;
     return [
       { id: 'f_name', type: FieldType.SHORT_TEXT, label: 'Full Name', required: true, placeholder: 'Enter your full name' },
-      { id: 'f_email', type: FieldType.EMAIL, label: 'Official VIT Bhopal Email', required: true, placeholder: 'name@vitbhopal.ac.in' },
+      { id: 'f_email', type: FieldType.EMAIL, label: 'Official VIT Bhopal Email', required: true, placeholder: 'name@vitbhopal.ac.in', description: 'Restricted strictly to @vitbhopal.ac.in domains' },
       { id: 'f_reg', type: FieldType.REG_NUMBER, label: 'Registration Number', required: true, placeholder: 'e.g. 24BCY10001' },
       { id: 'f_phone', type: FieldType.MOBILE, label: 'WhatsApp / Mobile Number', required: true, placeholder: '10-digit mobile number' }
     ];
@@ -50,6 +94,7 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
 
   const [activeFieldId, setActiveFieldId] = useState<string | null>(null);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
+  const [uploadingImageFor, setUploadingImageFor] = useState<string | null>(null);
 
   const fieldTypeOptions = [
     { type: FieldType.SHORT_TEXT, label: 'Short Answer', icon: Type, desc: 'Single-line text' },
@@ -62,6 +107,7 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
     { type: FieldType.DROPDOWN, label: 'Dropdown', icon: ListFilter, desc: 'Select from list' },
     { type: FieldType.FILE_UPLOAD, label: 'File Upload', icon: UploadCloud, desc: 'Documents or images' },
     { type: FieldType.DECLARATION, label: 'Declaration', icon: CheckCheck, desc: 'Consent or agreement checkbox' },
+    { type: FieldType.IMAGE, label: 'Image / QR Code', icon: QrCode, desc: 'Display QR, poster, or instructions' }
   ];
 
   const addField = (type: FieldType) => {
@@ -75,20 +121,26 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
       [FieldType.CHECKBOX]: 'Select Applicable Options',
       [FieldType.DROPDOWN]: 'Select from Options',
       [FieldType.FILE_UPLOAD]: 'Upload Document / ID Card',
-      [FieldType.DECLARATION]: 'Declaration / Consent'
+      [FieldType.DECLARATION]: 'Declaration / Consent',
+      [FieldType.IMAGE]: 'Scan QR Code / Important Guidelines'
     };
 
     const newField: IFormField = {
       id: 'f_' + Math.random().toString(36).substring(2, 9),
       type,
       label: defaultLabels[type] || 'New Question',
-      required: false,
+      required: type !== FieldType.IMAGE,
       placeholder: '',
+      description: type === FieldType.IMAGE ? 'Scan the QR code below or follow these instructions:' : '',
       options: [FieldType.RADIO, FieldType.CHECKBOX, FieldType.DROPDOWN].includes(type)
         ? ['Option 1', 'Option 2']
         : undefined,
       allowedTypes: type === FieldType.FILE_UPLOAD ? '.pdf, image/*' : undefined,
-      maxSizeInMB: type === FieldType.FILE_UPLOAD ? 10 : undefined
+      maxSizeInMB: type === FieldType.FILE_UPLOAD ? 10 : undefined,
+      bgColor: '#ffffff',
+      bold: false,
+      italic: false,
+      underline: false
     };
 
     setFields(prev => [...prev, newField]);
@@ -106,7 +158,7 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
     const clone: IFormField = {
       ...original,
       id: 'f_' + Math.random().toString(36).substring(2, 9),
-      label: `${original.label} (Copy)`,
+      label: original.label + ' (Copy)',
       options: original.options ? [...original.options] : undefined
     };
     const updated = [...fields];
@@ -134,7 +186,7 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
     setFields(prev => prev.map(f => {
       if (f.id !== fieldId) return f;
       const opts = f.options || [];
-      return { ...f, options: [...opts, `Option ${opts.length + 1}`] };
+      return { ...f, options: [...opts, 'Option ' + (opts.length + 1)] };
     }));
   };
 
@@ -155,6 +207,24 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
     }));
   };
 
+  // Upload image/QR for a card
+  const handleUploadImageForField = async (fieldId: string, file: File) => {
+    try {
+      setUploadingImageFor(fieldId);
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await api.post('/upload', fd, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      updateField(fieldId, { imageUrl: res.data.url });
+    } catch (err) {
+      console.error('Failed to upload image:', err);
+      alert('Failed to upload image. Please try again.');
+    } finally {
+      setUploadingImageFor(null);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Top Builder Bar */}
@@ -165,7 +235,7 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
             Google Forms Style Form Builder
           </h3>
           <p className="text-xs text-gray-500 mt-0.5">
-            Add questions, customize requirements, and rearrange fields. Students with @vitbhopal.ac.in emails can fill out this form.
+            Add questions, QR codes/images, descriptions, card background colors, and rich text formatting (bold, italic, underline).
           </p>
         </div>
 
@@ -197,44 +267,110 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
             <div className="p-12 text-center bg-gray-50/70 border-2 border-dashed border-gray-200 rounded-2xl">
               <FileText size={36} className="mx-auto text-gray-300 mb-2" />
               <h4 className="font-bold text-gray-700">No questions added yet</h4>
-              <p className="text-xs text-gray-500 mt-1">Select a question type from the sidebar to add it to your form.</p>
+              <p className="text-xs text-gray-500 mt-1">Select a question or image/QR type from the sidebar to add it to your form.</p>
             </div>
           ) : (
             fields.map((field, index) => {
               const isSelected = activeFieldId === field.id;
               const hasOptions = [FieldType.RADIO, FieldType.CHECKBOX, FieldType.DROPDOWN].includes(field.type);
+              const cardBg = field.bgColor || '#ffffff';
 
               return (
                 <div
                   key={field.id}
                   onClick={() => setActiveFieldId(field.id)}
-                  className={`bg-white rounded-2xl border-2 transition-all p-5 shadow-xs relative ${
+                  style={{ backgroundColor: cardBg }}
+                  className={'rounded-2xl border-2 transition-all p-5 shadow-xs relative ' + (
                     isSelected ? 'border-nss-blue ring-2 ring-nss-blue/10 shadow-md' : 'border-gray-200/90 hover:border-gray-300'
-                  }`}
+                  )}
                 >
                   {/* Card Header & Controls */}
-                  <div className="flex items-center justify-between gap-3 mb-3">
+                  <div className="flex flex-wrap items-center justify-between gap-3 mb-3 border-b border-black/5 pb-2.5">
                     <div className="flex items-center gap-2">
-                      <span className="w-6 h-6 rounded-lg bg-gray-100 text-gray-600 font-bold text-xs flex items-center justify-center">
+                      <span className="w-6 h-6 rounded-lg bg-black/5 text-gray-700 font-bold text-xs flex items-center justify-center">
                         {index + 1}
                       </span>
-                      <span className="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-50 text-nss-blue">
+                      <span className="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-50 text-nss-blue border border-blue-200/60">
                         {field.type.replace('_', ' ')}
                       </span>
                       {field.required && (
-                        <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-rose-50 text-rose-600">
+                        <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-rose-50 text-rose-600 border border-rose-200/60">
                           Required
                         </span>
                       )}
                     </div>
 
-                    <div className="flex items-center gap-1">
+                    {/* Rich Formatting Toolbar (Bold, Italic, Underline) & Card BG Picker */}
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      {/* Bold button */}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          updateField(field.id, { bold: !field.bold });
+                        }}
+                        title="Toggle Bold"
+                        className={'p-1.5 rounded-lg border text-xs font-bold transition-colors cursor-pointer ' + (
+                          field.bold ? 'bg-slate-900 text-white border-slate-900' : 'bg-white/80 text-gray-700 border-gray-200 hover:bg-gray-100'
+                        )}
+                      >
+                        <Bold size={13} />
+                      </button>
+
+                      {/* Italic button */}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          updateField(field.id, { italic: !field.italic });
+                        }}
+                        title="Toggle Italic"
+                        className={'p-1.5 rounded-lg border text-xs font-bold transition-colors cursor-pointer ' + (
+                          field.italic ? 'bg-slate-900 text-white border-slate-900' : 'bg-white/80 text-gray-700 border-gray-200 hover:bg-gray-100'
+                        )}
+                      >
+                        <Italic size={13} />
+                      </button>
+
+                      {/* Underline button */}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          updateField(field.id, { underline: !field.underline });
+                        }}
+                        title="Toggle Underline"
+                        className={'p-1.5 rounded-lg border text-xs font-bold transition-colors cursor-pointer ' + (
+                          field.underline ? 'bg-slate-900 text-white border-slate-900' : 'bg-white/80 text-gray-700 border-gray-200 hover:bg-gray-100'
+                        )}
+                      >
+                        <Underline size={13} />
+                      </button>
+
+                      {/* Color Palette Dropdown / Swatches */}
+                      <div className="flex items-center gap-1 bg-white/80 border border-gray-200 rounded-lg p-1" onClick={(e) => e.stopPropagation()}>
+                        <Palette size={13} className="text-gray-400 ml-0.5" />
+                        {PRESET_BG_COLORS.map(c => (
+                          <button
+                            key={c.value}
+                            type="button"
+                            title={c.name}
+                            onClick={() => updateField(field.id, { bgColor: c.value })}
+                            style={{ backgroundColor: c.value, borderColor: c.border }}
+                            className={'w-4 h-4 rounded-full border cursor-pointer transition-transform ' + (
+                              field.bgColor === c.value ? 'scale-125 ring-1 ring-slate-900' : 'hover:scale-110'
+                            )}
+                          />
+                        ))}
+                      </div>
+
+                      {/* Reorder and Delete controls */}
                       <button
                         type="button"
                         disabled={index === 0}
                         onClick={(e) => { e.stopPropagation(); moveField(index, 'UP'); }}
                         title="Move Up"
-                        className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 disabled:opacity-30 transition-colors cursor-pointer"
+                        className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-white/80 disabled:opacity-30 transition-colors cursor-pointer"
                       >
                         <ChevronUp size={16} />
                       </button>
@@ -243,7 +379,7 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
                         disabled={index === fields.length - 1}
                         onClick={(e) => { e.stopPropagation(); moveField(index, 'DOWN'); }}
                         title="Move Down"
-                        className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 disabled:opacity-30 transition-colors cursor-pointer"
+                        className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-white/80 disabled:opacity-30 transition-colors cursor-pointer"
                       >
                         <ChevronDown size={16} />
                       </button>
@@ -251,7 +387,7 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
                         type="button"
                         onClick={(e) => { e.stopPropagation(); duplicateField(field.id); }}
                         title="Duplicate Question"
-                        className="p-1.5 rounded-lg text-gray-400 hover:text-nss-blue hover:bg-blue-50 transition-colors cursor-pointer"
+                        className="p-1.5 rounded-lg text-gray-400 hover:text-nss-blue hover:bg-white/80 transition-colors cursor-pointer"
                       >
                         <Copy size={15} />
                       </button>
@@ -259,7 +395,7 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
                         type="button"
                         onClick={(e) => { e.stopPropagation(); removeField(field.id); }}
                         title="Delete Question"
-                        className="p-1.5 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                        className="p-1.5 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-white/80 transition-colors cursor-pointer"
                       >
                         <Trash2 size={15} />
                       </button>
@@ -267,17 +403,22 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
                   </div>
 
                   {/* Question Title & Type Row */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
                     <div className="md:col-span-2">
                       <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider block mb-1">
-                        Question / Field Label
+                        Question / Element Title
                       </label>
                       <input
                         type="text"
                         value={field.label}
                         onChange={(e) => updateField(field.id, { label: e.target.value })}
-                        placeholder="e.g. Which team do you want to join?"
-                        className="w-full px-3.5 py-2 text-sm font-bold text-gray-900 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-nss-blue/20 focus:border-nss-blue transition-all"
+                        placeholder="e.g. Which domain do you want to volunteer in?"
+                        style={{
+                          fontWeight: field.bold ? '900' : 'bold',
+                          fontStyle: field.italic ? 'italic' : 'normal',
+                          textDecoration: field.underline ? 'underline' : 'none'
+                        }}
+                        className="w-full px-3.5 py-2 text-sm text-gray-900 bg-white/90 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-nss-blue/20 focus:border-nss-blue transition-all"
                       />
                     </div>
                     <div>
@@ -294,7 +435,7 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
                             options: needsOpts ? (field.options || ['Option 1', 'Option 2']) : undefined
                           });
                         }}
-                        className="w-full px-3 py-2 text-xs font-bold text-gray-800 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-nss-blue transition-all"
+                        className="w-full px-3 py-2 text-xs font-bold text-gray-800 bg-white/90 border border-gray-200 rounded-xl focus:outline-none focus:border-nss-blue transition-all"
                       >
                         {fieldTypeOptions.map(opt => (
                           <option key={opt.type} value={opt.type}>{opt.label}</option>
@@ -303,20 +444,102 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
                     </div>
                   </div>
 
-                  {/* Placeholder / Description */}
-                  <div className="mb-4">
-                    <input
-                      type="text"
-                      value={field.placeholder || ''}
-                      onChange={(e) => updateField(field.id, { placeholder: e.target.value })}
-                      placeholder="Optional placeholder / helper text..."
-                      className="w-full px-3 py-1.5 text-xs text-gray-600 bg-white border border-gray-200 rounded-xl focus:outline-none focus:border-nss-blue transition-all"
+                  {/* Question Description / Helper Text Input */}
+                  <div className="mb-3">
+                    <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider block mb-1">
+                      Question Description / Instructions (Optional)
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={field.description || ''}
+                      onChange={(e) => updateField(field.id, { description: e.target.value })}
+                      placeholder="Add helpful instructions, guidelines, or details (e.g. 'Use **bold** or *italic* if needed')..."
+                      className="w-full px-3 py-1.5 text-xs text-gray-700 bg-white/90 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:border-nss-blue transition-all resize-y"
                     />
                   </div>
 
+                  {/* Attached Image / QR Code Section */}
+                  <div className="mb-4 bg-white/80 p-3.5 rounded-xl border border-gray-200/80 space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-bold text-gray-700 flex items-center gap-1.5">
+                        <QrCode size={14} className="text-nss-blue" />
+                        Attached Image / QR Code (Optional)
+                      </span>
+
+                      <div className="flex items-center gap-2">
+                        <label className="px-2.5 py-1 bg-blue-50 text-nss-blue hover:bg-blue-100 rounded-lg text-[11px] font-bold cursor-pointer transition-colors flex items-center gap-1">
+                          <UploadCloud size={12} /> {uploadingImageFor === field.id ? 'Uploading...' : 'Upload Image / QR'}
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) => {
+                              if (e.target.files?.[0]) {
+                                handleUploadImageForField(field.id, e.target.files[0]);
+                              }
+                            }}
+                          />
+                        </label>
+                        {field.imageUrl && (
+                          <button
+                            type="button"
+                            onClick={() => updateField(field.id, { imageUrl: undefined, imageTitle: undefined })}
+                            className="text-rose-600 hover:text-rose-700 text-[11px] font-bold flex items-center gap-0.5"
+                          >
+                            <X size={12} /> Remove Image
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                      <input
+                        type="text"
+                        value={field.imageUrl || ''}
+                        onChange={(e) => updateField(field.id, { imageUrl: e.target.value })}
+                        placeholder="Or paste Image URL (e.g. https://... or /images/qr.png)"
+                        className="px-3 py-1.5 text-xs bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-nss-blue font-mono"
+                      />
+                      <input
+                        type="text"
+                        value={field.imageTitle || ''}
+                        onChange={(e) => updateField(field.id, { imageTitle: e.target.value })}
+                        placeholder="Image Caption / QR Title (e.g. 'UPI Payment QR')"
+                        className="px-3 py-1.5 text-xs bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-nss-blue"
+                      />
+                    </div>
+
+                    {/* Image Preview Box */}
+                    {field.imageUrl && (
+                      <div className="p-3 bg-white rounded-xl border border-gray-200 flex flex-col items-center justify-center max-w-xs mx-auto">
+                        {field.imageTitle && (
+                          <p className="text-xs font-bold text-gray-800 mb-1.5">{field.imageTitle}</p>
+                        )}
+                        <img 
+                          src={field.imageUrl} 
+                          alt={field.imageTitle || 'Attached'} 
+                          className="max-h-48 object-contain rounded-lg border border-gray-100 shadow-2xs"
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Placeholder (For text inputs) */}
+                  {[FieldType.SHORT_TEXT, FieldType.LONG_TEXT, FieldType.EMAIL, FieldType.REG_NUMBER, FieldType.MOBILE].includes(field.type) && (
+                    <div className="mb-4">
+                      <input
+                        type="text"
+                        value={field.placeholder || ''}
+                        onChange={(e) => updateField(field.id, { placeholder: e.target.value })}
+                        placeholder="Input placeholder text..."
+                        className="w-full px-3 py-1.5 text-xs text-gray-600 bg-white/90 border border-gray-200 rounded-xl focus:outline-none focus:border-nss-blue transition-all"
+                      />
+                    </div>
+                  )}
+
                   {/* Options Editor (Radio, Checkbox, Dropdown) */}
                   {hasOptions && (
-                    <div className="bg-gray-50/70 p-4 rounded-xl border border-gray-200/70 mb-4 space-y-2">
+                    <div className="bg-white/80 p-4 rounded-xl border border-gray-200/80 mb-4 space-y-2">
                       <p className="text-[11px] font-bold text-gray-600 uppercase tracking-wider mb-2">
                         Answer Choices:
                       </p>
@@ -380,16 +603,22 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
                   )}
 
                   {/* Bottom Toggle Bar */}
-                  <div className="flex items-center justify-between border-t border-gray-100 pt-3">
-                    <label className="flex items-center gap-2 cursor-pointer select-none">
-                      <input
-                        type="checkbox"
-                        checked={field.required}
-                        onChange={(e) => updateField(field.id, { required: e.target.checked })}
-                        className="w-4 h-4 text-nss-blue rounded focus:ring-nss-blue cursor-pointer"
-                      />
-                      <span className="text-xs font-bold text-gray-700">Required question</span>
-                    </label>
+                  <div className="flex items-center justify-between border-t border-black/5 pt-3">
+                    {field.type !== FieldType.IMAGE ? (
+                      <label className="flex items-center gap-2 cursor-pointer select-none">
+                        <input
+                          type="checkbox"
+                          checked={field.required}
+                          onChange={(e) => updateField(field.id, { required: e.target.checked })}
+                          className="w-4 h-4 text-nss-blue rounded focus:ring-nss-blue cursor-pointer"
+                        />
+                        <span className="text-xs font-bold text-gray-700">Required question</span>
+                      </label>
+                    ) : (
+                      <span className="text-xs font-bold text-gray-500">
+                        Information / QR display block
+                      </span>
+                    )}
 
                     <span className="text-[11px] text-gray-400 font-mono">
                       ID: {field.id}
@@ -407,7 +636,7 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
             <h4 className="text-sm font-black text-gray-900 mb-1 flex items-center gap-2">
               <Plus size={16} className="text-nss-blue" /> Add Elements
             </h4>
-            <p className="text-xs text-gray-500 mb-4">Click any question type to add it to your form:</p>
+            <p className="text-xs text-gray-500 mb-4">Click any question type or element to add to your form:</p>
 
             <div className="space-y-1.5">
               {fieldTypeOptions.map(opt => {
@@ -432,13 +661,13 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
             </div>
           </div>
 
-          {/* Quick Notice Card */}
-          <div className="bg-emerald-50/70 border border-emerald-200/70 p-4 rounded-2xl text-xs space-y-1 text-emerald-900">
+          {/* Quick Info Card */}
+          <div className="bg-emerald-50/70 border border-emerald-200/70 p-4 rounded-2xl text-xs space-y-1.5 text-emerald-900">
             <p className="font-bold flex items-center gap-1.5">
-              <CheckCircle2 size={14} className="text-emerald-600" /> Auto Email & Reg Validation
+              <CheckCircle2 size={14} className="text-emerald-600" /> Rich Design Controls
             </p>
             <p className="text-emerald-800/80 leading-relaxed text-[11px]">
-              Submissions are strictly restricted to <strong>@vitbhopal.ac.in</strong> emails with one response allowed per email.
+              Use the top toolbar on each card to toggle <strong>Bold</strong>, <em>Italic</em>, <u>Underline</u>, pick a custom card background color, add descriptions, or attach QR codes and payment posters.
             </p>
           </div>
         </div>
@@ -453,7 +682,7 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
                 <h3 className="text-base font-black text-gray-900 flex items-center gap-2">
                   <Eye size={18} className="text-nss-blue" /> Public Form Preview
                 </h3>
-                <p className="text-xs text-gray-500">This is how students will view and fill out your form.</p>
+                <p className="text-xs text-gray-500">Live preview of your questions, attached QR codes, descriptions, and card colors.</p>
               </div>
               <button
                 type="button"
@@ -471,17 +700,35 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
               </div>
 
               {fields.map((f, i) => (
-                <div key={f.id} className="space-y-1.5 bg-gray-50/60 p-4 rounded-xl border border-gray-100">
-                  <label className="block text-xs font-bold text-gray-800">
-                    {i + 1}. {f.label} {f.required && <span className="text-rose-500">*</span>}
+                <div 
+                  key={f.id} 
+                  style={{ backgroundColor: f.bgColor || '#ffffff' }}
+                  className="space-y-2 p-5 rounded-2xl border border-gray-200/90 shadow-2xs"
+                >
+                  <label className="block text-sm text-gray-900">
+                    <span className="text-gray-400 font-mono text-xs mr-1">{i + 1}.</span>
+                    {renderRichText(f.label, { bold: f.bold, italic: f.italic, underline: f.underline })}
+                    {f.required && <span className="text-rose-500 ml-1">*</span>}
                   </label>
                   
-                  {f.placeholder && <p className="text-[11px] text-gray-400">{f.placeholder}</p>}
+                  {f.description && (
+                    <p className="text-xs text-gray-600 leading-relaxed">
+                      {renderRichText(f.description)}
+                    </p>
+                  )}
+
+                  {/* Attached Image / QR */}
+                  {f.imageUrl && (
+                    <div className="p-3 bg-white rounded-xl border border-gray-200 max-w-xs mx-auto text-center my-2">
+                      {f.imageTitle && <p className="text-xs font-bold text-gray-800 mb-1">{f.imageTitle}</p>}
+                      <img src={f.imageUrl} alt={f.imageTitle || f.label} className="max-h-48 object-contain mx-auto rounded-lg" />
+                    </div>
+                  )}
 
                   {[FieldType.SHORT_TEXT, FieldType.EMAIL, FieldType.REG_NUMBER, FieldType.MOBILE].includes(f.type) && (
                     <input
                       disabled
-                      placeholder={f.placeholder || `Enter ${f.label}...`}
+                      placeholder={f.placeholder || ('Enter ' + f.label + '...')}
                       className="w-full px-3 py-2 text-xs bg-white border border-gray-200 rounded-lg text-gray-400"
                     />
                   )}
@@ -499,7 +746,7 @@ export default function FormBuilder({ initialFields = [], onSave, isSaving = fal
                     <div className="space-y-1.5 pt-1">
                       {(f.options || ['Option 1']).map((opt, oi) => (
                         <label key={oi} className="flex items-center gap-2 text-xs text-gray-700">
-                          <input type="radio" disabled name={`preview_${f.id}`} className="text-nss-blue" />
+                          <input type="radio" disabled name={'preview_' + f.id} className="text-nss-blue" />
                           <span>{opt}</span>
                         </label>
                       ))}

@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { FieldType, IFormField } from './admin/FormBuilder';
-import { Check, AlertCircle, UploadCloud, CheckCircle2 } from 'lucide-react';
+import { FieldType, IFormField, renderRichText } from './admin/FormBuilder';
+import { Check, AlertCircle, UploadCloud, CheckCircle2, QrCode } from 'lucide-react';
 
 interface DynamicFormProps {
   schema: { fields: IFormField[]; activityId: string };
@@ -76,11 +76,16 @@ export default function DynamicForm({ schema, onSubmit, isSubmitting }: DynamicF
       return;
     }
 
-    // 3. Prepare response items
-    const responses = Object.keys(formData).map(key => ({
-      fieldId: key,
-      value: formData[key]
-    }));
+    // 3. Prepare response items (exclude pure IMAGE display blocks)
+    const responses = Object.keys(formData)
+      .filter(key => {
+        const f = schema.fields.find(field => field.id === key);
+        return f?.type !== FieldType.IMAGE;
+      })
+      .map(key => ({
+        fieldId: key,
+        value: formData[key]
+      }));
 
     onSubmit({
       responses,
@@ -111,168 +116,232 @@ export default function DynamicForm({ schema, onSubmit, isSubmitting }: DynamicF
         </div>
       )}
 
-      {schema.fields.map((field) => (
-        <div key={field.id} className="space-y-2">
-          <label className="block text-sm font-bold text-gray-800">
-            {field.label} {field.required && <span className="text-rose-500">*</span>}
-          </label>
+      {schema.fields.map((field) => {
+        const cardBg = field.bgColor || '#ffffff';
 
-          {/* Short Text, Email, Reg Number, Mobile */}
-          {[FieldType.SHORT_TEXT, FieldType.EMAIL, FieldType.REG_NUMBER, FieldType.MOBILE].includes(field.type) && (
-            <div>
-              <input
-                type={field.type === FieldType.EMAIL ? 'email' : 'text'}
-                required={field.required}
-                placeholder={field.placeholder || (field.type === FieldType.EMAIL ? 'e.g. name2024@vitbhopal.ac.in' : '')}
-                value={formData[field.id] || ''}
-                onChange={(e) => {
-                  handleChange(field.id, e.target.value);
-                  if (field.type === FieldType.EMAIL && emailError) setEmailError('');
-                }}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 text-gray-900 text-sm focus:bg-white focus:ring-2 focus:ring-nss-blue/20 focus:border-nss-blue outline-none transition-all font-medium"
-              />
-              {field.type === FieldType.EMAIL && (
-                <p className="text-[11px] text-gray-400 mt-1">Must end with @vitbhopal.ac.in</p>
+        // 1. Pure Image / QR Code Display Block
+        if (field.type === FieldType.IMAGE) {
+          return (
+            <div 
+              key={field.id}
+              style={{ backgroundColor: cardBg }}
+              className="p-5 sm:p-6 rounded-2xl border border-gray-200 shadow-xs space-y-3"
+            >
+              <h3 className="text-base text-gray-900">
+                {renderRichText(field.label, { bold: field.bold ?? true, italic: field.italic, underline: field.underline })}
+              </h3>
+
+              {field.description && (
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  {renderRichText(field.description)}
+                </p>
+              )}
+
+              {field.imageUrl && (
+                <div className="p-3 bg-white rounded-2xl border border-gray-200/90 max-w-sm mx-auto shadow-xs text-center my-3">
+                  {field.imageTitle && (
+                    <p className="text-xs font-bold text-gray-800 mb-2">{field.imageTitle}</p>
+                  )}
+                  <img 
+                    src={field.imageUrl} 
+                    alt={field.imageTitle || field.label} 
+                    className="max-h-64 object-contain mx-auto rounded-xl shadow-2xs"
+                  />
+                </div>
               )}
             </div>
-          )}
+          );
+        }
 
-          {/* Long Text */}
-          {field.type === FieldType.LONG_TEXT && (
-            <textarea
-              required={field.required}
-              placeholder={field.placeholder}
-              rows={4}
-              value={formData[field.id] || ''}
-              onChange={(e) => handleChange(field.id, e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 text-gray-900 text-sm focus:bg-white focus:ring-2 focus:ring-nss-blue/20 focus:border-nss-blue outline-none transition-all resize-y font-medium"
-            />
-          )}
+        // 2. Standard Input Questions
+        return (
+          <div 
+            key={field.id}
+            style={{ backgroundColor: cardBg }}
+            className="p-5 sm:p-6 rounded-2xl border border-gray-200 shadow-xs space-y-2.5 transition-colors"
+          >
+            <label className="block text-sm text-gray-900 leading-snug">
+              {renderRichText(field.label, { bold: field.bold ?? true, italic: field.italic, underline: field.underline })}
+              {field.required && <span className="text-rose-500 ml-1 font-bold">*</span>}
+            </label>
 
-          {/* Dropdown */}
-          {field.type === FieldType.DROPDOWN && (
-            <select
-              required={field.required}
-              value={formData[field.id] || ''}
-              onChange={(e) => handleChange(field.id, e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 text-gray-900 text-sm focus:bg-white focus:ring-2 focus:ring-nss-blue/20 focus:border-nss-blue outline-none transition-all font-medium cursor-pointer"
-            >
-              <option value="">Select an option...</option>
-              {field.options?.map(opt => (
-                <option key={opt} value={opt}>{opt}</option>
-              ))}
-            </select>
-          )}
+            {field.description && (
+              <p className="text-xs text-gray-500 leading-relaxed pb-1">
+                {renderRichText(field.description)}
+              </p>
+            )}
 
-          {/* Radio */}
-          {field.type === FieldType.RADIO && (
-            <div className="space-y-2 pt-1">
-              {field.options?.map(opt => (
-                <label key={opt} className="flex items-center gap-3 p-3 bg-gray-50/60 hover:bg-gray-100/70 rounded-xl cursor-pointer transition-colors border border-gray-100">
-                  <input
-                    type="radio"
-                    name={'radio_' + field.id}
-                    value={opt}
-                    required={field.required}
-                    checked={formData[field.id] === opt}
-                    onChange={() => handleChange(field.id, opt)}
-                    className="w-4 h-4 text-nss-blue focus:ring-nss-blue cursor-pointer"
-                  />
-                  <span className="text-sm font-medium text-gray-800">{opt}</span>
-                </label>
-              ))}
-            </div>
-          )}
+            {/* Attached Image / QR Code */}
+            {field.imageUrl && (
+              <div className="p-3 bg-white rounded-2xl border border-gray-200/90 max-w-sm mx-auto shadow-xs text-center my-2">
+                {field.imageTitle && (
+                  <p className="text-xs font-bold text-gray-800 mb-1.5">{field.imageTitle}</p>
+                )}
+                <img 
+                  src={field.imageUrl} 
+                  alt={field.imageTitle || field.label} 
+                  className="max-h-60 object-contain mx-auto rounded-xl shadow-2xs"
+                />
+              </div>
+            )}
 
-          {/* Checkbox */}
-          {field.type === FieldType.CHECKBOX && (
-            <div className="space-y-2 pt-1">
-              {field.options?.map(opt => {
-                const isChecked = (formData[field.id] || []).includes(opt);
-                return (
-                  <label key={opt} className="flex items-center gap-3 p-3 bg-gray-50/60 hover:bg-gray-100/70 rounded-xl cursor-pointer transition-colors border border-gray-100">
+            {/* Short Text, Email, Reg Number, Mobile */}
+            {[FieldType.SHORT_TEXT, FieldType.EMAIL, FieldType.REG_NUMBER, FieldType.MOBILE].includes(field.type) && (
+              <div>
+                <input
+                  type={field.type === FieldType.EMAIL ? 'email' : 'text'}
+                  required={field.required}
+                  placeholder={field.placeholder || (field.type === FieldType.EMAIL ? 'e.g. name2024@vitbhopal.ac.in' : '')}
+                  value={formData[field.id] || ''}
+                  onChange={(e) => {
+                    handleChange(field.id, e.target.value);
+                    if (field.type === FieldType.EMAIL && emailError) setEmailError('');
+                  }}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 text-sm focus:ring-2 focus:ring-nss-blue/20 focus:border-nss-blue outline-none transition-all font-medium shadow-2xs"
+                />
+                {field.type === FieldType.EMAIL && (
+                  <p className="text-[11px] text-gray-400 mt-1">Must end with @vitbhopal.ac.in</p>
+                )}
+              </div>
+            )}
+
+            {/* Long Text */}
+            {field.type === FieldType.LONG_TEXT && (
+              <textarea
+                required={field.required}
+                placeholder={field.placeholder}
+                rows={4}
+                value={formData[field.id] || ''}
+                onChange={(e) => handleChange(field.id, e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 text-sm focus:ring-2 focus:ring-nss-blue/20 focus:border-nss-blue outline-none transition-all resize-y font-medium shadow-2xs"
+              />
+            )}
+
+            {/* Dropdown */}
+            {field.type === FieldType.DROPDOWN && (
+              <select
+                required={field.required}
+                value={formData[field.id] || ''}
+                onChange={(e) => handleChange(field.id, e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 text-sm focus:ring-2 focus:ring-nss-blue/20 focus:border-nss-blue outline-none transition-all font-medium cursor-pointer shadow-2xs"
+              >
+                <option value="">Select an option...</option>
+                {field.options?.map(opt => (
+                  <option key={opt} value={opt}>{opt}</option>
+                ))}
+              </select>
+            )}
+
+            {/* Radio */}
+            {field.type === FieldType.RADIO && (
+              <div className="space-y-2 pt-1">
+                {field.options?.map(opt => (
+                  <label key={opt} className="flex items-center gap-3 p-3 bg-white/90 hover:bg-white rounded-xl cursor-pointer transition-colors border border-gray-200/70 shadow-2xs">
                     <input
-                      type="checkbox"
+                      type="radio"
+                      name={'radio_' + field.id}
                       value={opt}
-                      checked={isChecked}
-                      onChange={(e) => handleCheckboxChange(field.id, opt, e.target.checked)}
-                      className="w-4 h-4 text-nss-blue rounded focus:ring-nss-blue cursor-pointer"
+                      required={field.required}
+                      checked={formData[field.id] === opt}
+                      onChange={() => handleChange(field.id, opt)}
+                      className="w-4 h-4 text-nss-blue focus:ring-nss-blue cursor-pointer"
                     />
                     <span className="text-sm font-medium text-gray-800">{opt}</span>
                   </label>
-                );
-              })}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
 
-          {/* Declaration */}
-          {field.type === FieldType.DECLARATION && (
-            <div className="p-4 bg-blue-50/60 border border-blue-200/60 rounded-xl">
-              <label className="flex items-start gap-3 cursor-pointer">
+            {/* Checkbox */}
+            {field.type === FieldType.CHECKBOX && (
+              <div className="space-y-2 pt-1">
+                {field.options?.map(opt => {
+                  const isChecked = (formData[field.id] || []).includes(opt);
+                  return (
+                    <label key={opt} className="flex items-center gap-3 p-3 bg-white/90 hover:bg-white rounded-xl cursor-pointer transition-colors border border-gray-200/70 shadow-2xs">
+                      <input
+                        type="checkbox"
+                        value={opt}
+                        checked={isChecked}
+                        onChange={(e) => handleCheckboxChange(field.id, opt, e.target.checked)}
+                        className="w-4 h-4 text-nss-blue rounded focus:ring-nss-blue cursor-pointer"
+                      />
+                      <span className="text-sm font-medium text-gray-800">{opt}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Declaration */}
+            {field.type === FieldType.DECLARATION && (
+              <div className="p-4 bg-blue-50/60 border border-blue-200/60 rounded-xl">
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    required={field.required}
+                    checked={!!formData[field.id]}
+                    onChange={(e) => handleChange(field.id, e.target.checked)}
+                    className="w-4 h-4 text-nss-blue mt-0.5 rounded focus:ring-nss-blue cursor-pointer"
+                  />
+                  <span className="text-xs text-gray-700 leading-relaxed font-medium">
+                    {field.placeholder || "I hereby declare that all details filled above are accurate and I agree to the NSS Unit VIT Bhopal event guidelines."}
+                  </span>
+                </label>
+              </div>
+            )}
+
+            {/* File Upload */}
+            {field.type === FieldType.FILE_UPLOAD && (
+              <div className="space-y-2">
                 <input
-                  type="checkbox"
-                  required={field.required}
-                  checked={!!formData[field.id]}
-                  onChange={(e) => handleChange(field.id, e.target.checked)}
-                  className="w-4 h-4 text-nss-blue mt-0.5 rounded focus:ring-nss-blue cursor-pointer"
+                  type="file"
+                  required={field.required && !formData[field.id]}
+                  accept={field.allowedTypes}
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+
+                    const maxMB = field.maxSizeInMB || 10;
+                    if (file.size > maxMB * 1024 * 1024) {
+                      alert('File exceeds the maximum allowed size of ' + maxMB + 'MB.');
+                      e.target.value = '';
+                      return;
+                    }
+
+                    try {
+                      setUploadingField(field.id);
+                      const fd = new FormData();
+                      fd.append('file', file);
+
+                      const { default: api } = await import('@/lib/axios');
+                      const res = await api.post('/upload', fd, {
+                        headers: { 'Content-Type': 'multipart/form-data' }
+                      });
+
+                      handleChange(field.id, res.data.url);
+                    } catch (error) {
+                      console.error('File upload failed:', error);
+                      alert('Failed to upload file. Please try again.');
+                    } finally {
+                      setUploadingField(null);
+                    }
+                  }}
+                  className="w-full px-4 py-2 rounded-xl border border-gray-200 bg-white text-gray-900 text-xs focus:ring-2 focus:ring-nss-blue outline-none transition-shadow file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-nss-blue hover:file:bg-blue-100 cursor-pointer"
                 />
-                <span className="text-xs text-gray-700 leading-relaxed font-medium">
-                  {field.placeholder || "I hereby declare that all details filled above are accurate and I agree to the NSS Unit VIT Bhopal event guidelines."}
-                </span>
-              </label>
-            </div>
-          )}
-
-          {/* File Upload */}
-          {field.type === FieldType.FILE_UPLOAD && (
-            <div className="space-y-2">
-              <input
-                type="file"
-                required={field.required && !formData[field.id]}
-                accept={field.allowedTypes}
-                onChange={async (e) => {
-                  const file = e.target.files?.[0];
-                  if (!file) return;
-
-                  const maxMB = field.maxSizeInMB || 10;
-                  if (file.size > maxMB * 1024 * 1024) {
-                    alert('File exceeds the maximum allowed size of ' + maxMB + 'MB.');
-                    e.target.value = '';
-                    return;
-                  }
-
-                  try {
-                    setUploadingField(field.id);
-                    const fd = new FormData();
-                    fd.append('file', file);
-
-                    const { default: api } = await import('@/lib/axios');
-                    const res = await api.post('/upload', fd, {
-                      headers: { 'Content-Type': 'multipart/form-data' }
-                    });
-
-                    handleChange(field.id, res.data.url);
-                  } catch (error) {
-                    console.error('File upload failed:', error);
-                    alert('Failed to upload file. Please try again.');
-                  } finally {
-                    setUploadingField(null);
-                  }
-                }}
-                className="w-full px-4 py-2 rounded-xl border border-gray-200 bg-gray-50 text-gray-900 text-xs focus:ring-2 focus:ring-nss-blue outline-none transition-shadow file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-nss-blue hover:file:bg-blue-100 cursor-pointer"
-              />
-              {uploadingField === field.id && (
-                <p className="text-xs text-blue-600 font-bold animate-pulse">Uploading file to secure cloud...</p>
-              )}
-              {formData[field.id] && (
-                <p className="text-xs text-emerald-600 font-bold flex items-center gap-1">
-                  ✓ File uploaded successfully
-                </p>
-              )}
-            </div>
-          )}
-        </div>
-      ))}
+                {uploadingField === field.id && (
+                  <p className="text-xs text-blue-600 font-bold animate-pulse">Uploading file to secure cloud...</p>
+                )}
+                {formData[field.id] && (
+                  <p className="text-xs text-emerald-600 font-bold flex items-center gap-1">
+                    ✓ File uploaded successfully
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })}
 
       <div className="pt-4 border-t border-gray-100 flex justify-end">
         <button
