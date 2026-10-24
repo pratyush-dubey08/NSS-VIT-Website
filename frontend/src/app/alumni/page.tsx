@@ -26,7 +26,7 @@ export default function AlumniPage() {
           transition={{ duration: 0.5 }}
           className="text-center max-w-3xl mx-auto mb-14"
         >
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-gray-900 mb-4 leading-tight tracking-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight text-center mb-3">
             Where Are Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-nss-blue via-blue-600 to-indigo-600">Volunteers</span> Now?
           </h1>
           <p className="text-base sm:text-lg text-gray-600 leading-relaxed font-normal max-w-2xl mx-auto">

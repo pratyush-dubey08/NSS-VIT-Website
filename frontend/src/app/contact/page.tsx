@@ -10,10 +10,10 @@ export default function ContactPage() {
  {/* Header */}
  <section className="py-12 bg-white border-b border-gray-100">
  <div className="container mx-auto px-4 text-center">
- <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+ <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight text-center mb-3">
  Get in <span className="text-nss-blue">Touch</span>
  </motion.h1>
- <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-lg text-gray-600 max-w-2xl mx-auto">
+ <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm sm:text-base text-slate-500 max-w-2xl mx-auto mt-2 leading-relaxed font-normal text-center">
  Have questions about volunteering or our initiatives? We'd love to hear from you.
  </motion.p>
  </div>

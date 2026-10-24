@@ -65,10 +65,10 @@ export default function ActivitiesPage() {
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-nss-blue font-bold text-xs uppercase tracking-wider mb-5">
               <Sparkles size={14} /> Community Initiatives & Registrations
             </span>
-            <h1 className="text-4xl sm:text-6xl font-black text-gray-900 mb-5 tracking-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight text-center mb-3">
               NSS <span className="text-transparent bg-clip-text bg-gradient-to-r from-nss-blue to-nss-red">Activities</span>
             </h1>
-            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-sm sm:text-base text-slate-500 max-w-2xl mx-auto mt-2 leading-relaxed font-normal text-center">
               Participate and register for upcoming NSS community initiatives, and explore the complete record of social service activities conducted by our unit.
             </p>
           </motion.div>

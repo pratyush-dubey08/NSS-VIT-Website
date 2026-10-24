@@ -190,7 +190,7 @@ export default function TeamPage() {
       <section className="py-16 md:py-24 text-center container mx-auto px-4 relative">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-100/50 rounded-full blur-3xl -z-10"></div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-          <h1 className="text-5xl md:text-7xl font-black text-slate-900 mb-6 tracking-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight text-center mb-3">
             Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-nss-blue to-blue-600">Leadership</span>
           </h1>
           <p className="max-w-2xl mx-auto text-lg md:text-xl text-slate-600 font-medium">
@@ -245,7 +245,7 @@ export default function TeamPage() {
           >
             Program <span className="text-nss-red">Officers</span>
           </motion.h2>
-          <p className="text-lg text-slate-600">The guiding force behind our community service initiatives.</p>
+          <p className="text-sm sm:text-base text-slate-500 max-w-2xl mx-auto mt-2 leading-relaxed font-normal text-center">The guiding force behind our community service initiatives.</p>
         </div>
         
         <div className="max-w-5xl mx-auto space-y-12">

@@ -43,7 +43,7 @@ export default function AboutPage() {
  className="bg-white p-8 md:p-16 rounded-3xl shadow-xl border border-gray-100"
  >
  <div className="text-center mb-10">
- <h1 className="text-4xl md:text-6xl font-black text-gray-900 mb-4 tracking-tight">
+ <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight text-center mb-3">
  Who are we <span className="text-nss-red">?</span>
  </h1>
  <div className="w-24 h-1.5 bg-nss-blue mx-auto rounded-full"></div>
@@ -174,7 +174,7 @@ export default function AboutPage() {
       <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4 tracking-tight">
         NSS Unit, VIT Bhopal University
       </h2>
-      <p className="text-xl text-gray-600 font-medium max-w-2xl mx-auto leading-relaxed">
+      <p className="text-sm sm:text-base text-slate-500 max-w-2xl mx-auto mt-2 leading-relaxed font-normal text-center">
         Our Mission, Vision, and Core Principles guiding the unit towards impactful social transformation and nation-building.
       </p>
       <div className="w-24 h-1.5 bg-nss-blue mx-auto rounded-full mt-8"></div>
