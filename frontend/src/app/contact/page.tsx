@@ -32,59 +32,69 @@ const YoutubeIcon = ({ size = 20, className = '' }: { size?: number; className?:
 export default function ContactPage() {
   const socialChannels = [
     {
-      title: 'Join Our Official WhatsApp Community',
+      title: 'WhatsApp Community',
+      handle: 'Official Announcements',
       badge: 'WhatsApp',
-      badgeColor: 'bg-emerald-100 text-emerald-800',
+      badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
       icon: MessageCircle,
-      subtitle: 'Official announcements & drives',
-      linkText: 'Join WhatsApp',
+      iconColor: 'text-emerald-600 bg-emerald-50',
+      description: 'Join our official community for instant event updates, drive circulars & announcements.',
+      linkText: 'Join Community',
       linkUrl: 'https://www.whatsapp.com/channel/0029VbBFSgS8qIzvpLL2Ye1W',
-      highlightBorder: 'hover:border-emerald-300'
+      cardHover: 'hover:border-emerald-400 hover:shadow-emerald-500/10'
     },
     {
-      title: 'Follow Us on Instagram',
-      badge: 'Instagram',
-      badgeColor: 'bg-rose-100 text-rose-800',
+      title: 'Official Instagram',
+      handle: '@nssvitbhopal',
+      badge: 'Flagship Handle',
+      badgeColor: 'bg-rose-50 text-rose-700 border-rose-200',
       icon: InstagramIcon,
-      subtitle: '@nssvitbhopal',
-      linkText: 'Follow on Instagram',
+      iconColor: 'text-rose-600 bg-rose-50',
+      description: 'Official Instagram handle for event highlights, notifications, drives & updates.',
+      linkText: 'Follow @nssvitbhopal',
       linkUrl: 'https://www.instagram.com/nssvitbhopal/',
-      highlightBorder: 'hover:border-rose-300'
+      cardHover: 'hover:border-rose-400 hover:shadow-rose-500/10'
     },
     {
-      title: 'Follow NSS Unfiltered',
+      title: 'NSS Unfiltered',
+      handle: '@nssvitb_unfiltered',
       badge: 'BTS & Campus',
-      badgeColor: 'bg-purple-100 text-purple-800',
+      badgeColor: 'bg-purple-50 text-purple-700 border-purple-200',
       icon: Sparkles,
-      subtitle: '@nssvitb_unfiltered',
+      iconColor: 'text-purple-600 bg-purple-50',
+      description: 'Catch candid behind-the-scenes moments, campus volunteer life, fun reels & bloopers.',
       linkText: 'Follow Unfiltered',
       linkUrl: 'https://www.instagram.com/nssvitb_unfiltered/',
-      highlightBorder: 'hover:border-purple-300'
+      cardHover: 'hover:border-purple-400 hover:shadow-purple-500/10'
     },
     {
-      title: 'Connect on LinkedIn',
-      badge: 'LinkedIn',
-      badgeColor: 'bg-blue-100 text-blue-800',
+      title: 'LinkedIn Network',
+      handle: 'NSS Unit, VIT Bhopal',
+      badge: 'Professional',
+      badgeColor: 'bg-blue-50 text-blue-700 border-blue-200',
       icon: LinkedinIcon,
-      subtitle: 'NSS Unit, VIT Bhopal',
+      iconColor: 'text-blue-600 bg-blue-50',
+      description: 'Connect with us for professional outreach, alumni networking & societal impact reports.',
       linkText: 'Connect on LinkedIn',
       linkUrl: 'https://www.linkedin.com/company/nss-vitb/posts/',
-      highlightBorder: 'hover:border-blue-300'
+      cardHover: 'hover:border-blue-400 hover:shadow-blue-500/10'
     },
     {
-      title: 'Subscribe on YouTube',
-      badge: 'YouTube',
-      badgeColor: 'bg-red-100 text-red-800',
+      title: 'YouTube Channel',
+      handle: 'NSS Unit VIT Bhopal',
+      badge: 'Documentaries',
+      badgeColor: 'bg-red-50 text-red-700 border-red-200',
       icon: YoutubeIcon,
-      subtitle: 'NSS Unit VIT Bhopal',
-      linkText: 'Subscribe on YouTube',
+      iconColor: 'text-red-600 bg-red-50',
+      description: 'Watch event recaps, camp documentaries, awareness films & volunteer talk shows.',
+      linkText: 'Join Us on YouTube',
       linkUrl: 'https://www.youtube.com/@nationalservicescheme-vitb5083',
-      highlightBorder: 'hover:border-red-300'
+      cardHover: 'hover:border-red-400 hover:shadow-red-500/10'
     }
   ];
 
   return (
-    <div className="min-h-screen pt-24 sm:pt-28 bg-white pb-24">
+    <div className="min-h-screen pt-24 sm:pt-28 bg-white pb-24 font-sans">
       
       {/* Header */}
       <section className="py-12 bg-white border-b border-gray-100">
@@ -101,24 +111,23 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Official Social Channels Hub Section (Clean, Compact, No Linktree) */}
-      <section className="container mx-auto px-4 pt-10 max-w-6xl">
-        <div className="bg-gradient-to-br from-blue-900 via-indigo-950 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden mb-12">
-          {/* Subtle decorative circles */}
-          <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-          <div className="relative z-10 text-center max-w-xl mx-auto mb-6">
-            <h2 className="text-2xl sm:text-3xl font-black tracking-tight mb-2">
+      {/* Official Community Hub - Modern, Sleek, Fresh Design */}
+      <section className="container mx-auto px-4 pt-12 max-w-6xl">
+        <div className="bg-gradient-to-b from-slate-50 via-white to-blue-50/40 rounded-3xl p-6 sm:p-10 border border-slate-200/90 shadow-sm mb-14">
+          <div className="text-center max-w-2xl mx-auto mb-8">
+            <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-blue-50 text-nss-blue border border-blue-200/60 inline-block mb-3">
+              Official Community Hub
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight mb-2">
               Connect With Our Community
             </h2>
-            <p className="text-xs sm:text-sm text-blue-100/80 font-normal">
-              Stay connected with NSS Unit, VIT Bhopal across all our official handles.
+            <p className="text-xs sm:text-sm text-gray-600 font-normal">
+              Stay connected with NSS Unit, VIT Bhopal University across our official social channels for updates and opportunities.
             </p>
           </div>
 
-          {/* Social Media Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 pt-4 border-t border-white/10">
+          {/* Clean 5-Card Responsive Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-5">
             {socialChannels.map((item, idx) => {
               const Icon = item.icon;
               return (
@@ -127,33 +136,36 @@ export default function ContactPage() {
                   href={item.linkUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={'p-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all flex flex-col justify-between group ' + item.highlightBorder}
+                  className={'bg-white p-5 rounded-2xl border border-gray-200/80 shadow-2xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between group transform hover:-translate-y-1 ' + item.cardHover}
                 >
-                  <div className="space-y-2 mb-3">
+                  <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-white group-hover:scale-105 transition-transform">
-                        <Icon size={18} />
+                      <div className={'w-10 h-10 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform ' + item.iconColor}>
+                        <Icon size={20} />
                       </div>
-                      <span className={'text-[10px] font-bold px-2 py-0.5 rounded-full ' + item.badgeColor}>
+                      <span className={'text-[10px] font-bold px-2.5 py-0.5 rounded-full border ' + item.badgeColor}>
                         {item.badge}
                       </span>
                     </div>
 
                     <div>
-                      <h3 className="font-bold text-white text-xs sm:text-sm leading-snug group-hover:text-blue-200 transition-colors">
+                      <h3 className="font-bold text-gray-900 text-sm leading-snug group-hover:text-nss-blue transition-colors">
                         {item.title}
                       </h3>
-                      {item.subtitle && (
-                        <p className="text-[11px] text-blue-200/70 font-medium mt-1">
-                          {item.subtitle}
-                        </p>
-                      )}
+                      <p className="text-[11px] font-semibold text-nss-blue/80 mt-0.5">
+                        {item.handle}
+                      </p>
                     </div>
+
+                    <p className="text-xs text-gray-500 leading-relaxed text-justify">
+                      {item.description}
+                    </p>
                   </div>
 
-                  <span className="text-[11px] font-bold text-blue-300 group-hover:text-white flex items-center gap-1 transition-colors pt-2 border-t border-white/5">
-                    {item.linkText} <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
-                  </span>
+                  <div className="pt-3 mt-3 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-nss-blue group-hover:text-blue-800 transition-colors">
+                    <span>{item.linkText}</span>
+                    <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
+                  </div>
                 </a>
               );
             })}
@@ -173,7 +185,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <h4 className="font-bold text-gray-900 text-sm mb-1">Our Location</h4>
-                <p className="text-xs text-gray-600 leading-relaxed">
+                <p className="text-xs text-gray-600 leading-relaxed text-justify">
                   AB-323 (AB-01), VIT Bhopal University, Bhopal-Indore Highway, Kothrikalan, Sehore, Madhya Pradesh - 466114
                 </p>
               </div>

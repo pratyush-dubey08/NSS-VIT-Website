@@ -62,9 +62,7 @@ export default function ActivitiesPage() {
         
         <div className="container mx-auto px-4 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto text-center">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-nss-blue font-bold text-xs uppercase tracking-wider mb-5">
-              <Sparkles size={14} /> Community Initiatives & Registrations
-            </span>
+            
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight text-center mb-3">
               NSS <span className="text-transparent bg-clip-text bg-gradient-to-r from-nss-blue to-nss-red">Activities</span>
             </h1>

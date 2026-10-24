@@ -49,7 +49,7 @@ export default function AboutPage() {
  <div className="w-24 h-1.5 bg-nss-blue mx-auto rounded-full"></div>
  </div>
  
- <div className="space-y-6 text-lg md:text-xl text-gray-700 leading-relaxed font-medium">
+ <div className="space-y-6 text-lg md:text-xl text-gray-700 leading-relaxed font-medium text-justify">
  <p>
  NSS Unit, VIT Bhopal University is an official unit under the National Service Scheme (NSS), a flagship initiative by the Ministry of Youth Affairs and Sports, Government of India. Established with the vision of nurturing social responsibility, leadership, and community engagement, the unit comprises around 250 dedicated volunteers committed to serving society.
  </p>
@@ -81,7 +81,7 @@ export default function AboutPage() {
  <h3 className="text-2xl font-bold mb-3 text-gray-900">The Motto</h3>
  <p className="text-xl font-bold text-nss-blue mb-1">"Not Me, But You"</p>
  <p className="text-gray-600 font-medium mb-4">स्वयं से पहले आप</p>
- <p className="text-gray-600 text-sm leading-relaxed">
+ <p className="text-gray-600 text-sm leading-relaxed text-justify">
  Reflects the essence of democratic living and upholds the need for selfless service. It signifies that the welfare of an individual depends on the welfare of society.
  </p>
  </motion.div>
@@ -95,7 +95,7 @@ export default function AboutPage() {
  <Sun size={28} />
  </div>
  <h3 className="text-2xl font-bold mb-3 text-gray-900">The Symbol & Badge</h3>
- <p className="text-gray-600 text-sm leading-relaxed mb-3">
+ <p className="text-gray-600 text-sm leading-relaxed mb-3 text-justify">
  Based on the giant Rath Wheel of the Konark Sun Temple. The 8 bars represent 24 hours of the day, reminding volunteers to be ready for service round the clock.
  </p>
  <ul className="text-sm text-gray-600 space-y-1">
@@ -114,7 +114,7 @@ export default function AboutPage() {
  </div>
  <h3 className="text-2xl font-bold mb-3 text-gray-900">Inspiration</h3>
  <p className="text-lg font-bold text-gray-800 mb-2">Swami Vivekananda</p>
- <p className="text-gray-600 text-sm leading-relaxed">
+ <p className="text-gray-600 text-sm leading-relaxed text-justify">
  The youth icon of India, Swami Vivekananda, is the inspirational figure for the National Service Scheme, recognized during the International Youth Year 1985.
  </p>
  </motion.div>
@@ -129,7 +129,7 @@ export default function AboutPage() {
  </div>
  <h3 className="text-2xl font-bold mb-3 text-gray-900">Foundation</h3>
  <p className="text-lg font-bold text-gray-800 mb-2">September 24, 1969</p>
- <p className="text-gray-600 text-sm leading-relaxed">
+ <p className="text-gray-600 text-sm leading-relaxed text-justify">
  Launched during the Mahatma Gandhi Centenary year to foster social responsibility, consciousness, and self-motivated discipline among students in higher education.
  </p>
  </motion.div>
@@ -144,7 +144,7 @@ export default function AboutPage() {
  </div>
  <h3 className="text-2xl font-bold mb-3 text-gray-900">Salutation</h3>
  <p className="text-xl font-bold text-purple-700 mb-2">"Jai Hind"</p>
- <p className="text-gray-600 text-sm leading-relaxed">
+ <p className="text-gray-600 text-sm leading-relaxed text-justify">
  The official greeting used among NSS members, symbolizing patriotism, unity, and a shared commitment to the nation's progress.
  </p>
  </motion.div>
@@ -161,7 +161,7 @@ export default function AboutPage() {
  <p className="text-base font-bold text-gray-800 mb-2 text-balance leading-snug">
  "Mera Yuva Bharat evam Digital Saksharta ke liye Yuva"
  </p>
- <p className="text-gray-600 text-sm leading-relaxed">
+ <p className="text-gray-600 text-sm leading-relaxed text-justify">
  (Youth for MY Bharat and Digital Literacy). The official theme designated for regular and special camping activities.
  </p>
  </motion.div>
@@ -203,7 +203,7 @@ export default function AboutPage() {
  <div className="mt-1 flex-shrink-0 text-nss-red">
  <CheckCircle2 size={24} />
  </div>
- <p className="text-gray-700 text-lg leading-relaxed">{point}</p>
+ <p className="text-gray-700 text-base md:text-lg leading-relaxed text-justify">{point}</p>
  </li>
  ))}
  </ul>
