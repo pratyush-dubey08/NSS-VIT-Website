@@ -269,19 +269,19 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
       heading: '4 Core Thematic Pillars (Focused Direct Advocacy)',
       items: [
         {
-          title: '1. 🗳️ Voting Awareness & Democratic Duty',
+          title: '1. Voting Awareness & Democratic Duty',
           desc: 'Highlighting the constitutional power of every single vote, eradicating voter apathy, educating youth on ethical non-partisan voting, and encouraging 100% election turnout.'
         },
         {
-          title: '2. 👩 Women Empowerment & Gender Equality',
+          title: '2. Women Empowerment & Gender Equality',
           desc: 'Challenging regressive patriarchal stereotypes, promoting women’s autonomy, safety, higher education, consent, and demanding zero tolerance for workplace and domestic discrimination.'
         },
         {
-          title: '3. 📱 Overuse of Social Media & Digital Detox',
+          title: '3. Overuse of Social Media & Digital Detox',
           desc: 'Depicting the psychological toll of digital addiction, doomscrolling, anxiety, real-world disconnection, and urging youth to cultivate mindful screen habits and authentic human relationships.'
         },
         {
-          title: '4. 🧹 Cleanliness, Waste Segregation & Civic Duty',
+          title: '4. Cleanliness, Waste Segregation & Civic Duty',
           desc: 'Addressing public littering, single-use plastic abuse, open dumping, and inspiring citizens to take personal ownership of clean streets, water bodies, and neighborhoods.'
         }
       ]
@@ -340,11 +340,11 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
       heading: 'Beneficiary School Locations',
       items: [
         {
-          title: '🏫 Government School, Jafrabad Village',
+          title: 'Government School, Jafrabad Village',
           desc: 'High-capacity water cooling system installed to serve all primary and middle school students and teaching staff.'
         },
         {
-          title: '🏫 Government School, Bor Kheda Village',
+          title: 'Government School, Bor Kheda Village',
           desc: 'Complete installation with safety earthing and direct filtration, ensuring year-round cold water supply during harsh seasons.'
         }
       ]
@@ -513,11 +513,11 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
       heading: 'Two Landmark Healthcare Editions',
       items: [
         {
-          title: '👁️ Free Eye Check-Up Camp (5 August 2024)',
+          title: 'Free Eye Check-Up Camp (5 August 2024)',
           desc: '1,100 online registrations, comprehensive vision screening, refractive assessment, and prescription guidance.'
         },
         {
-          title: '🦷👁️ Free Health Check-Up Camp 2025 (Dental & Eye)',
+          title: 'Free Health Check-Up Camp 2025 (Dental & Eye)',
           desc: '1,500 medical check-ups in a single day, offering oral diagnostics, dental scaling advice, and vision evaluations.'
         }
       ]

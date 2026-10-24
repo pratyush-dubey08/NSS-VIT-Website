@@ -64,7 +64,7 @@ export default function Navbar() {
               <Link 
                 key={link.name} 
                 href={link.path}
-                className={`px-2 xl:px-3 py-1.5 text-xs xl:text-[13px] font-bold rounded-xl transition-all duration-200 whitespace-nowrap ${
+                className={`px-2.5 xl:px-3.5 py-1.5 text-[13px] xl:text-[14px] font-bold rounded-xl transition-all duration-200 whitespace-nowrap ${
                   isActive 
                     ? 'text-white bg-slate-900 shadow-xs' 
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'

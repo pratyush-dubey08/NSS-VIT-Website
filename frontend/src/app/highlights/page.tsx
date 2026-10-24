@@ -162,7 +162,7 @@ export default function HighlightsPage() {
                       {/* Custom Feature Details (4 Themes of Nukkad Natak, 7 Themes of VIBGYOR, 5 Convocation Wings, Villages, etc.) */}
                       {milestone.customHighlights && (
                         <div className="pt-2">
-                          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800 mb-2">
+                          <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-800 mb-2.5">
                             {milestone.customHighlights.heading}
                           </h4>
 
@@ -172,10 +172,10 @@ export default function HighlightsPage() {
                                 key={itIdx}
                                 className="p-3 rounded-xl bg-slate-50/70 border border-slate-100"
                               >
-                                <div className="font-semibold text-slate-900 text-xs mb-0.5">
+                                <div className="font-bold text-slate-900 text-sm mb-1">
                                   {item.title}
                                 </div>
-                                <p className="text-[11px] text-slate-500 leading-relaxed">
+                                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                                   {item.desc}
                                 </p>
                               </div>

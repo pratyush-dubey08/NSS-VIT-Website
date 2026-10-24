@@ -53,7 +53,7 @@ export default function AlumniPage() {
                   <img 
                     src={alumnus.photoUrl} 
                     alt={alumnus.name}
-                    className="w-full h-full object-cover object-top"
+                    className="w-full h-full object-cover object-center scale-110 group-hover:scale-115 transition-transform duration-300"
                     onError={(e) => {
                       (e.currentTarget as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(alumnus.name)}&background=EFF6FF&color=1D4ED8&bold=true`;
                     }}

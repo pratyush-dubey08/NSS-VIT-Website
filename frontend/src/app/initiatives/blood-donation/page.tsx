@@ -1,74 +1,156 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Droplet, Newspaper } from 'lucide-react';
-import Image from 'next/image';
+import { Newspaper, HeartHandshake, ShieldCheck, Hospital, Users } from 'lucide-react';
 
 export default function BloodDonationPage() {
+  const bloodGallery = [
+    {
+      url: "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794532/nss_vit_website/fjvlh83zvtgjeiayirax.jpg",
+      title: "Voluntary Donors at Mega Blood Donation Camp"
+    },
+    {
+      url: "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794533/nss_vit_website/pm6eue5t9coe59d7hce9.jpg",
+      title: "Medical Staff and Donor Care Station"
+    },
+    {
+      url: "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794535/nss_vit_website/npsnlvekn9hxvmuwqrgf.jpg",
+      title: "Certificate & Refreshment Distribution"
+    },
+    {
+      url: "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794535/nss_vit_website/tnnj3irieq9co4kuo73j.jpg",
+      title: "Hospital Doctors and NSS Volunteer Leads"
+    }
+  ];
+
   return (
-    <div className="min-h-screen pt-24 pb-20 bg-[#fffafa]">
+    <div className="min-h-screen pt-24 sm:pt-28 pb-24 bg-white selection:bg-nss-blue selection:text-white font-sans">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header Collage Area */}
+        {/* Header Showcase Banner Area */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-12 relative"
+          className="mb-14 relative"
         >
-          {/* Collage Simulation */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 rounded-3xl overflow-hidden shadow-2xl bg-white p-2">
-            <div className="col-span-2 row-span-2 relative h-64 md:h-96 rounded-2xl overflow-hidden">
-              <img src="/images/gallery/events_2025/image28.png" className="w-full h-full object-cover" alt="Blood Donation 1" />
+          {/* Curated Gallery Showcase Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 rounded-3xl overflow-hidden shadow-xl border border-slate-200/80 bg-slate-50 p-2.5">
+            <div className="md:col-span-2 relative h-72 sm:h-96 rounded-2xl overflow-hidden group">
+              <img 
+                src={bloodGallery[0].url} 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                alt={bloodGallery[0].title} 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent flex items-end p-5">
+                <span className="text-white text-sm sm:text-base font-bold drop-shadow-md">
+                  {bloodGallery[0].title}
+                </span>
+              </div>
             </div>
-            <div className="relative h-32 md:h-48 rounded-2xl overflow-hidden">
-              <img src="/images/gallery/events_2025/image31.png" className="w-full h-full object-cover" alt="Blood Donation 2" />
-            </div>
-            <div className="relative h-32 md:h-48 rounded-2xl overflow-hidden">
-              <img src="/images/gallery/events_2025/image32.png" className="w-full h-full object-cover" alt="Blood Donation 3" />
-            </div>
-            <div className="relative h-32 md:h-48 rounded-2xl overflow-hidden">
-              <img src="/images/gallery/events_2025/image33.png" className="w-full h-full object-cover" alt="Blood Donation 4" />
-            </div>
-            <div className="relative h-32 md:h-48 rounded-2xl overflow-hidden">
-              <img src="/images/gallery/events_2025/image34.png" className="w-full h-full object-cover" alt="Blood Donation 5" />
+            
+            <div className="grid grid-cols-1 gap-3 h-72 sm:h-96">
+              <div className="relative h-full rounded-2xl overflow-hidden group">
+                <img 
+                  src={bloodGallery[1].url} 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                  alt={bloodGallery[1].title} 
+                />
+              </div>
+              <div className="relative h-full rounded-2xl overflow-hidden group">
+                <img 
+                  src={bloodGallery[2].url} 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                  alt={bloodGallery[2].title} 
+                />
+              </div>
             </div>
           </div>
           
-          <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-white px-10 py-4 rounded-full shadow-xl border border-red-100 flex items-center gap-4 w-[90%] md:w-auto justify-center">
-            <Droplet className="text-red-600 hidden md:block" size={32} fill="currentColor" />
-            <h1 className="text-2xl md:text-5xl font-black text-red-700 tracking-tight text-center uppercase">
+          {/* Single-Line Clean Heading Pill - No Emojis, No Multiline Wrap */}
+          <div className="absolute -bottom-7 left-1/2 transform -translate-x-1/2 bg-white px-6 sm:px-10 py-3 sm:py-3.5 rounded-full shadow-xl border border-slate-200 flex items-center justify-center max-w-[95%]">
+            <h1 className="text-lg sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight text-center whitespace-nowrap uppercase">
               Blood Donation Camp
             </h1>
-            <Droplet className="text-red-600 hidden md:block" size={32} fill="currentColor" />
           </div>
         </motion.div>
 
-        {/* Content Section */}
-        <motion.div 
+        {/* Impact Highlights Bar */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 my-10 max-w-4xl mx-auto">
+          <div className="p-4 rounded-2xl bg-rose-50 border border-rose-100 text-center">
+            <div className="text-2xl sm:text-3xl font-black text-rose-700">2,000+</div>
+            <div className="text-xs sm:text-sm font-semibold text-rose-800 mt-0.5">Blood Units Donated</div>
+          </div>
+          <div className="p-4 rounded-2xl bg-blue-50 border border-blue-100 text-center">
+            <div className="text-2xl sm:text-3xl font-black text-nss-blue">100%</div>
+            <div className="text-xs sm:text-sm font-semibold text-blue-900 mt-0.5">Sterile Clinical Safety</div>
+          </div>
+          <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-100 text-center">
+            <div className="text-2xl sm:text-3xl font-black text-emerald-700">3 Major</div>
+            <div className="text-xs sm:text-sm font-semibold text-emerald-900 mt-0.5">Govt & Tertiary Hospitals</div>
+          </div>
+          <div className="p-4 rounded-2xl bg-amber-50 border border-amber-100 text-center">
+            <div className="text-2xl sm:text-3xl font-black text-amber-700">24/7</div>
+            <div className="text-xs sm:text-sm font-semibold text-amber-900 mt-0.5">Emergency Donor Helpline</div>
+          </div>
+        </div>
+
+        {/* Refreshed Comprehensive Core Content */}
+        <motion.article 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-24 md:mt-20 prose prose-lg md:prose-xl max-w-none text-gray-800"
+          className="space-y-8 text-slate-700 leading-relaxed text-justify"
         >
-          <h2 className="text-center font-bold text-gray-900 mb-10 font-serif">
-            NSS at VIT Bhopal: Serving Society with Compassion
-          </h2>
-          
-          <p className="leading-relaxed font-serif text-justify">
-            The NSS Unit of VIT Bhopal University is dedicated to fostering a spirit of social responsibility and volunteerism among students. In collaboration with Hamidia Hospital, AIIMS Bhopal and Chirayu Hospital, NSS Unit successfully organized a Blood Donation Camp, collecting <strong>2000 units of blood</strong> till date to support medical emergencies.
-          </p>
-          
-          <p className="leading-relaxed font-serif text-justify">
-            The event was inaugurated by AVP Ms. Kadhambari Vishwanathan, with guidance from Program Officers Dr. Vinod Bhatt. The seamless execution of the camp was made possible by the dedicated coordination team, led by Rishabh Kabra and Sahil Chaudhary, along with enthusiastic volunteers.
-          </p>
-          
-          <p className="leading-relaxed font-serif text-justify">
-            Through such initiatives, NSS at VIT Bhopal continues to make a meaningful impact on society, encouraging students to contribute towards healthcare, education, and social welfare. The unit remains committed to organizing more such events, inspiring a culture of compassion, service, and responsibility among students.
-          </p>
-        </motion.div>
+          <div className="text-center max-w-3xl mx-auto mb-8">
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mb-3 tracking-tight">
+              Giving the Gift of Life: Community Health & Emergency Solidarity
+            </h2>
+            <p className="text-sm sm:text-base text-slate-500 leading-relaxed font-normal">
+              How our annual voluntary blood donation drives save critical lives across regional healthcare centers and emergency wards.
+            </p>
+          </div>
 
-        <hr className="my-16 border-t-2 border-red-200/50 w-3/4 mx-auto" />
+          <p className="text-base sm:text-lg">
+            Blood donation is the highest form of humanitarian service — an anonymous, selfless act that directly bridges the critical divide between life and death for accident trauma victims, cancer patients, thalassemia warriors, and emergency surgical cases. The NSS Unit of VIT Bhopal University organizes large-scale, voluntary Blood Donation Camps annually, instilling a deep sense of social responsibility and civic empathy across our student and faculty fraternity.
+          </p>
+
+          <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-200/80 space-y-4">
+            <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+              <Hospital className="text-rose-600" size={26} />
+              Premier Healthcare Partnerships: AIIMS, Hamidia & Chirayu Hospitals
+            </h3>
+            <p className="text-sm sm:text-base leading-relaxed text-slate-700">
+              Each camp is organized in stringent technical and medical collaboration with government and tertiary hospital blood banks, including <strong>AIIMS Bhopal, Hamidia Hospital, and Chirayu Medical College & Hospital</strong>. Highly skilled medical officers and licensed phlebotomists supervise all phases of the collection process. Every donor undergoes thorough pre-donation medical evaluation, including hemoglobin screening, blood pressure checks, vitals assessment, and medical history verification to ensure complete donor safety and wellbeing.
+            </p>
+          </div>
+
+          <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-200/80 space-y-4">
+            <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+              <ShieldCheck className="text-nss-blue" size={26} />
+              2,000+ Units Mobilized & Rapid Regional Emergency Directory
+            </h3>
+            <p className="text-sm sm:text-base leading-relaxed text-slate-700">
+              Through consistent, large-scale annual drives, the NSS Unit has successfully mobilized <strong>over 2,000 units of life-saving blood</strong> to date. In addition to mass collection drives, the unit maintains a structured, verified <strong>Voluntary Blood Donor Directory</strong> categorized by blood groups (including rare Rh-negative types). This directory enables our volunteers to respond rapidly to SOS emergency distress calls from hospitals across Bhopal, Sehore, and nearby rural districts.
+            </p>
+          </div>
+
+          <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-200/80 space-y-4">
+            <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+              <HeartHandshake className="text-emerald-600" size={26} />
+              Donor Care, Health Literacy & Busting Myths
+            </h3>
+            <p className="text-sm sm:text-base leading-relaxed text-slate-700">
+              Beyond blood collection, our volunteer teams run intensive pre-camp educational awareness drives across hostels and academic blocks to dispel common myths surrounding blood donation. First-time donors are guided with care, provided with nutritious recovery refreshments (fruit juices, fresh fruits, glucose), and felicitated with official government donor certificates and donor badges.
+            </p>
+          </div>
+
+          <p className="text-base sm:text-lg font-medium text-slate-800 text-center pt-4">
+            Anchored in our guiding philosophy: <span className="font-black text-rose-700">“Donate Blood. Share Hope. Save Lives — Every Drop Counts, Every Donor Matters.”</span>
+          </p>
+        </motion.article>
+
+        <hr className="my-14 border-t border-slate-200" />
 
         {/* Press Release Section */}
         <motion.div 
@@ -78,23 +160,22 @@ export default function BloodDonationPage() {
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <div className="inline-flex items-center gap-3 justify-center mb-10">
-            <Newspaper className="text-gray-900" size={40} />
-            <h3 className="text-4xl font-black text-gray-900 uppercase tracking-widest font-serif">
-              Press Release
+          <div className="inline-flex items-center gap-2.5 justify-center mb-8">
+            <Newspaper className="text-slate-800" size={28} />
+            <h3 className="text-2xl sm:text-3xl font-black text-slate-900 uppercase tracking-wider">
+              Press Release & Media Coverage
             </h3>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start max-w-4xl mx-auto">
-            {/* Press Release Placeholders */}
-            <div className="bg-white p-4 rounded-xl shadow-md border border-gray-200 hover:shadow-xl transition-shadow">
-               <div className="w-full bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 overflow-hidden">
-                  <img src="/images/gallery/events_2025/image30.png" className="w-full h-auto object-cover opacity-80 mix-blend-luminosity grayscale" alt="News Clipping 1" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start max-w-4xl mx-auto">
+            <div className="bg-white p-4 rounded-2xl shadow-md border border-slate-200 hover:shadow-lg transition-shadow">
+               <div className="w-full bg-slate-100 rounded-xl flex items-center justify-center overflow-hidden">
+                  <img src="/images/gallery/events_2025/image30.png" className="w-full h-auto object-cover" alt="News Clipping 1" />
                </div>
             </div>
-            <div className="bg-white p-4 rounded-xl shadow-md border border-gray-200 hover:shadow-xl transition-shadow">
-               <div className="w-full bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 overflow-hidden">
-                  <img src="/images/gallery/events_2025/image1.png" className="w-full h-auto object-cover opacity-80 mix-blend-luminosity grayscale" alt="News Clipping 2" />
+            <div className="bg-white p-4 rounded-2xl shadow-md border border-slate-200 hover:shadow-lg transition-shadow">
+               <div className="w-full bg-slate-100 rounded-xl flex items-center justify-center overflow-hidden">
+                  <img src="/images/gallery/events_2025/image1.png" className="w-full h-auto object-cover" alt="News Clipping 2" />
                </div>
             </div>
           </div>
