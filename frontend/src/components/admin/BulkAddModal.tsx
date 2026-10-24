@@ -21,6 +21,7 @@ interface BulkAddModalProps {
   onClose: () => void;
   onSuccess: () => void;
   defaultBatch?: string;
+  availableBatches?: string[];
 }
 
 export interface ParsedVolunteer {
@@ -35,7 +36,14 @@ export interface ParsedVolunteer {
   rawText: string;
 }
 
-export default function BulkAddModal({ isOpen, onClose, onSuccess, defaultBatch = '' }: BulkAddModalProps) {
+export default function BulkAddModal({ isOpen, onClose, onSuccess, defaultBatch = '', availableBatches = ['2025', '2024'] }: BulkAddModalProps) {
+  const batches = Array.from(new Set([
+    ...availableBatches,
+    ...(defaultBatch ? [defaultBatch] : []),
+    '2025',
+    '2024'
+  ])).filter(b => b && b.trim().length > 0)
+    .sort((a, b) => (parseInt(b) || 0) - (parseInt(a) || 0));
   const [csvData, setCsvData] = useState('');
   const [targetBatch, setTargetBatch] = useState(defaultBatch || '');
   const [loading, setLoading] = useState(false);
@@ -364,12 +372,9 @@ Ananya Sen, ${yr.slice(2)}BCE10001, ananya@vitbhopal.ac.in, 9123456780, ${yr}, F
                   className="px-2.5 py-1 text-xs font-bold bg-white border border-slate-300 rounded-lg outline-none focus:border-nss-blue cursor-pointer"
                 >
                   <option value="">Auto-Detect from CSV</option>
-                  <option value="2026">Batch 2026</option>
-                  <option value="2025">Batch 2025</option>
-                  <option value="2024">Batch 2024</option>
-                  <option value="2023">Batch 2023</option>
-                  <option value="2022">Batch 2022</option>
-                  <option value="2021">Batch 2021</option>
+                  {batches.map(b => (
+                    <option key={b} value={b}>Batch {b}</option>
+                  ))}
                 </select>
               </div>
             </div>

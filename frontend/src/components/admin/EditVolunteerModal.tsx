@@ -10,9 +10,16 @@ interface EditVolunteerModalProps {
   onClose: () => void;
   onSuccess: () => void;
   volunteer: any;
+  availableBatches?: string[];
 }
 
-export default function EditVolunteerModal({ isOpen, onClose, onSuccess, volunteer }: EditVolunteerModalProps) {
+export default function EditVolunteerModal({ 
+  isOpen, 
+  onClose, 
+  onSuccess, 
+  volunteer,
+  availableBatches = ['2025', '2024'] 
+}: EditVolunteerModalProps) {
   const [formData, setFormData] = useState({
     name: '',
     registrationNumber: '',
@@ -22,36 +29,28 @@ export default function EditVolunteerModal({ isOpen, onClose, onSuccess, volunte
     residenceType: '',
     phoneNumber: ''
   });
-  const [isCustomBatch, setIsCustomBatch] = useState(false);
-  const [customBatchValue, setCustomBatchValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const standardBatches = ['2026', '2025', '2024', '2023', '2022', '2021'];
+  const batches = Array.from(new Set([
+    ...availableBatches,
+    ...(volunteer?.batch ? [volunteer.batch] : []),
+    '2025',
+    '2024'
+  ])).filter(b => b && b.trim().length > 0)
+    .sort((a, b) => (parseInt(b) || 0) - (parseInt(a) || 0));
 
   useEffect(() => {
     if (volunteer && isOpen) {
-      const b = (volunteer.batch || '').trim();
-      const isStd = standardBatches.includes(b);
-
       setFormData({
         name: volunteer.name || '',
         registrationNumber: volunteer.registrationNumber || '',
         email: volunteer.email || '',
-        batch: b,
+        batch: volunteer.batch || '',
         gender: volunteer.gender || '',
         residenceType: volunteer.residenceType || '',
         phoneNumber: volunteer.phoneNumber || ''
       });
-
-      if (b && !isStd) {
-        setIsCustomBatch(true);
-        setCustomBatchValue(b);
-      } else {
-        setIsCustomBatch(false);
-        setCustomBatchValue('');
-      }
-
       setError('');
     }
   }, [volunteer, isOpen]);
@@ -62,13 +61,11 @@ export default function EditVolunteerModal({ isOpen, onClose, onSuccess, volunte
     e.preventDefault();
     setLoading(true);
     setError('');
-
-    const finalBatch = isCustomBatch ? customBatchValue.trim() : formData.batch.trim();
     
     try {
       await api.put(`/users/${volunteer._id}`, {
         ...formData,
-        batch: finalBatch || undefined,
+        batch: formData.batch.trim() || undefined,
         phoneNumber: formData.phoneNumber.trim() || undefined
       });
       onSuccess();
@@ -93,7 +90,7 @@ export default function EditVolunteerModal({ isOpen, onClose, onSuccess, volunte
             <h2 className="text-xl font-bold flex items-center gap-2">
               <Edit3 className="text-nss-blue" /> Edit Volunteer
             </h2>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-900 transition-colors">
+            <button onClick={onClose} className="text-gray-400 hover:text-gray-900 transition-colors cursor-pointer">
               <X size={24} />
             </button>
           </div>
@@ -131,56 +128,16 @@ export default function EditVolunteerModal({ isOpen, onClose, onSuccess, volunte
                 <label className="block text-sm font-bold text-gray-700 mb-1 flex items-center gap-1">
                   <Calendar size={13} className="text-gray-400" /> Batch
                 </label>
-                {!isCustomBatch ? (
-                  <select
-                    value={formData.batch}
-                    onChange={e => {
-                      if (e.target.value === 'CUSTOM') {
-                        setIsCustomBatch(true);
-                        setCustomBatchValue('');
-                        setFormData(prev => ({ ...prev, batch: '' }));
-                      } else {
-                        setFormData(prev => ({ ...prev, batch: e.target.value }));
-                      }
-                    }}
-                    className="w-full p-3 rounded-xl border border-gray-200 outline-none focus:border-nss-blue text-sm font-semibold bg-white cursor-pointer"
-                  >
-                    <option value="">Select Batch</option>
-                    <option value="2026">Batch 2026</option>
-                    <option value="2025">Batch 2025</option>
-                    <option value="2024">Batch 2024</option>
-                    <option value="2023">Batch 2023</option>
-                    <option value="2022">Batch 2022</option>
-                    <option value="2021">Batch 2021</option>
-                    <option value="CUSTOM">+ Custom Batch...</option>
-                  </select>
-                ) : (
-                  <div className="flex gap-1">
-                    <input 
-                      type="text"
-                      autoFocus
-                      value={customBatchValue}
-                      onChange={e => {
-                        setCustomBatchValue(e.target.value);
-                        setFormData(prev => ({ ...prev, batch: e.target.value }));
-                      }}
-                      className="w-full p-3 rounded-xl border border-gray-200 outline-none focus:border-nss-blue text-sm font-semibold"
-                      placeholder="e.g. 2027"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setIsCustomBatch(false);
-                        setCustomBatchValue('');
-                        setFormData(prev => ({ ...prev, batch: '' }));
-                      }}
-                      className="px-2 text-xs text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-lg border border-gray-200 shrink-0"
-                      title="Back to dropdown"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                )}
+                <select
+                  value={formData.batch}
+                  onChange={e => setFormData(prev => ({ ...prev, batch: e.target.value }))}
+                  className="w-full p-3 rounded-xl border border-gray-200 outline-none focus:border-nss-blue text-sm font-semibold bg-white cursor-pointer"
+                >
+                  <option value="">Select Batch</option>
+                  {batches.map(b => (
+                    <option key={b} value={b}>Batch {b}</option>
+                  ))}
+                </select>
               </div>
             </div>
 
@@ -255,14 +212,14 @@ export default function EditVolunteerModal({ isOpen, onClose, onSuccess, volunte
               <button 
                 type="button" 
                 onClick={onClose}
-                className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-colors text-sm"
+                className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-colors text-sm cursor-pointer"
               >
                 Cancel
               </button>
               <button 
                 type="submit" 
                 disabled={loading}
-                className="flex-1 px-4 py-3 bg-nss-blue text-white font-bold rounded-xl hover:bg-blue-800 transition-colors disabled:opacity-50 text-sm shadow-md shadow-blue-500/20"
+                className="flex-1 px-4 py-3 bg-nss-blue text-white font-bold rounded-xl hover:bg-blue-800 transition-colors disabled:opacity-50 text-sm shadow-md shadow-blue-500/20 cursor-pointer"
               >
                 {loading ? 'Saving...' : 'Save Changes'}
               </button>

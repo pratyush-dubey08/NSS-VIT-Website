@@ -1,3 +1,4 @@
+import ChangeRequest from '../models/ChangeRequest';
 import Registration from '../models/Registration';
 import { Request, Response } from 'express';
 import User, { Role } from '../models/User';
@@ -290,5 +291,98 @@ export const getVolunteerReport = async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Error fetching volunteer report:', error);
     res.status(500).json({ message: 'Server error fetching volunteer report' });
+  }
+};
+
+// Volunteer submits a profile correction request
+export const createChangeRequest = async (req: any, res: any) => {
+  try {
+    const user = req.user;
+    if (!user) {
+      return res.status(401).json({ message: 'User not authenticated' });
+    }
+
+    const { field, currentValue, requestedValue, reason } = req.body;
+
+    if (!field || !requestedValue) {
+      return res.status(400).json({ message: 'Field and requested correct value are required' });
+    }
+
+    const newRequest = await ChangeRequest.create({
+      user: user._id,
+      volunteerName: user.name || 'Volunteer',
+      registrationNumber: user.registrationNumber || '',
+      email: user.email || '',
+      field,
+      currentValue: currentValue || '',
+      requestedValue: String(requestedValue).trim(),
+      reason: reason ? String(reason).trim() : '',
+      status: 'Pending'
+    });
+
+    res.status(201).json({
+      message: 'Correction request submitted successfully! NSS Admin will review and update it.',
+      request: newRequest
+    });
+  } catch (error) {
+    console.error('Error creating change request:', error);
+    res.status(500).json({ message: 'Failed to submit correction request' });
+  }
+};
+
+// Volunteer gets their own change requests
+export const getMyChangeRequests = async (req: any, res: any) => {
+  try {
+    const user = req.user;
+    if (!user) {
+      return res.status(401).json({ message: 'User not authenticated' });
+    }
+
+    const requests = await ChangeRequest.find({ user: user._id }).sort({ createdAt: -1 });
+    res.status(200).json(requests);
+  } catch (error) {
+    console.error('Error fetching my change requests:', error);
+    res.status(500).json({ message: 'Failed to fetch change requests' });
+  }
+};
+
+// Admin gets all change requests
+export const getAllChangeRequests = async (req: any, res: any) => {
+  try {
+    const requests = await ChangeRequest.find()
+      .populate('user', 'name registrationNumber email phoneNumber batch gender residenceType')
+      .sort({ createdAt: -1 });
+    res.status(200).json(requests);
+  } catch (error) {
+    console.error('Error fetching all change requests:', error);
+    res.status(500).json({ message: 'Failed to fetch change requests' });
+  }
+};
+
+// Admin updates change request status (e.g. 'Accepted' or 'Pending')
+export const updateChangeRequestStatus = async (req: any, res: any) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const request = await ChangeRequest.findById(id);
+    if (!request) {
+      return res.status(404).json({ message: 'Change request not found' });
+    }
+
+    request.status = status || 'Accepted';
+    request.reviewedAt = new Date();
+    if (req.user) {
+      request.reviewedBy = req.user._id;
+    }
+
+    await request.save();
+    res.status(200).json({
+      message: `Request marked as ${request.status}`,
+      request
+    });
+  } catch (error) {
+    console.error('Error updating change request status:', error);
+    res.status(500).json({ message: 'Failed to update change request status' });
   }
 };

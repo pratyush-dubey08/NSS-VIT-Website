@@ -20,7 +20,8 @@ import {
   RefreshCw,
   MoreVertical,
   FileText,
-  Sparkles
+  Sparkles,
+  FileEdit
 } from 'lucide-react';
 import api from '@/lib/axios';
 
@@ -29,6 +30,7 @@ import BulkAddModal from '@/components/admin/BulkAddModal';
 import EditVolunteerModal from '@/components/admin/EditVolunteerModal';
 import VolunteerReportModal from '@/components/admin/VolunteerReportModal';
 import NewBatchModal from '@/components/admin/NewBatchModal';
+import ChangeRequestsModal from '@/components/admin/ChangeRequestsModal';
 
 export default function AdminVolunteers() {
   const [volunteers, setVolunteers] = useState<any[]>([]);
@@ -40,6 +42,8 @@ export default function AdminVolunteers() {
   const [activeBatchPreset, setActiveBatchPreset] = useState('');
   const [editingVolunteer, setEditingVolunteer] = useState<any>(null);
   const [selectedReportVolunteer, setSelectedReportVolunteer] = useState<any>(null);
+  const [isChangeRequestsModalOpen, setIsChangeRequestsModalOpen] = useState(false);
+  const [pendingChangeRequestsCount, setPendingChangeRequestsCount] = useState(0);
 
   // Multi-select state
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -57,8 +61,20 @@ export default function AdminVolunteers() {
     }
   };
 
+  const fetchChangeRequestsCount = async () => {
+    try {
+      const { data } = await api.get('/users/change-requests');
+      if (Array.isArray(data)) {
+        setPendingChangeRequestsCount(data.filter((r: any) => r.status === 'Pending').length);
+      }
+    } catch (e) {
+      console.error('Error fetching change requests count:', e);
+    }
+  };
+
   useEffect(() => {
     fetchVolunteers();
+    fetchChangeRequestsCount();
   }, []);
 
   const handleDeleteVolunteer = async (id: string, name?: string) => {
@@ -398,6 +414,7 @@ This will also remove their attendance and participation records across all even
         }} 
         onSuccess={fetchVolunteers}
         defaultBatch={activeBatchPreset}
+        availableBatches={distinctBatches}
       />
       <BulkAddModal 
         isOpen={isBulkModalOpen} 
@@ -407,12 +424,14 @@ This will also remove their attendance and participation records across all even
         }} 
         onSuccess={fetchVolunteers}
         defaultBatch={activeBatchPreset}
+        availableBatches={distinctBatches}
       />
       <EditVolunteerModal 
         isOpen={!!editingVolunteer}
         onClose={() => setEditingVolunteer(null)}
         onSuccess={fetchVolunteers}
         volunteer={editingVolunteer}
+        availableBatches={distinctBatches}
       />
 
       {/* Volunteer Info & Attendance Report Card Modal */}
@@ -420,6 +439,18 @@ This will also remove their attendance and participation records across all even
         isOpen={!!selectedReportVolunteer}
         onClose={() => setSelectedReportVolunteer(null)}
         volunteer={selectedReportVolunteer}
+      />
+
+      {/* Volunteer Detail Change Requests Modal */}
+      <ChangeRequestsModal
+        isOpen={isChangeRequestsModalOpen}
+        onClose={() => {
+          setIsChangeRequestsModalOpen(false);
+          fetchChangeRequestsCount();
+        }}
+        onEditVolunteer={(volunteer) => {
+          setEditingVolunteer(volunteer);
+        }}
       />
 
       {/* Header */}
@@ -433,6 +464,20 @@ This will also remove their attendance and participation records across all even
         
         {/* Top Action Buttons */}
         <div className="flex flex-wrap items-center gap-2">
+          {/* Changes Requested Button */}
+          <button 
+            onClick={() => setIsChangeRequestsModalOpen(true)}
+            title="View volunteer detail change requests submitted by volunteers"
+            className="flex items-center gap-2 px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md shadow-amber-500/20 transition-all transform hover:scale-[1.02] text-sm cursor-pointer"
+          >
+            <FileEdit size={18} />
+            <span>Changes Requested</span>
+            {pendingChangeRequestsCount > 0 && (
+              <span className="px-2 py-0.5 rounded-full text-xs font-black bg-white text-amber-700 shadow-sm animate-pulse">
+                {pendingChangeRequestsCount}
+              </span>
+            )}
+          </button>
           {/* New Batch Button */}
           <button 
             onClick={() => setIsNewBatchModalOpen(true)}
