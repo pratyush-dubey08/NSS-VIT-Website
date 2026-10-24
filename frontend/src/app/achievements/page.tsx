@@ -53,20 +53,16 @@ const CamperCard = ({ name, regNo, role, image, delay = 0, color = "blue" }: any
 
 export default function AwardeesPage() {
   return (
-    <div className="min-h-screen pt-20 sm:pt-24 bg-[#F8FAFC] pb-24 overflow-hidden selection:bg-nss-blue selection:text-white font-sans">
+    <div className="min-h-screen pt-20 sm:pt-24 bg-white pb-24 overflow-hidden selection:bg-nss-blue selection:text-white font-sans">
       
       {/* Hero Section */}
-      <section className="relative pt-6 pb-6 sm:pt-8 sm:pb-8 text-center max-w-5xl mx-auto px-4 overflow-hidden">
-        {/* Background Gradients */}
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-100/40 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-indigo-100/40 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 pointer-events-none"></div>
-        
+      <section className="relative pt-8 pb-4 sm:pt-12 sm:pb-6 text-center max-w-5xl mx-auto px-4">
         <div className="container mx-auto px-4 text-center relative z-10">
           <motion.h1 
             initial={{ opacity: 0, y: 30 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight text-center mb-3"
+            className="text-4xl sm:text-5xl md:text-6xl font-black text-slate-900 tracking-tight leading-tight text-center mb-4"
           >
             Awardees & <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-nss-blue to-indigo-600">Campers</span>
           </motion.h1>
@@ -75,7 +71,7 @@ export default function AwardeesPage() {
             initial={{ opacity: 0, y: 30 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-sm sm:text-base text-slate-500 max-w-2xl mx-auto mt-2.5 leading-relaxed font-normal text-center"
+            className="text-base sm:text-lg text-slate-600 max-w-3xl mx-auto mt-2 leading-relaxed font-normal text-center"
           >
             Honoring the exceptional dedication, leadership, and outstanding achievements of our NSS volunteers and program officers on State and National platforms.
           </motion.p>
@@ -83,7 +79,7 @@ export default function AwardeesPage() {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 max-w-7xl space-y-12 sm:space-y-14 relative z-10">
+      <div className="container mx-auto px-4 max-w-7xl space-y-12 sm:space-y-14 relative z-10 mt-8 sm:mt-12">
         
         {/* 1. NIC */}
         <section className="relative">

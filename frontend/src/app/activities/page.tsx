@@ -53,7 +53,7 @@ export default function ActivitiesPage() {
   }, [activities, searchQuery, activeTab]);
 
   return (
-    <div className="min-h-screen pt-16 sm:pt-20 bg-[#FAFAFA] pb-20 font-sans">
+    <div className="min-h-screen pt-16 sm:pt-20 bg-white pb-20 font-sans">
       
       {/* Header Section */}
       <section className="relative overflow-hidden bg-white border-b border-gray-100 pt-6 pb-6 md:pt-8 md:pb-8">
@@ -76,7 +76,7 @@ export default function ActivitiesPage() {
       </section>
 
       {/* Filter Tabs & Search Controls */}
-      <section className="sticky top-16 sm:top-20 z-40 bg-[#FAFAFA]/95 backdrop-blur-md border-b border-gray-200/50 py-3 mb-6 shadow-xs">
+      <section className="sticky top-16 sm:top-20 z-40 bg-white/95 backdrop-blur-md border-b border-gray-200/50 py-3 mb-10 shadow-xs mt-3">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4">
             

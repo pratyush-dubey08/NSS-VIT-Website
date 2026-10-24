@@ -184,23 +184,23 @@ export default function TeamPage() {
   const tier4 = leadershipData.filter(l => l.tier === 4);
 
   return (
-    <div className="min-h-screen pt-24 bg-[#FAFAFA] pb-32 selection:bg-nss-blue selection:text-white">
+    <div className="min-h-screen pt-24 bg-white pb-32 selection:bg-nss-blue selection:text-white">
       
       {/* Header Section */}
-      <section className="py-16 md:py-24 text-center container mx-auto px-4 relative">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-100/50 rounded-full blur-3xl -z-10"></div>
+      <section className="pt-8 pb-4 sm:pt-10 sm:pb-4 text-center container mx-auto px-4 relative">
+        
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight text-center mb-3">
             Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-nss-blue to-blue-600">Leadership</span>
           </h1>
-          <p className="max-w-2xl mx-auto text-lg md:text-xl text-slate-600 font-medium">
+          <p className="max-w-2xl mx-auto text-sm sm:text-base text-slate-500 max-w-2xl mx-auto mt-2 leading-relaxed font-normal text-center">
             Meet the visionaries, dedicated officers, and coordinators who guide and lead the NSS Unit at VIT Bhopal University.
           </p>
         </motion.div>
       </section>
 
       {/* College Leadership Section */}
-      <section className="container mx-auto px-4 mb-32 relative">
+      <section className="container mx-auto px-4 mb-24 relative mt-2 sm:mt-4">
         <div className="max-w-5xl mx-auto space-y-8 relative z-10">
           
           {/* Tier 1 - Chancellor */}

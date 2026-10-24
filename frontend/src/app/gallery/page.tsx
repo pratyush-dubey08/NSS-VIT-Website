@@ -195,7 +195,7 @@ function GalleryContent() {
   const filteredFolders = folders.filter(f => f.categoryId === selectedCategoryId);
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-gray-900 pt-16 sm:pt-20 pb-20 relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-white text-gray-900 pt-16 sm:pt-20 pb-20 relative overflow-hidden font-sans">
       
       {/* Soft Ambient Background Glows & Texture */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[400px] bg-gradient-to-b from-blue-100/50 via-indigo-50/30 to-transparent pointer-events-none blur-3xl -z-10" />

@@ -44,10 +44,10 @@ export default function HighlightsPage() {
   };
 
   return (
-    <div className="min-h-screen pt-20 sm:pt-24 bg-[#F8FAFC] pb-24 overflow-hidden selection:bg-nss-blue selection:text-white font-sans">
+    <div className="min-h-screen pt-20 sm:pt-24 bg-white pb-24 overflow-hidden selection:bg-nss-blue selection:text-white font-sans">
       
       {/* Hero Section: Single-Line Heading, Clean & Compact */}
-      <section className="relative pt-6 pb-6 sm:pt-8 sm:pb-8 text-center max-w-5xl mx-auto px-4">
+      <section className="relative pt-8 pb-4 sm:pt-12 sm:pb-6 text-center max-w-5xl mx-auto px-4">
         
         {/* Single Line Heading */}
         <motion.h1 
@@ -71,7 +71,7 @@ export default function HighlightsPage() {
       </section>
 
       {/* Cards List: Clean, Elegant, Uncongested Design */}
-      <div className="container mx-auto px-4 max-w-4xl space-y-3.5 relative z-10">
+      <div className="container mx-auto px-4 max-w-4xl space-y-4 mt-8 sm:mt-12 relative z-10">
         {UNIT_MILESTONES.map((milestone) => {
           const isExpanded = expandedIds.includes(milestone.id);
 
