@@ -47,12 +47,13 @@ export default function Navbar() {
           <div className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/80 shadow-xs flex items-center justify-center p-1 group-hover:scale-105 transition-transform">
             <img src="/images/nss-logo.png" alt="NSS Logo" className="w-8 h-8 object-contain" />
           </div>
-          <div className="flex flex-col">
-            <div className="flex items-center gap-1.5 xl:gap-2">
-              <span className="font-black text-slate-900 text-sm xl:text-base tracking-tight leading-tight">NSS Unit</span>
-              <span className="px-1.5 py-0.5 text-[10px] xl:text-[11px] font-bold bg-blue-50 text-nss-blue rounded-md border border-blue-100 hidden sm:inline-block leading-tight">VIT Bhopal</span>
-            </div>
-            <span className="text-[10px] xl:text-[11px] font-semibold text-slate-400 tracking-wide mt-0.5 hidden sm:block leading-tight">Not Me But You</span>
+          <div className="flex flex-col justify-center">
+            <span className="font-black text-slate-900 text-[17px] xl:text-[19px] tracking-tight leading-tight">
+              NSS Unit
+            </span>
+            <span className="text-[11px] xl:text-[12px] font-bold text-slate-500 tracking-wide leading-none mt-0.5">
+              VIT Bhopal
+            </span>
           </div>
         </Link>
 
