@@ -98,7 +98,7 @@ export default function AdminVolunteers() {
     if (selectedIds.length === 0) return;
 
     const count = selectedIds.length;
-    const confirmMsg = `⚠️ WARNING: You are about to permanently delete ${count} selected volunteer${count > 1 ? 's' : ''}.
+    const confirmMsg = `WARNING: You are about to permanently delete ${count} selected volunteer${count > 1 ? 's' : ''}.
 
 This will also remove their attendance and participation records across all events. Are you sure you want to proceed?`;
 

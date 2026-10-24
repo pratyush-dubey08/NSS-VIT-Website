@@ -144,7 +144,7 @@ export default function EditActivityPage({ params }: { params: Promise<{ id: str
             <ArrowLeft size={20} />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Edit Activity</h1>
+            <h1 className="text-2xl font-black text-gray-900 tracking-tight">Edit Activity</h1>
             <p className="text-sm text-gray-500">
               Edit Event Details
             </p>

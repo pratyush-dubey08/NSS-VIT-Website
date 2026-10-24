@@ -91,7 +91,7 @@ export default function ActivityManagementPage({ params }: { params: { id: strin
  <ArrowLeft size={20} />
  </Link>
  <div>
- <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+ <h1 className="text-2xl font-black text-gray-900 tracking-tight flex items-center gap-3">
  Manage Event
  <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">5 Hours</span>
  </h1>
@@ -354,7 +354,7 @@ export default function ActivityManagementPage({ params }: { params: { id: strin
  <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">{resp.field}</p>
  <p className="font-medium text-gray-900">
  {typeof resp.value === 'boolean' 
- ? (resp.value ? '✅ Yes / Agreed' : '❌ No / Disagreed') 
+ ? (resp.value ? 'Yes / Agreed' : 'No / Disagreed') 
  : String(resp.value)}
  </p>
  </div>

@@ -71,8 +71,8 @@ export default function AdminMessagesPage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 pb-5">
         <div>
-          <h1 className="text-2xl font-black text-gray-900 tracking-tight flex items-center gap-2">
-            <MessageSquare className="text-nss-blue" size={24} /> Contact Inquiries & Messages
+          <h1 className="text-2xl font-black text-gray-900 tracking-tight">
+            Contact Inquiries & Messages
           </h1>
           <p className="text-xs sm:text-sm text-gray-500 mt-1">
             View, reply, and manage direct messages submitted by students from the public Contact page.

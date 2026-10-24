@@ -114,7 +114,7 @@ export default function NewActivityPage() {
             <ArrowLeft size={20} />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Create New Activity</h1>
+            <h1 className="text-2xl font-black text-gray-900 tracking-tight">Create New Activity</h1>
             <p className="text-sm text-gray-500">
               {step === 1 ? 'Step 1: Event Details' : 'Step 2: Registration Form Builder'}
             </p>

@@ -208,7 +208,7 @@ export default function AlbumDetailsPage() {
           <span>Back to {currentCategory?.title || 'Gallery'}</span>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Manage Album</h1>
+          <h1 className="text-2xl font-black text-gray-900 tracking-tight">Manage Album</h1>
         </div>
       </div>
 
