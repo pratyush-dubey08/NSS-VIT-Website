@@ -85,7 +85,17 @@ export const getRegistrationsByActivity = async (req: Request, res: Response) =>
     }
 
     const registrations = await Registration.find({ activityId }).populate('userId', 'name registrationNumber department email phoneNumber gender batch residenceType');
-    res.status(200).json(registrations);
+    
+    // Filter out orphaned registrations where user was deleted
+    const validRegistrations = registrations.filter(r => r.userId != null);
+
+    // Clean up orphaned registrations from database in the background so "Unknown" never persists
+    const orphanedIds = registrations.filter(r => r.userId == null).map(r => r._id);
+    if (orphanedIds.length > 0) {
+      Registration.deleteMany({ _id: { $in: orphanedIds } }).catch(err => console.error('Error cleaning orphaned registrations:', err));
+    }
+
+    res.status(200).json(validRegistrations);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching registrations' });
   }

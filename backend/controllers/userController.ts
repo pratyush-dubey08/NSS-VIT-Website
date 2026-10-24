@@ -144,7 +144,9 @@ export const deleteVolunteer = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     await User.findByIdAndDelete(id);
-    res.status(200).json({ message: 'Volunteer removed' });
+    // Cascade delete all registrations across all activities for this volunteer
+    await Registration.deleteMany({ userId: id });
+    res.status(200).json({ message: 'Volunteer removed and deleted from all activities' });
   } catch (error) {
     console.error('Error deleting volunteer:', error);
     res.status(500).json({ message: 'Server Error' });

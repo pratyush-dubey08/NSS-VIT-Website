@@ -21,6 +21,7 @@ export default function ManageActivityPage() {
   const [loading, setLoading] = useState(true);
   
   const [activeTab, setActiveTab] = useState<'volunteers' | 'managers' | 'registration'>('volunteers');
+  const [volunteerSearchQuery, setVolunteerSearchQuery] = useState('');
   const [managerSearchQuery, setManagerSearchQuery] = useState('');
   const [isUpdatingManagers, setIsUpdatingManagers] = useState(false);
 
@@ -451,6 +452,16 @@ export default function ManageActivityPage() {
   const { matched: bulkMatched, alreadyAdded: bulkAlreadyAdded, notFound: bulkNotFound } = parseBulkAdd();
   const { absentMatches: bulkAbsentMatches, otherRegistrations: bulkOtherRegistrations } = parseBulkAbsent();
 
+  const filteredRegistrations = registrations.filter((reg) => {
+    if (!reg.userId) return false;
+    const q = volunteerSearchQuery.toLowerCase().trim();
+    if (!q) return true;
+    const name = (reg.userId?.name || '').toLowerCase();
+    const regNo = (reg.userId?.registrationNumber || '').toLowerCase();
+    const email = (reg.userId?.email || '').toLowerCase();
+    return name.includes(q) || regNo.includes(q) || email.includes(q);
+  });
+
   return (
     <div className="space-y-6">
       {/* Top Header */}
@@ -534,9 +545,32 @@ export default function ManageActivityPage() {
               
               {/* Action Toolbar */}
               <div className="p-6 border-b border-gray-100 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 bg-slate-50/40">
-                <div>
-                  <h2 className="text-lg font-black text-gray-900">Registered Volunteers ({registrations.length})</h2>
-                  <p className="text-xs text-gray-500 mt-0.5">Add volunteers and manage event attendance</p>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-full lg:w-auto">
+                  <div>
+                    <h2 className="text-lg font-black text-gray-900">Registered Volunteers ({filteredRegistrations.length})</h2>
+                    <p className="text-xs text-gray-500 mt-0.5">Add volunteers and manage event attendance</p>
+                  </div>
+
+                  {/* Volunteer Search Box */}
+                  <div className="relative w-full sm:w-72">
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                    <input
+                      type="text"
+                      placeholder="Search by volunteer name or reg no..."
+                      value={volunteerSearchQuery}
+                      onChange={(e) => setVolunteerSearchQuery(e.target.value)}
+                      className="w-full pl-9 pr-8 py-2 bg-white border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-nss-blue/20 focus:border-nss-blue font-medium placeholder:text-gray-400 shadow-2xs"
+                    />
+                    {volunteerSearchQuery && (
+                      <button
+                        onClick={() => setVolunteerSearchQuery('')}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs font-bold p-0.5"
+                        title="Clear search"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
                 </div>
                 
                 <div className="flex flex-wrap items-center gap-2.5">
@@ -618,13 +652,17 @@ export default function ManageActivityPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-50">
-                    {registrations.length === 0 ? (
+                    {filteredRegistrations.length === 0 ? (
                       <tr>
                         <td colSpan={5} className="p-12 text-center text-gray-400 font-medium">
-                          No volunteers registered yet. Click <strong>+ Add Volunteer</strong> or <strong>Bulk Add Volunteers</strong> above.
+                          {volunteerSearchQuery ? (
+                            <>No volunteers found matching "<strong className="text-gray-700">{volunteerSearchQuery}</strong>".</>
+                          ) : (
+                            <>No volunteers registered yet. Click <strong>+ Add Volunteer</strong> or <strong>Bulk Add Volunteers</strong> above.</>
+                          )}
                         </td>
                       </tr>
-                    ) : registrations.map((reg) => {
+                    ) : filteredRegistrations.map((reg) => {
                       const currentStatus = attendanceUpdates[reg._id] || reg.attendanceStatus;
                       const isPresent = currentStatus === 'ATTENDED' || currentStatus === 'Present';
                       const isAbsent = currentStatus === 'BUNKED' || currentStatus === 'Absent';
