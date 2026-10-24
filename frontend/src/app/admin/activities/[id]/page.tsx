@@ -270,21 +270,18 @@ export default function ManageActivityPage() {
 
   // One-Click Excel / CSV Export
   const handleExportCSV = () => {
-    if (registrations.length === 0) {
-      alert('No responses found to export.');
+    if (participantResponses.length === 0) {
+      alert('No participant responses found to export.');
       return;
     }
 
-    const dynamicFields: IFormField[] = activity?.formSchema || [];
+    const dynamicFields = (activity?.formSchema || []).filter((f: any) => f.type !== 'IMAGE');
     const headers = [
       '#',
-      'Student Name',
-      'Registration Number',
-      'Official VIT Email',
-      'Phone Number',
       'Submission Date & Time',
-      'Attendance Status',
-      ...dynamicFields.map(f => f.label || f.id)
+      ...(dynamicFields.length > 0 
+        ? dynamicFields.map((f: any) => f.label || f.id)
+        : ['Student Name', 'Official VIT Email', 'Registration Number'])
     ];
 
     const escapeCSV = (val: any) => {
@@ -293,31 +290,40 @@ export default function ManageActivityPage() {
       return '"' + str + '"';
     };
 
-    const rows = registrations.map((reg, index) => {
-      const name = reg.userId?.name || reg.fullName || 'Unknown';
-      const regNo = reg.userId?.registrationNumber || reg.registrationNumber || '-';
-      const email = reg.userId?.email || reg.email || '-';
-      const phone = reg.userId?.phoneNumber || reg.phoneNumber || '-';
-      const date = reg.createdAt ? new Date(reg.createdAt).toLocaleString() : '-';
-      const attStatus = reg.attendanceStatus || 'PENDING';
+    const rows = participantResponses.map((reg, index) => {
+      const date = reg.createdAt ? new Date(reg.createdAt).toLocaleString('en-IN') : '-';
 
-      const dynamicVals = dynamicFields.map(f => {
-        const resp = reg.responses?.find((r: any) => r.fieldId === f.id);
-        if (!resp || resp.value === undefined) return '';
-        if (Array.isArray(resp.value)) return resp.value.join(', ');
-        return resp.value;
-      });
+      if (dynamicFields.length > 0) {
+        const dynamicVals = dynamicFields.map((f: any) => {
+          const resp = reg.responses?.find((r: any) => r.fieldId === f.id);
+          let v = resp?.value;
+          if ((v === undefined || v === null || v === '') && f.label) {
+            const lbl = f.label.toLowerCase();
+            if (lbl.includes('email')) v = reg.email || reg.userId?.email;
+            else if (lbl.includes('name')) v = reg.fullName || reg.userId?.name;
+            else if (lbl.includes('reg') && lbl.includes('no')) v = reg.registrationNumber || reg.userId?.registrationNumber;
+            else if (lbl.includes('phone') || lbl.includes('contact') || lbl.includes('whatsapp')) v = reg.phoneNumber || reg.userId?.phoneNumber;
+          }
+          if (v === null || v === undefined) return '';
+          if (typeof v === 'boolean') return v ? 'Yes' : 'No';
+          if (Array.isArray(v)) return v.join(', ');
+          return String(v);
+        });
 
-      return [
-        index + 1,
-        escapeCSV(name),
-        escapeCSV(regNo),
-        escapeCSV(email),
-        escapeCSV(phone),
-        escapeCSV(date),
-        escapeCSV(attStatus),
-        ...dynamicVals.map(escapeCSV)
-      ].join(',');
+        return [
+          index + 1,
+          escapeCSV(date),
+          ...dynamicVals.map(escapeCSV)
+        ].join(',');
+      } else {
+        return [
+          index + 1,
+          escapeCSV(date),
+          escapeCSV(reg.userId?.name || reg.fullName || '-'),
+          escapeCSV(reg.userId?.email || reg.email || '-'),
+          escapeCSV(reg.userId?.registrationNumber || reg.registrationNumber || '-')
+        ].join(',');
+      }
     });
 
     const csvContent = '\uFEFF' + [headers.map(escapeCSV).join(','), ...rows].join('\r\n');
@@ -370,7 +376,7 @@ export default function ManageActivityPage() {
       });
 
       if (found) {
-        const isAlreadyInEvent = registrations.some(r => r.userId?._id === found._id || r.userId === found._id);
+        const isAlreadyInEvent = (registrations.filter(r => r.registrationType === 'VOLUNTEER' || (!r.responses || r.responses.length === 0))).some(r => r.userId?._id === found._id || r.userId === found._id);
         if (isAlreadyInEvent) {
           alreadyAddedMap.set(found._id, found);
         } else {
@@ -408,13 +414,14 @@ export default function ManageActivityPage() {
   };
 
   const parseBulkAbsent = () => {
-    if (!bulkAbsentInput.trim() || registrations.length === 0) return { absentMatches: [], otherRegistrations: [] };
+    const volRegs = registrations.filter(r => r.registrationType === 'VOLUNTEER' || (!r.responses || r.responses.length === 0));
+    if (!bulkAbsentInput.trim() || volRegs.length === 0) return { absentMatches: [], otherRegistrations: [] };
     const tokens = bulkAbsentInput.split(/[\n,;\t]+/).map(t => t.trim()).filter(t => t.length > 0);
     const absentMatchIds = new Set<string>();
 
     tokens.forEach(token => {
       const cleanToken = token.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
-      registrations.forEach(r => {
+      volRegs.forEach(r => {
         const regNo = (r.userId?.registrationNumber || r.registrationNumber || '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
         const name = (r.userId?.name || r.fullName || '').toLowerCase();
         if ((cleanToken.length >= 6 && regNo.includes(cleanToken)) || regNo === cleanToken || name.includes(token.toLowerCase())) {
@@ -423,8 +430,8 @@ export default function ManageActivityPage() {
       });
     });
 
-    const absentMatches = registrations.filter(r => absentMatchIds.has(r._id));
-    const otherRegistrations = registrations.filter(r => !absentMatchIds.has(r._id));
+    const absentMatches = volRegs.filter(r => absentMatchIds.has(r._id));
+    const otherRegistrations = volRegs.filter(r => !absentMatchIds.has(r._id));
     return { absentMatches, otherRegistrations };
   };
 
@@ -547,8 +554,17 @@ export default function ManageActivityPage() {
     </div>
   );
 
+  // Separate Duty Volunteers (for attendance) and Public Form Participants
+  const volunteerRegistrations = registrations.filter(r => 
+    r.registrationType === 'VOLUNTEER' || (!r.responses || r.responses.length === 0)
+  );
+
+  const participantResponses = registrations.filter(r => 
+    r.registrationType === 'PARTICIPANT' || (r.responses && r.responses.length > 0)
+  );
+
   // Filters
-  const filteredRegistrations = registrations.filter((reg) => {
+  const filteredRegistrations = volunteerRegistrations.filter((reg) => {
     const q = volunteerSearchQuery.toLowerCase().trim();
     if (!q) return true;
     const name = (reg.userId?.name || reg.fullName || '').toLowerCase();
@@ -557,13 +573,14 @@ export default function ManageActivityPage() {
     return name.includes(q) || regNo.includes(q) || email.includes(q);
   });
 
-  const filteredResponses = registrations.filter((reg) => {
+  const filteredResponses = participantResponses.filter((reg) => {
     const q = responseSearchQuery.toLowerCase().trim();
     if (!q) return true;
     const name = (reg.userId?.name || reg.fullName || '').toLowerCase();
     const regNo = (reg.userId?.registrationNumber || reg.registrationNumber || '').toLowerCase();
     const email = (reg.userId?.email || reg.email || '').toLowerCase();
-    return name.includes(q) || regNo.includes(q) || email.includes(q);
+    const answerValues = (reg.responses || []).map((r: any) => String(r.value || '').toLowerCase()).join(' ');
+    return name.includes(q) || regNo.includes(q) || email.includes(q) || answerValues.includes(q);
   });
 
   const currentManagerIds = new Set((activity.eventManagers || []).map((m: any) => (m._id || m).toString()));
@@ -585,7 +602,7 @@ export default function ManageActivityPage() {
     )
     .filter(v => {
       const vId = (v._id || v.id || '').toString();
-      return !registrations.some(r => {
+      return !volunteerRegistrations.some(r => {
         const rUserId = (r.userId?._id || r.userId?.id || r.userId || '').toString();
         return rUserId === vId;
       });
@@ -658,9 +675,9 @@ export default function ManageActivityPage() {
             activeTab === 'volunteers' ? 'border-nss-blue text-nss-blue' : 'border-transparent text-gray-500 hover:text-gray-800'
           )}
         >
-          <Users size={17} /> Volunteers & Attendance
+          <Users size={17} /> Registered Volunteers
           <span className="px-2 py-0.5 rounded-full text-xs bg-gray-100 text-gray-700 font-bold">
-            ({registrations.length})
+            ({volunteerRegistrations.length})
           </span>
         </button>
 
@@ -693,7 +710,7 @@ export default function ManageActivityPage() {
         >
           <FileSpreadsheet size={17} /> Form Responses
           <span className="px-2 py-0.5 rounded-full text-xs bg-purple-50 text-purple-700 font-bold">
-            ({registrations.length})
+            ({participantResponses.length})
           </span>
         </button>
       </div>
@@ -1158,80 +1175,104 @@ export default function ManageActivityPage() {
                 </div>
               </div>
 
-              {/* Responses Table */}
+              {/* Responses Table - Strictly displays Form Question Options */}
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse min-w-[800px]">
+                <table className="w-full text-left border-collapse min-w-[700px]">
                   <thead>
                     <tr className="bg-gray-50/80 border-b border-gray-100 text-[11px] font-bold text-gray-500 uppercase tracking-wider">
-                      <th className="p-4 pl-5">#</th>
-                      <th className="p-4">Student</th>
-                      <th className="p-4">Reg Number</th>
-                      <th className="p-4">Official Email</th>
-                      <th className="p-4">Submitted At</th>
-                      {(activity.formSchema || []).map((field: any) => (
-                        <th key={field.id} className="p-4 whitespace-nowrap">{field.label}</th>
-                      ))}
+                      <th className="p-4 pl-5 w-12">#</th>
+                      <th className="p-4 whitespace-nowrap">Submitted At</th>
+                      {(activity.formSchema || []).filter((f: any) => f.type !== 'IMAGE').length > 0 ? (
+                        (activity.formSchema || []).filter((f: any) => f.type !== 'IMAGE').map((field: any) => (
+                          <th key={field.id} className="p-4 whitespace-nowrap">{field.label || 'Question'}</th>
+                        ))
+                      ) : (
+                        <>
+                          <th className="p-4 whitespace-nowrap">Student Name</th>
+                          <th className="p-4 whitespace-nowrap">Official Email</th>
+                          <th className="p-4 whitespace-nowrap">Reg Number</th>
+                        </>
+                      )}
                       <th className="p-4 text-right pr-5">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
                     {filteredResponses.length === 0 ? (
                       <tr>
-                        <td colSpan={(activity.formSchema?.length || 0) + 6} className="p-12 text-center text-gray-400 font-medium text-xs">
+                        <td colSpan={((activity.formSchema || []).filter((f: any) => f.type !== 'IMAGE').length || 3) + 3} className="p-12 text-center text-gray-400 font-medium text-xs">
                           {responseSearchQuery ? 'No responses match your search.' : 'No responses submitted yet. Share the event registration link with students!'}
                         </td>
                       </tr>
-                    ) : filteredResponses.map((reg, index) => (
-                      <tr key={reg._id} className="hover:bg-slate-50/60 transition-colors text-xs">
-                        <td className="p-4 pl-5 font-mono text-gray-400">{index + 1}</td>
-                        <td className="p-4 font-bold text-gray-900">{reg.userId?.name || reg.fullName || 'Student'}</td>
-                        <td className="p-4 font-mono text-gray-600">{reg.userId?.registrationNumber || reg.registrationNumber || '-'}</td>
-                        <td className="p-4 font-mono text-blue-600">{reg.userId?.email || reg.email || '-'}</td>
-                        <td className="p-4 text-gray-500 whitespace-nowrap">
-                          {reg.createdAt ? new Date(reg.createdAt).toLocaleDateString() : '-'}
-                        </td>
+                    ) : filteredResponses.map((reg, index) => {
+                      const formQuestions = (activity.formSchema || []).filter((f: any) => f.type !== 'IMAGE');
+                      return (
+                        <tr key={reg._id} className="hover:bg-slate-50/60 transition-colors text-xs">
+                          <td className="p-4 pl-5 font-mono text-gray-400">{index + 1}</td>
+                          <td className="p-4 text-gray-500 whitespace-nowrap font-mono text-[11px]">
+                            {reg.createdAt ? new Date(reg.createdAt).toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' }) : '-'}
+                          </td>
 
-                        {/* Dynamic Questions Answers */}
-                        {(activity.formSchema || []).map((field: any) => {
-                          const resp = reg.responses?.find((r: any) => r.fieldId === field.id);
-                          const isFile = field.type === 'FILE_UPLOAD';
+                          {formQuestions.length > 0 ? (
+                            formQuestions.map((field: any) => {
+                              const resp = reg.responses?.find((r: any) => r.fieldId === field.id);
+                              let val = resp?.value;
+                              if ((val === undefined || val === null || val === '') && field.label) {
+                                const lbl = field.label.toLowerCase();
+                                if (lbl.includes('email')) val = reg.email || reg.userId?.email;
+                                else if (lbl.includes('name')) val = reg.fullName || reg.userId?.name;
+                                else if (lbl.includes('reg') && lbl.includes('no')) val = reg.registrationNumber || reg.userId?.registrationNumber;
+                                else if (lbl.includes('phone') || lbl.includes('contact') || lbl.includes('whatsapp')) val = reg.phoneNumber || reg.userId?.phoneNumber;
+                              }
+                              const isFile = field.type === 'FILE_UPLOAD';
 
-                          return (
-                            <td key={field.id} className="p-4 text-gray-700 max-w-xs truncate">
-                              {resp && resp.value !== undefined ? (
-                                isFile ? (
-                                  <a
-                                    href={resp.value}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-nss-blue hover:underline inline-flex items-center gap-1 font-bold"
-                                  >
-                                    <Download size={12} /> View File
-                                  </a>
-                                ) : Array.isArray(resp.value) ? (
-                                  resp.value.join(', ')
-                                ) : (
-                                  String(resp.value)
-                                )
-                              ) : (
-                                '-'
-                              )}
-                            </td>
-                          );
-                        })}
+                              if (val === undefined || val === null || val === '') {
+                                return <td key={field.id} className="p-4 text-gray-400 font-mono">-</td>;
+                              }
 
-                        <td className="p-4 text-right pr-5">
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveVolunteer(reg._id)}
-                            className="p-1.5 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
-                            title="Delete Response"
-                          >
-                            <Trash2 size={14} />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
+                              if (isFile) {
+                                return (
+                                  <td key={field.id} className="p-4 text-gray-700 max-w-xs truncate">
+                                    <a
+                                      href={val}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-nss-blue hover:underline inline-flex items-center gap-1 font-bold"
+                                    >
+                                      <Download size={12} /> View File
+                                    </a>
+                                  </td>
+                                );
+                              }
+
+                              const displayVal = typeof val === 'boolean' ? (val ? 'Yes' : 'No') : Array.isArray(val) ? val.join(', ') : String(val);
+
+                              return (
+                                <td key={field.id} className="p-4 text-gray-800 font-medium max-w-xs truncate" title={displayVal}>
+                                  {displayVal}
+                                </td>
+                              );
+                            })
+                          ) : (
+                            <>
+                              <td className="p-4 font-bold text-gray-900">{reg.userId?.name || reg.fullName || '-'}</td>
+                              <td className="p-4 font-mono text-blue-600">{reg.userId?.email || reg.email || '-'}</td>
+                              <td className="p-4 font-mono text-gray-600">{reg.userId?.registrationNumber || reg.registrationNumber || '-'}</td>
+                            </>
+                          )}
+
+                          <td className="p-4 text-right pr-5 whitespace-nowrap">
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveVolunteer(reg._id)}
+                              className="p-1.5 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                              title="Delete Response"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>

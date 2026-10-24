@@ -116,6 +116,7 @@ export const submitRegistration = async (req: Request, res: Response) => {
     // Check for duplicate registration for this activity (Strict one submission per student / email)
     const duplicateQuery: any = {
       activityId,
+      registrationType: 'PARTICIPANT',
       $or: [
         { email: normalizedEmail }
       ]
@@ -154,7 +155,8 @@ export const submitRegistration = async (req: Request, res: Response) => {
       phoneNumber: phoneNumber || '',
       responses: Array.isArray(responses) ? responses : [],
       status: 'APPROVED',
-      attendanceStatus: 'PENDING'
+      attendanceStatus: 'PENDING',
+      registrationType: 'PARTICIPANT'
     });
 
     await registration.save();
@@ -374,6 +376,7 @@ export const addManualRegistration = async (req: Request, res: Response) => {
     // 1. Find all existing registrations in 1 fast query
     const existing = await Registration.find({
       activityId,
+      registrationType: 'VOLUNTEER',
       userId: { $in: userIds }
     }).select('userId');
     
@@ -393,7 +396,8 @@ export const addManualRegistration = async (req: Request, res: Response) => {
       userId: uId,
       responses: [],
       status: 'APPROVED',
-      attendanceStatus: 'PENDING'
+      attendanceStatus: 'PENDING',
+      registrationType: 'VOLUNTEER'
     }));
 
     const inserted = await Registration.insertMany(docs, { ordered: false });

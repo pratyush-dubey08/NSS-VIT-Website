@@ -16,6 +16,7 @@ export interface IRegistration extends Document {
   status: 'PENDING' | 'APPROVED' | 'REJECTED';
   attendanceStatus: 'PENDING' | 'ATTENDED' | 'BUNKED';
   certificateUrl?: string;
+  registrationType?: 'VOLUNTEER' | 'PARTICIPANT';
   createdAt: Date;
   updatedAt: Date;
 }
@@ -35,7 +36,8 @@ const RegistrationSchema: Schema = new Schema({
   responses: [RegistrationResponseSchema],
   status: { type: String, enum: ['PENDING', 'APPROVED', 'REJECTED'], default: 'PENDING' },
   attendanceStatus: { type: String, enum: ['PENDING', 'ATTENDED', 'BUNKED'], default: 'PENDING' },
-  certificateUrl: { type: String }
+  certificateUrl: { type: String },
+  registrationType: { type: String, enum: ['VOLUNTEER', 'PARTICIPANT'], default: 'VOLUNTEER' }
 }, {
   timestamps: true
 });
