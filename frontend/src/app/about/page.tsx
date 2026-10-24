@@ -32,7 +32,7 @@ export default function AboutPage() {
  ];
 
  return (
- <div className="min-h-screen pt-20 sm:pt-24 bg-white pb-20 font-sans">
+ <div className="min-h-screen pt-24 sm:pt-28 sm:pt-28 bg-white pb-20 font-sans">
  
  {/* Who are we Section */}
  <section className="py-16 container mx-auto px-4 max-w-5xl">

@@ -44,7 +44,7 @@ export default function HighlightsPage() {
   };
 
   return (
-    <div className="min-h-screen pt-20 sm:pt-24 bg-white pb-24 overflow-hidden selection:bg-nss-blue selection:text-white font-sans">
+    <div className="min-h-screen pt-24 sm:pt-28 sm:pt-28 bg-white pb-24 overflow-hidden selection:bg-nss-blue selection:text-white font-sans">
       
       {/* Hero Section: Single-Line Heading, Clean & Compact */}
       <section className="relative pt-8 pb-4 sm:pt-12 sm:pb-6 text-center max-w-5xl mx-auto px-4">

@@ -184,7 +184,7 @@ export default function TeamPage() {
   const tier4 = leadershipData.filter(l => l.tier === 4);
 
   return (
-    <div className="min-h-screen pt-24 bg-white pb-32 selection:bg-nss-blue selection:text-white">
+    <div className="min-h-screen pt-24 sm:pt-28 bg-white pb-32 selection:bg-nss-blue selection:text-white">
       
       {/* Header Section */}
       <section className="pt-8 pb-4 sm:pt-10 sm:pb-4 text-center container mx-auto px-4 relative">
