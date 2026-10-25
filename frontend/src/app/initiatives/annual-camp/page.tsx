@@ -24,69 +24,63 @@ import Link from 'next/link';
 const commonDailyRoutine = [
   {
     id: 'prabhat-pheri',
-    time: '06:00 AM - 07:00 AM',
     title: 'Prabhat Pheri (Morning Awareness Procession)',
     desc: 'Each day at dawn begins with a lively Prabhat Pheri through the village lanes. Volunteers chant uplifting slogans and sing devotional Ramdhuni accompanied by dholak, cymbals, and traditional instruments. This musical initiative awakens community spirit, fosters spiritual harmony, and spreads vital awareness messages on cleanliness, education, and health directly to rural doorsteps.'
   },
   {
     id: 'yoga-pt',
-    time: '07:00 AM - 08:00 AM',
     title: 'Spiritual Yoga & Physical Fitness (PT)',
     desc: 'Following the morning procession, a dedicated physical training and yoga session is conducted. Volunteers engage in warm-up routines, stretching, pranayama, and guided meditation. This practice instills physical endurance, mental clarity, and discipline, equipping participants with the energy and serenity required for intensive community service.'
   },
   {
     id: 'breakfast',
-    time: '08:30 AM - 09:30 AM',
     title: 'Self-Prepared Community Breakfast',
     desc: 'Upholding the core NSS principle of self-reliance (Aatmanirbharta), breakfast is prepared collectively by the volunteers themselves in the camp kitchen. Teams work in harmony managing culinary preparation, service, and kitchen sanitation, cultivating humility, cooperation, and shared responsibility.'
   },
   {
     id: 'shramdaan',
-    time: '09:30 AM - 01:00 PM',
     title: 'Shramdaan & Village Development Drives',
-    desc: 'The central service block of each day is dedicated to community action across the adopted village. Volunteers conduct village-wide cleanliness campaigns (Swachhata Abhiyan), clearing streets, drainage pathways, and public premises. Depending on the schedule, teams also execute extensive tree plantation drives, medical and health check-up surveys, door-to-door socio-economic assessments, and donation drives distributing clothes, books, and educational stationery to underprivileged children.'
+    desc: 'The central service block of each day is dedicated to community action across the village. Volunteers conduct village-wide cleanliness campaigns (Swachhata Abhiyan), clearing streets, drainage pathways, and public premises. Depending on the schedule, teams also execute extensive tree plantation drives, medical and health check-up surveys, door-to-door socio-economic assessments, and donation drives distributing clothes, books, and educational stationery to underprivileged children.'
   },
   {
     id: 'nature-trekking',
-    time: 'Special Single-Day Expedition (06:00 AM - 01:00 PM)',
-    title: 'Nature Trekking & Eco-Exploration (1-Day Special Feature)',
-    desc: 'On one designated day during the 7-day camp, the routine transitions into an adventurous nature trekking expedition to surrounding hills and forest ranges (such as Kusmania mountain ranges or the Astha Wildlife Range). This invigorating outdoor experience builds physical stamina, fosters deep appreciation for local biodiversity and ecology, and strengthens unity and camaraderie among the volunteer contingent.'
+    title: 'Nature Trekking & Eco-Exploration',
+    desc: 'On one designated day during the 7-day camp, the morning routine transitions into an adventurous nature trekking expedition to surrounding hills and forest ranges (such as Kusmania mountain ranges or the Astha Wildlife Range). This invigorating outdoor experience builds physical stamina, fosters deep appreciation for local biodiversity and ecology, and strengthens unity and camaraderie among the volunteer contingent.'
   },
   {
     id: 'lunch',
-    time: '01:00 PM - 02:00 PM',
     title: 'Lunch for Volunteers',
     desc: 'A daily wholesome and nutritious lunch prepared at the camp kitchen for all NSS volunteers. This provides an essential resting and recharging break between morning field drives and afternoon intellectual sessions, allowing volunteers to relax, bond, and reflect on the morning’s outreach.'
   },
   {
     id: 'baudhik-satra',
-    time: '02:30 PM - 04:30 PM',
     title: 'Baudhik Satra (Intellectual Discourse Sessions)',
     desc: 'An essential academic and social pillar of the camp where distinguished guest dignitaries, university leadership, and domain specialists deliver interactive lectures on pressing societal themes. Topics span cyber security, artificial intelligence in agriculture, child safety, women empowerment, road safety, and civic duties. Notably, village residents and youth sit side-by-side with volunteers, making this an enriching inclusive forum of mutual learning.'
   },
   {
     id: 'competitions',
-    time: '04:30 PM - 05:30 PM',
     title: 'Inter-Volunteer Creative Competitions',
     desc: 'To foster creativity, healthy competition, and intellectual engagement, varied contests are held between volunteer groups. These include rangoli making on social themes (Mera Yuva Bharat, Beti Bachao), poster painting, extempore speech, debate, and essay writing.'
   },
   {
     id: 'outdoor-activities',
-    time: '05:30 PM - 06:30 PM',
     title: 'Outdoor Activities (Games, Awareness Rallies & Street Plays)',
     desc: 'Late afternoon field engagements where, depending on the day’s scheduled plan, volunteers engage in traditional NSS team-building games (Rumaal Jhappata, Kitne Bhai Kitne, Ram-Ravana Yudh), lead thematic public awareness rallies through the village streets, or perform impactful street plays (Nukkad Natak) on social issues at central village intersections to engage and educate the local community.'
   },
   {
     id: 'cultural-evening',
-    time: '07:00 PM - 09:00 PM',
-    title: 'Cultural Evening & Community Performances',
+    title: 'Cultural Evening',
     desc: 'The evening culminates in an uplifting cultural program open to the village residents. Volunteers present diverse folk dances, patriotic music, instrumental recitals, and inspirational poetry celebrating India’s cultural heritage, strengthening deep community bonds.'
   },
   {
-    id: 'dinner-reflection',
-    time: '09:00 PM - 10:30 PM',
-    title: 'Dinner, Campfire & Daily Debriefing',
-    desc: 'Following community dinner, volunteers assemble around a warm campfire for debriefing. Group leaders summarize achievements, evaluate challenges faced during the day, review community feedback, and establish the operational roster for the upcoming morning.'
+    id: 'dinner-debriefing',
+    title: 'Dinner & Daily Debriefing',
+    desc: 'Following dinner, volunteers assemble for their daily debriefing. Group leaders summarize achievements, evaluate challenges faced during the day, review community feedback, and establish the operational roster for the upcoming morning.'
+  },
+  {
+    id: 'grand-campfire',
+    title: 'Grand Campfire & Farewell Gathering (Final Night)',
+    desc: 'Conducted exclusively on the final night of the seven-day camp, the traditional grand campfire brings together all volunteers, faculty coordinators, and village elders. Surrounded by the warmth of the fire, volunteers share their personal reflections, sing patriotic and folk songs, celebrate the week’s accomplishments, and bid an emotional farewell to the village.'
   }
 ];
 
@@ -103,25 +97,29 @@ export default function AnnualCampPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="relative rounded-3xl overflow-hidden shadow-2xl bg-slate-900 border border-gray-100"
+          className="relative rounded-3xl shadow-2xl bg-slate-900 border border-gray-100 mb-8"
         >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-2">
-            <div className="relative h-36 md:h-52 rounded-2xl overflow-hidden">
-              <img src="/images/gallery/events_2025/image14.png" className="w-full h-full object-cover" alt="Camp Immersion 1" />
-            </div>
-            <div className="relative h-36 md:h-52 rounded-2xl overflow-hidden">
-              <img src="/images/gallery/events_2025/image28.png" className="w-full h-full object-cover" alt="Camp Immersion 2" />
-            </div>
-            <div className="relative h-36 md:h-52 rounded-2xl overflow-hidden">
-              <img src="/images/gallery/events_2025/image31.png" className="w-full h-full object-cover" alt="Camp Immersion 3" />
-            </div>
-            <div className="relative h-36 md:h-52 rounded-2xl overflow-hidden">
-              <img src="/images/gallery/events_2025/image30.png" className="w-full h-full object-cover" alt="Camp Immersion 4" />
+          {/* Inner Image Grid with rounded corners and overflow hidden */}
+          <div className="rounded-3xl overflow-hidden">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-2">
+              <div className="relative h-36 md:h-52 rounded-2xl overflow-hidden">
+                <img src="/images/gallery/events_2025/image14.png" className="w-full h-full object-cover" alt="Camp Immersion 1" />
+              </div>
+              <div className="relative h-36 md:h-52 rounded-2xl overflow-hidden">
+                <img src="/images/gallery/events_2025/image28.png" className="w-full h-full object-cover" alt="Camp Immersion 2" />
+              </div>
+              <div className="relative h-36 md:h-52 rounded-2xl overflow-hidden">
+                <img src="/images/gallery/events_2025/image31.png" className="w-full h-full object-cover" alt="Camp Immersion 3" />
+              </div>
+              <div className="relative h-36 md:h-52 rounded-2xl overflow-hidden">
+                <img src="/images/gallery/events_2025/image30.png" className="w-full h-full object-cover" alt="Camp Immersion 4" />
+              </div>
             </div>
           </div>
           
-          <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-white px-8 md:px-12 py-3.5 md:py-4 rounded-full shadow-xl border border-gray-100 flex items-center justify-center max-w-[90%]">
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-black text-nss-blue tracking-tight text-center uppercase whitespace-nowrap">
+          {/* Full Unclipped Badge */}
+          <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 z-20 bg-white px-6 sm:px-10 md:px-14 py-2.5 sm:py-3.5 rounded-full shadow-2xl border border-gray-200/90 flex items-center justify-center max-w-[92%]">
+            <h1 className="text-base sm:text-2xl md:text-3xl font-black text-nss-blue tracking-tight text-center uppercase whitespace-nowrap">
               7 Day Annual NSS Unit Camp
             </h1>
           </div>
@@ -132,14 +130,14 @@ export default function AnnualCampPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.15 }}
-          className="mt-20 md:mt-20 max-w-4xl mx-auto space-y-6 text-gray-700 leading-relaxed font-normal text-justify"
+          className="mt-14 md:mt-16 max-w-4xl mx-auto space-y-6 text-gray-700 leading-relaxed font-normal text-justify"
         >
           <p className="text-base sm:text-lg leading-relaxed">
-            The 7 Day Annual NSS Unit Camp, organized each academic year by the National Service Scheme Unit of VIT Bhopal University, represents a premier residential immersion initiative held in rural adopted villages of Sehore district, Madhya Pradesh. Grounded firmly in the foundational ethos of <span className="font-bold text-nss-blue">"Not Me, But You"</span>, this week-long residential camp provides student volunteers with a profound, real-world educational experience outside traditional university classrooms. By residing directly within government school facilities and community spaces in the adopted rural areas, volunteers experience firsthand the everyday social, economic, and infrastructural dynamics of rural India, fostering deep societal empathy and responsible civic consciousness.
+            The 7 Day Annual NSS Unit Camp, organized each academic year by the National Service Scheme (NSS) Unit of VIT Bhopal University, represents a premier rural immersion initiative held in villages across Sehore district, Madhya Pradesh. Grounded firmly in the foundational motto of <span className="font-bold text-nss-blue">"Not Me, But You"</span>, the primary objective of this week-long camp is the holistic development and betterment of rural villages. Student volunteers live within the village community and work tirelessly to execute every possible measure that improves the lives of the villagers—from village-wide cleanliness campaigns (Swachhata Abhiyan) and health check-ups to school teaching, plantation drives, and social awareness campaigns.
           </p>
           
           <p className="text-base sm:text-lg leading-relaxed">
-            Over the course of the 7 Day Annual NSS Unit Camp, volunteers systematically plan and execute a comprehensive lineup of impactful community initiatives. These encompass daily environmental sanitation and cleanliness drives (Swachhata Abhiyan), mega medical and dental check-up camps, extensive tree plantation drives, interactive classroom teaching in government middle schools, and educational street plays (Nukkad Natak) addressing de-addiction, electoral participation, and women empowerment. Through continuous collaboration with local village panchayats, community elders, and administrative dignitaries, the Annual Camp builds an enduring bridge of goodwill between academia and society, transforming undergraduate students into proactive nation-builders.
+            Through this selfless dedication to village upliftment, the camp simultaneously serves as a transformative platform for volunteers’ own personal growth. By experiencing rural life firsthand, overcoming real-world challenges, and collaborating closely with village residents and local administration, students cultivate humility, crisis management, leadership, and emotional resilience. This deep bond between youth and rural society instills lifelong civic empathy, empowering volunteers to evolve into responsible, socially conscious nation-builders.
           </p>
         </motion.div>
 
@@ -153,7 +151,7 @@ export default function AnnualCampPage() {
               Standard Daily Camp Schedule
             </h2>
             <p className="text-sm text-gray-500 mt-2 max-w-2xl mx-auto">
-              Every day at the 7 Day Annual NSS Unit Camp follows a structured, disciplined schedule combining service, self-reliance, physical fitness, intellectual enrichment, and cultural harmony.
+              Every day at the 7 Day Annual NSS Unit Camp follows a structured, disciplined schedule combining community service, self-reliance, physical fitness, intellectual enrichment, and cultural harmony.
             </p>
           </div>
 
@@ -177,9 +175,6 @@ export default function AnnualCampPage() {
                         <h3 className="font-bold text-gray-900 text-sm sm:text-base">
                           {item.title}
                         </h3>
-                        <p className="text-xs text-amber-700 font-semibold mt-0.5">
-                          {item.time}
-                        </p>
                       </div>
                     </div>
                     <div className="p-1 rounded-lg bg-gray-100 text-gray-600 shrink-0">
@@ -207,33 +202,7 @@ export default function AnnualCampPage() {
             })}
           </div>
 
-          {/* Dedicated Section: 1-Day Special Nature Trekking Expedition */}
-          <div className="mt-10 bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-emerald-800/40">
-            <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
-              <div className="max-w-2xl">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider mb-3">
-                  <span>1-Day Special Expedition</span>
-                </div>
-                <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight mb-2">
-                  Nature Trekking, Biodiversity Study & Environmental Immersion
-                </h3>
-                <p className="text-xs sm:text-sm text-emerald-100/80 leading-relaxed text-justify font-normal">
-                  A staple and eagerly anticipated tradition of the 7 Day Annual NSS Unit Camp is the dedicated one-day nature trekking expedition into the rugged terrains of the Kusmania mountain ranges and Astha Wildlife Range. Beyond testing and building physical endurance, the trek immerses volunteers in rural biodiversity conservation, watershed observation, Leave-No-Trace eco-ethics, and powerful team-bonding moments amidst nature.
-                </p>
-              </div>
-              <div className="shrink-0 flex items-center gap-3 w-full sm:w-auto justify-end">
-                <div className="px-4 py-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/15 text-center flex-1 sm:flex-initial">
-                  <span className="block text-xl sm:text-2xl font-black text-emerald-300">Day 3 / 4</span>
-                  <span className="text-[10px] sm:text-[11px] text-gray-300 font-medium uppercase tracking-wide">Camp Schedule</span>
-                </div>
-                <div className="px-4 py-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/15 text-center flex-1 sm:flex-initial">
-                  <span className="block text-xl sm:text-2xl font-black text-white">100%</span>
-                  <span className="text-[10px] sm:text-[11px] text-gray-300 font-medium uppercase tracking-wide">Participation</span>
-                </div>
-              </div>
-            </div>
-          </div>
+
         </section>
 
         <hr className="my-16 border-t border-gray-200/80 max-w-4xl mx-auto" />
@@ -243,10 +212,10 @@ export default function AnnualCampPage() {
           <div className="text-center mb-10">
             <span className="text-xs font-black uppercase tracking-widest text-nss-blue">Special Camp Editions</span>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mt-1">
-              Annual Camp Day-Wise Reports & Coverage
+              Annual NSS Unit Camps Overview
             </h2>
             <p className="text-sm text-gray-500 mt-2 max-w-2xl mx-auto">
-              Explore the detailed chronological documentation of our 7 Day Annual NSS Unit Camps held across adopted villages in Sehore district.
+              Explore the detailed chronological documentation of our 7 Day Annual NSS Unit Camps held across villages in Sehore district.
             </p>
 
             {/* Year Switcher Buttons */}
@@ -284,14 +253,11 @@ export default function AnnualCampPage() {
               className="bg-white rounded-3xl border border-gray-200/90 shadow-sm p-6 sm:p-10 space-y-10"
             >
               <div className="border-b border-gray-100 pb-6">
-                <span className="px-3 py-1 bg-blue-50 text-nss-blue text-xs font-black rounded-full uppercase tracking-wider">
-                  7 Day Annual NSS Unit Camp
-                </span>
-                <h3 className="text-2xl sm:text-3xl font-black text-gray-900 mt-3">
+                <h3 className="text-2xl sm:text-3xl font-black text-gray-900">
                   Annual NSS Unit Camp 2026
                 </h3>
                 <p className="text-xs sm:text-sm text-gray-500 font-medium mt-1">
-                  Location: Government Middle School, Gram Borkheda, Tehsil Ashta, District Sehore
+                  Location: Gram Borkheda, Tehsil Ashta, District Sehore
                 </p>
               </div>
 
@@ -411,14 +377,13 @@ export default function AnnualCampPage() {
 
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-blue-50/60 rounded-2xl border border-blue-100">
                   <div>
-                    <h5 className="font-black text-gray-900 text-sm">Explore High-Resolution Photos in Gallery</h5>
-                    <p className="text-xs text-gray-600">View complete photo albums from Annual NSS Unit Camp 2026.</p>
+                    <h5 className="font-black text-gray-900 text-sm sm:text-base">View Complete Photo Album from ANC 2026</h5>
                   </div>
                   <Link
-                    href="/gallery"
+                    href="/gallery?category=camps"
                     className="inline-flex items-center gap-2 px-5 py-2.5 bg-nss-blue hover:bg-blue-800 text-white font-bold text-xs rounded-xl shadow-xs transition-colors shrink-0"
                   >
-                    <ImageIcon size={15} /> Visit 2026 Camp Gallery <ArrowRight size={14} />
+                    <ImageIcon size={15} /> Visit ANC 2026 Album <ArrowRight size={14} />
                   </Link>
                 </div>
               </div>
@@ -436,14 +401,11 @@ export default function AnnualCampPage() {
               className="bg-white rounded-3xl border border-gray-200/90 shadow-sm p-6 sm:p-10 space-y-10"
             >
               <div className="border-b border-gray-100 pb-6">
-                <span className="px-3 py-1 bg-emerald-50 text-emerald-800 text-xs font-black rounded-full uppercase tracking-wider">
-                  7 Day Annual NSS Unit Camp
-                </span>
-                <h3 className="text-2xl sm:text-3xl font-black text-gray-900 mt-3">
+                <h3 className="text-2xl sm:text-3xl font-black text-gray-900">
                   Annual NSS Unit Camp 2025
                 </h3>
                 <p className="text-xs sm:text-sm text-gray-500 font-medium mt-1">
-                  Location: Government Higher School, Gram Jafarabad, Tehsil Ashta, District Sehore | Dates: 24th - 30th January 2025
+                  Location: Gram Jafarabad, Tehsil Ashta, District Sehore | Dates: 24th - 30th January 2025
                 </p>
               </div>
 
@@ -542,14 +504,13 @@ export default function AnnualCampPage() {
 
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-emerald-50/60 rounded-2xl border border-emerald-100">
                   <div>
-                    <h5 className="font-black text-gray-900 text-sm">Explore High-Resolution Photos in Gallery</h5>
-                    <p className="text-xs text-gray-600">View complete photo albums from Annual NSS Unit Camp 2025.</p>
+                    <h5 className="font-black text-gray-900 text-sm sm:text-base">View Complete Photo Album from ANC 2025</h5>
                   </div>
                   <Link
-                    href="/gallery"
+                    href="/gallery?category=camps"
                     className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-xs transition-colors shrink-0"
                   >
-                    <ImageIcon size={15} /> Visit 2025 Camp Gallery <ArrowRight size={14} />
+                    <ImageIcon size={15} /> Visit ANC 2025 Album <ArrowRight size={14} />
                   </Link>
                 </div>
               </div>
@@ -567,14 +528,11 @@ export default function AnnualCampPage() {
               className="bg-white rounded-3xl border border-gray-200/90 shadow-sm p-6 sm:p-10 space-y-10"
             >
               <div className="border-b border-gray-100 pb-6">
-                <span className="px-3 py-1 bg-amber-50 text-amber-800 text-xs font-black rounded-full uppercase tracking-wider">
-                  7 Day Annual NSS Unit Camp
-                </span>
-                <h3 className="text-2xl sm:text-3xl font-black text-gray-900 mt-3">
+                <h3 className="text-2xl sm:text-3xl font-black text-gray-900">
                   Annual NSS Unit Camp 2024
                 </h3>
                 <p className="text-xs sm:text-sm text-gray-500 font-medium mt-1">
-                  Location: Government Middle School, Gram Kachnariya, District Sehore | Concluded: 14th February 2024
+                  Location: Gram Kachnariya, District Sehore | Concluded: 14th February 2024
                 </p>
               </div>
 
@@ -673,14 +631,13 @@ export default function AnnualCampPage() {
 
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-amber-50/60 rounded-2xl border border-amber-100">
                   <div>
-                    <h5 className="font-black text-gray-900 text-sm">Explore High-Resolution Photos in Gallery</h5>
-                    <p className="text-xs text-gray-600">View complete photo albums from Annual NSS Unit Camp 2024.</p>
+                    <h5 className="font-black text-gray-900 text-sm sm:text-base">View Complete Photo Album from ANC 2024</h5>
                   </div>
                   <Link
-                    href="/gallery"
+                    href="/gallery?category=camps"
                     className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs rounded-xl shadow-xs transition-colors shrink-0"
                   >
-                    <ImageIcon size={15} /> Visit 2024 Camp Gallery <ArrowRight size={14} />
+                    <ImageIcon size={15} /> Visit ANC 2024 Album <ArrowRight size={14} />
                   </Link>
                 </div>
               </div>

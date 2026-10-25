@@ -60,7 +60,7 @@ export default function AboutPage() {
 
   const initiatives = [
     {
-      title: "National Youth Parliament & Viksit Bharat Parliament",
+      title: "National Youth Parliament",
       desc: "The NSS Unit of VIT Bhopal University organizes the National Youth Parliament to encourage students to understand parliamentary procedures, democratic values, and the functioning of Indian democracy. The initiative provides a platform for students to discuss national issues, express their views, and participate in structured debates. Through activities such as mock parliamentary proceedings and discussions on important policy matters, students develop public speaking, critical thinking, leadership, and decision-making skills. The programme also encourages youth participation in nation-building and promotes responsible citizenship."
     },
     {
@@ -96,7 +96,7 @@ export default function AboutPage() {
       desc: "The NSS Unit of VIT Bhopal University undertakes the Water and Food for Birds Initiative to support birds, particularly during the hot summer months when access to water and food can become difficult. Volunteers arrange water containers and food for birds at suitable locations, encouraging care for local wildlife. The initiative also raises awareness about the importance of protecting birds and creating bird-friendly surroundings. By promoting small but meaningful acts of kindness towards nature, the programme develops compassion for living beings and strengthens environmental responsibility among volunteers."
     },
     {
-      title: "Girls’ Toilet / Washroom Restoration",
+      title: "Washroom Restoration",
       desc: "The NSS Unit of VIT Bhopal University supports the improvement of sanitation facilities in rural educational institutions through initiatives such as girls’ toilet and washroom restoration. These efforts aim to provide students with cleaner, safer, and more hygienic facilities while promoting dignity, health, and well-being. By addressing essential infrastructure needs in schools, the initiative highlights the importance of adequate sanitation in creating a supportive learning environment, particularly for girls. It reflects the university’s commitment to community development and practical, needs-based social service."
     },
     {
@@ -120,8 +120,8 @@ export default function AboutPage() {
       desc: "The NSS Unit of VIT Bhopal University participates in Independence Day and Republic Day celebrations to promote patriotism, constitutional values, and national unity among students. Volunteers contribute through event support, flag-related activities, awareness programmes, and other celebrations organised by the university. These occasions provide an opportunity to reflect on India's freedom struggle, democratic foundations, and the responsibilities of citizenship. Through active participation, NSS volunteers help foster respect for the nation and encourage a spirit of unity, discipline, and service."
     },
     {
-      title: "FIT India Fitness Rally",
-      desc: "The NSS Unit of VIT Bhopal University promotes fitness and healthy living through activities such as the FIT India Fitness Rally. The initiative encourages students and community members to incorporate physical activity into their daily routines and understand the importance of maintaining a healthy lifestyle. Through rallies and fitness awareness activities, volunteers spread messages about physical well-being, regular exercise, and the prevention of sedentary habits. The programme reinforces the connection between personal fitness, mental well-being, and a healthier society."
+      title: "Fit India Rally",
+      desc: "The NSS Unit of VIT Bhopal University promotes fitness and healthy living through activities such as the Fit India Rally. The initiative encourages students and community members to incorporate physical activity into their daily routines and understand the importance of maintaining a healthy lifestyle. Through rallies and fitness awareness activities, volunteers spread messages about physical well-being, regular exercise, and the prevention of sedentary habits. The programme reinforces the connection between personal fitness, mental well-being, and a healthier society."
     },
     {
       title: "Cultural Programmes (Vibgyor and Nirvana)",
@@ -186,8 +186,8 @@ export default function AboutPage() {
       </section>
 
       {/* 2. The Essence of NSS Section */}
-      <section id="essence" className="py-16 container mx-auto px-4 max-w-7xl scroll-mt-28">
-        <div className="text-center mb-14">
+      <section id="essence" className="pt-4 pb-8 container mx-auto px-4 max-w-7xl scroll-mt-28">
+        <div className="text-center mb-8">
           <span className="text-xs font-black uppercase tracking-widest text-nss-red">Core Foundation</span>
           <h2 className="text-3xl md:text-5xl font-black text-gray-900 mt-1 mb-3 tracking-tight">
             The Essence of NSS
@@ -293,9 +293,8 @@ export default function AboutPage() {
       </section>
 
       {/* 3. Mission & Vision Section */}
-      <section id="mission-vision" className="py-16 container mx-auto px-4 max-w-7xl scroll-mt-28">
-        <div className="text-center mb-14">
-          <span className="text-xs font-black uppercase tracking-widest text-nss-blue">Purpose & Direction</span>
+      <section id="mission-vision" className="pt-4 pb-10 container mx-auto px-4 max-w-7xl scroll-mt-28">
+        <div className="text-center mb-8">
           <h2 className="text-3xl md:text-5xl font-black text-gray-900 mt-1 mb-3 tracking-tight">
             Mission & Vision
           </h2>
@@ -363,7 +362,7 @@ export default function AboutPage() {
           <div className="text-center mb-16">
             <span className="text-xs font-black uppercase tracking-widest text-nss-red">Core Initiatives</span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mt-1 mb-3 tracking-tight">
-              What We Do
+              What We Do?
             </h2>
             <p className="text-xs sm:text-sm md:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">
               Explore the key social action initiatives, health programs, environmental campaigns, and community outreach drives spearheaded by NSS Unit, VIT Bhopal University.
@@ -386,11 +385,8 @@ export default function AboutPage() {
                 >
                   <div>
                     <div className="flex items-center justify-between gap-3 mb-4">
-                      <span className="w-8 h-8 rounded-xl bg-blue-50 text-nss-blue font-black text-xs flex items-center justify-center shrink-0">
-                        {String(index + 1).padStart(2, '0')}
-                      </span>
-                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600">
-                        Initiative
+                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-nss-blue">
+                        NSS Initiative
                       </span>
                     </div>
 

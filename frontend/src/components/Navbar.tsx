@@ -11,7 +11,7 @@ const aboutDropdownLinks = [
   { name: 'Who Are We?', path: '/about#who-we-are', desc: 'About NSS Unit VIT Bhopal' },
   { name: 'The Essence of NSS', path: '/about#essence', desc: 'Motto, Symbol & Heritage' },
   { name: 'Mission & Vision', path: '/about#mission-vision', desc: 'Purpose & Future Direction' },
-  { name: 'What We Do', path: '/about#what-we-do', desc: '17 Key Initiatives & Community Drives' },
+  { name: 'What We Do?', path: '/about#what-we-do', desc: 'Key Initiatives & Community Drives' },
   { name: 'Guiding Values', path: '/about#core-values', desc: '8 Foundational NSS Principles' },
   { name: 'From the Desk of POs', path: '/about#program-officers', desc: 'Faculty Program Officers Message' },
 ];

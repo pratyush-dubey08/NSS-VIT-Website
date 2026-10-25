@@ -33,14 +33,8 @@ export default function AdminReportsPage() {
     try {
       setLoading(true);
       setError(null);
-      const { data } = await api.get('/activities', {
-        params: { _t: Date.now() },
-        headers: {
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          Pragma: 'no-cache',
-          Expires: '0'
-        }
-      });
+      // Clean query parameter to prevent stale cache without triggering CORS preflight header errors
+      const { data } = await api.get('/activities', { params: { t: Date.now() } });
       const list = Array.isArray(data) ? data : (data?.activities || []);
       // Sort newest first
       list.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -333,32 +327,14 @@ export default function AdminReportsPage() {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/60 shadow-2xs">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            Live DB Synced ({activities.length})
-          </span>
-
-          <Link
-            href="/admin/activities/new"
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-nss-blue text-white font-bold text-xs rounded-xl hover:bg-blue-800 transition-colors shadow-2xs"
-          >
-            <Plus size={14} /> Add Event
-          </Link>
-
-          <Link
-            href="/admin/activities"
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-gray-100 text-gray-700 font-bold text-xs rounded-xl hover:bg-gray-200 transition-colors"
-          >
-            Manage All
-          </Link>
-
+        <div className="flex items-center gap-3">
           <button
             onClick={fetchActivities}
-            className="p-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl transition-colors cursor-pointer shrink-0"
-            title="Refresh activities directly from database"
+            className="flex items-center gap-2 px-3.5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs font-bold transition-colors cursor-pointer shrink-0"
+            title="Refresh activities from database"
           >
-            <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />
+            <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
+            <span>Refresh</span>
           </button>
         </div>
       </div>

@@ -72,7 +72,7 @@ export default function TreePlantationPage() {
         </motion.div>
 
         {/* Impact Highlights Bar */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 my-10 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 my-10 max-w-4xl mx-auto">
           <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-100 text-center">
             <div className="text-2xl sm:text-3xl font-black text-emerald-700">10,000+</div>
             <div className="text-xs sm:text-sm font-semibold text-emerald-800 mt-0.5">Trees in Single Day (Sehore)</div>
@@ -80,10 +80,6 @@ export default function TreePlantationPage() {
           <div className="p-4 rounded-2xl bg-blue-50 border border-blue-100 text-center">
             <div className="text-2xl sm:text-3xl font-black text-nss-blue">5,000+</div>
             <div className="text-xs sm:text-sm font-semibold text-blue-900 mt-0.5">Campus Native Trees</div>
-          </div>
-          <div className="p-4 rounded-2xl bg-indigo-50 border border-indigo-100 text-center">
-            <div className="text-2xl sm:text-3xl font-black text-indigo-700">1,000+</div>
-            <div className="text-xs sm:text-sm font-semibold text-indigo-900 mt-0.5">Active Student Volunteers</div>
           </div>
           <div className="p-4 rounded-2xl bg-amber-50 border border-amber-100 text-center">
             <div className="text-2xl sm:text-3xl font-black text-amber-700">Every Year</div>

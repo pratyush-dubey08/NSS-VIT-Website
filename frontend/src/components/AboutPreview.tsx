@@ -32,7 +32,7 @@ export default function AboutPreview() {
          Know More About Us <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
        </a>
        <a href="/about#what-we-do" className="inline-flex items-center px-6 py-3 bg-white border-2 border-nss-blue text-nss-blue hover:bg-blue-50 rounded-full font-bold hover:shadow-lg transition-all group">
-         What We Do <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+         What We Do? <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
        </a>
      </div>
  </motion.div>
