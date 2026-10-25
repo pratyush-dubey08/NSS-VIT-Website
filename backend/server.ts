@@ -16,6 +16,7 @@ import uploadRoutes from './routes/uploadRoutes';
 import resourceRoutes from './routes/resourceRoutes';
 import volunteerFormRoutes from './routes/volunteerFormRoutes';
 import contactRoutes from './routes/contactRoutes';
+import attendanceIssueRoutes from './routes/attendanceIssueRoutes';
 import galleryRoutes from './routes/galleryRoutes';
 
 dotenv.config();
@@ -130,6 +131,7 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/resources', resourceRoutes);
 app.use('/api/volunteer-forms', volunteerFormRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/attendance-issues', attendanceIssueRoutes);
 app.use('/api/gallery', galleryRoutes);
 
 // Health check / keep-alive ping endpoint (Render cold-start defense)

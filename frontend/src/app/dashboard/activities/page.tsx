@@ -11,7 +11,7 @@ import {
   ArrowRight, 
   CheckCircle2, 
   XCircle, 
-  AlertCircle, 
+  AlertCircle, HelpCircle, ChevronDown, ChevronUp, Send, 
   RotateCw,
   FileCheck
 } from 'lucide-react';
@@ -31,6 +31,53 @@ export default function VolunteerActivitiesPage() {
   const [managingActivities, setManagingActivities] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [expandedEventIds, setExpandedEventIds] = useState<string[]>([]);
+  const [showIssueModal, setShowIssueModal] = useState(false);
+  const [selectedActivityForIssue, setSelectedActivityForIssue] = useState<string>('');
+  const [issueType, setIssueType] = useState('MARKED_ABSENT_INSTEAD_OF_PRESENT');
+  const [issueDescription, setIssueDescription] = useState('');
+  const [isSubmittingIssue, setIsSubmittingIssue] = useState(false);
+  const [issueSuccessMessage, setIssueSuccessMessage] = useState('');
+  const [myIssues, setMyIssues] = useState<any[]>([]);
+
+  const toggleExpandEvent = (actId: string) => {
+    setExpandedEventIds(prev => 
+      prev.includes(actId) ? prev.filter(id => id !== actId) : [...prev, actId]
+    );
+  };
+
+  const handleOpenRaiseIssueModal = (preselectedActId?: string) => {
+    setSelectedActivityForIssue(preselectedActId || (registeredActivities[0]?.activityId?._id || registeredActivities[0]?.activityId || ''));
+    setIssueType('MARKED_ABSENT_INSTEAD_OF_PRESENT');
+    setIssueDescription('');
+    setIssueSuccessMessage('');
+    setShowIssueModal(true);
+  };
+
+  const handleSubmitAttendanceIssue = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedActivityForIssue || !issueDescription.trim()) {
+      alert('Please select an activity and provide a description.');
+      return;
+    }
+    setIsSubmittingIssue(true);
+    try {
+      await api.post('/attendance-issues', {
+        activityId: selectedActivityForIssue,
+        issueType,
+        description: issueDescription
+      });
+      setIssueSuccessMessage('Your attendance issue has been reported to the NSS Admin desk. It will be reviewed and verified.');
+      setIssueDescription('');
+    } catch (err: any) {
+      console.error('Error submitting issue:', err);
+      alert(err.response?.data?.message || 'Failed to submit attendance issue');
+    } finally {
+      setIsSubmittingIssue(false);
+    }
+  };
+
 
   const fetchActivities = async () => {
     if (!user) return;
@@ -407,6 +454,119 @@ export default function VolunteerActivitiesPage() {
           )}
         </div>
       )}
+    
+      {/* MODAL: Raise Attendance Issue with 2024 Batch Notice */}
+      {showIssueModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/60">
+              <div>
+                <h3 className="text-base font-black text-gray-900 flex items-center gap-2">
+                  <AlertCircle className="text-amber-600" size={18} /> Report Attendance Issue
+                </h3>
+                <p className="text-xs text-gray-500">Submit an inquiry if your attendance was marked absent or left pending.</p>
+              </div>
+              <button onClick={() => setShowIssueModal(false)} className="text-gray-400 hover:text-gray-600 font-bold text-sm cursor-pointer p-1">✕</button>
+            </div>
+
+            <div className="p-6 space-y-4 overflow-y-auto">
+              {/* Special 2024 Batch Disclaimer */}
+              <div className="p-4 bg-amber-50 border border-amber-200 rounded-2xl text-xs space-y-1.5 shadow-2xs">
+                <div className="flex items-center gap-1.5 text-amber-950 font-black text-xs">
+                  <AlertCircle size={15} className="text-amber-600 shrink-0" />
+                  <span>Important Notice Regarding 2024 Batch Attendance</span>
+                </div>
+                <p className="text-amber-800 leading-relaxed font-medium text-[11px] sm:text-xs text-justify">
+                  Agar aap 2024 batch ke volunteer hain aur orientation ke baad ke kuch events me aapka status &apos;Absent&apos; marked hai, toh yeh isiliye hai kyunki aapne NSS Unit late join kiya tha. 2024 batch me sabhi volunteers ki attendance Orientation Program se hi calculate ho rahi hai. Late join karne ke kaaran orientation ke baad ke initial events me aapka status absent show hoga.
+                </p>
+              </div>
+
+              {issueSuccessMessage ? (
+                <div className="p-5 bg-emerald-50 border border-emerald-200 rounded-2xl text-center space-y-2">
+                  <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
+                    <CheckCircle2 size={22} />
+                  </div>
+                  <h4 className="text-sm font-black text-emerald-900">Request Submitted</h4>
+                  <p className="text-xs text-emerald-700">{issueSuccessMessage}</p>
+                  <button
+                    type="button"
+                    onClick={() => setShowIssueModal(false)}
+                    className="mt-2 px-4 py-1.5 bg-white border border-emerald-300 text-emerald-800 font-bold text-xs rounded-xl hover:bg-emerald-50 transition-colors cursor-pointer"
+                  >
+                    Done
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmitAttendanceIssue} className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 mb-1">Select Event / Activity</label>
+                    <select
+                      value={selectedActivityForIssue}
+                      onChange={(e) => setSelectedActivityForIssue(e.target.value)}
+                      required
+                      className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold focus:bg-white focus:outline-none focus:border-nss-blue"
+                    >
+                      <option value="">-- Choose an enrolled event --</option>
+                      {registeredActivities.map((reg) => {
+                        const act = reg.activityId || {};
+                        return (
+                          <option key={reg._id} value={act._id}>
+                            {act.title || 'Event'} ({reg.attendanceStatus || 'Pending'})
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 mb-1">Issue Type</label>
+                    <select
+                      value={issueType}
+                      onChange={(e) => setIssueType(e.target.value)}
+                      className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold focus:bg-white focus:outline-none focus:border-nss-blue"
+                    >
+                      <option value="MARKED_ABSENT_INSTEAD_OF_PRESENT">Marked Absent instead of Present</option>
+                      <option value="ATTENDANCE_NOT_MARKED">Attendance Not Marked / Showing Pending</option>
+                      <option value="INCORRECT_HOURS">Incorrect NSS Hours Credited</option>
+                      <option value="OTHER">Other Discrepancy</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 mb-1">Explain the Discrepancy</label>
+                    <textarea
+                      rows={4}
+                      required
+                      value={issueDescription}
+                      onChange={(e) => setIssueDescription(e.target.value)}
+                      placeholder="Please specify your assigned duty, event manager name, or proof that you attended..."
+                      className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:border-nss-blue transition-all"
+                    ></textarea>
+                  </div>
+
+                  <div className="flex justify-end gap-2 pt-2 border-t border-gray-100">
+                    <button
+                      type="button"
+                      onClick={() => setShowIssueModal(false)}
+                      className="px-4 py-2 rounded-xl border border-gray-200 text-gray-600 font-bold text-xs hover:bg-gray-100 cursor-pointer"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={isSubmittingIssue}
+                      className="px-5 py-2 bg-nss-blue hover:bg-blue-900 text-white font-bold rounded-xl text-xs transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs disabled:opacity-50"
+                    >
+                      <Send size={13} /> {isSubmittingIssue ? 'Submitting...' : 'Submit Issue'}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

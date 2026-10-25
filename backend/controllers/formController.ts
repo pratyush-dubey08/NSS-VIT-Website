@@ -317,51 +317,96 @@ export const batchMarkAttendance = async (req: Request, res: Response) => {
   try {
     const { updates } = req.body; // Array of { registrationId, attendanceStatus }
     
-    if (!Array.isArray(updates)) {
-      return res.status(400).json({ message: 'Updates must be an array' });
+    if (!Array.isArray(updates) || updates.length === 0) {
+      return res.status(400).json({ message: 'Updates must be a non-empty array' });
     }
 
-    // Since updating attendance also affects User hours/bunks, we'll process sequentially
-    // to avoid complex transaction/concurrency issues or reuse the markAttendance logic internally.
     const userRole = (req as any).user?.role;
     const userId = (req as any).user?.userId;
 
+    // 1. Fetch all matching registrations in 1 query
+    const regIds = updates.map(u => u.registrationId).filter(Boolean);
+    const registrations = await Registration.find({ _id: { $in: regIds } });
+    const regMap = new Map(registrations.map(r => [r._id.toString(), r]));
+
+    // 2. Fetch all involved activities in 1 query
+    const activityIds = [...new Set(registrations.map(r => r.activityId.toString()))];
+    const activities = await Activity.find({ _id: { $in: activityIds } });
+    const activityMap = new Map(activities.map(a => [a._id.toString(), a]));
+
+    const regBulkOps: any[] = [];
+    const userHourDeltas = new Map<string, number>();
+    const userBunkDeltas = new Map<string, number>();
     let processedCount = 0;
 
     for (const update of updates) {
       const { registrationId, attendanceStatus } = update;
-      const registration = await Registration.findById(registrationId);
+      const registration = regMap.get(registrationId);
       
       if (!registration || registration.attendanceStatus === attendanceStatus) continue;
 
-      const activity = await Activity.findById(registration.activityId);
+      const activity = activityMap.get(registration.activityId.toString());
       if (!activity) continue;
 
       if (userRole === 'EVENT_MANAGER' || userRole === 'VOLUNTEER') {
-        const isManager = activity.eventManagers.some(m => m.toString() === userId);
+        const isManager = activity.eventManagers.some((m: any) => m.toString() === userId);
         if (!isManager) continue;
       }
 
       const previousStatus = registration.attendanceStatus;
-      registration.attendanceStatus = attendanceStatus;
-      await registration.save();
+      const actHours = activity.hoursAllocated || 0;
 
-      const user = await User.findById(registration.userId);
-      if (user) {
-        if (previousStatus === 'ATTENDED') {
-          user.accumulatedHours -= activity.hoursAllocated || 0;
-        } else if (previousStatus === 'BUNKED') {
-          user.bunks = Math.max(0, (user.bunks || 0) - 1);
+      // Queue registration update
+      regBulkOps.push({
+        updateOne: {
+          filter: { _id: registration._id },
+          update: { $set: { attendanceStatus } }
         }
+      });
 
-        if (attendanceStatus === 'ATTENDED') {
-          user.accumulatedHours += activity.hoursAllocated || 0;
-        } else if (attendanceStatus === 'BUNKED') {
-          user.bunks = (user.bunks || 0) + 1;
-        }
-        await user.save();
+      // Calculate deltas for user hours and bunks
+      if (registration.userId) {
+        const uId = registration.userId.toString();
+        let hDelta = userHourDeltas.get(uId) || 0;
+        let bDelta = userBunkDeltas.get(uId) || 0;
+
+        if (previousStatus === 'ATTENDED') hDelta -= actHours;
+        else if (previousStatus === 'BUNKED') bDelta -= 1;
+
+        if (attendanceStatus === 'ATTENDED') hDelta += actHours;
+        else if (attendanceStatus === 'BUNKED') bDelta += 1;
+
+        userHourDeltas.set(uId, hDelta);
+        userBunkDeltas.set(uId, bDelta);
       }
       processedCount++;
+    }
+
+    // Execute registration updates in 1 database round-trip
+    if (regBulkOps.length > 0) {
+      await Registration.bulkWrite(regBulkOps);
+    }
+
+    // Execute user updates in 1 database round-trip
+    const userBulkOps: any[] = [];
+    for (const [uId, hDelta] of userHourDeltas.entries()) {
+      const bDelta = userBunkDeltas.get(uId) || 0;
+      if (hDelta !== 0 || bDelta !== 0) {
+        userBulkOps.push({
+          updateOne: {
+            filter: { _id: uId },
+            update: {
+              $inc: {
+                accumulatedHours: hDelta,
+                bunks: bDelta
+              }
+            }
+          }
+        });
+      }
+    }
+    if (userBulkOps.length > 0) {
+      await User.bulkWrite(userBulkOps);
     }
 
     res.status(200).json({ message: 'Batch attendance updated successfully', processedCount });
