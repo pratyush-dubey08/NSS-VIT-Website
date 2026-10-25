@@ -39,6 +39,9 @@ function AlbumPhotosContent() {
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
     const fetchFolder = async () => {
       try {
         const response = await api.get(`/gallery/${id}`);

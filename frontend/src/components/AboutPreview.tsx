@@ -27,9 +27,14 @@ export default function AboutPreview() {
  Following the motto —"Not Me, But You", NSS Unit, VIT Bhopal University actively engages in a wide range of community service initiatives, including education programs, environmental sustainability efforts, health awareness campaigns, and rural development projects. Through various activities, our volunteers strive to make a lasting impact on society while developing essential leadership and teamwork skills.
  </p>
 
- <a href="/about"className="inline-flex items-center px-6 py-3 bg-nss-blue text-white rounded-full font-bold hover:bg-blue-900 hover:shadow-lg transition-all group">
- Know More About Us <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
- </a>
+ <div className="flex flex-wrap items-center gap-3">
+       <a href="/about" className="inline-flex items-center px-6 py-3 bg-nss-blue text-white rounded-full font-bold hover:bg-blue-900 hover:shadow-lg transition-all group">
+         Know More About Us <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+       </a>
+       <a href="/about#what-we-do" className="inline-flex items-center px-6 py-3 bg-white border-2 border-nss-blue text-nss-blue hover:bg-blue-50 rounded-full font-bold hover:shadow-lg transition-all group">
+         What We Do <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+       </a>
+     </div>
  </motion.div>
 
  <motion.div 

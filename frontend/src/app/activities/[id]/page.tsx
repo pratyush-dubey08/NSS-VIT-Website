@@ -4,41 +4,23 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Calendar, MapPin, CheckCircle2, ArrowLeft, Clock, AlertCircle,
-  ExternalLink, MessageCircle, Sparkles, HeartHandshake,
+  Calendar, 
+  MapPin, 
+  Clock, 
+  ArrowLeft, 
+  CheckCircle2, 
+  AlertCircle, 
+  ExternalLink,
+  FileText,
   Share2
-, FileText } from 'lucide-react';
+} from 'lucide-react';
 import Link from 'next/link';
+import api from '@/lib/axios';
 import DynamicForm from '@/components/DynamicForm';
 import { FieldType } from '@/components/admin/FormBuilder';
-import api from '@/lib/axios';
+import { MessageCircle, Video } from 'lucide-react';
 
-
-const InstagramIcon = ({ size = 20, className = '' }: { size?: number; className?: string }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
-  </svg>
-);
-
-const LinkedinIcon = ({ size = 20, className = '' }: { size?: number; className?: string }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-    <rect width="4" height="12" x="2" y="9"/>
-    <circle cx="4" cy="4" r="2"/>
-  </svg>
-);
-
-const YoutubeIcon = ({ size = 20, className = '' }: { size?: number; className?: string }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
-    <polygon points="10 15 15 12 10 9 10 15" fill="currentColor" />
-  </svg>
-);
-
-
-export default function PublicEventPortal() {
+export default function ActivityDetailsPage() {
   const params = useParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -93,7 +75,7 @@ export default function PublicEventPortal() {
       };
 
       const res = await api.post('/forms/register', payload);
-      setConfirmationMsg(res.data?.confirmationMessage || event.confirmationMessage || 'Thank you for filling out the form! Our team will contact you shortly.');
+      setConfirmationMsg(res.data?.confirmationMessage || event.confirmationMessage || 'Thank you for registering! Our team will get in touch shortly.');
       setSubmitSuccess(true);
     } catch (err: any) {
       console.error('Registration submission error:', err);
@@ -121,15 +103,16 @@ export default function PublicEventPortal() {
     </div>
   );
 
+  const isRegistrationOpen = Boolean(event.isRegistrationOpen);
   const isGoogleFormMode = event?.registrationMode === 'GOOGLE_FORM' || (Boolean(event?.googleFormUrl) && (!event?.formSchema || event?.formSchema.length === 0 || event?.registrationMode !== 'CUSTOM'));
   const formSchemaToUse = (event.formSchema && event.formSchema.length > 0) 
     ? { activityId: event._id, fields: event.formSchema } 
     : defaultFormSchema;
 
-  const eventBanner = event.formBannerUrl || '/images/default-event-banner.png';
+  const eventBanner = event.bannerUrl || event.formBannerUrl || '/images/default-event-banner.png';
 
   return (
-    <div className="min-h-screen pt-24 bg-slate-50/50 pb-24">
+    <div className="min-h-screen pt-24 bg-slate-50/50 pb-24 font-sans">
       
       {/* Event Header Banner Section */}
       <section className="bg-white border-b border-gray-100 py-10">
@@ -138,57 +121,47 @@ export default function PublicEventPortal() {
             <ArrowLeft size={14} /> Back to Activities
           </Link>
           
-          {/* Banner Display: clean, contained, perfectly fitted with no cropped text! */}
-          <div className="w-full bg-white rounded-3xl p-3 sm:p-5 shadow-xs border border-gray-200/80 mb-8 flex items-center justify-center">
+          {/* Banner Display: clean, contained, perfectly fitted with no cropped text */}
+          <div className="w-full bg-slate-50 rounded-3xl p-3 sm:p-5 shadow-xs border border-gray-200/80 mb-8 flex items-center justify-center overflow-hidden">
             <img 
               src={eventBanner} 
               alt={event.title} 
-              className="w-full max-h-[260px] sm:max-h-[340px] object-contain rounded-2xl"
+              className="w-full max-h-[300px] sm:max-h-[380px] object-contain rounded-2xl"
               onError={(e: any) => {
                 e.currentTarget.src = '/images/default-event-banner.png';
               }}
             />
           </div>
 
-          <div className="flex flex-col md:flex-row md:items-start gap-8 justify-between">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="flex-1">
-              <span className={'inline-block px-3 py-1 rounded-full text-xs font-bold mb-3 uppercase tracking-wider ' + (
-                event.isRegistrationOpen !== false ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'
-              )}>
-                Registration {event.isRegistrationOpen !== false ? 'Open' : 'Closed'}
+          <div className="space-y-4">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className={`inline-block px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ${
+                isRegistrationOpen ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-gray-100 text-gray-700'
+              }`}>
+                {isRegistrationOpen ? 'Registration Open' : 'Completed Initiative'}
               </span>
-              
-              <h1 className="text-3xl md:text-4xl font-black text-gray-900 mb-4 tracking-tight leading-tight">
-                {event.title}
-              </h1>
-              
-              <p className="text-sm sm:text-base text-gray-700 leading-relaxed mb-4 whitespace-pre-line text-justify">
-                {event.description}
-              </p>
-            </motion.div>
+            </div>
+            
+            <h1 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight leading-tight">
+              {event.title}
+            </h1>
+            
+            <p className="text-sm sm:text-base text-gray-700 leading-relaxed whitespace-pre-line text-justify">
+              {event.description}
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Registration Layout */}
+      {/* Main Content Layout */}
       <section className="container mx-auto px-4 max-w-4xl py-10">
-        <div className="flex flex-col lg:flex-row gap-8 items-start">
-          
-          {/* Form Area */}
-          <div className="flex-1 w-full order-2 lg:order-1">
-            <div className="bg-white rounded-3xl shadow-xs border border-gray-200/80 p-6 md:p-8">
-              
-              {event.isRegistrationOpen === false ? (
-                <div className="text-center py-14">
-                  <div className="w-16 h-16 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center mx-auto mb-4">
-                    <Clock size={32} />
-                  </div>
-                  <h2 className="text-2xl font-black text-gray-900 mb-2">Registrations are Closed</h2>
-                  <p className="text-sm text-gray-500 max-w-md mx-auto">
-                    We are no longer accepting new responses for this event. Stay tuned for future drives and initiatives!
-                  </p>
-                </div>
-              ) : (
+        {isRegistrationOpen ? (
+          /* When Registration is Open: Form on Left + Event Details on Right */
+          <div className="flex flex-col lg:flex-row gap-8 items-start">
+            
+            {/* Form Area */}
+            <div className="flex-1 w-full order-2 lg:order-1">
+              <div className="bg-white rounded-3xl shadow-xs border border-gray-200/80 p-6 md:p-8">
                 <AnimatePresence mode="wait">
                   {submitSuccess ? (
                     <motion.div 
@@ -200,92 +173,44 @@ export default function PublicEventPortal() {
                       <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-sm">
                         <CheckCircle2 size={44} />
                       </div>
-
-                      <div className="space-y-2">
-                        <h2 className="text-2xl sm:text-3xl font-black text-gray-900">Registration Confirmed!</h2>
-                        <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl max-w-lg mx-auto text-emerald-900 text-sm font-semibold leading-relaxed">
-                          {confirmationMsg || 'Thank you for filling out the form! Our team will contact you shortly.'}
-                        </div>
+                      
+                      <div className="space-y-2 max-w-md mx-auto">
+                        <h2 className="text-2xl font-black text-gray-900">Registration Successful!</h2>
+                        <p className="text-sm text-gray-600 leading-relaxed">
+                          {confirmationMsg}
+                        </p>
                       </div>
 
-                      {/* Official Social Channels Hub */}
-                      <div className="bg-gradient-to-br from-blue-50/70 via-indigo-50/40 to-purple-50/50 border border-blue-200/80 rounded-3xl p-6 max-w-lg mx-auto text-left space-y-4 shadow-xs">
-                        <div className="flex items-center gap-2">
-                          <Sparkles size={18} className="text-nss-blue shrink-0" />
-                          <h4 className="font-black text-gray-900 text-sm">Stay Connected with NSS Unit, VIT Bhopal University!</h4>
-                        </div>
-                        <p className="text-xs text-gray-600 leading-relaxed">
-                          Stay connected with us for further updates, activities, volunteer drives, and upcoming opportunities:
+                      {/* Official Community Connect Box */}
+                      <div className="p-6 bg-slate-50/80 rounded-2xl border border-gray-200/80 text-left space-y-3 max-w-lg mx-auto">
+                        <p className="text-xs font-black text-gray-500 uppercase tracking-widest text-center">
+                          Stay Connected for Further Announcements
                         </p>
-
+                        
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
-                          {/* 1. WhatsApp Channel */}
                           <a
-                            href="https://www.whatsapp.com/channel/0029VbBFSgS8qIzvpLL2Ye1W"
+                            href="https://www.instagram.com/nss_vitbhopal"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-3 bg-white hover:bg-pink-50 border border-gray-200 hover:border-pink-300 rounded-xl text-xs font-bold text-gray-800 hover:text-pink-700 flex items-center gap-2.5 transition-all shadow-xs"
+                          >
+                            <svg className="w-4 h-4 text-pink-600 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                            <div className="truncate">
+                              <p className="truncate">Official Instagram</p>
+                              <p className="text-[10px] font-normal text-gray-400">Updates & Coverage</p>
+                            </div>
+                          </a>
+
+                          <a
+                            href="https://chat.whatsapp.com/G4P4G6XbL1r9d6Q6v7Z8X9"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-3 bg-white hover:bg-emerald-50 border border-gray-200 hover:border-emerald-300 rounded-xl text-xs font-bold text-gray-800 hover:text-emerald-700 flex items-center gap-2.5 transition-all shadow-xs"
                           >
                             <MessageCircle size={17} className="text-emerald-600 shrink-0" />
                             <div className="truncate">
-                              <p className="truncate">WhatsApp Channel</p>
-                              <p className="text-[10px] font-normal text-gray-400">Official Announcements</p>
-                            </div>
-                          </a>
-
-                          {/* 2. Official Instagram */}
-                          <a
-                            href="https://www.instagram.com/nssvitbhopal/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-3 bg-white hover:bg-rose-50 border border-gray-200 hover:border-rose-300 rounded-xl text-xs font-bold text-gray-800 hover:text-rose-700 flex items-center gap-2.5 transition-all shadow-xs"
-                          >
-                            <InstagramIcon size={17} className="text-rose-600 shrink-0" />
-                            <div className="truncate">
-                              <p className="truncate">@nssvitbhopal</p>
-                              <p className="text-[10px] font-normal text-gray-400">Official Events & Drives</p>
-                            </div>
-                          </a>
-
-                          {/* 3. NSS Unfiltered Instagram */}
-                          <a
-                            href="https://www.instagram.com/nssvitb_unfiltered/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-3 bg-white hover:bg-purple-50 border border-gray-200 hover:border-purple-300 rounded-xl text-xs font-bold text-gray-800 hover:text-purple-700 flex items-center gap-2.5 transition-all shadow-xs"
-                          >
-                            <InstagramIcon size={17} className="text-purple-600 shrink-0" />
-                            <div className="truncate">
-                              <p className="truncate">@nssvitb_unfiltered</p>
-                              <p className="text-[10px] font-normal text-gray-400">BTS & Volunteer Life</p>
-                            </div>
-                          </a>
-
-                          {/* 4. LinkedIn */}
-                          <a
-                            href="https://www.linkedin.com/company/nss-vitb/posts/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-3 bg-white hover:bg-blue-50 border border-gray-200 hover:border-blue-300 rounded-xl text-xs font-bold text-gray-800 hover:text-blue-700 flex items-center gap-2.5 transition-all shadow-xs"
-                          >
-                            <LinkedinIcon size={17} className="text-blue-600 shrink-0" />
-                            <div className="truncate">
-                              <p className="truncate">LinkedIn Unit</p>
-                              <p className="text-[10px] font-normal text-gray-400">Professional Network</p>
-                            </div>
-                          </a>
-
-                          {/* 5. YouTube Channel */}
-                          <a
-                            href="https://www.youtube.com/@nationalservicescheme-vitb5083"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-3 bg-white hover:bg-red-50 border border-gray-200 hover:border-red-300 rounded-xl text-xs font-bold text-gray-800 hover:text-red-700 flex items-center gap-2.5 transition-all shadow-xs sm:col-span-2"
-                          >
-                            <YoutubeIcon size={17} className="text-red-600 shrink-0" />
-                            <div className="truncate">
-                              <p className="truncate">NSS Unit YouTube Channel</p>
-                              <p className="text-[10px] font-normal text-gray-400">Event Documentaries, Drives & Highlights</p>
+                              <p className="truncate">WhatsApp Community</p>
+                              <p className="text-[10px] font-normal text-gray-400">Direct Announcements</p>
                             </div>
                           </a>
                         </div>
@@ -312,7 +237,7 @@ export default function PublicEventPortal() {
                           Event Registration Form
                         </h2>
                         <p className="text-xs text-gray-500 mt-0.5">
-                          Please complete all required fields. College email verification is enforced.
+                          Please complete all required fields. Official student email verification is enforced.
                         </p>
                       </div>
 
@@ -359,15 +284,61 @@ export default function PublicEventPortal() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              )}
+              </div>
             </div>
-          </div>
 
-          {/* Sticky Event Info Sidebar */}
-          <div className="w-full lg:w-1/3 order-1 lg:order-2 lg:sticky top-24">
-            <div className="bg-white rounded-3xl p-6 shadow-xs border border-gray-200/80 space-y-6">
-              <h3 className="font-black text-gray-900 text-base border-b border-gray-100 pb-3">Event Details</h3>
-              
+            {/* Sticky Event Info Sidebar (NO Allocated NSS Hours) */}
+            <div className="w-full lg:w-1/3 order-1 lg:order-2 lg:sticky top-24">
+              <div className="bg-white rounded-3xl p-6 shadow-xs border border-gray-200/80 space-y-5">
+                <h3 className="font-black text-gray-900 text-base border-b border-gray-100 pb-3">Event Schedule</h3>
+                
+                <div className="flex gap-3.5 items-start">
+                  <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-nss-blue shrink-0">
+                    <Calendar size={18} />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Date</p>
+                    <p className="font-bold text-gray-900 text-xs sm:text-sm">
+                      {new Date(event.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                    </p>
+                  </div>
+                </div>
+
+                {event.time && (
+                  <div className="flex gap-3.5 items-start">
+                    <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 shrink-0">
+                      <Clock size={18} />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Timing</p>
+                      <p className="font-bold text-gray-900 text-xs sm:text-sm">{event.time}</p>
+                    </div>
+                  </div>
+                )}
+
+                {event.venue && (
+                  <div className="flex gap-3.5 items-start">
+                    <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center text-nss-red shrink-0">
+                      <MapPin size={18} />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Venue</p>
+                      <p className="font-bold text-gray-900 text-xs sm:text-sm">{event.venue}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+          </div>
+        ) : (
+          /* When Registration is Closed: Clean Event Details Overview without Closed Box or Allocated Hours */
+          <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xs border border-gray-200/80 space-y-6">
+            <h3 className="font-black text-gray-900 text-lg border-b border-gray-100 pb-3 flex items-center gap-2">
+              <Calendar size={20} className="text-nss-blue" /> Event Information
+            </h3>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               <div className="flex gap-3.5 items-start">
                 <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-nss-blue shrink-0">
                   <Calendar size={18} />
@@ -392,33 +363,40 @@ export default function PublicEventPortal() {
                 </div>
               )}
 
-              <div className="flex gap-3.5 items-start">
-                <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center text-nss-red shrink-0">
-                  <MapPin size={18} />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Venue</p>
-                  <p className="font-bold text-gray-900 text-xs sm:text-sm">{event.venue}</p>
-                </div>
-              </div>
-
-              {event.hoursAllocated ? (
+              {event.venue && (
                 <div className="flex gap-3.5 items-start">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 shrink-0">
-                    <Clock size={18} />
+                  <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center text-nss-red shrink-0">
+                    <MapPin size={18} />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Allocated NSS Hours</p>
-                    <p className="font-bold text-gray-900 text-xs sm:text-sm">{event.hoursAllocated} Hours</p>
+                    <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Venue</p>
+                    <p className="font-bold text-gray-900 text-xs sm:text-sm">{event.venue}</p>
                   </div>
                 </div>
-              ) : null}
+              )}
+            </div>
 
-
+            <div className="pt-4 border-t border-gray-100 flex flex-wrap items-center justify-between gap-4">
+              <p className="text-xs text-gray-500 font-medium">
+                This NSS community initiative has concluded. Explore our gallery or check upcoming activities.
+              </p>
+              <div className="flex items-center gap-3">
+                <Link
+                  href="/gallery"
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-xl transition-colors"
+                >
+                  View Event Gallery
+                </Link>
+                <Link
+                  href="/activities"
+                  className="px-4 py-2 bg-nss-blue hover:bg-blue-800 text-white text-xs font-bold rounded-xl transition-colors shadow-xs"
+                >
+                  Explore Other Activities
+                </Link>
+              </div>
             </div>
           </div>
-
-        </div>
+        )}
       </section>
 
     </div>
