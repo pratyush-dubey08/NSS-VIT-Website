@@ -47,10 +47,16 @@ const commonDailyRoutine = [
     desc: 'The central service block of each day is dedicated to community action across the adopted village. Volunteers conduct village-wide cleanliness campaigns (Swachhata Abhiyan), clearing streets, drainage pathways, and public premises. Depending on the schedule, teams also execute extensive tree plantation drives, medical and health check-up surveys, door-to-door socio-economic assessments, and donation drives distributing clothes, books, and educational stationery to underprivileged children.'
   },
   {
+    id: 'nature-trekking',
+    time: 'Special Single-Day Expedition (06:00 AM - 01:00 PM)',
+    title: 'Nature Trekking & Eco-Exploration (1-Day Special Feature)',
+    desc: 'On one designated day during the 7-day camp, the routine transitions into an adventurous nature trekking expedition to surrounding hills and forest ranges (such as Kusmania mountain ranges or the Astha Wildlife Range). This invigorating outdoor experience builds physical stamina, fosters deep appreciation for local biodiversity and ecology, and strengthens unity and camaraderie among the volunteer contingent.'
+  },
+  {
     id: 'lunch',
     time: '01:00 PM - 02:00 PM',
-    title: 'Nutritious Community Lunch',
-    desc: 'Volunteers and organizers gather for a nutritious and wholesome lunch prepared at the camp. This communal meal serves as a relaxed bonding hour where experiences from the morning field activities are shared and evaluated.'
+    title: 'Lunch for Volunteers',
+    desc: 'A daily wholesome and nutritious lunch prepared at the camp kitchen for all NSS volunteers. This provides an essential resting and recharging break between morning field drives and afternoon intellectual sessions, allowing volunteers to relax, bond, and reflect on the morning’s outreach.'
   },
   {
     id: 'baudhik-satra',
@@ -65,16 +71,16 @@ const commonDailyRoutine = [
     desc: 'To foster creativity, healthy competition, and intellectual engagement, varied contests are held between volunteer groups. These include rangoli making on social themes (Mera Yuva Bharat, Beti Bachao), poster painting, extempore speech, debate, and essay writing.'
   },
   {
-    id: 'outdoor-games',
+    id: 'outdoor-activities',
     time: '05:30 PM - 06:30 PM',
-    title: 'Outdoor Activities & Traditional NSS Games',
-    desc: 'Participants take part in traditional rural and NSS team-building games such as Rumaal Jhappata, Kitne Bhai Kitne, and Ram-Ravana Yudh, alongside thematic public awareness rallies and Gram Bhraman (village outreach walks). These activities recharge volunteer energy, reinforce camaraderie, and break communication barriers with village youngsters.'
+    title: 'Outdoor Activities (Games, Awareness Rallies & Street Plays)',
+    desc: 'Late afternoon field engagements where, depending on the day’s scheduled plan, volunteers engage in traditional NSS team-building games (Rumaal Jhappata, Kitne Bhai Kitne, Ram-Ravana Yudh), lead thematic public awareness rallies through the village streets, or perform impactful street plays (Nukkad Natak) on social issues at central village intersections to engage and educate the local community.'
   },
   {
     id: 'cultural-evening',
     time: '07:00 PM - 09:00 PM',
-    title: 'Cultural Evening & Street Theatre (Nukkad Natak)',
-    desc: 'The evening culminates in a culturally rich program open to the entire village community. Volunteers present theatrical street plays (Nukkad Natak) addressing de-addiction, electoral awareness, and gender equality, followed by diverse folk dances, patriotic music, and instrumental recitals celebrating India’s cultural unity in diversity.'
+    title: 'Cultural Evening & Community Performances',
+    desc: 'The evening culminates in an uplifting cultural program open to the village residents. Volunteers present diverse folk dances, patriotic music, instrumental recitals, and inspirational poetry celebrating India’s cultural heritage, strengthening deep community bonds.'
   },
   {
     id: 'dinner-reflection',
@@ -116,7 +122,7 @@ export default function AnnualCampPage() {
           
           <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-white px-8 md:px-12 py-3.5 md:py-4 rounded-full shadow-xl border border-gray-100 flex items-center justify-center max-w-[90%]">
             <h1 className="text-xl sm:text-2xl md:text-3xl font-black text-nss-blue tracking-tight text-center uppercase whitespace-nowrap">
-              Annual NSS Unit Special Camp
+              7 Day Annual NSS Unit Camp
             </h1>
           </div>
         </motion.div>
@@ -129,11 +135,11 @@ export default function AnnualCampPage() {
           className="mt-20 md:mt-20 max-w-4xl mx-auto space-y-6 text-gray-700 leading-relaxed font-normal text-justify"
         >
           <p className="text-base sm:text-lg leading-relaxed">
-            The Annual NSS Unit Special Camp, organized each academic year by the National Service Scheme Unit of VIT Bhopal University, represents a premier residential immersion initiative held in rural adopted villages of Sehore district, Madhya Pradesh. Grounded firmly in the foundational ethos of <span className="font-bold text-nss-blue">"Not Me, But You"</span>, this week-long residential camp provides student volunteers with a profound, real-world educational experience outside traditional university classrooms. By residing directly within government school facilities and community spaces in the adopted rural areas, volunteers experience firsthand the everyday social, economic, and infrastructural dynamics of rural India, fostering deep societal empathy and responsible civic consciousness.
+            The 7 Day Annual NSS Unit Camp, organized each academic year by the National Service Scheme Unit of VIT Bhopal University, represents a premier residential immersion initiative held in rural adopted villages of Sehore district, Madhya Pradesh. Grounded firmly in the foundational ethos of <span className="font-bold text-nss-blue">"Not Me, But You"</span>, this week-long residential camp provides student volunteers with a profound, real-world educational experience outside traditional university classrooms. By residing directly within government school facilities and community spaces in the adopted rural areas, volunteers experience firsthand the everyday social, economic, and infrastructural dynamics of rural India, fostering deep societal empathy and responsible civic consciousness.
           </p>
           
           <p className="text-base sm:text-lg leading-relaxed">
-            Over the course of the seven-day residential camp, volunteers systematically plan and execute a comprehensive lineup of impactful community initiatives. These encompass daily environmental sanitation and cleanliness drives (Swachhata Abhiyan), mega medical and dental check-up camps, extensive tree plantation drives, interactive classroom teaching in government middle schools, and educational street plays (Nukkad Natak) addressing de-addiction, electoral participation, and women empowerment. Through continuous collaboration with local village panchayats, community elders, and administrative dignitaries, the Annual Camp builds an enduring bridge of goodwill between academia and society, transforming undergraduate students into proactive nation-builders.
+            Over the course of the 7 Day Annual NSS Unit Camp, volunteers systematically plan and execute a comprehensive lineup of impactful community initiatives. These encompass daily environmental sanitation and cleanliness drives (Swachhata Abhiyan), mega medical and dental check-up camps, extensive tree plantation drives, interactive classroom teaching in government middle schools, and educational street plays (Nukkad Natak) addressing de-addiction, electoral participation, and women empowerment. Through continuous collaboration with local village panchayats, community elders, and administrative dignitaries, the Annual Camp builds an enduring bridge of goodwill between academia and society, transforming undergraduate students into proactive nation-builders.
           </p>
         </motion.div>
 
@@ -147,7 +153,7 @@ export default function AnnualCampPage() {
               Standard Daily Camp Schedule
             </h2>
             <p className="text-sm text-gray-500 mt-2 max-w-2xl mx-auto">
-              Every day at the 7-day residential camp follows a structured, disciplined schedule combining service, self-reliance, physical fitness, intellectual enrichment, and cultural harmony.
+              Every day at the 7 Day Annual NSS Unit Camp follows a structured, disciplined schedule combining service, self-reliance, physical fitness, intellectual enrichment, and cultural harmony.
             </p>
           </div>
 
@@ -200,6 +206,34 @@ export default function AnnualCampPage() {
               );
             })}
           </div>
+
+          {/* Dedicated Section: 1-Day Special Nature Trekking Expedition */}
+          <div className="mt-10 bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-emerald-800/40">
+            <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
+              <div className="max-w-2xl">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider mb-3">
+                  <span>1-Day Special Expedition</span>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight mb-2">
+                  Nature Trekking, Biodiversity Study & Environmental Immersion
+                </h3>
+                <p className="text-xs sm:text-sm text-emerald-100/80 leading-relaxed text-justify font-normal">
+                  A staple and eagerly anticipated tradition of the 7 Day Annual NSS Unit Camp is the dedicated one-day nature trekking expedition into the rugged terrains of the Kusmania mountain ranges and Astha Wildlife Range. Beyond testing and building physical endurance, the trek immerses volunteers in rural biodiversity conservation, watershed observation, Leave-No-Trace eco-ethics, and powerful team-bonding moments amidst nature.
+                </p>
+              </div>
+              <div className="shrink-0 flex items-center gap-3 w-full sm:w-auto justify-end">
+                <div className="px-4 py-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/15 text-center flex-1 sm:flex-initial">
+                  <span className="block text-xl sm:text-2xl font-black text-emerald-300">Day 3 / 4</span>
+                  <span className="text-[10px] sm:text-[11px] text-gray-300 font-medium uppercase tracking-wide">Camp Schedule</span>
+                </div>
+                <div className="px-4 py-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/15 text-center flex-1 sm:flex-initial">
+                  <span className="block text-xl sm:text-2xl font-black text-white">100%</span>
+                  <span className="text-[10px] sm:text-[11px] text-gray-300 font-medium uppercase tracking-wide">Participation</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
         <hr className="my-16 border-t border-gray-200/80 max-w-4xl mx-auto" />
@@ -212,7 +246,7 @@ export default function AnnualCampPage() {
               Annual Camp Day-Wise Reports & Coverage
             </h2>
             <p className="text-sm text-gray-500 mt-2 max-w-2xl mx-auto">
-              Explore the detailed chronological documentation of our seven-day special residential camps held across adopted villages in Sehore district.
+              Explore the detailed chronological documentation of our 7 Day Annual NSS Unit Camps held across adopted villages in Sehore district.
             </p>
 
             {/* Year Switcher Buttons */}
@@ -251,7 +285,7 @@ export default function AnnualCampPage() {
             >
               <div className="border-b border-gray-100 pb-6">
                 <span className="px-3 py-1 bg-blue-50 text-nss-blue text-xs font-black rounded-full uppercase tracking-wider">
-                  Seven-Day Residential Special Camp
+                  7 Day Annual NSS Unit Camp
                 </span>
                 <h3 className="text-2xl sm:text-3xl font-black text-gray-900 mt-3">
                   Annual NSS Unit Camp 2026
@@ -270,7 +304,7 @@ export default function AnnualCampPage() {
                     Day 1: Camp Commencement, Flag Hoisting & Village Exploration
                   </h4>
                   <p className="text-xs sm:text-sm text-gray-700 leading-relaxed text-justify">
-                    The seven-day Annual Special Camp 2026 commenced with immense enthusiasm and energy. The ceremonial inauguration and traditional flag hoisting ceremony were conducted on the university premises by Honorable Pro Vice Chancellor Dr. T.B. Sridharan and Registrar Mr. K.K. Nair. Following the inaugural ceremony, an awareness rally and vibrant cultural performances were presented by the volunteers, filling the campus with patriotic fervor. In the subsequent phase, the volunteer contingent traveled to the camp site at Government Middle School in Gram Borkheda, Tehsil Ashta, where the residential camp was formally established. All operational activities were smoothly coordinated under the guidance of NSS Faculty Coordinators Dr. Vinod Bhatt, Dr. Dev Brat Gupta, Dr. Geetanjali Giri, and Ms. Deepti Bhojwani.
+                    The 7 Day Annual NSS Unit Camp 2026 commenced with immense enthusiasm and energy. The ceremonial inauguration and traditional flag hoisting ceremony were conducted on the university premises by Honorable Pro Vice Chancellor Dr. T.B. Sridharan and Registrar Mr. K.K. Nair. Following the inaugural ceremony, an awareness rally and vibrant cultural performances were presented by the volunteers, filling the campus with patriotic fervor. In the subsequent phase, the volunteer contingent traveled to the camp site at Government Middle School in Gram Borkheda, Tehsil Ashta, where the residential camp was formally established. All operational activities were smoothly coordinated under the guidance of NSS Faculty Coordinators Dr. Vinod Bhatt, Dr. Dev Brat Gupta, Dr. Geetanjali Giri, and Ms. Deepti Bhojwani.
                   </p>
                   <p className="text-xs sm:text-sm text-gray-700 leading-relaxed text-justify">
                     A major highlight of the opening day was the extensive Village Exploration (Gram Bhraman), providing volunteers with direct exposure to rural realities. Volunteers toured the entire village to understand local socio-cultural and economic dynamics, interacting with farming families regarding agricultural practices, livestock rearing, rural cottage industries, water conservation, and village education. The volunteers disseminated key information regarding personal hygiene, health awareness, and mutual cooperation, laying a resilient foundation for the forthcoming welfare programs.
@@ -351,7 +385,7 @@ export default function AnnualCampPage() {
                     The concluding day began with a profoundly emotional Prabhat Pheri as village elders, youth, and women bid an affectionate farewell to the volunteers who had become an integral part of their community. In the formal Valedictory Closing Ceremony, Mr. Rahul Singh Parihar, NSS Program Officer and ETI Trainer from Barkatullah University, delivered an inspiring address highlighting that NSS is a potent vehicle for character building and nation service. He encouraged volunteers to uphold discipline, self-preparation, and patriotism to represent the institution at national forums and the prestigious Kartavya Path parade.
                   </p>
                   <p className="text-xs sm:text-sm text-gray-700 leading-relaxed text-justify">
-                    Certificates of participation were awarded to all volunteers in recognition of their exemplary dedication. The volunteers expressed heartfelt gratitude to NSS Program Officers Dr. Vinod Bhatt, Dr. Dev Brat Gupta, Dr. Geetanjali Giri, and Ms. Deepti Bhojwani for their steadfast leadership, bringing the transformative seven-day residential camp to a memorable conclusion.
+                    Certificates of participation were awarded to all volunteers in recognition of their exemplary dedication. The volunteers expressed heartfelt gratitude to NSS Program Officers Dr. Vinod Bhatt, Dr. Dev Brat Gupta, Dr. Geetanjali Giri, and Ms. Deepti Bhojwani for their steadfast leadership, bringing the transformative 7 Day Annual NSS Unit Camp to a memorable conclusion.
                   </p>
                 </div>
 
@@ -403,7 +437,7 @@ export default function AnnualCampPage() {
             >
               <div className="border-b border-gray-100 pb-6">
                 <span className="px-3 py-1 bg-emerald-50 text-emerald-800 text-xs font-black rounded-full uppercase tracking-wider">
-                  Seven-Day Residential Special Camp
+                  7 Day Annual NSS Unit Camp
                 </span>
                 <h3 className="text-2xl sm:text-3xl font-black text-gray-900 mt-3">
                   Annual NSS Unit Camp 2025
@@ -534,7 +568,7 @@ export default function AnnualCampPage() {
             >
               <div className="border-b border-gray-100 pb-6">
                 <span className="px-3 py-1 bg-amber-50 text-amber-800 text-xs font-black rounded-full uppercase tracking-wider">
-                  Seven-Day Residential Special Camp
+                  7 Day Annual NSS Unit Camp
                 </span>
                 <h3 className="text-2xl sm:text-3xl font-black text-gray-900 mt-3">
                   Annual NSS Unit Camp 2024

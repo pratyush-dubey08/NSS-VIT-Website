@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 import { useState, useEffect, useMemo } from 'react';
 import { 
   FileText, 
@@ -13,7 +15,9 @@ import {
   Printer, 
   RefreshCw,
   CheckCircle2,
-  FileDown
+  FileDown,
+  ExternalLink,
+  Plus
 } from 'lucide-react';
 import api from '@/lib/axios';
 
@@ -29,7 +33,14 @@ export default function AdminReportsPage() {
     try {
       setLoading(true);
       setError(null);
-      const { data } = await api.get('/activities');
+      const { data } = await api.get('/activities', {
+        params: { _t: Date.now() },
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          Pragma: 'no-cache',
+          Expires: '0'
+        }
+      });
       const list = Array.isArray(data) ? data : (data?.activities || []);
       // Sort newest first
       list.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -111,12 +122,16 @@ export default function AdminReportsPage() {
                 ${act.time ? `<span><strong>Timing:</strong> ${act.time}</span>` : ''}
                 ${act.venue ? `<span><strong>Venue:</strong> ${act.venue}</span>` : ''}
                 <span><strong>Allocated NSS Hours:</strong> ${hours} Hours</span>
+                <span><strong>Status:</strong> ${act.isRegistrationOpen ? 'Registration Active' : 'Completed Activity'}</span>
               </div>
             </div>
           </div>
           <div class="event-description">
-            <h4 class="section-label">ACTIVITY BRIEF & REPORT:</h4>
-            <p class="description-text">${act.description || 'No description recorded.'}</p>
+            <h4 class="section-label">ACTIVITY BRIEF & OFFICIAL REPORT:</h4>
+            <p class="description-text">${act.description || 'No description recorded for this activity.'}</p>
+          </div>
+          <div style="margin-top: 10px; font-size: 11px; color: #64748b; border-top: 1px dashed #e2e8f0; padding-top: 6px;">
+            <span><strong>Live Event Record:</strong> ${typeof window !== 'undefined' ? window.location.origin : ''}/activities/${act._id}</span>
           </div>
         </div>
       `;
@@ -318,13 +333,34 @@ export default function AdminReportsPage() {
           </p>
         </div>
 
-        <button
-          onClick={fetchActivities}
-          className="p-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl transition-colors cursor-pointer shrink-0"
-          title="Refresh activities list"
-        >
-          <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />
-        </button>
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/60 shadow-2xs">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            Live DB Synced ({activities.length})
+          </span>
+
+          <Link
+            href="/admin/activities/new"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-nss-blue text-white font-bold text-xs rounded-xl hover:bg-blue-800 transition-colors shadow-2xs"
+          >
+            <Plus size={14} /> Add Event
+          </Link>
+
+          <Link
+            href="/admin/activities"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-gray-100 text-gray-700 font-bold text-xs rounded-xl hover:bg-gray-200 transition-colors"
+          >
+            Manage All
+          </Link>
+
+          <button
+            onClick={fetchActivities}
+            className="p-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl transition-colors cursor-pointer shrink-0"
+            title="Refresh activities directly from database"
+          >
+            <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />
+          </button>
+        </div>
       </div>
 
       {/* Action Bar & Multi-Select Toolbar */}
@@ -439,6 +475,16 @@ export default function AdminReportsPage() {
                   </div>
 
                   <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
+                    <Link
+                      href={`/activities/${act._id}`}
+                      target="_blank"
+                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-gray-50 border border-gray-200 hover:bg-gray-100 text-gray-600 font-semibold text-xs rounded-xl transition-all"
+                      title="View public event page"
+                    >
+                      <ExternalLink size={12} />
+                      <span>View Page</span>
+                    </Link>
+
                     <button
                       onClick={() => handleDownloadSingle(act)}
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 hover:border-nss-blue hover:text-nss-blue text-gray-700 font-bold text-xs rounded-xl shadow-2xs transition-all cursor-pointer"

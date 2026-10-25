@@ -13,8 +13,8 @@ export default function ActivitiesPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
-  // Tab filter: 'open' (Open for Registration) or 'all' (All Activities)
-  const [activeTab, setActiveTab] = useState<'open' | 'all'>('open');
+  // Tab filter: 'open' (Open for Registration) or 'completed' (Completed Activities)
+  const [activeTab, setActiveTab] = useState<'open' | 'completed'>('open');
 
   const fetchActivities = async () => {
     try {
@@ -38,6 +38,10 @@ export default function ActivitiesPage() {
     return activities.filter(a => a.isRegistrationOpen).length;
   }, [activities]);
 
+  const completedActivitiesCount = useMemo(() => {
+    return activities.filter(a => !a.isRegistrationOpen).length;
+  }, [activities]);
+
   const filteredActivities = useMemo(() => {
     return activities
       .filter(a => {
@@ -45,7 +49,7 @@ export default function ActivitiesPage() {
           a.title?.toLowerCase().includes(searchQuery.toLowerCase()) || 
           (a.description && a.description.toLowerCase().includes(searchQuery.toLowerCase()));
         
-        const matchesTab = activeTab === 'all' || (activeTab === 'open' && a.isRegistrationOpen);
+        const matchesTab = activeTab === 'completed' ? !a.isRegistrationOpen : (activeTab === 'open' ? a.isRegistrationOpen : true);
 
         return matchesSearch && matchesTab;
       })
@@ -98,18 +102,18 @@ export default function ActivitiesPage() {
               </button>
 
               <button
-                onClick={() => setActiveTab('all')}
+                onClick={() => setActiveTab('completed')}
                 className={`flex-1 sm:flex-initial px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 ${
-                  activeTab === 'all'
+                  activeTab === 'completed'
                     ? 'bg-white text-gray-900 shadow-sm scale-[1.01]'
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
-                <span>All Activities</span>
+                <span>Completed Activities</span>
                 <span className={`text-xs px-2 py-0.5 rounded-full font-black ${
-                  activeTab === 'all' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500'
+                  activeTab === 'completed' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500'
                 }`}>
-                  {activities.length}
+                  {completedActivitiesCount}
                 </span>
               </button>
             </div>
@@ -148,15 +152,15 @@ export default function ActivitiesPage() {
             <h3 className="text-lg font-black text-gray-900 mb-2">No Activities Found</h3>
             <p className="text-sm text-gray-500">
               {activeTab === 'open' 
-                ? 'There are currently no events open for public registration. Switch to "All Activities" to see our past initiatives.'
+                ? 'There are currently no events open for public registration. Switch to "Completed Activities" to see our past initiatives.'
                 : 'No activities match your search criteria.'}
             </p>
             {activeTab === 'open' && (
               <button
-                onClick={() => setActiveTab('all')}
+                onClick={() => setActiveTab('completed')}
                 className="mt-5 px-5 py-2 rounded-xl bg-nss-blue text-white text-xs font-bold hover:bg-blue-800 transition-colors"
               >
-                View All Activities
+                View Completed Activities
               </button>
             )}
           </div>

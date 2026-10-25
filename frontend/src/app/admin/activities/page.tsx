@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Plus, Search, Filter, MoreVertical, Edit, Users, CalendarDays, MapPin } from 'lucide-react';
+import { Plus, Search, Filter, MoreVertical, Edit, Users, CalendarDays, MapPin, FileText } from 'lucide-react';
 import api from '@/lib/axios';
 
 export default function AdminActivities() {
@@ -50,9 +50,14 @@ export default function AdminActivities() {
           <p className="text-sm text-gray-500">Create, edit, and manage all NSS events and drives.</p>
         </div>
         {/* We would typically have an 'Add Activity' modal or page. For now just a button */}
-        <Link href="/admin/activities/new" className="flex items-center gap-2 px-5 py-2.5 bg-nss-blue text-white font-bold rounded-xl hover:bg-blue-800 transition-colors">
-          <Plus size={18} /> New Activity
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link href="/admin/reports" className="flex items-center gap-2 px-4 py-2.5 bg-blue-50 text-nss-blue font-bold rounded-xl hover:bg-blue-100 transition-colors border border-blue-200 text-sm">
+            <FileText size={17} /> Activity Reports PDF
+          </Link>
+          <Link href="/admin/activities/new" className="flex items-center gap-2 px-5 py-2.5 bg-nss-blue text-white font-bold rounded-xl hover:bg-blue-800 transition-colors text-sm">
+            <Plus size={17} /> New Activity
+          </Link>
+        </div>
       </div>
 
       {/* Controls */}
