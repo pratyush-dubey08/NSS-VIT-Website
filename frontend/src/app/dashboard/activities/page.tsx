@@ -11,9 +11,14 @@ import {
   ArrowRight, 
   CheckCircle2, 
   XCircle, 
-  AlertCircle, HelpCircle, ChevronDown, ChevronUp, Send, 
+  AlertCircle, 
+  HelpCircle, 
+  ChevronDown, 
+  ChevronUp, 
+  Send, 
   RotateCw,
-  FileCheck
+  FileCheck,
+  MessageSquare
 } from 'lucide-react';
 import Link from 'next/link';
 import api from '@/lib/axios';
@@ -32,14 +37,20 @@ export default function VolunteerActivitiesPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Expandable description briefs
   const [expandedEventIds, setExpandedEventIds] = useState<string[]>([]);
+
+  // Attendance issue modal state
   const [showIssueModal, setShowIssueModal] = useState(false);
   const [selectedActivityForIssue, setSelectedActivityForIssue] = useState<string>('');
   const [issueType, setIssueType] = useState('MARKED_ABSENT_INSTEAD_OF_PRESENT');
   const [issueDescription, setIssueDescription] = useState('');
   const [isSubmittingIssue, setIsSubmittingIssue] = useState(false);
   const [issueSuccessMessage, setIssueSuccessMessage] = useState('');
+  
+  // Volunteer's own raised issues
   const [myIssues, setMyIssues] = useState<any[]>([]);
+  const [showMyIssuesDrawer, setShowMyIssuesDrawer] = useState(false);
 
   const toggleExpandEvent = (actId: string) => {
     setExpandedEventIds(prev => 
@@ -48,36 +59,19 @@ export default function VolunteerActivitiesPage() {
   };
 
   const handleOpenRaiseIssueModal = (preselectedActId?: string) => {
-    setSelectedActivityForIssue(preselectedActId || (registeredActivities[0]?.activityId?._id || registeredActivities[0]?.activityId || ''));
+    if (preselectedActId) {
+      setSelectedActivityForIssue(preselectedActId);
+    } else if (registeredActivities.length > 0) {
+      const firstActId = registeredActivities[0]?.activityId?._id || registeredActivities[0]?.activityId;
+      setSelectedActivityForIssue(firstActId || '');
+    } else {
+      setSelectedActivityForIssue('');
+    }
     setIssueType('MARKED_ABSENT_INSTEAD_OF_PRESENT');
     setIssueDescription('');
     setIssueSuccessMessage('');
     setShowIssueModal(true);
   };
-
-  const handleSubmitAttendanceIssue = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedActivityForIssue || !issueDescription.trim()) {
-      alert('Please select an activity and provide a description.');
-      return;
-    }
-    setIsSubmittingIssue(true);
-    try {
-      await api.post('/attendance-issues', {
-        activityId: selectedActivityForIssue,
-        issueType,
-        description: issueDescription
-      });
-      setIssueSuccessMessage('Your attendance issue has been reported to the NSS Admin desk. It will be reviewed and verified.');
-      setIssueDescription('');
-    } catch (err: any) {
-      console.error('Error submitting issue:', err);
-      alert(err.response?.data?.message || 'Failed to submit attendance issue');
-    } finally {
-      setIsSubmittingIssue(false);
-    }
-  };
-
 
   const fetchActivities = async () => {
     if (!user) return;
@@ -105,12 +99,51 @@ export default function VolunteerActivitiesPage() {
       );
       setManagingActivities(managing);
 
-      // If user came to page and has managing activities, keep MY_EVENTS as default
+      // Also fetch volunteer's previously raised attendance issues
+      try {
+        const issuesRes = await api.get('/attendance-issues/my');
+        if (Array.isArray(issuesRes.data)) {
+          setMyIssues(issuesRes.data);
+        }
+      } catch (issueErr) {
+        console.warn('Could not load user attendance issues:', issueErr);
+      }
+
     } catch (err: any) {
       console.error('Error fetching volunteer activities:', err);
       setError('Could not load your activities right now. The server might be waking up.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSubmitAttendanceIssue = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedActivityForIssue || !issueDescription.trim()) {
+      alert('Please select an activity and provide a description of the issue.');
+      return;
+    }
+    setIsSubmittingIssue(true);
+    try {
+      const res = await api.post('/attendance-issues', {
+        activityId: selectedActivityForIssue,
+        issueType,
+        description: issueDescription
+      });
+      setIssueSuccessMessage('Your attendance issue has been reported to the NSS Admin desk. It will be reviewed and verified.');
+      setIssueDescription('');
+      // Refresh my issues
+      try {
+        const issuesRes = await api.get('/attendance-issues/my');
+        if (Array.isArray(issuesRes.data)) {
+          setMyIssues(issuesRes.data);
+        }
+      } catch (e) {}
+    } catch (err: any) {
+      console.error('Error submitting issue:', err);
+      alert(err.response?.data?.message || 'Failed to submit attendance issue');
+    } finally {
+      setIsSubmittingIssue(false);
     }
   };
 
@@ -208,7 +241,7 @@ export default function VolunteerActivitiesPage() {
           </p>
           <button 
             onClick={fetchActivities}
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-nss-blue text-white font-bold rounded-xl hover:bg-blue-800 transition-colors shadow-sm"
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-nss-blue text-white font-bold rounded-xl hover:bg-blue-800 transition-colors shadow-sm cursor-pointer"
           >
             <RotateCw size={16} /> Retry
           </button>
@@ -216,32 +249,103 @@ export default function VolunteerActivitiesPage() {
       ) : activeTab === 'MY_EVENTS' ? (
         /* Tab 1: My Enrolled Events */
         <div className="space-y-6">
-          {/* Sub-filter Pills */}
-          <div className="flex flex-wrap items-center gap-2">
-            {[
-              { id: 'ALL', label: 'All Activities', count: registeredActivities.length },
-              { id: 'ATTENDED', label: 'Present / Attended', count: presentCount },
-              { id: 'PENDING', label: 'Pending Attendance', count: pendingCount },
-              { id: 'BUNKED', label: 'Absent', count: absentCount }
-            ].map((f) => (
+          {/* Action & Filter Bar */}
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 bg-white p-4 rounded-2xl border border-gray-100 shadow-xs">
+            {/* Sub-filter Pills */}
+            <div className="flex flex-wrap items-center gap-2">
+              {[
+                { id: 'ALL', label: 'All Activities', count: registeredActivities.length },
+                { id: 'ATTENDED', label: 'Present / Attended', count: presentCount },
+                { id: 'PENDING', label: 'Pending Attendance', count: pendingCount },
+                { id: 'BUNKED', label: 'Absent', count: absentCount }
+              ].map((f) => (
+                <button
+                  key={f.id}
+                  onClick={() => setAttendanceFilter(f.id as AttendanceFilterType)}
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                    attendanceFilter === f.id
+                      ? 'bg-gray-900 text-white shadow-sm'
+                      : 'bg-gray-50 text-gray-600 border border-gray-200 hover:bg-gray-100'
+                  }`}
+                >
+                  <span>{f.label}</span>
+                  <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${
+                    attendanceFilter === f.id ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-700'
+                  }`}>
+                    {f.count}
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            {/* Attendance Grievance Buttons */}
+            <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto justify-end">
+              {myIssues.length > 0 && (
+                <button
+                  onClick={() => setShowMyIssuesDrawer(!showMyIssuesDrawer)}
+                  className="inline-flex items-center gap-1.5 px-3 py-2 bg-blue-50 text-nss-blue hover:bg-blue-100 rounded-xl text-xs font-bold transition-colors cursor-pointer border border-blue-200"
+                >
+                  <MessageSquare size={14} /> My Reported Issues ({myIssues.length})
+                </button>
+              )}
+
               <button
-                key={f.id}
-                onClick={() => setAttendanceFilter(f.id as AttendanceFilterType)}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
-                  attendanceFilter === f.id
-                    ? 'bg-gray-900 text-white shadow-sm'
-                    : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
-                }`}
+                onClick={() => handleOpenRaiseIssueModal()}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold text-xs md:text-sm rounded-xl shadow-xs transition-all cursor-pointer"
               >
-                <span>{f.label}</span>
-                <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${
-                  attendanceFilter === f.id ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-700'
-                }`}>
-                  {f.count}
-                </span>
+                <AlertCircle size={15} /> Raise Attendance Issue
               </button>
-            ))}
+            </div>
           </div>
+
+          {/* Volunteer's Reported Issues Accordion/Banner */}
+          {showMyIssuesDrawer && myIssues.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="bg-amber-50/60 border border-amber-200/80 rounded-2xl p-4 space-y-3"
+            >
+              <div className="flex items-center justify-between">
+                <h4 className="text-xs font-black text-amber-950 flex items-center gap-1.5">
+                  <AlertCircle size={14} className="text-amber-600" /> Your Submitted Attendance Requests
+                </h4>
+                <button
+                  onClick={() => setShowMyIssuesDrawer(false)}
+                  className="text-xs text-amber-800 hover:text-amber-950 font-bold cursor-pointer"
+                >
+                  Close ✕
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {myIssues.map((issue) => (
+                  <div key={issue._id} className="bg-white p-3.5 rounded-xl border border-amber-100 shadow-2xs space-y-1.5">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-bold text-xs text-gray-900 truncate">
+                        {issue.activityId?.title || 'Activity'}
+                      </span>
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-black ${
+                        issue.status === 'RESOLVED' 
+                          ? 'bg-emerald-100 text-emerald-800' 
+                          : issue.status === 'REJECTED' 
+                          ? 'bg-rose-100 text-rose-800' 
+                          : 'bg-amber-100 text-amber-800'
+                      }`}>
+                        {issue.status}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-gray-600 leading-relaxed">{issue.description}</p>
+                    {issue.adminRemarks && (
+                      <p className="text-[10px] text-emerald-700 bg-emerald-50 p-1.5 rounded-lg font-medium">
+                        Admin Note: {issue.adminRemarks}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
 
           {filteredRegistrations.length === 0 ? (
             <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm p-8 max-w-lg mx-auto">
@@ -257,7 +361,7 @@ export default function VolunteerActivitiesPage() {
               {attendanceFilter !== 'ALL' && (
                 <button
                   onClick={() => setAttendanceFilter('ALL')}
-                  className="px-5 py-2 bg-gray-100 text-gray-800 font-bold rounded-xl hover:bg-gray-200 text-xs transition-colors"
+                  className="px-5 py-2 bg-gray-100 text-gray-800 font-bold rounded-xl hover:bg-gray-200 text-xs transition-colors cursor-pointer"
                 >
                   View All Activities
                 </button>
@@ -267,10 +371,12 @@ export default function VolunteerActivitiesPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredRegistrations.map((reg) => {
                 const act = reg.activityId || {};
+                const actId = act._id || reg._id;
                 const hours = act.hoursAllocated || act.workingHours || 0;
                 const isPresent = reg.attendanceStatus === 'ATTENDED' || reg.attendanceStatus === 'Present';
                 const isAbsent = reg.attendanceStatus === 'BUNKED' || reg.attendanceStatus === 'Absent';
                 const isPending = !reg.attendanceStatus || reg.attendanceStatus === 'PENDING';
+                const isExpanded = expandedEventIds.includes(actId);
 
                 return (
                   <motion.div
@@ -279,7 +385,7 @@ export default function VolunteerActivitiesPage() {
                     animate={{ opacity: 1, y: 0 }}
                     className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col justify-between"
                   >
-                    {/* Optional Banner */}
+                    {/* Banner */}
                     {act.bannerUrl && (
                       <div className="h-44 w-full bg-slate-100 relative overflow-hidden">
                         <img 
@@ -288,7 +394,7 @@ export default function VolunteerActivitiesPage() {
                           className="w-full h-full object-cover"
                           onError={(e: any) => { e.currentTarget.style.display = 'none'; }}
                         />
-                        <div className="absolute top-3 right-3">
+                        <div className="absolute top-3 right-3 flex items-center gap-1.5">
                           {isPresent ? (
                             <span className="px-3 py-1 bg-emerald-600/90 backdrop-blur-md text-white text-xs font-black rounded-full shadow-sm flex items-center gap-1">
                               <CheckCircle2 size={13} /> Present
@@ -307,34 +413,65 @@ export default function VolunteerActivitiesPage() {
                     )}
 
                     <div className="p-6 flex-1 flex flex-col">
-                      {!act.bannerUrl && (
-                        <div className="flex justify-between items-center mb-3">
-                          {isPresent ? (
-                            <span className="px-2.5 py-1 bg-emerald-50 text-emerald-700 text-xs font-black rounded-full flex items-center gap-1">
-                              <CheckCircle2 size={13} /> Present
-                            </span>
-                          ) : isAbsent ? (
-                            <span className="px-2.5 py-1 bg-rose-50 text-rose-700 text-xs font-black rounded-full flex items-center gap-1">
-                              <XCircle size={13} /> Absent
-                            </span>
-                          ) : (
-                            <span className="px-2.5 py-1 bg-blue-50 text-blue-700 text-xs font-black rounded-full flex items-center gap-1">
-                              Enrolled (Pending Attendance)
-                            </span>
+                      {/* Top info badge row */}
+                      <div className="flex justify-between items-center gap-2 mb-3">
+                        <div className="flex items-center gap-2">
+                          {!act.bannerUrl && (
+                            isPresent ? (
+                              <span className="px-2.5 py-1 bg-emerald-50 text-emerald-700 text-xs font-black rounded-full flex items-center gap-1">
+                                <CheckCircle2 size={13} /> Present
+                              </span>
+                            ) : isAbsent ? (
+                              <span className="px-2.5 py-1 bg-rose-50 text-rose-700 text-xs font-black rounded-full flex items-center gap-1">
+                                <XCircle size={13} /> Absent
+                              </span>
+                            ) : (
+                              <span className="px-2.5 py-1 bg-blue-50 text-blue-700 text-xs font-black rounded-full flex items-center gap-1">
+                                Pending
+                              </span>
+                            )
                           )}
-
+                          
                           {isPresent && hours > 0 && (
-                            <span className="px-2.5 py-1 bg-blue-50 text-nss-blue text-xs font-black rounded-lg">
-                              +{hours} Hours
+                            <span className="px-2 py-0.5 bg-blue-50 text-nss-blue text-xs font-black rounded-lg">
+                              +{hours} Hrs
                             </span>
                           )}
                         </div>
-                      )}
+
+                        {/* Quick Issue Button directly on card */}
+                        <button
+                          onClick={() => handleOpenRaiseIssueModal(act._id)}
+                          className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200/80 rounded-lg transition-colors cursor-pointer"
+                          title="Report attendance issue for this activity"
+                        >
+                          <HelpCircle size={12} className="text-amber-600" /> Issue?
+                        </button>
+                      </div>
 
                       <h3 className="text-lg font-black text-gray-900 mb-2 line-clamp-1">{act.title || 'NSS Activity'}</h3>
-                      <p className="text-gray-600 text-xs md:text-sm line-clamp-2 mb-4 leading-relaxed flex-1">
-                        {act.description || 'NSS community engagement initiative.'}
-                      </p>
+                      
+                      {/* EXPANDABLE FULL EVENT BRIEF ON CLICK */}
+                      <div 
+                        onClick={() => toggleExpandEvent(actId)}
+                        className="cursor-pointer group/brief mb-4 rounded-xl p-2 -mx-2 hover:bg-slate-50 transition-colors"
+                        title="Click to read full event brief"
+                      >
+                        <p className={`text-gray-600 text-xs md:text-sm leading-relaxed transition-all ${
+                          isExpanded ? 'whitespace-pre-line' : 'line-clamp-2'
+                        }`}>
+                          {act.description || 'NSS community engagement initiative.'}
+                        </p>
+                        {act.description && act.description.length > 70 && (
+                          <span className="inline-flex items-center gap-1 text-[11px] font-bold text-nss-blue group-hover/brief:underline mt-1.5 select-none">
+                            {isExpanded ? (
+                              <>Show less <ChevronUp size={12} /></>
+                            ) : (
+                              <>Read full event brief <ChevronDown size={12} /></>
+                            )}
+                          </span>
+                        )}
+                      </div>
 
                       <div className="space-y-2 pt-3 border-t border-gray-100 text-xs text-gray-500 font-medium">
                         <div className="flex items-center gap-2">
@@ -389,67 +526,91 @@ export default function VolunteerActivitiesPage() {
         </div>
       ) : (
         /* Tab 2: Events You Manage */
-        <div>
+        <div className="space-y-6">
           {managingActivities.length === 0 ? (
             <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm p-8 max-w-lg mx-auto">
               <div className="w-16 h-16 bg-blue-50 text-nss-blue rounded-full flex items-center justify-center mx-auto mb-4">
                 <Briefcase size={32} />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">No Managed Events Assigned</h3>
-              <p className="text-gray-500 text-sm leading-relaxed mb-6">
-                When you are appointed as an Event Manager for an NSS activity, you will be able to edit event details and mark volunteer attendance here.
+              <h3 className="text-xl font-bold text-gray-900 mb-2">No Managed Events</h3>
+              <p className="text-gray-500 text-sm leading-relaxed">
+                You haven&apos;t been assigned as an Event Manager for any NSS activities yet.
               </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {managingActivities.map((act) => (
-                <motion.div
-                  key={act._id}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col justify-between"
-                >
-                  <div className="p-6 flex-1 flex flex-col">
-                    <div className="flex justify-between items-center gap-2 mb-3">
-                      <span className={`px-2.5 py-0.5 rounded-full text-xs font-black ${
-                        act.isRegistrationOpen 
-                          ? 'bg-emerald-100 text-emerald-800' 
-                          : 'bg-gray-100 text-gray-700'
-                      }`}>
-                        {act.isRegistrationOpen ? 'Registration Open' : 'Closed'}
-                      </span>
-                      <span className="px-2.5 py-1 bg-blue-50 text-nss-blue text-xs font-black rounded-lg">
-                        {act.hoursAllocated || act.workingHours || 0} Hours
-                      </span>
-                    </div>
+              {managingActivities.map((act) => {
+                const actId = act._id;
+                const isExpanded = expandedEventIds.includes(actId);
 
-                    <h3 className="text-lg font-black text-gray-900 mb-2 line-clamp-1">{act.title}</h3>
-                    <p className="text-gray-600 text-xs md:text-sm line-clamp-2 mb-4 leading-relaxed flex-1">
-                      {act.description || 'Manage volunteers, edit details, and mark event attendance.'}
-                    </p>
-
-                    <div className="space-y-2 py-3 border-y border-gray-100 text-xs text-gray-500 font-medium mb-4">
-                      <div className="flex items-center gap-2">
-                        <Calendar size={14} className="text-nss-blue shrink-0" />
-                        <span>{act.date ? new Date(act.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'No date'}</span>
+                return (
+                  <motion.div
+                    key={act._id}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col justify-between"
+                  >
+                    <div className="p-6 flex-1 flex flex-col">
+                      <div className="flex justify-between items-center gap-2 mb-3">
+                        <span className={`px-2.5 py-0.5 rounded-full text-xs font-black ${
+                          act.isRegistrationOpen 
+                            ? 'bg-emerald-100 text-emerald-800' 
+                            : 'bg-gray-100 text-gray-700'
+                        }`}>
+                          {act.isRegistrationOpen ? 'Registration Open' : 'Closed'}
+                        </span>
+                        <span className="px-2.5 py-1 bg-blue-50 text-nss-blue text-xs font-black rounded-lg">
+                          {act.hoursAllocated || act.workingHours || 0} Hours
+                        </span>
                       </div>
-                      {act.venue && (
-                        <div className="flex items-center gap-2 truncate">
-                          <MapPin size={14} className="text-rose-500 shrink-0" />
-                          <span className="truncate">{act.venue}</span>
-                        </div>
-                      )}
-                    </div>
 
-                    <Link 
-                      href={`/dashboard/activities/${act._id}`} 
-                      className="w-full inline-flex items-center justify-center gap-2 py-2.5 bg-nss-blue text-white font-bold text-sm rounded-xl hover:bg-blue-800 transition-colors shadow-sm"
-                    >
-                      Manage & Mark Attendance <ArrowRight size={16} />
-                    </Link>
-                  </div>
-                </motion.div>
-              ))}
+                      <h3 className="text-lg font-black text-gray-900 mb-2 line-clamp-1">{act.title}</h3>
+                      
+                      {/* Expandable brief */}
+                      <div 
+                        onClick={() => toggleExpandEvent(actId)}
+                        className="cursor-pointer group/brief mb-4 rounded-xl p-2 -mx-2 hover:bg-slate-50 transition-colors"
+                        title="Click to read full event brief"
+                      >
+                        <p className={`text-gray-600 text-xs md:text-sm leading-relaxed transition-all ${
+                          isExpanded ? 'whitespace-pre-line' : 'line-clamp-2'
+                        }`}>
+                          {act.description || 'Manage volunteers, edit details, and mark event attendance.'}
+                        </p>
+                        {act.description && act.description.length > 70 && (
+                          <span className="inline-flex items-center gap-1 text-[11px] font-bold text-nss-blue group-hover/brief:underline mt-1.5 select-none">
+                            {isExpanded ? (
+                              <>Show less <ChevronUp size={12} /></>
+                            ) : (
+                              <>Read full event brief <ChevronDown size={12} /></>
+                            )}
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="space-y-2 py-3 border-y border-gray-100 text-xs text-gray-500 font-medium mb-4">
+                        <div className="flex items-center gap-2">
+                          <Calendar size={14} className="text-nss-blue shrink-0" />
+                          <span>{act.date ? new Date(act.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'No date'}</span>
+                        </div>
+                        {act.venue && (
+                          <div className="flex items-center gap-2 truncate">
+                            <MapPin size={14} className="text-rose-500 shrink-0" />
+                            <span className="truncate">{act.venue}</span>
+                          </div>
+                        )}
+                      </div>
+
+                      <Link 
+                        href={`/dashboard/activities/${act._id}`} 
+                        className="w-full inline-flex items-center justify-center gap-2 py-2.5 bg-nss-blue text-white font-bold text-sm rounded-xl hover:bg-blue-800 transition-colors shadow-sm"
+                      >
+                        Manage & Mark Attendance <ArrowRight size={16} />
+                      </Link>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           )}
         </div>
@@ -457,27 +618,32 @@ export default function VolunteerActivitiesPage() {
     
       {/* MODAL: Raise Attendance Issue with 2024 Batch Notice */}
       {showIssueModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-xl overflow-hidden flex flex-col max-h-[90vh]">
-            <div className="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/60">
+            <div className="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/80">
               <div>
                 <h3 className="text-base font-black text-gray-900 flex items-center gap-2">
                   <AlertCircle className="text-amber-600" size={18} /> Report Attendance Issue
                 </h3>
                 <p className="text-xs text-gray-500">Submit an inquiry if your attendance was marked absent or left pending.</p>
               </div>
-              <button onClick={() => setShowIssueModal(false)} className="text-gray-400 hover:text-gray-600 font-bold text-sm cursor-pointer p-1">✕</button>
+              <button 
+                onClick={() => setShowIssueModal(false)} 
+                className="text-gray-400 hover:text-gray-600 font-bold text-sm cursor-pointer p-1 rounded-lg hover:bg-gray-200"
+              >
+                ✕
+              </button>
             </div>
 
             <div className="p-6 space-y-4 overflow-y-auto">
               {/* Special 2024 Batch Disclaimer */}
-              <div className="p-4 bg-amber-50 border border-amber-200 rounded-2xl text-xs space-y-1.5 shadow-2xs">
-                <div className="flex items-center gap-1.5 text-amber-950 font-black text-xs">
-                  <AlertCircle size={15} className="text-amber-600 shrink-0" />
+              <div className="p-4 bg-amber-50 border border-amber-200 rounded-2xl text-xs space-y-2 shadow-2xs">
+                <div className="flex items-center gap-1.5 text-amber-950 font-black text-xs md:text-sm">
+                  <AlertCircle size={16} className="text-amber-600 shrink-0" />
                   <span>Important Notice Regarding 2024 Batch Attendance</span>
                 </div>
-                <p className="text-amber-800 leading-relaxed font-medium text-[11px] sm:text-xs text-justify">
-                  Agar aap 2024 batch ke volunteer hain aur orientation ke baad ke kuch events me aapka status &apos;Absent&apos; marked hai, toh yeh isiliye hai kyunki aapne NSS Unit late join kiya tha. 2024 batch me sabhi volunteers ki attendance Orientation Program se hi calculate ho rahi hai. Late join karne ke kaaran orientation ke baad ke initial events me aapka status absent show hoga.
+                <p className="text-amber-900 leading-relaxed font-medium text-xs text-justify">
+                  Agar aap 2024 batch ke volunteer hain aur orientation ke baad ke kuch events me aapka status &apos;Absent&apos; marked hai, toh yeh isiliye hai kyunki aapne NSS Unit late join kiya tha. 2024 batch me sabhi volunteers ki attendance Orientation Program se hi count hogi. Late join karne ke kaaran orientation ke baad ke initial events me aapka status absent show hoga.
                 </p>
               </div>
 
@@ -486,14 +652,17 @@ export default function VolunteerActivitiesPage() {
                   <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
                     <CheckCircle2 size={22} />
                   </div>
-                  <h4 className="text-sm font-black text-emerald-900">Request Submitted</h4>
+                  <h4 className="text-sm font-black text-emerald-900">Request Submitted Successfully</h4>
                   <p className="text-xs text-emerald-700">{issueSuccessMessage}</p>
                   <button
                     type="button"
-                    onClick={() => setShowIssueModal(false)}
-                    className="mt-2 px-4 py-1.5 bg-white border border-emerald-300 text-emerald-800 font-bold text-xs rounded-xl hover:bg-emerald-50 transition-colors cursor-pointer"
+                    onClick={() => {
+                      setShowIssueModal(false);
+                      setShowMyIssuesDrawer(true);
+                    }}
+                    className="mt-2 px-5 py-2 bg-emerald-600 text-white font-bold text-xs rounded-xl hover:bg-emerald-700 transition-colors cursor-pointer shadow-xs"
                   >
-                    Done
+                    View My Requests
                   </button>
                 </div>
               ) : (
@@ -504,14 +673,15 @@ export default function VolunteerActivitiesPage() {
                       value={selectedActivityForIssue}
                       onChange={(e) => setSelectedActivityForIssue(e.target.value)}
                       required
-                      className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold focus:bg-white focus:outline-none focus:border-nss-blue"
+                      className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold focus:bg-white focus:outline-none focus:border-nss-blue cursor-pointer"
                     >
                       <option value="">-- Choose an enrolled event --</option>
                       {registeredActivities.map((reg) => {
                         const act = reg.activityId || {};
+                        const status = reg.attendanceStatus === 'ATTENDED' ? 'Present' : reg.attendanceStatus === 'BUNKED' ? 'Absent' : 'Pending';
                         return (
                           <option key={reg._id} value={act._id}>
-                            {act.title || 'Event'} ({reg.attendanceStatus || 'Pending'})
+                            {act.title || 'Event'} (Status: {status})
                           </option>
                         );
                       })}
@@ -523,12 +693,12 @@ export default function VolunteerActivitiesPage() {
                     <select
                       value={issueType}
                       onChange={(e) => setIssueType(e.target.value)}
-                      className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold focus:bg-white focus:outline-none focus:border-nss-blue"
+                      className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold focus:bg-white focus:outline-none focus:border-nss-blue cursor-pointer"
                     >
-                      <option value="MARKED_ABSENT_INSTEAD_OF_PRESENT">Marked Absent instead of Present</option>
-                      <option value="ATTENDANCE_NOT_MARKED">Attendance Not Marked / Showing Pending</option>
-                      <option value="INCORRECT_HOURS">Incorrect NSS Hours Credited</option>
-                      <option value="OTHER">Other Discrepancy</option>
+                      <option value="MARKED_ABSENT_INSTEAD_OF_PRESENT">I was present but marked absent</option>
+                      <option value="ATTENDANCE_NOT_MARKED">Attendance not marked / showing pending</option>
+                      <option value="INCORRECT_HOURS">Incorrect NSS hours credited</option>
+                      <option value="OTHER">Other discrepancy</option>
                     </select>
                   </div>
 
@@ -539,7 +709,7 @@ export default function VolunteerActivitiesPage() {
                       required
                       value={issueDescription}
                       onChange={(e) => setIssueDescription(e.target.value)}
-                      placeholder="Please specify your assigned duty, event manager name, or proof that you attended..."
+                      placeholder="Please specify your assigned duty, event manager name, or proof that you attended this activity..."
                       className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:border-nss-blue transition-all"
                     ></textarea>
                   </div>
@@ -555,7 +725,7 @@ export default function VolunteerActivitiesPage() {
                     <button
                       type="submit"
                       disabled={isSubmittingIssue}
-                      className="px-5 py-2 bg-nss-blue hover:bg-blue-900 text-white font-bold rounded-xl text-xs transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs disabled:opacity-50"
+                      className="px-5 py-2 bg-gradient-to-r from-nss-blue to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white font-bold rounded-xl text-xs transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs disabled:opacity-50"
                     >
                       <Send size={13} /> {isSubmittingIssue ? 'Submitting...' : 'Submit Issue'}
                     </button>
