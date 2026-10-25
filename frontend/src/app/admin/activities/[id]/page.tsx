@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { 
   ArrowLeft, CheckCircle, XCircle, Clock, Save, Edit, Trash2, 
-  Users, FileText, Upload, Download, Plus, Search, UserX, UserPlus, 
+  Users, FileText, Upload, Download, Plus, Search, UserX, UserCheck, UserPlus, 
   AlertCircle, CheckCircle2, Briefcase, ShieldCheck, ToggleLeft, ToggleRight,
   FileSpreadsheet, Image as ImageIcon, ExternalLink, RefreshCw, Eye, Lock, Unlock
 } from 'lucide-react';
@@ -492,6 +492,19 @@ export default function ManageActivityPage() {
     }
   };
 
+    const handleMarkAllPresent = () => {
+    const targets = volunteerSearchQuery.trim() ? filteredRegistrations : volunteerRegistrations;
+    if (targets.length === 0) {
+      alert('No registered volunteers found to mark as present.');
+      return;
+    }
+    const nextUpdates: Record<string, string> = { ...attendanceUpdates };
+    targets.forEach(reg => {
+      nextUpdates[reg._id] = 'ATTENDED';
+    });
+    setAttendanceUpdates(nextUpdates);
+  };
+
   const handleAttendanceChange = (regId: string, status: string) => {
     setAttendanceUpdates(prev => ({ ...prev, [regId]: status }));
   };
@@ -785,6 +798,14 @@ export default function ManageActivityPage() {
                   </button>
 
                   <button
+                    type="button"
+                    onClick={handleMarkAllPresent}
+                    className="px-3 py-2 bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <UserCheck size={14} /> Mark All Present
+                  </button>
+
+                  <button
                     onClick={() => setShowBulkAbsentModal(true)}
                     className="px-3 py-2 bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
                   >
@@ -796,7 +817,7 @@ export default function ManageActivityPage() {
                     onClick={handleBatchAttendanceSave}
                     className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 disabled:opacity-50 shadow-xs cursor-pointer"
                   >
-                    <Save size={14} /> {isSavingAttendance ? 'Saving...' : 'Save Attendance'}
+                    <Save size={14} /> {isSavingAttendance ? 'Saving...' : Object.keys(attendanceUpdates).length > 0 ? `Save Attendance (${Object.keys(attendanceUpdates).length})` : 'Save Attendance'}
                   </button>
                 </div>
               </div>
