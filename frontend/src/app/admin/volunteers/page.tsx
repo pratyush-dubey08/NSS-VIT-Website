@@ -108,7 +108,7 @@ This will also remove their attendance and participation records across all even
 
     try {
       setIsDeletingBulk(true);
-      const { data } = await api.post('/users/bulk-delete', { userIds: selectedIds });
+      const { data } = await api.post('/users/bulk-delete', { ids: selectedIds, userIds: selectedIds });
       alert(data.message || `Successfully deleted ${count} volunteers.`);
       setSelectedIds([]);
       fetchVolunteers();
