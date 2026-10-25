@@ -138,7 +138,93 @@ export default function ManageActivityPage() {
   }, [id]);
 
   // Attendance Handlers
-    const handleMarkAllPresent = () => {
+    
+  // Dynamic Attendance Breakdown Stats
+  const attendanceStats = (() => {
+    const volRegs = registrations.filter(r => r.registrationType === 'VOLUNTEER' || (!r.responses || r.responses.length === 0));
+    let present = 0;
+    let absent = 0;
+    let unmarked = 0;
+
+    volRegs.forEach(r => {
+      const status = attendanceUpdates[r._id] || r.attendanceStatus;
+      if (status === 'ATTENDED' || status === 'Present') {
+        present++;
+      } else if (status === 'BUNKED' || status === 'Absent') {
+        absent++;
+      } else {
+        unmarked++;
+      }
+    });
+
+    return { total: volRegs.length, present, absent, unmarked };
+  })();
+
+  // One-Click Attendance Excel/CSV Export
+  const handleExportAttendanceSheet = () => {
+    const volRegs = volunteerSearch.trim() ? filteredVolunteers : volunteerRegistrations;
+    if (volRegs.length === 0) {
+      alert('No volunteer attendance data available to export.');
+      return;
+    }
+
+    const headers = [
+      'S.No.',
+      'Volunteer Name',
+      'Registration Number',
+      'Email Address',
+      'Contact Number',
+      'Attendance Status',
+      'Allocated NSS Hours',
+      'Certificate Status',
+      'Activity Title',
+      'Activity Date',
+      'Venue'
+    ];
+
+    const escapeCsv = (val: any) => {
+      if (val === null || val === undefined) return '""';
+      const s = String(val).replace(/"/g, '""');
+      return `"${s}"`;
+    };
+
+    const rows = volRegs.map((reg, idx) => {
+      const currentStatus = attendanceUpdates[reg._id] || reg.attendanceStatus;
+      let statusLabel = 'Unmarked / Pending';
+      if (currentStatus === 'ATTENDED' || currentStatus === 'Present') statusLabel = 'Present';
+      else if (currentStatus === 'BUNKED' || currentStatus === 'Absent') statusLabel = 'Absent';
+
+      return [
+        escapeCsv(idx + 1),
+        escapeCsv(reg.userId?.name || reg.fullName || 'Unknown'),
+        escapeCsv(reg.userId?.registrationNumber || reg.registrationNumber || '-'),
+        escapeCsv(reg.userId?.email || reg.email || '-'),
+        escapeCsv(reg.userId?.phoneNumber || '-'),
+        escapeCsv(statusLabel),
+        escapeCsv(activity?.allocatedHours ? `${activity.allocatedHours} Hours` : '-'),
+        escapeCsv(reg.certificateUrl ? 'Assigned' : 'Not Assigned'),
+        escapeCsv(activity?.title || ''),
+        escapeCsv(activity?.date ? new Date(activity.date).toLocaleDateString() : ''),
+        escapeCsv(activity?.venue || '')
+      ];
+    });
+
+    const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+
+    const cleanTitle = (activity?.title || 'Activity').replace(/[^a-zA-Z0-9]/g, '_');
+    const dateStr = new Date().toISOString().split('T')[0];
+    link.href = url;
+    link.setAttribute('download', `${cleanTitle}_Volunteer_Attendance_${dateStr}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleMarkAllPresent = () => {
     const targets = volunteerSearch.trim() ? filteredVolunteers : volunteerRegistrations;
     if (targets.length === 0) {
       alert('No registered volunteers found to mark as present.');
@@ -652,6 +738,14 @@ export default function ManageActivityPage() {
                     <UserX size={14} /> Bulk Mark Absent
                   </button>
 
+                  <button
+                    type="button"
+                    onClick={handleExportAttendanceSheet}
+                    className="px-3.5 py-2 bg-emerald-50 text-emerald-800 border border-emerald-300 hover:bg-emerald-100 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                    title="Export complete volunteer attendance list to Excel/CSV"
+                  >
+                    <FileSpreadsheet size={14} className="text-emerald-700" /> Export Excel
+                  </button>
                   <button
                     disabled={isSavingAttendance || Object.keys(attendanceUpdates).length === 0}
                     onClick={handleBatchAttendanceSave}
