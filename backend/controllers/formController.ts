@@ -430,6 +430,35 @@ export const addManualRegistration = async (req: Request, res: Response) => {
   }
 };
 
+
+export const bulkDeleteRegistrations = async (req: Request, res: Response) => {
+  try {
+    const ids = req.body.registrationIds || req.body.ids;
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ message: 'No registration IDs provided' });
+    }
+
+    const userRole = (req as any).user.role;
+    const userId = (req as any).user.userId;
+
+    if (userRole === 'VOLUNTEER' || userRole === 'EVENT_MANAGER') {
+      const sample = await Registration.findOne({ _id: { $in: ids } });
+      if (sample) {
+        const activity = await Activity.findById(sample.activityId);
+        if (!activity) return res.status(404).json({ message: 'Activity not found' });
+        const isManager = activity.eventManagers.some(m => m.toString() === userId);
+        if (!isManager) return res.status(403).json({ message: 'Not authorized' });
+      }
+    }
+
+    const result = await Registration.deleteMany({ _id: { $in: ids } });
+    res.json({ message: `${result.deletedCount} registrations deleted successfully`, deletedCount: result.deletedCount });
+  } catch (error) {
+    console.error('Error bulk deleting registrations:', error);
+    res.status(500).json({ message: 'Error bulk deleting registrations' });
+  }
+};
+
 export const deleteRegistration = async (req: Request, res: Response) => {
   try {
     const { registrationId } = req.params;

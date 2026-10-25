@@ -9,6 +9,7 @@ import {
   batchMarkAttendance,
   addManualRegistration,
   deleteRegistration,
+  bulkDeleteRegistrations,
   getMyRegistrations
 } from '../controllers/formController';
 import { authenticate, authorize } from '../middleware/authMiddleware';
@@ -37,6 +38,7 @@ router.get('/activity/:activityId/registrations', authenticate, authorize([Role.
 router.put('/registrations/:registrationId/status', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER, Role.EVENT_MANAGER, Role.VOLUNTEER]), updateRegistrationStatus);
 router.put('/registrations/attendance/batch', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER, Role.EVENT_MANAGER, Role.VOLUNTEER]), batchMarkAttendance);
 router.put('/registrations/:registrationId/attendance', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER, Role.EVENT_MANAGER, Role.VOLUNTEER]), markAttendance);
+router.post('/registrations/bulk-delete', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER, Role.EVENT_MANAGER, Role.VOLUNTEER]), bulkDeleteRegistrations);
 router.delete('/registrations/:registrationId', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER, Role.EVENT_MANAGER, Role.VOLUNTEER]), deleteRegistration);
 
 export default router;

@@ -35,6 +35,44 @@ export default function ManageActivityPage() {
   const [attendanceUpdates, setAttendanceUpdates] = useState<Record<string, string>>({});
   const [isSavingAttendance, setIsSavingAttendance] = useState(false);
 
+  const [selectedRegIds, setSelectedRegIds] = useState<string[]>([]);
+  const [isDeletingBulkRegs, setIsDeletingBulkRegs] = useState(false);
+
+  const handleToggleSelectAll = () => {
+    if (selectedRegIds.length === filteredVolunteers.length) {
+      setSelectedRegIds([]);
+    } else {
+      setSelectedRegIds(filteredVolunteers.map(r => r._id));
+    }
+  };
+
+  const handleToggleSelectOne = (id: string) => {
+    setSelectedRegIds(prev => 
+      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+    );
+  };
+
+  const handleBulkDeleteRegistrations = async () => {
+    if (selectedRegIds.length === 0) return;
+    const count = selectedRegIds.length;
+    if (!window.confirm(`Are you sure you want to permanently remove ${count} selected volunteer record${count > 1 ? 's' : ''} from this activity?`)) {
+      return;
+    }
+    setIsDeletingBulkRegs(true);
+    try {
+      await api.post('/forms/registrations/bulk-delete', { registrationIds: selectedRegIds, ids: selectedRegIds });
+      setRegistrations(prev => prev.filter(r => !selectedRegIds.includes(r._id)));
+      setSelectedRegIds([]);
+      alert(`Successfully removed ${count} volunteer record${count > 1 ? 's' : ''}.`);
+    } catch (err: any) {
+      console.error('Error deleting registrations:', err);
+      alert(err.response?.data?.message || 'Failed to delete selected volunteers.');
+    } finally {
+      setIsDeletingBulkRegs(false);
+    }
+  };
+
+
   // Form Builder & Settings States
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(true);
   const [isFormLockedForManagers, setIsFormLockedForManagers] = useState(false);
@@ -756,11 +794,60 @@ export default function ManageActivityPage() {
                 </div>
               </div>
 
+              
+              {/* Selected Volunteers Bulk Action Bar */}
+              {selectedRegIds.length > 0 && (
+                <div className="px-5 py-3 bg-rose-50/90 border-b border-rose-200 flex items-center justify-between gap-4 flex-wrap">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-black text-rose-950 flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-rose-600 inline-block animate-pulse"></span>
+                      {selectedRegIds.length} of {filteredVolunteers.length} volunteers selected
+                    </span>
+                    {selectedRegIds.length < filteredVolunteers.length && (
+                      <button
+                        type="button"
+                        onClick={() => setSelectedRegIds(filteredVolunteers.map(r => r._id))}
+                        className="text-xs text-nss-blue font-black hover:underline cursor-pointer"
+                      >
+                        Select All ({filteredVolunteers.length})
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedRegIds([])}
+                      className="px-3 py-1.5 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-xs font-bold rounded-xl transition-colors cursor-pointer shadow-2xs"
+                    >
+                      Clear Selection
+                    </button>
+                    <button
+                      type="button"
+                      disabled={isDeletingBulkRegs}
+                      onClick={handleBulkDeleteRegistrations}
+                      className="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs disabled:opacity-50"
+                    >
+                      <Trash2 size={13} /> {isDeletingBulkRegs ? 'Deleting...' : `Delete Selected (${selectedRegIds.length})`}
+                    </button>
+                  </div>
+                </div>
+              )}
+
               {/* Attendance Table */}
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse min-w-[700px]">
                   <thead>
                     <tr className="bg-gray-50/80 border-b border-gray-100 text-[11px] font-bold text-gray-500 uppercase tracking-wider">
+                      <th className="p-4 w-12 text-center">
+                        <input
+                          type="checkbox"
+                          checked={filteredVolunteers.length > 0 && selectedRegIds.length === filteredVolunteers.length}
+                          onChange={handleToggleSelectAll}
+                          className="w-4 h-4 text-nss-blue rounded cursor-pointer accent-nss-blue"
+                          title="Select All"
+                        />
+                      </th>
                       <th className="p-4">Volunteer</th>
                       <th className="p-4">Registration No.</th>
                       <th className="p-4">Attendance Status</th>
@@ -769,7 +856,7 @@ export default function ManageActivityPage() {
                   <tbody className="divide-y divide-gray-100">
                     {filteredVolunteers.length === 0 ? (
                       <tr>
-                        <td colSpan={3} className="p-12 text-center text-gray-400 font-medium text-xs">
+                        <td colSpan={4} className="p-12 text-center text-gray-400 font-medium text-xs">
                           {volunteerSearch ? 'No volunteers match your search.' : 'No volunteers registered for this activity yet.'}
                         </td>
                       </tr>
@@ -779,7 +866,15 @@ export default function ManageActivityPage() {
                       const isAbsent = currentStatus === 'BUNKED' || currentStatus === 'Absent';
 
                       return (
-                        <tr key={reg._id} className="hover:bg-slate-50/60 transition-colors text-xs">
+                        <tr key={reg._id} className={'hover:bg-slate-50/60 transition-colors text-xs ' + (selectedRegIds.includes(reg._id) ? 'bg-rose-50/30' : '')}>
+                          <td className="p-4 w-12 text-center">
+                            <input
+                              type="checkbox"
+                              checked={selectedRegIds.includes(reg._id)}
+                              onChange={() => handleToggleSelectOne(reg._id)}
+                              className="w-4 h-4 text-nss-blue rounded cursor-pointer accent-nss-blue"
+                            />
+                          </td>
                           <td className="p-4 font-bold text-gray-900">{reg.userId?.name || reg.fullName || 'Unknown'}</td>
                           <td className="p-4 text-gray-600 font-mono">{reg.userId?.registrationNumber || reg.registrationNumber || '-'}</td>
                           
