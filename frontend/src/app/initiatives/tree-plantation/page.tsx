@@ -1,9 +1,19 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { Newspaper, Trees, Calendar, Users, MapPin, Award } from 'lucide-react';
+import { useState } from 'react';
+
+
+import { motion, AnimatePresence } from 'framer-motion';
+import { Newspaper, Trees, Calendar, Users, MapPin, Award, ZoomIn, X } from 'lucide-react';
 
 export default function TreePlantationPage() {
+  const [selectedPressImage, setSelectedPressImage] = useState<string | null>(null);
+
+  const pressReleases = [
+    '/images/press_plantation/IMG-20260827-WA0031.jpg',
+    '/images/press_plantation/IMG-20260827-WA0032.jpg',
+    '/images/press_plantation/IMG-20260827-WA0034.jpg',
+  ];
   const plantationGallery = [
     {
       url: "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790377/nss_vit_website/ke8hwjewhh35reol1qbv.jpg",
@@ -159,18 +169,52 @@ export default function TreePlantationPage() {
             </h3>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start max-w-4xl mx-auto">
-            <div className="bg-white p-4 rounded-2xl shadow-md border border-slate-200 hover:shadow-lg transition-shadow">
-               <div className="w-full bg-slate-100 rounded-xl flex items-center justify-center overflow-hidden">
-                  <img src="/images/gallery/events_2025/image30.png" className="w-full h-auto object-cover" alt="News Clipping 1" />
-               </div>
-            </div>
-            <div className="bg-white p-4 rounded-2xl shadow-md border border-slate-200 hover:shadow-lg transition-shadow">
-               <div className="w-full bg-slate-100 rounded-xl flex items-center justify-center overflow-hidden">
-                  <img src="/images/gallery/events_2025/image1.png" className="w-full h-auto object-cover" alt="News Clipping 2" />
-               </div>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 max-w-5xl mx-auto">
+            {pressReleases.map((imgSrc, idx) => (
+              <div 
+                key={idx}
+                onClick={() => setSelectedPressImage(imgSrc)}
+                className="bg-white p-2.5 rounded-2xl border border-gray-200/90 shadow-2xs hover:shadow-md hover:border-emerald-600/50 transition-all cursor-pointer group flex items-center justify-center aspect-[3/4] overflow-hidden"
+              >
+                <div className="relative w-full h-full flex items-center justify-center">
+                  <img 
+                    src={imgSrc} 
+                    alt="Plantation Drive Press Release" 
+                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" 
+                  />
+                  <div className="absolute inset-0 bg-slate-900/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-xl">
+                    <span className="p-2 rounded-full bg-white/95 text-slate-900 shadow-sm"><ZoomIn size={18} /></span>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
+
+          {/* Full Screen Lightbox Modal */}
+          <AnimatePresence>
+            {selectedPressImage && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 cursor-pointer"
+                onClick={() => setSelectedPressImage(null)}
+              >
+                <button 
+                  onClick={() => setSelectedPressImage(null)}
+                  className="absolute top-5 right-5 z-50 p-2.5 rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors"
+                >
+                  <X size={24} />
+                </button>
+                <img
+                  src={selectedPressImage}
+                  alt="Enlarged Press Release"
+                  className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl cursor-default"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
 
       </div>

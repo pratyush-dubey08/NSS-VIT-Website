@@ -168,11 +168,11 @@ export default function AnnualCampPage() {
                 const photoSrc = heroCampPhotos[photoIdx];
 
                 return (
-                  <div key={slot} className="relative h-48 sm:h-56 md:h-64 lg:h-72 rounded-2xl overflow-hidden bg-slate-900 group">
+                  <div key={slot} className="relative aspect-[4/3] sm:aspect-[16/10] md:h-52 rounded-2xl overflow-hidden bg-slate-900 group">
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={photoSrc}
-                        initial={{ opacity: 0, scale: 1.05 }}
+                        initial={{ opacity: 0, scale: 1.04 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.98 }}
                         transition={{ duration: 0.8, ease: 'easeInOut' }}
@@ -181,7 +181,8 @@ export default function AnnualCampPage() {
                         <img 
                           src={photoSrc} 
                           alt="Camp Photography" 
-                          className="w-full h-full object-cover object-center"
+                          className="absolute inset-0 w-full h-full object-cover object-center"
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
                       </motion.div>
                     </AnimatePresence>

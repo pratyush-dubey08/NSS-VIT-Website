@@ -79,7 +79,6 @@ html, body {
 
 img, video, canvas, svg {
   max-width: 100%;
-  height: auto;
 }
 
 html {

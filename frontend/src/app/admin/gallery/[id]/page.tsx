@@ -402,7 +402,8 @@ export default function AlbumDetailsPage() {
                 loading="lazy"
                 decoding="async"
                 onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image1.png'; }}
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                 <button 

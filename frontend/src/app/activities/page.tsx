@@ -71,7 +71,7 @@ export default function ActivitiesPage() {
               NSS <span className="text-transparent bg-clip-text bg-gradient-to-r from-nss-blue to-nss-red">Activities</span>
             </h1>
             <p className="text-sm sm:text-base text-slate-500 max-w-2xl mx-auto mt-2 leading-relaxed font-normal text-center">
-              Participate and register for upcoming NSS community initiatives, and explore the complete record of social service activities conducted by our unit.
+              Participate and register for upcoming NSS community initiatives, and be part of impactful community service drives dedicated to society.
             </p>
           </motion.div>
         </div>
