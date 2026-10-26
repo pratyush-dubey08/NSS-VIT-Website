@@ -50,13 +50,28 @@ jobs:
       - name: Build Debug APK
         working-directory: frontend/android
         run: |
-          ./gradlew assembleDebug --stacktrace --no-daemon
+          ./gradlew assembleDebug --stacktrace --no-daemon > gradle.log 2>&1 || (cat gradle.log && exit 1)
+          cat gradle.log | tail -n 30
+
+      - name: Discover and Copy APK
+        working-directory: frontend/android
+        run: |
           mkdir -p ../../build-artifacts
           mkdir -p ../public/downloads
-          cp -f app/build/outputs/apk/debug/*.apk ../../build-artifacts/nss-vit-bhopal.apk || cp -f $(find app/build -name "*.apk" | head -n 1) ../../build-artifacts/nss-vit-bhopal.apk
-          cp -f ../../build-artifacts/nss-vit-bhopal.apk ../public/downloads/nss-vit-bhopal.apk
-          ls -lh ../../build-artifacts/
-          ls -lh ../public/downloads/
+          echo "=== FINDING ALL .APK FILES ==="
+          find . -name "*.apk"
+          APK=$(find . -name "*.apk" | head -n 1)
+          if [ -n "$APK" ]; then
+            echo "Copying $APK"
+            cp -v "$APK" ../../build-artifacts/nss-vit-bhopal.apk
+            cp -v "$APK" ../public/downloads/nss-vit-bhopal.apk
+            ls -lh ../../build-artifacts/
+            ls -lh ../public/downloads/
+          else
+            echo "No APK found, listing app/build:"
+            find app/build -maxdepth 4 || true
+            exit 1
+          fi
 
       - name: Upload APK as Workflow Artifact
         uses: actions/upload-artifact@v4
@@ -68,6 +83,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          gh release upload v1.0.0 build-artifacts/nss-vit-bhopal.apk --clobber || \
           gh release create v1.0.0 build-artifacts/nss-vit-bhopal.apk \
             --title "NSS VIT Bhopal Official Android App v1.0.0" \
             --notes "Official Android Mobile Application for NSS Unit, VIT Bhopal University." \
