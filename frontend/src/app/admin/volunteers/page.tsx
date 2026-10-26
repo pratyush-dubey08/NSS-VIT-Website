@@ -44,6 +44,7 @@ export default function AdminVolunteers() {
   const [selectedReportVolunteer, setSelectedReportVolunteer] = useState<any>(null);
   const [isChangeRequestsModalOpen, setIsChangeRequestsModalOpen] = useState(false);
   const [pendingChangeRequestsCount, setPendingChangeRequestsCount] = useState(0);
+  const [selectedBatchTab, setSelectedBatchTab] = useState<string>('All');
 
   // Multi-select state
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -191,9 +192,23 @@ This will also remove their attendance and participation records across all even
     }
   };
 
-  // Select all filtered volunteers
+  const filteredVolunteers = volunteers.filter(v => 
+    v.name?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    v.registrationNumber?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    v.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    v.phoneNumber?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Batch filtering logic
+  const displayedVolunteers = filteredVolunteers.filter(v => {
+    if (selectedBatchTab === 'All') return true;
+    if (selectedBatchTab === 'Unassigned') return !(v.batch ? String(v.batch) : '').trim();
+    return String(v.batch || '').trim() === selectedBatchTab;
+  });
+
+  // Select all filtered/displayed volunteers
   const handleSelectAllFiltered = () => {
-    const allFilteredIds = filteredVolunteers.map(v => v._id);
+    const allFilteredIds = displayedVolunteers.map(v => v._id);
     setSelectedIds(allFilteredIds);
   };
 
@@ -201,13 +216,6 @@ This will also remove their attendance and participation records across all even
   const handleClearSelection = () => {
     setSelectedIds([]);
   };
-
-  const filteredVolunteers = volunteers.filter(v => 
-    v.name?.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    v.registrationNumber?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    v.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    v.phoneNumber?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
   const getStats = (batchData: any[]) => {
     const total = batchData.length;
@@ -520,15 +528,22 @@ This will also remove their attendance and participation records across all even
         </div>
       </div>
 
-      {/* Stats Cards - Dynamic Generation for All Batches */}
+      {/* Stats Cards - Dynamic Generation for All Batches (Interactive Filters) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {/* Total Volunteers Card */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+        <div 
+          onClick={() => setSelectedBatchTab('All')}
+          title="Click to view all batches"
+          className={"bg-white p-6 rounded-2xl shadow-sm border transition-all cursor-pointer hover:shadow-md " + (selectedBatchTab === 'All' ? 'ring-2 ring-nss-blue border-nss-blue bg-blue-50/20' : 'border-gray-100') + " flex items-center gap-4"}
+        >
           <div className="w-12 h-12 bg-blue-50 text-nss-blue rounded-xl flex items-center justify-center shrink-0">
             <Users size={24} />
           </div>
           <div>
-            <p className="text-sm font-bold text-gray-500">Total Volunteers</p>
+            <div className="flex items-center gap-1.5">
+              <p className="text-sm font-bold text-gray-500">Total Volunteers</p>
+              {selectedBatchTab === 'All' && <span className="w-2 h-2 rounded-full bg-nss-blue" />}
+            </div>
             <p className="text-2xl font-black text-gray-900">{filteredVolunteers.length}</p>
           </div>
         </div>
@@ -546,14 +561,23 @@ This will also remove their attendance and participation records across all even
             { bg: 'bg-rose-50', text: 'text-rose-600' },
           ];
           const color = colorStyles[idx % colorStyles.length];
+          const isActive = selectedBatchTab === batchYear;
 
           return (
-            <div key={batchYear} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
-              <div className={`w-12 h-12 ${color.bg} ${color.text} rounded-xl flex items-center justify-center shrink-0`}>
+            <div 
+              key={batchYear} 
+              onClick={() => setSelectedBatchTab(batchYear)}
+              title={"Click to show only Batch " + batchYear}
+              className={"bg-white p-6 rounded-2xl shadow-sm border transition-all cursor-pointer hover:shadow-md " + (isActive ? 'ring-2 ring-nss-blue border-nss-blue bg-blue-50/20' : 'border-gray-100') + " flex items-center gap-4"}
+            >
+              <div className={"w-12 h-12 " + color.bg + " " + color.text + " rounded-xl flex items-center justify-center shrink-0"}>
                 <User size={24} />
               </div>
               <div className="w-full min-w-0">
-                <p className="text-sm font-bold text-gray-500 truncate">{batchYear} Batch</p>
+                <div className="flex items-center gap-1.5">
+                  <p className="text-sm font-bold text-gray-500 truncate">{batchYear} Batch</p>
+                  {isActive && <span className="w-2 h-2 rounded-full bg-nss-blue" />}
+                </div>
                 <div className="flex justify-between items-end gap-2">
                   <p className="text-2xl font-black text-gray-900">{stats.total}</p>
                   <div className="text-right text-xs text-gray-500 whitespace-nowrap">
@@ -565,6 +589,52 @@ This will also remove their attendance and participation records across all even
             </div>
           );
         })}
+      </div>
+
+      {/* Batch Quick Filter Buttons Bar */}
+      <div className="flex flex-wrap items-center gap-2 bg-white p-3 rounded-2xl border border-gray-100 shadow-sm">
+        <span className="text-xs font-black text-gray-500 uppercase tracking-wider px-2">Filter Batch:</span>
+        <button
+          type="button"
+          onClick={() => setSelectedBatchTab('All')}
+          className={"px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center gap-2 cursor-pointer " + (selectedBatchTab === 'All' ? 'bg-nss-blue text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200')}
+        >
+          <span>All Batches</span>
+          <span className={"px-2 py-0.5 rounded-full text-[11px] font-black " + (selectedBatchTab === 'All' ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-700')}>
+            {filteredVolunteers.length}
+          </span>
+        </button>
+
+        {distinctBatches.map(batchYear => {
+          const count = (batchMap.get(batchYear) || []).length;
+          const isActive = selectedBatchTab === batchYear;
+          return (
+            <button
+              key={batchYear}
+              type="button"
+              onClick={() => setSelectedBatchTab(batchYear)}
+              className={"px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center gap-2 cursor-pointer " + (isActive ? 'bg-nss-blue text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200')}
+            >
+              <span>{batchYear} Batch</span>
+              <span className={"px-2 py-0.5 rounded-full text-[11px] font-black " + (isActive ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-700')}>
+                {count}
+              </span>
+            </button>
+          );
+        })}
+
+        {unassignedVolunteers.length > 0 && (
+          <button
+            type="button"
+            onClick={() => setSelectedBatchTab('Unassigned')}
+            className={"px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center gap-2 cursor-pointer " + (selectedBatchTab === 'Unassigned' ? 'bg-nss-blue text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200')}
+          >
+            <span>Unassigned</span>
+            <span className={"px-2 py-0.5 rounded-full text-[11px] font-black " + (selectedBatchTab === 'Unassigned' ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-700')}>
+              {unassignedVolunteers.length}
+            </span>
+          </button>
+        )}
       </div>
 
       {/* Controls & Search */}
@@ -599,7 +669,7 @@ This will also remove their attendance and participation records across all even
                 onClick={handleSelectAllFiltered}
                 className="text-xs font-semibold text-gray-700 hover:text-nss-blue px-2.5 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
               >
-                Select All ({filteredVolunteers.length})
+                Select All ({displayedVolunteers.length})
               </button>
             </div>
           ) : (
@@ -608,7 +678,7 @@ This will also remove their attendance and participation records across all even
               disabled={filteredVolunteers.length === 0}
               className="flex items-center gap-1.5 text-xs font-bold text-gray-600 hover:text-nss-blue px-3 py-2 rounded-xl hover:bg-gray-50 border border-gray-200 transition-colors disabled:opacity-50"
             >
-              <CheckSquare size={14} /> Select All Volunteers
+              <CheckSquare size={14} /> Select All ({displayedVolunteers.length})
             </button>
           )}
         </div>
@@ -664,19 +734,30 @@ This will also remove their attendance and participation records across all even
         </div>
       ) : (
         <>
-          {distinctBatches.map(batchYear => {
+          {(selectedBatchTab === 'All' ? distinctBatches : distinctBatches.filter(b => b === selectedBatchTab)).map(batchYear => {
             const batchList = batchMap.get(batchYear) || [];
             return (
               <div key={batchYear}>
-                <h2 className="text-xl font-black text-gray-900 mt-8 mb-4 flex items-center gap-2">
-                  Batch {batchYear} <span className="text-sm font-semibold text-gray-500">({batchList.length} volunteers)</span>
-                </h2>
+                <div className="flex items-center justify-between mt-8 mb-4">
+                  <h2 className="text-xl font-black text-gray-900 flex items-center gap-2">
+                    Batch {batchYear} <span className="text-sm font-semibold text-gray-500">({batchList.length} volunteers)</span>
+                  </h2>
+                  {selectedBatchTab !== 'All' && (
+                    <button
+                      type="button"
+                      onClick={() => setSelectedBatchTab('All')}
+                      className="text-xs font-bold text-nss-blue hover:underline cursor-pointer"
+                    >
+                      ← Back to All Batches
+                    </button>
+                  )}
+                </div>
                 {renderTable(batchList, `Batch ${batchYear}`)}
               </div>
             );
           })}
 
-          {unassignedVolunteers.length > 0 && (
+          {(selectedBatchTab === 'All' || selectedBatchTab === 'Unassigned') && unassignedVolunteers.length > 0 && (
             <div>
               <h2 className="text-xl font-black text-gray-900 mt-8 mb-4 flex items-center gap-2">
                 Other / Unassigned <span className="text-sm font-semibold text-gray-500">({unassignedVolunteers.length} volunteers)</span>
