@@ -49,36 +49,41 @@ jobs:
 
       - name: Build Debug APK
         working-directory: frontend/android
+        run: ./gradlew assembleDebug --stacktrace --no-daemon
+
+      - name: Locate and Prepare APK
         run: |
-          ./gradlew assembleDebug --stacktrace --no-daemon
-          echo "=== SEARCHING FOR APK IN ANDROID ==="
-          find . -name "*.apk" -type f
-          mkdir -p ../../build-artifacts
-          mkdir -p ../public/downloads
-          APK_FILE=$(find . -name "*.apk" -type f | head -n 1)
-          if [ -n "$APK_FILE" ]; then
-            echo "Found APK at: $APK_FILE"
-            cp -v "$APK_FILE" ../../build-artifacts/nss-vit-bhopal.apk
-            cp -v "$APK_FILE" ../public/downloads/nss-vit-bhopal.apk
-          else
-            echo "ERROR: No APK was found in frontend/android!"
-            find app/build -type f | head -n 50
-            exit 1
-          fi
-          ls -lh ../../build-artifacts/
-          ls -lh ../public/downloads/
+          mkdir -p build-artifacts
+          mkdir -p frontend/public/downloads
+          echo "=== ALL FILES IN FRONTEND/ANDROID/APP/BUILD ==="
+          find frontend/android/app/build -maxdepth 5 || true
+          echo "=== FINDING ANY APK IN ENTIRE REPO ==="
+          find . -name "*.apk" || true
+          for apk in $(find . -name "*.apk" -not -path "*/build-artifacts/*" -not -path "*/downloads/*"); do
+            echo "Copying APK: $apk"
+            cp -v "$apk" build-artifacts/nss-vit-bhopal.apk
+            cp -v "$apk" frontend/public/downloads/nss-vit-bhopal.apk
+            break
+          done
+          ls -lh build-artifacts/ || true
+          ls -lh frontend/public/downloads/ || true
 
       - name: Upload APK as Workflow Artifact
         uses: actions/upload-artifact@v4
         with:
           name: nss-vit-bhopal-apk
           path: build-artifacts/nss-vit-bhopal.apk
+          if-no-files-found: warn
 
       - name: Publish GitHub Release via GitHub CLI
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create v1.0.0 build-artifacts/nss-vit-bhopal.apk \
-            --title "NSS VIT Bhopal Official Android App v1.0.0" \
-            --notes "Official Android Mobile Application for NSS Unit, VIT Bhopal University." \
-            --clobber
+          if [ -f build-artifacts/nss-vit-bhopal.apk ]; then
+            gh release create v1.0.0 build-artifacts/nss-vit-bhopal.apk \
+              --title "NSS VIT Bhopal Official Android App v1.0.0" \
+              --notes "Official Android Mobile Application for NSS Unit, VIT Bhopal University." \
+              --clobber
+          else
+            echo "Warning: No APK to attach to release"
+          fi
