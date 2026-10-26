@@ -49,21 +49,7 @@ jobs:
 
       - name: Build Debug APK
         working-directory: frontend/android
-        run: |
-          ./gradlew assembleDebug --stacktrace --no-daemon > gradle.log 2>&1 || {
-            cat gradle.log | tail -n 100
-            exit 1
-          }
-
-      - name: Commit Failure Log on Failure
-        if: failure()
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          cp frontend/android/gradle.log ./GRADLE_FAILURE.txt || true
-          git add ./GRADLE_FAILURE.txt
-          git commit -m "Capture gradle build error [skip ci]" || true
-          git push origin main || true
+        run: ./gradlew assembleDebug --stacktrace --no-daemon
 
       - name: Discover and Copy APK
         working-directory: frontend/android
@@ -83,15 +69,6 @@ jobs:
             echo "No APK found"
             exit 1
           fi
-
-      - name: Commit Compiled APK to Public Downloads
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          rm -f ./GRADLE_FAILURE.txt
-          git add -f frontend/public/downloads/nss-vit-bhopal.apk ./GRADLE_FAILURE.txt
-          git commit -m "Publish compiled Android APK to public downloads and clear failure log [skip ci]" || true
-          git push origin main || true
 
       - name: Upload APK as Workflow Artifact
         uses: actions/upload-artifact@v4
