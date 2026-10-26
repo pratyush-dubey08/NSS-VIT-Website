@@ -80,8 +80,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload v1.0.0 build-artifacts/nss-vit-bhopal.apk --clobber || \
-          gh release create v1.0.0 build-artifacts/nss-vit-bhopal.apk \
-            --title "NSS VIT Bhopal Official Android App v1.0.0" \
+          gh release upload v1.0.0 build-artifacts/nss-vit-bhopal.apk --clobber || true
+          gh release create v1.1.0 build-artifacts/nss-vit-bhopal.apk \
+            --title "NSS VIT Bhopal Official Android App v1.1.0" \
             --notes "Official Android Mobile Application for NSS Unit, VIT Bhopal University." \
-            --clobber
+            --clobber || gh release upload v1.1.0 build-artifacts/nss-vit-bhopal.apk --clobber

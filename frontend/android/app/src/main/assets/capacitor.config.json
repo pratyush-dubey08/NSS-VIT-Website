@@ -1,9 +1,9 @@
 {
 	"appId": "com.vitbhopal.nss",
-	"appName": "NSS VIT Bhopal",
+	"appName": "NSS VIT",
 	"webDir": "public",
 	"server": {
-		"url": "https://nss-vit-website.onrender.com",
+		"url": "https://nssunitvit.vercel.app",
 		"cleartext": true,
 		"androidScheme": "https"
 	},
