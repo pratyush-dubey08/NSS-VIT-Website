@@ -61,9 +61,7 @@ jobs:
           APK=$(find . -name "*.apk" | head -n 1)
           if [ -n "$APK" ]; then
             echo "Copying $APK"
-            cp -v "$APK" ../../build-artifacts/nss-vit-v1.1.apk
             cp -v "$APK" ../../build-artifacts/nss-vit-bhopal.apk
-            cp -v "$APK" ../public/downloads/nss-vit-v1.1.apk
             cp -v "$APK" ../public/downloads/nss-vit-bhopal.apk
             ls -lh ../../build-artifacts/
             ls -lh ../public/downloads/
@@ -75,15 +73,11 @@ jobs:
       - name: Upload APK as Workflow Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: nss-vit-v1.1-apk
-          path: build-artifacts/nss-vit-v1.1.apk
+          name: nss-vit-bhopal-apk
+          path: build-artifacts/nss-vit-bhopal.apk
 
       - name: Publish GitHub Release via GitHub CLI
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload v1.0.0 build-artifacts/nss-vit-v1.1.apk build-artifacts/nss-vit-bhopal.apk --clobber || true
-          gh release create v1.1.0 build-artifacts/nss-vit-v1.1.apk build-artifacts/nss-vit-bhopal.apk \
-            --title "NSS VIT Official Android App v1.1" \
-            --notes "Official Android Mobile Application for NSS Unit, VIT Bhopal University." \
-            --clobber || gh release upload v1.1.0 build-artifacts/nss-vit-v1.1.apk build-artifacts/nss-vit-bhopal.apk --clobber
+          gh release upload v1.0.0 build-artifacts/nss-vit-bhopal.apk --clobber
