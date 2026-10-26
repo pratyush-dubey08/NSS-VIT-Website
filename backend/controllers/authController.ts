@@ -33,30 +33,43 @@ export const loginUser = async (req: Request, res: Response) => {
         return res.status(401).json({ message: 'Invalid admin credentials' });
       }
     } else {
-      if (!name || !registrationNumber) {
-        return res.status(400).json({ message: 'Name and Registration Number are required' });
+      if (!registrationNumber) {
+        return res.status(400).json({ message: 'Registration Number is required for volunteer login' });
       }
 
       const normalizedRegNo = registrationNumber.trim().toUpperCase();
-      const normalizedName = name.trim();
 
       user = await User.findOne({ registrationNumber: normalizedRegNo });
 
       if (!user) {
-        // Since we are seeding all volunteers, if they aren't in DB, they shouldn't be allowed to login.
-        return res.status(404).json({ message: 'Volunteer not found. Please contact the administrator.' });
+        return res.status(404).json({ message: 'Volunteer not found with this Registration Number. Please verify your registration number or contact the coordinator.' });
       }
 
-      if (user.name.toLowerCase() !== normalizedName.toLowerCase()) {
-        return res.status(401).json({ message: 'Name does not match the registration number' });
+      // If name is provided, verify with flexible whitespace and casing
+      if (name && name.trim()) {
+        const cleanDbName = user.name.replace(/\s+/g, ' ').trim().toLowerCase();
+        const cleanInputName = name.replace(/\s+/g, ' ').trim().toLowerCase();
+
+        const isMatch = cleanDbName === cleanInputName ||
+                        cleanDbName.includes(cleanInputName) ||
+                        cleanInputName.includes(cleanDbName);
+
+        if (!isMatch) {
+          // If name doesn't match, check if email matches
+          if (email && user.email && email.trim().toLowerCase() === user.email.toLowerCase()) {
+            // Email matches, proceed
+          } else {
+            return res.status(401).json({ message: 'Name does not match the registration record for this Registration Number' });
+          }
+        }
       }
     }
 
-    // Generate JWT
+    // Generate JWT (Valid for 365 days for persistent login)
     const token = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SECRET || 'fallback_secret',
-      { expiresIn: '7d' }
+      { expiresIn: '365d' }
     );
 
     res.status(200).json({
@@ -115,11 +128,11 @@ export const googleLoginUser = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Volunteer not found in database. Please contact the administrator.' });
     }
 
-    // Generate JWT
+    // Generate JWT (Valid for 365 days for persistent login)
     const authToken = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SECRET || 'fallback_secret',
-      { expiresIn: '7d' }
+      { expiresIn: '365d' }
     );
 
     res.status(200).json({
@@ -150,7 +163,6 @@ export const googleLoginUser = async (req: Request, res: Response) => {
 
 export const changeAdminPassword = async (req: Request, res: Response) => {
   try {
-    // Assuming req.user is set by authMiddleware
     const userId = (req as any).user.userId;
     const { currentPassword, newPassword } = req.body;
 
