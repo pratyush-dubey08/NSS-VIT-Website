@@ -5,44 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/useAuthStore';
 import api from '@/lib/axios';
-import { GoogleOAuthProvider, GoogleLogin, useGoogleOneTapLogin } from '@react-oauth/google';
-
-function VolunteerLoginSection({ onSuccess, onError, loading }: { onSuccess: (res: any) => void; onError: () => void; loading: boolean }) {
-  useGoogleOneTapLogin({
-    onSuccess,
-    onError,
-    auto_select: true,
-    cancel_on_tap_outside: false,
-  });
-
-  return (
-    <div className="space-y-6 flex flex-col items-center py-4">
-      <div className="text-center text-sm text-gray-500 mb-2">
-        Please use your official college email (<span className="font-semibold text-nss-blue">@vitbhopal.ac.in</span>) to sign in.
-      </div>
-      
-      {loading ? (
-        <div className="w-full text-center py-4 text-nss-blue font-bold animate-pulse">Authenticating with Google...</div>
-      ) : (
-        <div className="w-full flex justify-center py-2">
-          <GoogleLogin
-            onSuccess={onSuccess}
-            onError={onError}
-            useOneTap
-            auto_select
-            theme="filled_blue"
-            shape="pill"
-            size="large"
-            text="signin_with"
-          />
-        </div>
-      )}
-      <p className="text-xs text-gray-400 text-center">
-        Single-tap 1-click login with your college Google account.
-      </p>
-    </div>
-  );
-}
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
 export default function LoginPage() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -88,7 +51,7 @@ export default function LoginPage() {
   };
 
   const handleGoogleError = () => {
-    setError('Google Login was unsuccessful. Try again.');
+    setError('Google Login was unsuccessful. Please try again.');
   };
 
   return (
@@ -145,12 +108,30 @@ export default function LoginPage() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
                 transition={{ duration: 0.2 }}
+                className="space-y-6 flex flex-col items-center py-4"
               >
-                <VolunteerLoginSection 
-                  onSuccess={handleGoogleSuccess}
-                  onError={handleGoogleError}
-                  loading={loading}
-                />
+                <div className="text-center text-sm text-gray-500 mb-2">
+                  Please use your official college email (<span className="font-semibold text-nss-blue">@vitbhopal.ac.in</span>) to sign in.
+                </div>
+                
+                {loading ? (
+                  <div className="w-full text-center py-4 text-nss-blue font-bold animate-pulse">Authenticating with Google...</div>
+                ) : (
+                  <div className="w-full flex justify-center py-2">
+                    <GoogleLogin
+                      onSuccess={handleGoogleSuccess}
+                      onError={handleGoogleError}
+                      useOneTap={false}
+                      theme="filled_blue"
+                      shape="pill"
+                      size="large"
+                      text="signin_with"
+                    />
+                  </div>
+                )}
+                <p className="text-xs text-gray-400 text-center">
+                  Once signed in, you stay logged in permanently on this device.
+                </p>
               </motion.div>
             ) : (
               <motion.form 
