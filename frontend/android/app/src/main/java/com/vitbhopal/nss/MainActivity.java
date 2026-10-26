@@ -2,9 +2,11 @@ package com.vitbhopal.nss;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -12,6 +14,8 @@ import android.webkit.WebViewClient;
 import com.getcapacitor.BridgeActivity;
 
 public class MainActivity extends BridgeActivity {
+    private Dialog currentAuthDialog = null;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,36 +33,49 @@ public class MainActivity extends BridgeActivity {
             settings.setJavaScriptEnabled(true);
             settings.setDomStorageEnabled(true);
             settings.setDatabaseEnabled(true);
-            
-            // Allow OAuth popups to be created via window.open
-            settings.setSupportMultipleWindows(true);
             settings.setJavaScriptCanOpenWindowsAutomatically(true);
+            settings.setSupportMultipleWindows(true);
 
-            // Clean User-Agent removing '; wv' and 'Version/4.0' to allow Google OAuth natively
+            // Enable cookies and third-party cookies for Google session preservation
+            final CookieManager cookieManager = CookieManager.getInstance();
+            cookieManager.setAcceptCookie(true);
+            cookieManager.setAcceptThirdPartyCookies(mainWebView, true);
+
+            // Clean User-Agent removing '; wv' and 'Version/4.0'
             String ua = settings.getUserAgentString();
             if (ua != null) {
                 String cleanUa = ua.replace("; wv", "").replace("Version/4.0 ", "");
                 settings.setUserAgentString(cleanUa);
             }
 
-            // Keep Google OAuth dialogs inside an in-app popup dialog with window.opener preserved!
+            // In-app OAuth popup handler with clean lifecycle and repeatable clicks
             mainWebView.setWebChromeClient(new WebChromeClient() {
                 @Override
                 public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
+                    if (currentAuthDialog != null && currentAuthDialog.isShowing()) {
+                        try {
+                            currentAuthDialog.dismiss();
+                        } catch (Exception ignored) {}
+                    }
+
                     final Dialog authDialog = new Dialog(MainActivity.this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
-                    WebView popupWebView = new WebView(MainActivity.this);
-                    
+                    currentAuthDialog = authDialog;
+
+                    final WebView popupWebView = new WebView(MainActivity.this);
                     WebSettings popupSettings = popupWebView.getSettings();
                     popupSettings.setJavaScriptEnabled(true);
                     popupSettings.setDomStorageEnabled(true);
                     popupSettings.setDatabaseEnabled(true);
                     popupSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+                    popupSettings.setSupportMultipleWindows(true);
                     popupSettings.setUserAgentString(settings.getUserAgentString());
+
+                    cookieManager.setAcceptThirdPartyCookies(popupWebView, true);
 
                     popupWebView.setWebViewClient(new WebViewClient() {
                         @Override
                         public boolean shouldOverrideUrlLoading(WebView v, String url) {
-                            return false; // Load inside popupWebView
+                            return false;
                         }
                     });
 
@@ -69,6 +86,17 @@ public class MainActivity extends BridgeActivity {
                                 authDialog.dismiss();
                                 window.destroy();
                             } catch (Exception ignored) {}
+                            currentAuthDialog = null;
+                        }
+                    });
+
+                    authDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            try {
+                                popupWebView.destroy();
+                            } catch (Exception ignored) {}
+                            currentAuthDialog = null;
                         }
                     });
 
