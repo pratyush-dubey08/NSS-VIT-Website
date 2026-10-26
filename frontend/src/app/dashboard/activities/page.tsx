@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Calendar, 
@@ -27,10 +28,25 @@ import { useAuthStore } from '@/store/useAuthStore';
 type TabType = 'MY_EVENTS' | 'MANAGING';
 type AttendanceFilterType = 'ALL' | 'ATTENDED' | 'PENDING' | 'BUNKED';
 
-export default function VolunteerActivitiesPage() {
+function VolunteerActivitiesContent() {
   const { user } = useAuthStore();
+  const searchParams = useSearchParams();
+  const filterParam = searchParams.get('filter') as AttendanceFilterType | null;
+
   const [activeTab, setActiveTab] = useState<TabType>('MY_EVENTS');
-  const [attendanceFilter, setAttendanceFilter] = useState<AttendanceFilterType>('ALL');
+  const [attendanceFilter, setAttendanceFilter] = useState<AttendanceFilterType>(
+    filterParam && ['ALL', 'ATTENDED', 'PENDING', 'BUNKED'].includes(filterParam)
+      ? filterParam
+      : 'ALL'
+  );
+
+  useEffect(() => {
+    const f = searchParams.get('filter');
+    if (f === 'ATTENDED' || f === 'BUNKED' || f === 'PENDING' || f === 'ALL') {
+      setAttendanceFilter(f as AttendanceFilterType);
+      setActiveTab('MY_EVENTS');
+    }
+  }, [searchParams]);
   
   const [registeredActivities, setRegisteredActivities] = useState<any[]>([]);
   const [managingActivities, setManagingActivities] = useState<any[]>([]);
@@ -738,5 +754,19 @@ export default function VolunteerActivitiesPage() {
       )}
 
     </div>
+  );
+}
+
+
+export default function VolunteerActivitiesPage() {
+  return (
+    <Suspense fallback={
+      <div className="p-12 text-center text-gray-500 font-bold flex items-center justify-center gap-2">
+        <RotateCw className="animate-spin text-nss-blue" size={20} />
+        <span>Loading activities...</span>
+      </div>
+    }>
+      <VolunteerActivitiesContent />
+    </Suspense>
   );
 }

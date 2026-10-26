@@ -17,10 +17,16 @@ export default function VolunteerDashboard() {
     if (user) {
       const fetchUserData = async () => {
         try {
-          // Fetch activities where user is event manager
-          const { data: activitiesData } = await api.get('/activities');
           const currentUserId = (user._id || user.id || '').toString();
-          const allActs = Array.isArray(activitiesData) ? activitiesData : (activitiesData?.activities || []);
+
+          // Fetch all dashboard data concurrently in parallel
+          const [actsRes, myRegsRes, vfRes] = await Promise.all([
+            api.get('/activities').catch(err => { console.error('Acts fetch error', err); return { data: [] }; }),
+            api.get('/forms/my-registrations').catch(err => { console.error('Regs fetch error', err); return { data: [] }; }),
+            api.get('/volunteer-forms').catch(() => ({ data: [] }))
+          ]);
+
+          const allActs = Array.isArray(actsRes.data) ? actsRes.data : (actsRes.data?.activities || []);
           const managing = allActs.filter((a: any) => 
             a.eventManagers && a.eventManagers.some((m: any) => {
               const mId = (m._id || m.id || m)?.toString();
@@ -29,20 +35,14 @@ export default function VolunteerDashboard() {
           );
           setManagedActivities(managing);
 
-          // Fetch user's registrations (activities attended)
-          const { data: myRegistrations } = await api.get('/forms/my-registrations');
-          const validRegs = (myRegistrations || []).filter((r: any) => r.activityId != null);
+          const validRegs = (myRegsRes.data || []).filter((r: any) => r.activityId != null);
           setRegisteredActivities(validRegs);
 
-          // Fetch active volunteer forms so volunteer never misses filling them
-          try {
-            const { data: vfData } = await api.get('/volunteer-forms');
-            const now = new Date();
-            const pendingForms = (vfData || []).filter((f: any) => 
-              f.isActive && (!f.deadline || new Date(f.deadline) >= now)
-            );
-            setActiveVolunteerForms(pendingForms);
-          } catch (e) {}
+          const now = new Date();
+          const pendingForms = (vfRes.data || []).filter((f: any) => 
+            f.isActive && (!f.deadline || new Date(f.deadline) >= now)
+          );
+          setActiveVolunteerForms(pendingForms);
 
         } catch (error) {
           console.error("Error fetching dashboard data", error);
@@ -156,49 +156,90 @@ export default function VolunteerDashboard() {
         </div>
       )}
 
-      {/* Stats Grid - 3 Cards Side by Side */}
+      {/* Stats Grid - 3 Clickable Filter Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Card 1: Total Hours */}
-        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex items-center gap-5">
-          <div className="w-16 h-16 bg-blue-50 text-nss-blue rounded-2xl flex items-center justify-center shrink-0">
-            <Clock size={32} />
+        {/* Card 1: Total Hours (Clickable -> Redirects to Attended Events) */}
+        <Link 
+          href="/dashboard/activities?filter=ATTENDED"
+          title="Click to view all verified attended events and earned hours"
+          className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-blue-300 transition-all flex items-center justify-between cursor-pointer group"
+        >
+          <div className="flex items-center gap-5">
+            <div className="w-16 h-16 bg-blue-50 text-nss-blue rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <Clock size={32} />
+            </div>
+            <div>
+              <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Total Hours</p>
+              {loading && !totalHours ? (
+                <div className="h-8 w-20 bg-blue-100 animate-pulse rounded-lg my-1" />
+              ) : (
+                <h3 className="text-3xl font-black text-gray-900 leading-none">
+                  {totalHours} <span className="text-lg font-bold text-gray-400">hrs</span>
+                </h3>
+              )}
+              <p className="text-xs text-blue-600 font-medium mt-1 flex items-center gap-1">
+                <span>From verified present events</span>
+              </p>
+            </div>
           </div>
-          <div>
-            <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Total Hours</p>
-            <h3 className="text-3xl font-black text-gray-900 leading-none">
-              {totalHours} <span className="text-lg font-bold text-gray-400">hrs</span>
-            </h3>
-            <p className="text-xs text-blue-600 font-medium mt-1">From verified present events</p>
-          </div>
-        </div>
+          <ArrowRight size={18} className="text-gray-300 group-hover:text-nss-blue group-hover:translate-x-1 transition-all shrink-0" />
+        </Link>
 
-        {/* Card 2: Events Attended */}
-        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex items-center gap-5">
-          <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center shrink-0">
-            <CheckCircle2 size={32} />
+        {/* Card 2: Events Attended (Clickable -> Redirects to Present / Attended Tab) */}
+        <Link 
+          href="/dashboard/activities?filter=ATTENDED"
+          title="Click to view all events where you were marked Present"
+          className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-emerald-300 transition-all flex items-center justify-between cursor-pointer group"
+        >
+          <div className="flex items-center gap-5">
+            <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <CheckCircle2 size={32} />
+            </div>
+            <div>
+              <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Events Attended</p>
+              {loading ? (
+                <div className="h-8 w-24 bg-emerald-100 animate-pulse rounded-lg my-1" />
+              ) : (
+                <h3 className="text-3xl font-black text-gray-900 leading-none">
+                  {totalAttended} <span className="text-lg font-bold text-gray-400">Events</span>
+                </h3>
+              )}
+              <p className="text-xs text-emerald-600 font-semibold mt-1 flex items-center gap-1">
+                <span>Marked Present</span>
+                <span className="text-[11px] font-normal text-emerald-700 underline underline-offset-2">View details →</span>
+              </p>
+            </div>
           </div>
-          <div>
-            <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Events Attended</p>
-            <h3 className="text-3xl font-black text-gray-900 leading-none">
-              {totalAttended} <span className="text-lg font-bold text-gray-400">Events</span>
-            </h3>
-            <p className="text-xs text-emerald-600 font-medium mt-1">Marked Present</p>
-          </div>
-        </div>
+          <ArrowRight size={18} className="text-gray-300 group-hover:text-emerald-600 group-hover:translate-x-1 transition-all shrink-0" />
+        </Link>
 
-        {/* Card 3: Events Absent */}
-        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex items-center gap-5">
-          <div className="w-16 h-16 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center shrink-0">
-            <XCircle size={32} />
+        {/* Card 3: Events Absent (Clickable -> Redirects to Absent Tab) */}
+        <Link 
+          href="/dashboard/activities?filter=BUNKED"
+          title="Click to view all events where you were marked Absent"
+          className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-rose-300 transition-all flex items-center justify-between cursor-pointer group"
+        >
+          <div className="flex items-center gap-5">
+            <div className="w-16 h-16 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <XCircle size={32} />
+            </div>
+            <div>
+              <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Events Absent</p>
+              {loading ? (
+                <div className="h-8 w-24 bg-rose-100 animate-pulse rounded-lg my-1" />
+              ) : (
+                <h3 className="text-3xl font-black text-gray-900 leading-none">
+                  {totalAbsent} <span className="text-lg font-bold text-gray-400">Events</span>
+                </h3>
+              )}
+              <p className="text-xs text-rose-600 font-semibold mt-1 flex items-center gap-1">
+                <span>Marked Absent</span>
+                <span className="text-[11px] font-normal text-rose-700 underline underline-offset-2">View details →</span>
+              </p>
+            </div>
           </div>
-          <div>
-            <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Events Absent</p>
-            <h3 className="text-3xl font-black text-gray-900 leading-none">
-              {totalAbsent} <span className="text-lg font-bold text-gray-400">Events</span>
-            </h3>
-            <p className="text-xs text-rose-600 font-medium mt-1">Marked Absent</p>
-          </div>
-        </div>
+          <ArrowRight size={18} className="text-gray-300 group-hover:text-rose-600 group-hover:translate-x-1 transition-all shrink-0" />
+        </Link>
       </div>
 
       {/* Events You Are Managing Section */}
