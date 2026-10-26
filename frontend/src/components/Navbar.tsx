@@ -229,15 +229,7 @@ export default function Navbar() {
                 )}
               </div>
 
-                            {/* Mobile App Download Button */}
-              <a
-                href="/downloads/nss-vit-bhopal.apk" download="nss-vit-bhopal.apk" target="_blank" rel="noopener noreferrer">
-                <div className="flex items-center gap-2">
-                  <Smartphone size={16} />
-                  <span>Download NSS Unit App (.apk)</span>
-                </div>
-                <Download size={15} />
-              </a>
+              
 
               {navLinks.slice(1).map((link) => (
                 <Link 

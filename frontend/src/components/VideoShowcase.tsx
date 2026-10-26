@@ -17,9 +17,7 @@ export default function VideoShowcase() {
         {/* Section Heading */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-black uppercase tracking-wider mb-3">
-              <Film size={14} /> Official Unit Media
-            </div>
+
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight">
               Camp Documentaries & <span className="bg-gradient-to-r from-red-400 via-rose-300 to-amber-300 bg-clip-text text-transparent">Aftermovies</span>
             </h2>

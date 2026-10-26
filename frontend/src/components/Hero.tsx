@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles, Smartphone, Download } from 'lucide-react';
 
 export default function Hero() {
   return (
@@ -49,7 +49,7 @@ export default function Hero() {
             Empowering youth through community service. Join us in our mission to develop personality through grassroots social impact and make a difference.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto px-2 sm:px-0">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto px-2 sm:px-0 flex-wrap">
             <Link 
               href="/login" 
               className="w-full sm:w-auto px-7 py-3 sm:py-3.5 bg-gradient-to-r from-nss-blue to-blue-900 text-white rounded-full font-extrabold text-sm sm:text-base hover:from-blue-900 hover:to-nss-red transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 text-center cursor-pointer"
@@ -63,6 +63,17 @@ export default function Hero() {
               <span>Explore Activities</span>
               <ArrowRight size={16} />
             </Link>
+            <a 
+              href="/downloads/nss-vit-bhopal.apk" 
+              download="nss-vit-bhopal.apk"
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto px-6 py-3 sm:py-3.5 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white rounded-full font-extrabold text-sm sm:text-base transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 text-center flex items-center justify-center gap-2 cursor-pointer group"
+            >
+              <Smartphone size={18} className="group-hover:rotate-12 transition-transform" />
+              <span>Download Official App (.apk)</span>
+              <Download size={15} />
+            </a>
           </div>
         </motion.div>
       </div>
