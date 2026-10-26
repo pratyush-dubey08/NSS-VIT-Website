@@ -26,7 +26,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="w-full max-w-2xl lg:max-w-3xl bg-white/40 sm:bg-white/45 backdrop-blur-lg border border-white/45 p-6 sm:p-10 md:p-12 rounded-3xl shadow-2xl flex flex-col items-center text-center"
+          className="w-full max-w-2xl lg:max-w-3xl bg-white/20 sm:bg-white/25 backdrop-blur-md border border-white/30 p-6 sm:p-10 md:p-12 rounded-3xl shadow-2xl flex flex-col items-center text-center"
         >
           {/* Logo with drop shadow */}
           <div className="mb-4 relative w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32">
@@ -45,7 +45,7 @@ export default function Hero() {
             "Not Me But You"
           </h2>
 
-          <p className="max-w-xl text-xs sm:text-sm md:text-base text-gray-800 mb-6 sm:mb-8 leading-relaxed font-semibold px-2">
+          <p className="max-w-xl text-xs sm:text-sm md:text-base text-gray-950 mb-6 sm:mb-8 leading-relaxed font-bold px-2 drop-shadow-2xs">
             Empowering youth through community service. Join us in our mission to develop personality through grassroots social impact and make a difference.
           </p>
 
