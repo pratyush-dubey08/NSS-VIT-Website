@@ -211,8 +211,8 @@ function GalleryContent() {
           transition={{ duration: 0.4 }}
         >
           {/* Main Title */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight text-center mb-3">
-            Media <span className="bg-gradient-to-r from-nss-blue via-blue-600 to-indigo-600 bg-clip-text text-transparent">Gallery</span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-gray-900 mb-2">
+            Media <span className="bg-gradient-to-r from-nss-blue via-blue-900 to-nss-red bg-clip-text text-transparent">Gallery</span>
           </h1>
 
           {/* Subtitle */}

@@ -42,8 +42,13 @@ const getInitialState = () => {
     return { user: null, token: null, isAuthenticated: false };
   }
   try {
-    const token = localStorage.getItem('token');
-    const storedUser = localStorage.getItem('user');
+    // Clear any stale persistent localStorage so sessions terminate on browser close
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
+    // Use sessionStorage: session automatically terminates when tab/browser is closed
+    const token = sessionStorage.getItem('token');
+    const storedUser = sessionStorage.getItem('user');
     const user = storedUser ? normalizeUser(JSON.parse(storedUser)) : null;
     return {
       token,
@@ -64,15 +69,20 @@ export const useAuthStore = create<AuthState>((set) => ({
   login: (user, token) => {
     const normalized = normalizeUser(user);
     if (typeof window !== 'undefined') {
-      localStorage.setItem('token', token);
+      sessionStorage.setItem('token', token);
       if (normalized) {
-        localStorage.setItem('user', JSON.stringify(normalized));
+        sessionStorage.setItem('user', JSON.stringify(normalized));
       }
+      // Clean legacy localStorage
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
     }
     set({ user: normalized, token, isAuthenticated: true });
   },
   logout: () => {
     if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('user');
       localStorage.removeItem('token');
       localStorage.removeItem('user');
     }
@@ -81,7 +91,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   setUser: (user) => {
     const normalized = normalizeUser(user);
     if (typeof window !== 'undefined' && normalized) {
-      localStorage.setItem('user', JSON.stringify(normalized));
+      sessionStorage.setItem('user', JSON.stringify(normalized));
     }
     set({ user: normalized });
   },

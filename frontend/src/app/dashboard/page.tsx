@@ -203,7 +203,7 @@ export default function VolunteerDashboard() {
 
       {/* Events You Are Managing Section */}
       {managedActivities.length > 0 && (
-        <div className="bg-white p-6 md:p-8 rounded-2xl border border-gray-100 shadow-sm">
+        <div className="bg-white p-4 sm:p-6 md:p-8 rounded-2xl border border-gray-100 shadow-sm">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6">
             <div>
               <h3 className="font-bold text-gray-900 text-xl flex items-center gap-2">
@@ -218,7 +218,7 @@ export default function VolunteerDashboard() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {managedActivities.map((activity) => (
-              <div key={activity._id} className="border border-gray-100 bg-slate-50/50 rounded-2xl p-5 hover:border-nss-blue/40 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between">
+              <div key={activity._id} className="border border-gray-100 bg-slate-50/50 rounded-2xl p-4 sm:p-5 hover:border-nss-blue/40 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between">
                 <div>
                   <div className="flex justify-between items-start gap-2 mb-2">
                     <span className="px-2.5 py-1 bg-white border border-gray-200 text-gray-700 text-xs font-bold rounded-lg shadow-2xs">

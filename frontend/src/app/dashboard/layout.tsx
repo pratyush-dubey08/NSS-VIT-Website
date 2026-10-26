@@ -111,7 +111,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
  </button>
  </header>
 
- <div className="flex-1 p-6 lg:p-8">
+ <div className="flex-1 p-3 sm:p-5 lg:p-8">
  <motion.div
  initial={{ opacity: 0, y: 10 }}
  animate={{ opacity: 1, y: 0 }}
