@@ -7,7 +7,13 @@ const config: CapacitorConfig = {
   server: {
     url: 'https://nssunitvit.vercel.app',
     cleartext: true,
-    androidScheme: 'https'
+    androidScheme: 'https',
+    allowNavigation: [
+      'nssunitvit.vercel.app',
+      'accounts.google.com',
+      '*.google.com',
+      '*.googleusercontent.com'
+    ]
   },
   android: {
     allowMixedContent: true,
