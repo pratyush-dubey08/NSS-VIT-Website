@@ -221,7 +221,7 @@ export default function HighlightsPage() {
                           </div>
 
                           {/* Elegant Photo Frame Grid */}
-                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3 p-2.5 sm:p-3 rounded-2xl bg-gradient-to-br from-slate-50 via-blue-50/20 to-slate-100/60 border border-slate-200/80 shadow-inner">
+                          <div className={`grid ${milestone.images.length === 2 ? 'grid-cols-2 max-w-xl mx-auto' : 'grid-cols-2 sm:grid-cols-3'} gap-2.5 sm:gap-3 p-2.5 sm:p-3 rounded-2xl bg-gradient-to-br from-slate-50 via-blue-50/20 to-slate-100/60 border border-slate-200/80 shadow-inner`}>
                             {milestone.images.map((imgSrc, imgIdx) => (
                               <a
                                 key={imgIdx}
@@ -235,7 +235,7 @@ export default function HighlightsPage() {
                                   alt={`${milestone.title} capture ${imgIdx + 1}`}
                                   loading="lazy"
                                   decoding="async"
-                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2">
                                   <span className="text-[10px] text-white font-medium flex items-center gap-1 drop-shadow-md">

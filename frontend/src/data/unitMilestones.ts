@@ -117,7 +117,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
         "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792962475/nss_vit_website/wrlhfna8fjmutzaxnjln.jpg",
         "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792962476/nss_vit_website/ldrsmudkmifd06je2ljf.jpg",
         "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792962476/nss_vit_website/ws1chlpmam5uylldjifq.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792962476/nss_vit_website/asn9zqasg7fo0fofbova.jpg"
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792962478/nss_vit_website/cykpfoxr0ahidjmxjvy4.jpg"
     ],
     title: 'Swachhta Hi Seva Abhiyan 2024',
     subtitle: 'A Fortnight of Cleanliness, Upcycling & Community Awakening (19 Sept – 2 Oct)',
@@ -285,11 +285,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
     id: 'nukkad-natak-street-theatre',
     images: [
         "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795580/nss_vit_website/opbucqx5beivc4k9pcxd.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795580/nss_vit_website/wujfnuwh9mbuh6u7kr5g.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795580/nss_vit_website/s4wrfehl0j0lu1tguiq8.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795582/nss_vit_website/qnp5jzpwbj2o2shca73q.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795584/nss_vit_website/uuiokp80ag8zfrpknxf1.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795584/nss_vit_website/cmvsdokv9ngxmeocgvhf.jpg"
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795580/nss_vit_website/wujfnuwh9mbuh6u7kr5g.jpg"
     ],
     title: 'Nukkad Natak — Street Theatre for Social Change',
     subtitle: 'Taking Powerful Social Messages to the Streets Across 4 Core Pillars',
