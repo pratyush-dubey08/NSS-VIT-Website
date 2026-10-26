@@ -3,7 +3,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
   appId: 'com.vitbhopal.nss',
   appName: 'NSS VIT Bhopal',
-  webDir: 'public',
+  webDir: 'app-shell',
   server: {
     url: 'https://nss-vit-website.onrender.com',
     cleartext: true,
