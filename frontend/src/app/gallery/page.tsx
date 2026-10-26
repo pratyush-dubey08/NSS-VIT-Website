@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FolderOpen, ArrowLeft, Image as ImageIcon, Loader2, ArrowRight, Play, Video, ExternalLink, Sparkles } from 'lucide-react';
+import { FolderOpen, ArrowLeft, Image as ImageIcon, Loader2, ArrowRight, Play, Video, ExternalLink, Sparkles, BookOpen } from 'lucide-react';
 import api from '@/lib/axios';
 import Link from 'next/link';
 import { getImageUrl } from '@/lib/utils';
@@ -420,12 +420,24 @@ function GalleryContent() {
                           </p>
 
                           {/* Action Button Badge */}
-                          <div className="mt-4 flex items-center gap-3">
+                          <div className="mt-4 flex flex-wrap items-center gap-3">
                             <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs sm:text-sm font-bold group-hover:bg-gradient-to-r group-hover:from-nss-blue group-hover:to-nss-red group-hover:text-white group-hover:border-transparent transition-all duration-300 shadow-lg">
                               <FolderOpen size={16} />
                               <span>{albumCount} {albumCount === 1 ? 'Album' : 'Albums'} • View Photos</span>
                               <ArrowRight size={16} className="transform group-hover:translate-x-1.5 transition-transform" />
                             </span>
+
+                            {category.id === 'camps' && (
+                              <Link
+                                href="/initiatives/annual-camp"
+                                onClick={(e) => e.stopPropagation()}
+                                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-nss-red to-rose-600 hover:from-rose-600 hover:to-nss-blue text-white text-xs sm:text-sm font-bold shadow-lg hover:shadow-xl transition-all duration-300 z-20 active:scale-95"
+                              >
+                                <BookOpen size={14} />
+                                <span>Camp Overview & Schedules</span>
+                                <ArrowRight size={14} />
+                              </Link>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -459,7 +471,34 @@ function GalleryContent() {
                   <div className="h-1.5 w-24 bg-gradient-to-r from-nss-blue to-nss-red rounded-full mt-3" />
                 </div>
 
-                                {/* Category-Specific Featured Video Showcase */}
+                                                {/* Direct Link to Comprehensive Annual Camp Overview, Diaries & Schedules */}
+                {selectedCategoryId === 'camps' && (
+                  <div className="mb-6 p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-[#0A192F] via-[#1E3A8A] to-[#0A192F] border-2 border-blue-400/40 shadow-xl text-white relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-72 h-72 bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
+                    <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div className="space-y-1.5">
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-bold border border-blue-400/30">
+                          <BookOpen size={13} /> Complete 7-Day Rural Camp Documentation
+                        </div>
+                        <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                          Annual NSS Unit Camps Overview (2026, 2025 & 2024)
+                        </h3>
+                        <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+                          Read full 7-day chronological camp diaries, daily routine schedules (Prabhat Pheri to Cultural Chaupal), and village immersion records across Borkheda, Jafarabad, and Barkhedi.
+                        </p>
+                      </div>
+                      <Link
+                        href="/initiatives/annual-camp"
+                        className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-nss-red to-rose-600 hover:from-rose-600 hover:to-nss-blue text-white text-xs sm:text-sm font-black shadow-lg hover:shadow-xl transition-all duration-300 shrink-0 group active:scale-95"
+                      >
+                        <span>View Camp Diaries & Schedules</span>
+                        <ArrowRight size={16} className="transform group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                    </div>
+                  </div>
+                )}
+
+                {/* Category-Specific Featured Video Showcase */}
                 {selectedCategoryId === 'camps' && (
                   <div className="mb-8 p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-blue-950 via-slate-900 to-slate-950 border border-blue-500/20 shadow-lg text-white">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

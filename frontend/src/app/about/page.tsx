@@ -60,24 +60,30 @@ export default function AboutPage() {
 
   const initiatives = [
     {
+      title: "Annual NSS Unit Camp",
+      desc: "The Annual NSS Unit Camp brings volunteers together to participate in community service, awareness programmes, educational activities, and personal development initiatives. Through activities such as cleanliness drives, educational outreach, health awareness sessions, cultural programmes, and community interaction, volunteers engage with local needs and social challenges. The camp also encourages teamwork, discipline, leadership, and cooperation among participants. By combining service with experiential learning, the initiative helps students understand their responsibilities towards society and strengthens the spirit of volunteerism.",
+      link: "/initiatives/annual-camp",
+      galleryCategory: "camps"
+    },
+    {
       title: "National Youth Parliament",
       desc: "The NSS Unit of VIT Bhopal University organizes the National Youth Parliament to encourage students to understand parliamentary procedures, democratic values, and the functioning of Indian democracy. The initiative provides a platform for students to discuss national issues, express their views, and participate in structured debates. Through activities such as mock parliamentary proceedings and discussions on important policy matters, students develop public speaking, critical thinking, leadership, and decision-making skills. The programme also encourages youth participation in nation-building and promotes responsible citizenship."
     },
     {
       title: "Mega Tree Plantation Drive",
+      link: "/initiatives/tree-plantation",
+      galleryCategory: "plantation",
       desc: "The NSS Unit of VIT Bhopal University conducts Mega Tree Plantation Drives to promote environmental conservation and sustainable living. Volunteers participate in plantation activities across the university campus and other designated areas, contributing to the development of greener surroundings. The initiative highlights the importance of increasing green cover, protecting biodiversity, and addressing environmental challenges. Volunteers are also encouraged to understand the responsibility of caring for planted trees beyond the plantation event. Through collective participation, the drive promotes environmental awareness and a lasting commitment to nature."
     },
     {
       title: "Blood Donation Camp",
+      link: "/initiatives/blood-donation",
+      galleryCategory: "blood",
       desc: "The NSS Unit of VIT Bhopal University organizes Blood Donation Camps to encourage voluntary blood donation and promote social responsibility among students and the university community. Conducted with the support of medical professionals, these camps provide an opportunity for eligible donors to contribute towards saving lives. The initiative spreads awareness about the importance of maintaining an adequate blood supply for patients in need of medical treatment and emergencies. By encouraging voluntary participation, the camp promotes compassion, community service, and a culture of helping others."
     },
     {
       title: "Free Health Check-Up Camp",
       desc: "The NSS Unit of VIT Bhopal University organizes Free Health Check-Up Camps to improve access to basic healthcare and promote preventive health awareness. These camps include general health consultations, eye check-ups, dental examinations, and other relevant medical services, depending on the programme. Medical professionals guide participants and help them understand the importance of regular health assessments and personal hygiene. The initiative supports the well-being of students and community members while encouraging early attention to potential health concerns. It reflects the NSS commitment to accessible healthcare and community welfare."
-    },
-    {
-      title: "Annual NSS Unit Camp",
-      desc: "The Annual NSS Unit Camp brings volunteers together to participate in community service, awareness programmes, educational activities, and personal development initiatives. Through activities such as cleanliness drives, educational outreach, health awareness sessions, cultural programmes, and community interaction, volunteers engage with local needs and social challenges. The camp also encourages teamwork, discipline, leadership, and cooperation among participants. By combining service with experiential learning, the initiative helps students understand their responsibilities towards society and strengthens the spirit of volunteerism."
     },
     {
       title: "Nukkad Natak & Social Awareness Campaigns",
@@ -378,42 +384,62 @@ export default function AboutPage() {
 
                     {/* Expandable Brief with toggle */}
                     <div 
-                      onClick={() => setExpandedInitiativeIndex(isExpanded ? null : index)}
-                      className="cursor-pointer mb-5 p-2 -mx-2 rounded-xl hover:bg-slate-50 transition-colors"
-                      title="Click to view full brief"
+                      onClick={() => !(item as any).link && setExpandedInitiativeIndex(isExpanded ? null : index)}
+                      className={`cursor-pointer mb-5 p-2 -mx-2 rounded-xl hover:bg-slate-50 transition-colors ${(item as any).link ? 'group/link' : ''}`}
+                      title={(item as any).link ? "Click to read full details" : "Click to view full brief"}
                     >
                       <p className={`text-xs sm:text-sm text-gray-600 leading-relaxed text-justify transition-all ${
                         isExpanded ? 'whitespace-pre-line' : 'line-clamp-4'
                       }`}>
                         {item.desc}
                       </p>
-                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-nss-blue mt-2 select-none group-hover:underline">
-                        {isExpanded ? (
-                          <>Show less <ChevronUp size={12} /></>
-                        ) : (
-                          <>Read full initiative details <ChevronDown size={12} /></>
-                        )}
-                      </span>
+                      {(item as any).link ? (
+                        <Link
+                          href={(item as any).link}
+                          className="inline-flex items-center gap-1.5 text-xs font-black text-nss-red hover:text-nss-blue mt-2.5 transition-colors"
+                        >
+                          <span>Read More</span>
+                          <ArrowRight size={13} className="transform group-hover/link:translate-x-1 transition-transform" />
+                        </Link>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-nss-blue mt-2 select-none group-hover:underline">
+                          {isExpanded ? (
+                            <>Show less <ChevronUp size={12} /></>
+                          ) : (
+                            <>Read full initiative details <ChevronDown size={12} /></>
+                          )}
+                        </span>
+                      )}
                     </div>
                   </div>
 
                   {/* Clean Action Links */}
                   <div className="pt-4 border-t border-gray-100 flex items-center justify-between gap-2">
                     <Link
-                      href="/gallery"
+                      href={(item as any).galleryCategory ? `/gallery?category=${(item as any).galleryCategory}` : '/gallery'}
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] rounded-xl transition-colors cursor-pointer"
                       title="View Photo Album in Gallery"
                     >
                       <ImageIcon size={13} className="text-nss-blue" /> View Photos
                     </Link>
 
-                    <Link
-                      href="/activities"
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-nss-blue hover:bg-blue-800 text-white font-bold text-[11px] rounded-xl transition-colors shadow-2xs cursor-pointer"
-                      title="Participate in Activities"
-                    >
-                      <span>Participate</span> <ArrowRight size={12} />
-                    </Link>
+                    {(item as any).link ? (
+                      <Link
+                        href={(item as any).link}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-r from-nss-red to-rose-600 hover:from-rose-600 hover:to-nss-blue text-white font-bold text-[11px] rounded-xl transition-all shadow-xs cursor-pointer active:scale-95"
+                        title="Read Complete Initiative Details"
+                      >
+                        <span>Read More</span> <ArrowRight size={12} />
+                      </Link>
+                    ) : (
+                      <Link
+                        href="/activities"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-nss-blue hover:bg-blue-800 text-white font-bold text-[11px] rounded-xl transition-colors shadow-2xs cursor-pointer"
+                        title="Participate in Activities"
+                      >
+                        <span>Participate</span> <ArrowRight size={12} />
+                      </Link>
+                    )}
                   </div>
 
                 </motion.div>
