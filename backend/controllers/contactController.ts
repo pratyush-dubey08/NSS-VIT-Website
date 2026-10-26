@@ -3,7 +3,11 @@ import ContactMessage from '../models/ContactMessage';
 
 export const submitContactMessage = async (req: Request, res: Response) => {
   try {
-    const { name, email, subject, message } = req.body;
+    const { name, email, subject, message, website_hp } = req.body;
+    // Honeypot check: If filled, it is an automated spambot
+    if (website_hp) {
+      return res.status(200).json({ message: 'Message submitted successfully' });
+    }
     if (!name || !email || !subject || !message) {
       return res.status(400).json({ message: 'All fields (name, email, subject, message) are required' });
     }

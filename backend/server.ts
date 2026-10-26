@@ -72,6 +72,16 @@ const authLimiter = rateLimit({
 
 app.use('/api', generalApiLimiter);
 app.use('/api/auth/login', authLimiter);
+const contactLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10, // Max 10 messages per 15 minutes per IP
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: 'Too many contact messages submitted. Please try again after 15 minutes.' }
+});
+
+app.use('/api/contact', contactLimiter);
+
 
 // Robust CORS configuration supporting localhost, Vercel preview/production, and custom domain
 const allowedOrigins = [

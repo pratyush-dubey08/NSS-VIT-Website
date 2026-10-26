@@ -54,4 +54,11 @@ const ActivitySchema: Schema = new Schema({
   timestamps: true
 });
 
+
+// Database indexes for high-performance sorting and filtering
+ActivitySchema.index({ date: -1 });
+ActivitySchema.index({ category: 1 });
+ActivitySchema.index({ status: 1 });
+ActivitySchema.index({ isRegistrationOpen: 1 });
+
 export default mongoose.model<IActivity>('Activity', ActivitySchema);

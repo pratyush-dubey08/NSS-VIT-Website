@@ -20,4 +20,9 @@ const GalleryFolderSchema: Schema = new Schema({
   timestamps: true
 });
 
+
+// Database indexes for fast category filtering and chronological sorting
+GalleryFolderSchema.index({ categoryId: 1, eventDate: -1 });
+GalleryFolderSchema.index({ createdAt: -1 });
+
 export default mongoose.model<IGalleryFolder>('GalleryFolder', GalleryFolderSchema);

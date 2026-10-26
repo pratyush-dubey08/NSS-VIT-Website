@@ -65,4 +65,9 @@ RegistrationSchema.index(
   }
 );
 
+
+RegistrationSchema.index({ activityId: 1, status: 1 });
+RegistrationSchema.index({ userId: 1 });
+RegistrationSchema.index({ registrationNumber: 1 });
+
 export default mongoose.model<IRegistration>('Registration', RegistrationSchema);

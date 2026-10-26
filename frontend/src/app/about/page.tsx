@@ -129,32 +129,7 @@ export default function AboutPage() {
     }
   ];
 
-  const programOfficers = [
-    {
-      name: "Dr. Vinod Bhatt",
-      role: "NSS Program Officer",
-      department: "School of Advanced Sciences",
-      image: "/images/leadership/vinod-bhatt.png"
-    },
-    {
-      name: "Dr. Dev Brat Gupta",
-      role: "NSS Program Officer",
-      department: "School of Computing Science and Engineering",
-      image: "/images/leadership/devbrat-gupta.png"
-    },
-    {
-      name: "Dr. Geetanjali Giri",
-      role: "NSS Program Officer",
-      department: "School of Advanced Sciences and Languages",
-      image: "/images/leadership/assistant-vice-president.jpg"
-    },
-    {
-      name: "Ms. Deepti Bhojwani",
-      role: "NSS Program Officer",
-      department: "School of Computing Science and Engineering",
-      image: "/images/leadership/dipti-bhojwani.png"
-    }
-  ];
+  // Program officers section removed per requirements
 
   return (
     <div className="min-h-screen pt-24 sm:pt-28 bg-white pb-24 font-sans text-gray-900">
@@ -481,51 +456,7 @@ export default function AboutPage() {
         </motion.div>
       </section>
 
-      {/* 6. From the Desk of Program Officers */}
-      <section id="program-officers" className="py-16 container mx-auto px-4 max-w-6xl scroll-mt-28">
-        <div className="text-center mb-12">
-          <span className="text-xs font-black uppercase tracking-widest text-nss-blue">Faculty Mentorship</span>
-          <h2 className="text-3xl sm:text-4xl font-black text-gray-900 mt-1 mb-3 tracking-tight">
-            From the Desk of Program Officers
-          </h2>
-          <div className="w-24 h-1.5 bg-nss-blue mx-auto rounded-full"></div>
-        </div>
-
-        {/* 1 Dignified Paragraph Message from Program Officers */}
-        <div className="bg-slate-50 border border-gray-200/90 rounded-3xl p-6 sm:p-10 mb-10 shadow-xs">
-          <div className="max-w-4xl mx-auto space-y-4 text-xs sm:text-sm md:text-base text-gray-700 leading-relaxed text-justify">
-            <p>
-              "The National Service Scheme at VIT Bhopal University stands as a vital bridge between rigorous academic education and practical societal stewardship. It is our steadfast conviction that true nation-building begins when young minds recognize their profound duty toward the community and step forward with humility, leadership, and unyielding dedication. Through our flagship 7 Day Annual NSS Unit Camps, extensive health outreach, rural educational drives, and sustainability campaigns, we empower our volunteers to confront grassroots challenges with innovative problem-solving and deep empathy. The discipline, self-reliance, and camaraderie forged through NSS not only shape exemplary professionals but nurture conscious, compassionate citizens dedicated to an inclusive and self-reliant India."
-            </p>
-          </div>
-        </div>
-
-        {/* 4 Program Officers Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {programOfficers.map((po, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: index * 0.08 }}
-              className="bg-white rounded-2xl border border-gray-200/80 shadow-xs p-5 text-center flex flex-col items-center hover:shadow-md transition-shadow"
-            >
-              <div className="w-24 h-24 rounded-full overflow-hidden mb-4 bg-slate-100 border-2 border-nss-blue/20 p-1">
-                <img 
-                  src={po.image} 
-                  alt={po.name} 
-                  className="w-full h-full object-cover rounded-full"
-                  onError={(e: any) => { e.currentTarget.src = '/images/leadership/vinod-bhatt.png'; }}
-                />
-              </div>
-              <h3 className="font-black text-gray-900 text-sm sm:text-base mb-1">{po.name}</h3>
-              <p className="text-xs font-bold text-nss-blue mb-1">{po.role}</p>
-              <p className="text-[11px] text-gray-500 font-medium leading-tight">{po.department}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+      {/* Program officers section removed */}
 
     </div>
   );

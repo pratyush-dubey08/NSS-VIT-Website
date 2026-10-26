@@ -32,6 +32,8 @@ const YoutubeIcon = ({ size = 20, className = '' }: { size?: number; className?:
 );
 
 export default function ContactPage() {
+  const [honeypot, setHoneypot] = useState('');
+  const [formLoadTime] = useState(Date.now());
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -100,7 +102,12 @@ export default function ContactPage() {
     setErrorMessage('');
 
     try {
-      await api.post('/contact', formData);
+      // Basic bot check: form filled in under 1 second is almost certainly a bot
+      if (Date.now() - formLoadTime < 1000) {
+        setSubmitSuccess(true);
+        return;
+      }
+      await api.post('/contact', { ...formData, website_hp: honeypot });
       setSubmitSuccess(true);
       setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (err: any) {
