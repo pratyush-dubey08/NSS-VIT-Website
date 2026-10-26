@@ -231,10 +231,7 @@ export default function Navbar() {
 
                             {/* Mobile App Download Button */}
               <a
-                href="/downloads/nss-vit-bhopal.apk" download="nss-vit-bhopal.apk" download="nss-vit-bhopal.apk"
-                className="p-3 text-xs sm:text-sm font-bold rounded-xl transition-all flex items-center justify-between bg-gradient-to-r from-emerald-600 to-teal-700 text-white shadow-md active:scale-95 my-1"
-                title="Download Official Android App"
-              >
+                href="https://github.com/pratyush-dubey08/NSS-VIT-Website/releases/download/v1.0.0/nss-vit-bhopal.apk" target="_blank" rel="noopener noreferrer">
                 <div className="flex items-center gap-2">
                   <Smartphone size={16} />
                   <span>Download NSS Unit App (.apk)</span>
