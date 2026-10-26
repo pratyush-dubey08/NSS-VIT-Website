@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Calendar, 
@@ -87,6 +87,31 @@ const commonDailyRoutine = [
   }
 ];
 
+// 16 Authentic Real Field Camp Action Photos from ANC 2026, 2025, and 2024 (Zero Graphics/Posters)
+const heroCampPhotos = [
+  // ANC 2026 (Gram Borkheda)
+  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972948/nss_vit_website/ydmr2p4ujlvf9ndo7bid.jpg', label: 'Borkheda Immersion' },
+  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972947/nss_vit_website/n8zsqhoxdjxk04deef3p.jpg', label: 'Awareness Rally' },
+  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972947/nss_vit_website/wmbx7z6cherz2c6bb6ho.jpg', label: 'Gram Parikrama' },
+  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972950/nss_vit_website/dahu2hum58xsjin9vdyh.jpg', label: 'Prabhat Pheri' },
+  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972951/nss_vit_website/ydknfiudozriwy9hffqp.jpg', label: 'Swachhata Shramdaan' },
+  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972953/nss_vit_website/wgbcglj9rsbjskzsjyqr.jpg', label: 'Rural School Teaching' },
+  
+  // ANC 2025 (Gram Jafarabad)
+  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792973350/nss_vit_website/b8mka7okpwddhvqmbnwg.jpg', label: 'Jafarabad Outreach' },
+  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792973350/nss_vit_website/zetb4kqynx8chdgnr7uc.jpg', label: 'Village Cleanliness' },
+  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792973350/nss_vit_website/vqyfkoem9wufzhmyanqx.jpg', label: 'Community Assembly' },
+  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792973352/nss_vit_website/zgosydolpn5j4sduudux.jpg', label: 'Socio-Economic Survey' },
+  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792973354/nss_vit_website/k8mgq1trsh5kyuti1ztw.jpg', label: 'Volunteer Contingent' },
+
+  // ANC 2024 (Gram Kachnariya)
+  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792969136/nss_vit_website/kj4tf366p1t6ji2zp8nm.jpg', label: 'Kachnariya Service' },
+  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792969136/nss_vit_website/yxlhufykeahoj6rpkhfo.jpg', label: 'School Cleanliness' },
+  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792969137/nss_vit_website/vtaka2byoxsmtwz1hzqb.jpg', label: 'Environmental Drive' },
+  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792969138/nss_vit_website/op6s1amaspjjvpwrmw4l.jpg', label: 'Door-to-Door Outreach' },
+  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792969139/nss_vit_website/yorqqztbkh1rrqt9smvt.jpg', label: 'Camp Valedictory' }
+];
+
 // Press Releases from Press relaese folder for ANC 2026
 const pressReleases2026 = [
   { src: '/images/press_2026/IMG-20260324-WA0010.jpg', caption: 'Regional Newspaper Coverage - Dainik Bhaskar' },
@@ -103,6 +128,15 @@ export default function AnnualCampPage() {
   const [activeRoutineId, setActiveRoutineId] = useState<string | null>(null);
   const [activeCampYear, setActiveCampYear] = useState<'2026' | '2025' | '2024'>('2026');
   const [selectedPressImage, setSelectedPressImage] = useState<string | null>(null);
+  const [slideIndex, setSlideIndex] = useState(0);
+
+  // Auto-transition header photos every 3.5 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSlideIndex((prev) => (prev + 1) % 4);
+    }, 3500);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className="min-h-screen pt-24 sm:pt-28 bg-white pb-24 font-sans text-gray-900">
@@ -115,25 +149,55 @@ export default function AnnualCampPage() {
           transition={{ duration: 0.6 }}
           className="relative rounded-3xl shadow-2xl bg-slate-900 border border-gray-100 mb-8"
         >
-          {/* Inner Image Grid with rounded corners and overflow hidden */}
-          <div className="rounded-3xl overflow-hidden">
+          {/* Live Indicator on Top-Left */}
+          <div className="absolute top-4 left-4 z-20 hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/80 text-white text-[11px] font-bold backdrop-blur-md border border-white/15 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>Live Camp Photography</span>
+          </div>
+
+          {/* Direct "See more..." Link to Special Camp Albums on Top-Right */}
+          <Link
+            href="/gallery?category=camps"
+            className="absolute top-4 right-4 z-20 inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-slate-900/85 hover:bg-slate-900 text-white text-xs font-bold backdrop-blur-md border border-white/20 shadow-lg transition-all hover:scale-105 cursor-pointer"
+            title="Explore All Special Camps in Gallery"
+          >
+            <FolderOpen size={14} className="text-amber-400" />
+            <span>See more...</span>
+            <ArrowRight size={13} />
+          </Link>
+
+          {/* Inner Image Grid with Smooth Live Transition */}
+          <div className="rounded-3xl overflow-hidden bg-slate-950">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-2">
-              <div className="relative h-36 md:h-52 rounded-2xl overflow-hidden group">
-                <img src="https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709886/nss_vit_website/fqqcfgdawuyvznsulndo.png" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="ANC 2026 Flagship" />
-                <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-black/60 text-white text-[10px] font-bold backdrop-blur-xs">ANC 2026</span>
-              </div>
-              <div className="relative h-36 md:h-52 rounded-2xl overflow-hidden group">
-                <img src="https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972948/nss_vit_website/ydmr2p4ujlvf9ndo7bid.jpg" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="ANC 2026 Field Action" />
-                <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-black/60 text-white text-[10px] font-bold backdrop-blur-xs">Immersion</span>
-              </div>
-              <div className="relative h-36 md:h-52 rounded-2xl overflow-hidden group">
-                <img src="https://res.cloudinary.com/lrsgx9ti/image/upload/v1792796270/nss_vit_website/m4g1p5kwwsmgg0faiu9f.png" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="ANC 2025 Camp" />
-                <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-black/60 text-white text-[10px] font-bold backdrop-blur-xs">ANC 2025</span>
-              </div>
-              <div className="relative h-36 md:h-52 rounded-2xl overflow-hidden group">
-                <img src="https://res.cloudinary.com/lrsgx9ti/image/upload/v1792797264/nss_vit_website/c9gxjwn8g5n7kpn0bk6c.jpg" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="ANC 2024 Camp" />
-                <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-black/60 text-white text-[10px] font-bold backdrop-blur-xs">ANC 2024</span>
-              </div>
+              {[0, 1, 2, 3].map((slot) => {
+                const photoIdx = (slideIndex * 4 + slot) % heroCampPhotos.length;
+                const photo = heroCampPhotos[photoIdx];
+
+                return (
+                  <div key={slot} className="relative h-40 md:h-56 rounded-2xl overflow-hidden bg-slate-900 group">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={photo.src}
+                        initial={{ opacity: 0, scale: 1.08 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.96 }}
+                        transition={{ duration: 0.8, ease: 'easeInOut' }}
+                        className="absolute inset-0 w-full h-full"
+                      >
+                        <img 
+                          src={photo.src} 
+                          alt={photo.label} 
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
+                        <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-black/60 text-white text-[10px] font-bold backdrop-blur-xs pointer-events-none">
+                          {photo.label}
+                        </span>
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
             </div>
           </div>
           
