@@ -2,10 +2,10 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.vitbhopal.nss',
-  appName: 'NSS VIT Bhopal',
+  appName: 'NSS VIT',
   webDir: 'app-shell',
   server: {
-    url: 'https://nss-vit-website.onrender.com',
+    url: 'https://nssunitvit.vercel.app',
     cleartext: true,
     androidScheme: 'https'
   },
