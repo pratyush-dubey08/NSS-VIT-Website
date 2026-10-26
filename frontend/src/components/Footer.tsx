@@ -69,7 +69,7 @@ export default function Footer() {
                             <li><Link href="/initiatives/annual-camp" className="text-slate-300 hover:text-red-400 hover:translate-x-1 transition-all inline-block text-sm font-medium">Annual Camp</Link></li>
               <li className="pt-2">
                 <a
-                  href="/downloads/nss-vit-bhopal.apk" download="nss-vit-bhopal.apk"
+                  href="https://github.com/pratyush-dubey08/NSS-VIT-Website/releases/download/v1.0.0/nss-vit-bhopal.apk" download="nss-vit-bhopal.apk"
                   className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-bold text-xs shadow-md transition-all active:scale-95 group border border-emerald-400/30"
                   title="Direct Download NSS Unit Official Android App"
                 >
