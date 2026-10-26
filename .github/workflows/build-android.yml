@@ -51,19 +51,19 @@ jobs:
         working-directory: frontend/android
         run: |
           ./gradlew assembleDebug --stacktrace --no-daemon > gradle.log 2>&1 || {
-            echo "::error::Gradle build failed with following output:"
-            cat gradle.log | tail -n 150
+            echo "Gradle failed, logging output"
             exit 1
           }
-          cat gradle.log | tail -n 30
 
-      - name: Upload Gradle Build Log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gradle-build-log
-          path: frontend/android/gradle.log
-          if-no-files-found: ignore
+      - name: Commit Failure Log on Failure
+        if: failure()
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          cp frontend/android/gradle.log ./GRADLE_FAILURE.txt || true
+          git add ./GRADLE_FAILURE.txt
+          git commit -m "Capture gradle build error [skip ci]" || true
+          git push origin main || true
 
       - name: Discover and Copy APK
         working-directory: frontend/android
@@ -80,10 +80,17 @@ jobs:
             ls -lh ../../build-artifacts/
             ls -lh ../public/downloads/
           else
-            echo "No APK found, listing app/build:"
-            find app/build -maxdepth 4 || true
+            echo "No APK found"
             exit 1
           fi
+
+      - name: Commit Compiled APK to Public Downloads
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f frontend/public/downloads/nss-vit-bhopal.apk
+          git commit -m "Publish compiled Android APK to public downloads [skip ci]" || true
+          git push origin main || true
 
       - name: Upload APK as Workflow Artifact
         uses: actions/upload-artifact@v4
