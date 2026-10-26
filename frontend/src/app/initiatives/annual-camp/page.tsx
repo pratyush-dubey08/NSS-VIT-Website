@@ -87,41 +87,41 @@ const commonDailyRoutine = [
   }
 ];
 
-// 16 Authentic Real Field Camp Action Photos from ANC 2026, 2025, and 2024 (Zero Graphics/Posters)
+// 16 Authentic Real Field Camp Action Photos from ANC 2026, 2025, and 2024 (No captions)
 const heroCampPhotos = [
   // ANC 2026 (Gram Borkheda)
-  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972948/nss_vit_website/ydmr2p4ujlvf9ndo7bid.jpg', label: 'Borkheda Immersion' },
-  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972947/nss_vit_website/n8zsqhoxdjxk04deef3p.jpg', label: 'Awareness Rally' },
-  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972947/nss_vit_website/wmbx7z6cherz2c6bb6ho.jpg', label: 'Gram Parikrama' },
-  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972950/nss_vit_website/dahu2hum58xsjin9vdyh.jpg', label: 'Prabhat Pheri' },
-  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972951/nss_vit_website/ydknfiudozriwy9hffqp.jpg', label: 'Swachhata Shramdaan' },
-  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972953/nss_vit_website/wgbcglj9rsbjskzsjyqr.jpg', label: 'Rural School Teaching' },
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972948/nss_vit_website/ydmr2p4ujlvf9ndo7bid.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972947/nss_vit_website/n8zsqhoxdjxk04deef3p.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972947/nss_vit_website/wmbx7z6cherz2c6bb6ho.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972950/nss_vit_website/dahu2hum58xsjin9vdyh.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972951/nss_vit_website/ydknfiudozriwy9hffqp.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972953/nss_vit_website/wgbcglj9rsbjskzsjyqr.jpg',
   
   // ANC 2025 (Gram Jafarabad)
-  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792973350/nss_vit_website/b8mka7okpwddhvqmbnwg.jpg', label: 'Jafarabad Outreach' },
-  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792973350/nss_vit_website/zetb4kqynx8chdgnr7uc.jpg', label: 'Village Cleanliness' },
-  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792973350/nss_vit_website/vqyfkoem9wufzhmyanqx.jpg', label: 'Community Assembly' },
-  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792973352/nss_vit_website/zgosydolpn5j4sduudux.jpg', label: 'Socio-Economic Survey' },
-  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792973354/nss_vit_website/k8mgq1trsh5kyuti1ztw.jpg', label: 'Volunteer Contingent' },
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792973350/nss_vit_website/b8mka7okpwddhvqmbnwg.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792973350/nss_vit_website/zetb4kqynx8chdgnr7uc.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792973350/nss_vit_website/vqyfkoem9wufzhmyanqx.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792973352/nss_vit_website/zgosydolpn5j4sduudux.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792973354/nss_vit_website/k8mgq1trsh5kyuti1ztw.jpg',
 
   // ANC 2024 (Gram Kachnariya)
-  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792969136/nss_vit_website/kj4tf366p1t6ji2zp8nm.jpg', label: 'Kachnariya Service' },
-  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792969136/nss_vit_website/yxlhufykeahoj6rpkhfo.jpg', label: 'School Cleanliness' },
-  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792969137/nss_vit_website/vtaka2byoxsmtwz1hzqb.jpg', label: 'Environmental Drive' },
-  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792969138/nss_vit_website/op6s1amaspjjvpwrmw4l.jpg', label: 'Door-to-Door Outreach' },
-  { src: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792969139/nss_vit_website/yorqqztbkh1rrqt9smvt.jpg', label: 'Camp Valedictory' }
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792969136/nss_vit_website/kj4tf366p1t6ji2zp8nm.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792969136/nss_vit_website/yxlhufykeahoj6rpkhfo.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792969137/nss_vit_website/vtaka2byoxsmtwz1hzqb.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792969138/nss_vit_website/op6s1amaspjjvpwrmw4l.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792969139/nss_vit_website/yorqqztbkh1rrqt9smvt.jpg'
 ];
 
-// Press Releases from Press relaese folder for ANC 2026
+// Press Releases from Press relaese folder for ANC 2026 (No captions)
 const pressReleases2026 = [
-  { src: '/images/press_2026/IMG-20260324-WA0010.jpg', caption: 'Regional Newspaper Coverage - Dainik Bhaskar' },
-  { src: '/images/press_2026/IMG-20260324-WA0011.jpg', caption: 'Patrika Feature - Gram Borkheda Camp Activities' },
-  { src: '/images/press_2026/IMG-20260324-WA0012.jpg', caption: 'Cleanliness & Social Service Press Report' },
-  { src: '/images/press_2026/IMG-20260324-WA0013.jpg', caption: 'Health & Medical Checkup Camp Media Highlight' },
-  { src: '/images/press_2026/IMG-20260324-WA0014.jpg', caption: 'Rural School Teaching & Student Outreach Story' },
-  { src: '/images/press_2026/IMG-20260324-WA0015.jpg', caption: 'Youth Awareness & Nukkad Natak Feature' },
-  { src: '/images/press_2026/IMG-20260324-WA0016.jpg', caption: 'Valedictory & Certificate Ceremony Coverage' },
-  { src: '/images/press_2026/IMG-20260324-WA0017.jpg', caption: 'Dignitary Visit & Community Impact Report' },
+  '/images/press_2026/IMG-20260324-WA0010.jpg',
+  '/images/press_2026/IMG-20260324-WA0011.jpg',
+  '/images/press_2026/IMG-20260324-WA0012.jpg',
+  '/images/press_2026/IMG-20260324-WA0013.jpg',
+  '/images/press_2026/IMG-20260324-WA0014.jpg',
+  '/images/press_2026/IMG-20260324-WA0015.jpg',
+  '/images/press_2026/IMG-20260324-WA0016.jpg',
+  '/images/press_2026/IMG-20260324-WA0017.jpg',
 ];
 
 export default function AnnualCampPage() {
@@ -149,12 +149,6 @@ export default function AnnualCampPage() {
           transition={{ duration: 0.6 }}
           className="relative rounded-3xl shadow-2xl bg-slate-900 border border-gray-100 mb-8"
         >
-          {/* Live Indicator on Top-Left */}
-          <div className="absolute top-4 left-4 z-20 hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/80 text-white text-[11px] font-bold backdrop-blur-md border border-white/15 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Live Camp Photography</span>
-          </div>
-
           {/* Direct "See more..." Link to Special Camp Albums on Top-Right */}
           <Link
             href="/gallery?category=camps"
@@ -166,33 +160,29 @@ export default function AnnualCampPage() {
             <ArrowRight size={13} />
           </Link>
 
-          {/* Inner Image Grid with Smooth Live Transition */}
+          {/* Inner Image Grid with Smooth Live Transition & Proper Full Height without Cropping */}
           <div className="rounded-3xl overflow-hidden bg-slate-950">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-2">
               {[0, 1, 2, 3].map((slot) => {
                 const photoIdx = (slideIndex * 4 + slot) % heroCampPhotos.length;
-                const photo = heroCampPhotos[photoIdx];
+                const photoSrc = heroCampPhotos[photoIdx];
 
                 return (
-                  <div key={slot} className="relative h-40 md:h-56 rounded-2xl overflow-hidden bg-slate-900 group">
+                  <div key={slot} className="relative h-48 sm:h-56 md:h-64 lg:h-72 rounded-2xl overflow-hidden bg-slate-900 group">
                     <AnimatePresence mode="wait">
                       <motion.div
-                        key={photo.src}
-                        initial={{ opacity: 0, scale: 1.08 }}
+                        key={photoSrc}
+                        initial={{ opacity: 0, scale: 1.05 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.96 }}
+                        exit={{ opacity: 0, scale: 0.98 }}
                         transition={{ duration: 0.8, ease: 'easeInOut' }}
                         className="absolute inset-0 w-full h-full"
                       >
                         <img 
-                          src={photo.src} 
-                          alt={photo.label} 
-                          className="w-full h-full object-cover"
+                          src={photoSrc} 
+                          alt="Camp Photography" 
+                          className="w-full h-full object-cover object-center"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
-                        <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-black/60 text-white text-[10px] font-bold backdrop-blur-xs pointer-events-none">
-                          {photo.label}
-                        </span>
                       </motion.div>
                     </AnimatePresence>
                   </div>
@@ -225,30 +215,7 @@ export default function AnnualCampPage() {
           </p>
         </motion.div>
 
-        {/* Direct Link to Special Camps Gallery Album */}
-        <motion.div 
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-8 max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 shadow-xs"
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-nss-blue text-white flex items-center justify-center shrink-0 shadow-2xs">
-              <FolderOpen size={20} />
-            </div>
-            <div>
-              <h4 className="font-black text-gray-900 text-sm sm:text-base">Special Camps Gallery Repository</h4>
-              <p className="text-xs text-gray-600">Explore full high-resolution photo albums from all our 7-day rural annual camps.</p>
-            </div>
-          </div>
-          <Link
-            href="/gallery?category=camps"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-nss-blue hover:bg-blue-800 text-white font-bold text-xs rounded-xl shadow-xs transition-colors shrink-0"
-          >
-            <span>Explore Camp Gallery</span>
-            <ArrowRight size={14} />
-          </Link>
-        </motion.div>
+
 
         <hr className="my-16 border-t border-gray-200/80 max-w-4xl mx-auto" />
 
@@ -472,29 +439,23 @@ export default function AnnualCampPage() {
                   <h4 className="text-base font-black text-gray-900 mb-4 flex items-center gap-2">
                     <Newspaper size={18} className="text-nss-blue" /> Published Media & Press Releases (ANC 2026)
                   </h4>
-                  <p className="text-xs text-gray-500 mb-4">
-                    Extensive regional media coverage in leading publications including Dainik Bhaskar and Patrika. Click any article clipping to zoom and read in detail.
-                  </p>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                    {pressReleases2026.map((item, idx) => (
+                    {pressReleases2026.map((imgSrc, idx) => (
                       <div 
                         key={idx}
-                        onClick={() => setSelectedPressImage(item.src)}
-                        className="bg-slate-50 p-2 sm:p-2.5 rounded-2xl border border-gray-200/90 shadow-2xs hover:shadow-md hover:border-nss-blue/50 transition-all cursor-pointer group flex flex-col justify-between"
+                        onClick={() => setSelectedPressImage(imgSrc)}
+                        className="bg-white p-2.5 rounded-2xl border border-gray-200/90 shadow-2xs hover:shadow-md hover:border-nss-blue/50 transition-all cursor-pointer group flex items-center justify-center aspect-[3/4] overflow-hidden"
                       >
-                        <div className="relative overflow-hidden rounded-xl bg-gray-100 aspect-3/4 flex items-center justify-center">
+                        <div className="relative w-full h-full flex items-center justify-center">
                           <img 
-                            src={item.src} 
-                            alt={item.caption} 
-                            className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300" 
+                            src={imgSrc} 
+                            alt="ANC 2026 Press Release" 
+                            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" 
                           />
-                          <div className="absolute inset-0 bg-slate-900/35 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <div className="absolute inset-0 bg-slate-900/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-xl">
                             <span className="p-2 rounded-full bg-white/95 text-slate-900 shadow-sm"><ZoomIn size={18} /></span>
                           </div>
                         </div>
-                        <p className="text-[11px] text-gray-600 text-center mt-2 font-medium line-clamp-2 leading-tight">
-                          {item.caption}
-                        </p>
                       </div>
                     ))}
                   </div>
