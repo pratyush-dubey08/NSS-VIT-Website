@@ -69,7 +69,7 @@ export default function Footer() {
                             <li><Link href="/initiatives/annual-camp" className="text-slate-300 hover:text-red-400 hover:translate-x-1 transition-all inline-block text-sm font-medium">Annual Camp</Link></li>
               <li className="pt-2">
                 <a
-                  href="https://github.com/pratyush-dubey08/NSS-VIT-Website/releases/download/v1.0.0/nss-vit-bhopal.apk" target="_blank" rel="noopener noreferrer">
+                  href="/downloads/nss-vit-bhopal.apk" target="_blank" rel="noopener noreferrer">
                   <Smartphone size={14} className="group-hover:rotate-12 transition-transform" />
                   <span>Download Android App (.apk)</span>
                   <Download size={12} className="opacity-80" />
