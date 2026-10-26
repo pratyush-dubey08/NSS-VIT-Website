@@ -55,7 +55,7 @@ jobs:
       - name: Prepare Artifacts
         run: |
           mkdir -p build-artifacts
-          find frontend/android/app/build/outputs/ -name "*.apk" -exec cp {} build-artifacts/nss-vit-bhopal.apk \;
+          find . -name "*.apk" -type f -exec cp -v {} build-artifacts/nss-vit-bhopal.apk \;
           ls -lh build-artifacts/
 
       - name: Upload APK as Workflow Artifact
