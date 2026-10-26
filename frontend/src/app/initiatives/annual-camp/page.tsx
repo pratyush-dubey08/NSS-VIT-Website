@@ -393,7 +393,7 @@ export default function AnnualCampPage() {
                 </p>
               </div>
 
-              {/* ANC 2026 Album Link & Reel Showcase (Moved Above Days Schedule as requested) */}
+              {/* ANC 2026 Album Link & Official Aftermovie Showcase */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-blue-50/70 rounded-2xl border border-blue-200/90 shadow-xs">
                   <div>
@@ -420,7 +420,7 @@ export default function AnnualCampPage() {
                     </div>
                     <div>
                       <h5 className="font-black text-gray-900 text-sm sm:text-base group-hover:text-rose-600 transition-colors">
-                        Camp 2026 Official Aftermovie Reel
+                        Camp 2026 Official Aftermovie
                       </h5>
                       <p className="text-xs text-gray-500 mt-0.5">Watch the viral camp memories, prabhat pheri & village vibes on Instagram.</p>
                     </div>

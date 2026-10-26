@@ -254,7 +254,7 @@ export default function HighlightsPage() {
                           <div className="rounded-2xl overflow-hidden border border-purple-200 bg-gradient-to-r from-purple-900/10 via-indigo-900/5 to-transparent p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
                             <div className="space-y-0.5">
                               <span className="inline-flex items-center gap-1 text-[11px] font-bold text-purple-700 uppercase tracking-wider">
-                                <Play size={11} className="fill-current" /> Official Event Video
+                                <Play size={11} className="fill-current" /> Official Aftermovie
                               </span>
                               <h5 className="text-sm font-bold text-slate-900">
                                 {milestone.videoTitle || 'Watch Event Showcase on YouTube'}
@@ -269,7 +269,7 @@ export default function HighlightsPage() {
                               rel="noopener noreferrer"
                               className="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white text-xs font-bold rounded-xl shadow-xs transition-all shrink-0 justify-center"
                             >
-                              <Play size={12} className="fill-current" /> Watch on YouTube <ExternalLink size={11} />
+                              <Play size={12} className="fill-current" /> Watch Official Aftermovie <ExternalLink size={11} />
                             </a>
                           </div>
                         </div>

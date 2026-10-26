@@ -97,7 +97,7 @@ export default function VideoShowcase() {
             </div>
           </motion.div>
 
-          {/* Secondary Videos (5 cols): VIBGYOR 2025 & Camp 2026 Reel */}
+          {/* Secondary Videos (5 cols): VIBGYOR 2025 & Camp 2026 Official Aftermovie */}
           <div className="lg:col-span-5 space-y-6">
             
             {/* VIBGYOR 2025 Cultural Showcase */}
@@ -109,7 +109,7 @@ export default function VideoShowcase() {
               className="bg-white/5 backdrop-blur-xl rounded-3xl p-4 sm:p-5 border border-white/15 shadow-xl space-y-3"
             >
               <div className="flex items-center justify-between">
-                <span className="font-black text-xs uppercase tracking-wider text-amber-400">First Cultural Showcase</span>
+                <span className="font-black text-xs uppercase tracking-wider text-amber-400">Official Aftermovie</span>
                 <a
                   href="https://youtu.be/ULmNP9Lj3aw?si=qGoWMlqOrZISS2Zn"
                   target="_blank"
@@ -132,7 +132,7 @@ export default function VideoShowcase() {
 
               <div>
                 <h4 className="text-base sm:text-lg font-black text-white leading-tight">
-                  VIBGYOR 2025 — Cultural Induction
+                  VIBGYOR 2025 — Official Aftermovie
                 </h4>
                 <p className="text-xs text-slate-300 mt-1 leading-relaxed">
                   Our inaugural flagship cultural celebration uniting music, dance, and cultural unity across seven Indian states.
@@ -140,7 +140,7 @@ export default function VideoShowcase() {
               </div>
             </motion.div>
 
-            {/* Camp 2026 Viral Instagram Reel Card */}
+            {/* Camp 2026 Official Aftermovie Card */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -150,7 +150,7 @@ export default function VideoShowcase() {
             >
               <div className="flex items-center justify-between">
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 text-[11px] font-bold border border-rose-500/30">
-                  <Sparkles size={12} /> Instagram Official Reel
+                  <Sparkles size={12} /> Official Camp Aftermovie
                 </span>
                 <span className="text-xs text-slate-400">ANC 2026</span>
               </div>
@@ -163,7 +163,7 @@ export default function VideoShowcase() {
               >
                 <img
                   src="https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709886/nss_vit_website/fqqcfgdawuyvznsulndo.png"
-                  alt="Camp 2026 Reel"
+                  alt="Camp 2026 Official Aftermovie"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-75"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-center justify-center">
@@ -172,20 +172,20 @@ export default function VideoShowcase() {
                   </div>
                 </div>
                 <div className="absolute bottom-2 left-3 right-3 text-white">
-                  <p className="text-xs font-black truncate">Annual NSS Unit Camp 2026 — Official Reel</p>
+                  <p className="text-xs font-black truncate">Annual NSS Unit Camp 2026 — Official Aftermovie</p>
                   <p className="text-[10px] text-slate-300">Tap to watch on Instagram @nssvitbhopal</p>
                 </div>
               </a>
 
               <div className="flex items-center justify-between pt-1">
-                <span className="text-xs text-slate-300 font-medium">Borkheda Village Camp Highlights</span>
+                <span className="text-xs text-slate-300 font-medium">Borkheda Village 7-Day Journey</span>
                 <a
                   href="https://www.instagram.com/reel/DXHLJhlDxNJ/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-rose-600 to-purple-600 text-white text-xs font-bold rounded-xl shadow-xs hover:shadow-md transition-all shrink-0"
                 >
-                  Watch Reel <ExternalLink size={12} />
+                  Watch Official Aftermovie <ExternalLink size={12} />
                 </a>
               </div>
             </motion.div>

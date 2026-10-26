@@ -320,7 +320,7 @@ function GalleryContent() {
                         />
                       </div>
                       <div>
-                        <span className="text-[10px] font-bold uppercase text-amber-400 tracking-wider">First Cultural Event</span>
+                        <span className="text-[10px] font-bold uppercase text-amber-400 tracking-wider">Official Aftermovie</span>
                         <h4 className="text-sm font-bold text-white line-clamp-1">VIBGYOR 2025 Official Aftermovie</h4>
                         <p className="text-xs text-slate-400 line-clamp-2 mt-0.5">Celebrating unity in diversity across classical dances, music, and tradition.</p>
                       </div>
@@ -334,29 +334,29 @@ function GalleryContent() {
                       </a>
                     </div>
 
-                    {/* Video 3: Camp 2026 Instagram Reel */}
+                    {/* Video 3: Camp 2026 Official Aftermovie */}
                     <div className="rounded-2xl overflow-hidden bg-white/5 border border-rose-500/20 p-3 sm:p-4 space-y-3 hover:border-rose-400/50 transition-colors flex flex-col justify-between">
                       <div className="space-y-3">
                         <a
                           href="https://www.instagram.com/reel/DXHLJhlDxNJ/"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="group/reel relative aspect-video rounded-xl overflow-hidden bg-slate-900 ring-1 ring-white/10 block"
+                          className="group/aftermovie relative aspect-video rounded-xl overflow-hidden bg-slate-900 ring-1 ring-white/10 block"
                         >
                           <img
                             src="https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709886/nss_vit_website/fqqcfgdawuyvznsulndo.png"
-                            alt="Camp 2026 Reel"
-                            className="w-full h-full object-cover group-hover/reel:scale-105 transition-transform duration-500 brightness-75"
+                            alt="Camp 2026 Official Aftermovie"
+                            className="w-full h-full object-cover group-hover/aftermovie:scale-105 transition-transform duration-500 brightness-75"
                           />
                           <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                            <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white flex items-center justify-center shadow-lg group-hover/reel:scale-110 transition-transform">
+                            <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white flex items-center justify-center shadow-lg group-hover/aftermovie:scale-110 transition-transform">
                               <Play size={20} className="fill-current ml-0.5" />
                             </div>
                           </div>
                         </a>
                         <div>
-                          <span className="text-[10px] font-bold uppercase text-rose-400 tracking-wider">Instagram Official Reel</span>
-                          <h4 className="text-sm font-bold text-white line-clamp-1">Annual Camp 2026 Highlights Reel</h4>
+                          <span className="text-[10px] font-bold uppercase text-rose-400 tracking-wider">Official Camp Aftermovie</span>
+                          <h4 className="text-sm font-bold text-white line-clamp-1">Annual NSS Unit Camp 2026 — Official Aftermovie</h4>
                           <p className="text-xs text-slate-400 line-clamp-2 mt-0.5">Grassroots bonding, morning drills, and community activities at Borkheda.</p>
                         </div>
                       </div>
@@ -366,7 +366,7 @@ function GalleryContent() {
                         rel="noopener noreferrer"
                         className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-rose-600 to-purple-600 hover:from-rose-500 hover:to-purple-500 text-white text-xs font-bold rounded-xl transition-all shadow-xs"
                       >
-                        Watch Reel on Instagram <ExternalLink size={12} />
+                        Watch Official Aftermovie <ExternalLink size={12} />
                       </a>
                     </div>
 
@@ -467,7 +467,7 @@ function GalleryContent() {
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div className="space-y-1">
                         <span className="text-xs font-bold uppercase tracking-wider text-blue-400 flex items-center gap-1.5">
-                          <Video size={13} /> Official Camp Documentaries & Reels
+                          <Video size={13} /> Official Camp Aftermovies & Documentaries
                         </span>
                         <h4 className="text-lg font-black text-white">Watch Annual Camp Aftermovies</h4>
                         <p className="text-xs text-slate-300">Relive the 7-day rural immersion experiences through high-definition aftermovies.</p>
@@ -487,7 +487,7 @@ function GalleryContent() {
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-rose-600 to-purple-600 text-white text-xs font-bold rounded-xl transition-all shadow-xs"
                         >
-                          Watch Camp 2026 Reel
+                          Watch Camp 2026 Official Aftermovie
                         </a>
                       </div>
                     </div>
@@ -499,7 +499,7 @@ function GalleryContent() {
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div className="space-y-1">
                         <span className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-                          <Sparkles size={13} /> First Cultural Celebration
+                          <Sparkles size={13} /> Official Cultural Aftermovie
                         </span>
                         <h4 className="text-lg font-black text-white">VIBGYOR 2025 Official Aftermovie</h4>
                         <p className="text-xs text-slate-300">Experience our inaugural celebration of India's cultural heritage and artistic expression.</p>
