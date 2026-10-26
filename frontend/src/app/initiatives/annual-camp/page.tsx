@@ -128,12 +128,12 @@ const pressReleases2026 = [
 
 
 const campShowcasePhotos = [
-  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709886/nss_vit_website/fqqcfgdawuyvznsulndo.png', caption: 'Camp Inaugural & Ceremonial Flag Hoisting' },
-  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972948/nss_vit_website/ydmr2p4ujlvf9ndo7bid.jpg', caption: 'Morning Yoga, PT & Mindfulness Assembly' },
-  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972947/nss_vit_website/n8zsqhoxdjxk04deef3p.jpg', caption: 'Shramdaan & Village Swachhata Abhiyan' },
-  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972947/nss_vit_website/wmbx7z6cherz2c6bb6ho.jpg', caption: 'Free Village Medical & Dental Health Camp' },
-  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709660/nss_vit_website/qfbsotsgpnuh2dbecoya.jpg', caption: 'Government School Child Mentorship & Fun Sports' },
-  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709665/nss_vit_website/yj8uz0yohtwf5oq85wmp.jpg', caption: 'Evening Cultural Campfire & Community Unity' }
+  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972982/nss_vit_website/xtwap4vl8ch7ohdl9zh0.jpg', caption: 'Shramdaan & Rural Cleanliness Drive' },
+  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972980/nss_vit_website/xzd5lsvcm7e7gxflbudx.jpg', caption: 'Morning Yoga & Physical Fitness Assembly' },
+  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972987/nss_vit_website/wlxlzywhzuux4ollkcw5.jpg', caption: 'Village Primary School Classroom Mentorship' },
+  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972991/nss_vit_website/uokb0zyks5fcjbgclhfc.jpg', caption: 'Household Socio-Economic Survey with Elders' },
+  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972991/nss_vit_website/yy9wikznl2z6lt3hvufw.jpg', caption: 'Free Health & Eye Check-Up Camp' },
+  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972993/nss_vit_website/ecs9uw5scnegy925pwwj.jpg', caption: 'Evening Cultural Chaupal & Villager Interaction' }
 ];
 
 export default function AnnualCampPage() {
@@ -398,7 +398,7 @@ export default function AnnualCampPage() {
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-blue-50/70 rounded-2xl border border-blue-200/90 shadow-xs">
                   <div>
                     <h5 className="font-black text-gray-900 text-sm sm:text-base">View Complete Photo Album from ANC 2026</h5>
-                    <p className="text-xs text-gray-500 mt-0.5">Explore 72+ high-resolution photos in the dedicated ANC 2026 gallery album.</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Explore high-resolution photos in the dedicated ANC 2026 gallery album.</p>
                   </div>
                   <Link
                     href="/gallery/6a68983ebe9b0736f01570f9"

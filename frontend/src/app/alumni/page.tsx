@@ -53,14 +53,16 @@ export default function AlumniPage() {
             >
               {/* Top Banner / Card Header */}
               {/* Top Banner / Card Header with NSS Brand Theme & Ambient Styling */}
-              <div className="relative h-32 bg-gradient-to-r from-[#0A192F] via-[#1E3A8A] to-[#D32F2F] flex justify-center overflow-hidden">
-                {/* Geometric Pattern & Soft Brand Glows */}
-                <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1.2px,transparent_1.2px)] [background-size:16px_16px] opacity-25 pointer-events-none" />
-                <div className="absolute -right-6 -bottom-6 w-28 h-28 bg-red-500/30 rounded-full blur-xl pointer-events-none" />
-                <div className="absolute -left-6 -top-6 w-28 h-28 bg-blue-400/30 rounded-full blur-xl pointer-events-none" />
+              <div className="relative h-28 sm:h-32 bg-gradient-to-r from-[#0A192F] via-[#1E3A8A] to-[#D32F2F] flex justify-center">
+                {/* Geometric Pattern & Soft Brand Glows inside clipped container */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-t-[2rem]">
+                  <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1.2px,transparent_1.2px)] [background-size:16px_16px] opacity-25" />
+                  <div className="absolute -right-6 -bottom-6 w-28 h-28 bg-red-500/30 rounded-full blur-xl" />
+                  <div className="absolute -left-6 -top-6 w-28 h-28 bg-blue-400/30 rounded-full blur-xl" />
+                </div>
                 
-                {/* Circular Avatar with Generous Unclipped Portrait Framing */}
-                <div className="absolute -bottom-14 w-32 h-32 rounded-full border-4 border-white shadow-2xl overflow-hidden bg-white ring-2 ring-blue-900/20 group-hover:ring-nss-red/50 transition-all duration-300 z-10">
+                {/* Circular Avatar with Generous Unclipped Portrait Framing - Free from Parent overflow-hidden */}
+                <div className="absolute -bottom-14 w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-white shadow-2xl overflow-hidden bg-white ring-2 ring-blue-900/20 group-hover:ring-nss-red/50 transition-all duration-300 z-20">
                   <img 
                     src={alumnus.photoUrl} 
                     alt={alumnus.name}

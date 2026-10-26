@@ -269,9 +269,7 @@ function GalleryContent() {
                 <div className="relative z-10 space-y-6">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
-                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/20 text-red-300 text-xs font-bold border border-red-500/30 mb-2">
-                        <Sparkles size={13} className="text-red-400" /> Official Aftermovies & Media
-                      </div>
+                      
                       <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
                         Experience NSS in Motion
                       </h3>
@@ -498,9 +496,7 @@ function GalleryContent() {
                   <div className="mb-8 p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-purple-950 via-slate-900 to-slate-950 border border-purple-500/20 shadow-lg text-white">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div className="space-y-1">
-                        <span className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-                          <Sparkles size={13} /> Official Cultural Aftermovie
-                        </span>
+                        
                         <h4 className="text-lg font-black text-white">VIBGYOR 2025 Official Aftermovie</h4>
                         <p className="text-xs text-slate-300">Experience our inaugural celebration of India's cultural heritage and artistic expression.</p>
                       </div>

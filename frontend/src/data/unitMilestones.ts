@@ -37,7 +37,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
         "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790381/nss_vit_website/bar2sk4mguwxzroe1exp.jpg",
         "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790383/nss_vit_website/vm7wh3c4bpu3ylp9cmx3.jpg",
         "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790385/nss_vit_website/ofvu3md9bg1xkm5m8jqc.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790376/nss_vit_website/j7tmmnycr5zy7ygay1fo.jpg"
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790396/nss_vit_website/nagkh4v72p64tirloif5.jpg"
     ],
     title: 'Mega Tree Plantation Drive 2024',
     subtitle: '10,000 Trees in a Single Day — Largest Single-Day Drive in Sehore',
@@ -112,12 +112,12 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   {
     id: 'swachhta-hi-seva-2024',
     images: [
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795580/nss_vit_website/wujfnuwh9mbuh6u7kr5g.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795580/nss_vit_website/s4wrfehl0j0lu1tguiq8.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795582/nss_vit_website/qnp5jzpwbj2o2shca73q.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795584/nss_vit_website/uuiokp80ag8zfrpknxf1.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795585/nss_vit_website/c06m7b0bvnyz3xjth2t2.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795587/nss_vit_website/nzy2ltquoqdljkhkrxur.jpg"
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792962475/nss_vit_website/nzy2ltquoqdljkhkrxur.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792962475/nss_vit_website/i2wqxamrqdr5lhutmyqq.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792962475/nss_vit_website/wrlhfna8fjmutzaxnjln.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792962476/nss_vit_website/ldrsmudkmifd06je2ljf.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792962476/nss_vit_website/ws1chlpmam5uylldjifq.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792962476/nss_vit_website/asn9zqasg7fo0fofbova.jpg"
     ],
     title: 'Swachhta Hi Seva Abhiyan 2024',
     subtitle: 'A Fortnight of Cleanliness, Upcycling & Community Awakening (19 Sept – 2 Oct)',
@@ -149,9 +149,9 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   {
     id: 'mega-blood-donation-camps',
     images: [
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794754/nss_vit_website/ax7sfirvqlqaxamqpypn.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794632/nss_vit_website/hqqkzopvbofkslfh1npv.jpg",
         "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794532/nss_vit_website/fjvlh83zvtgjeiayirax.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794533/nss_vit_website/pm6eue5t9coe59d7hce9.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794635/nss_vit_website/cgm6vg8owwopfkcfabaf.jpg",
         "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794532/nss_vit_website/xcnghddndbrvr05225lm.jpg",
         "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794535/nss_vit_website/npsnlvekn9hxvmuwqrgf.jpg",
         "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794535/nss_vit_website/tnnj3irieq9co4kuo73j.jpg"
@@ -186,12 +186,12 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   {
     id: 'campus-tree-canopy-5000',
     images: [
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790380/nss_vit_website/ldxhofed2qko3xgkalrw.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790381/nss_vit_website/bar2sk4mguwxzroe1exp.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790383/nss_vit_website/vm7wh3c4bpu3ylp9cmx3.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790385/nss_vit_website/ofvu3md9bg1xkm5m8jqc.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790386/nss_vit_website/w6f3o2ucl1d3p0z7v7vg.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790388/nss_vit_website/r8b87zftq96f022q93m2.jpg"
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790572/nss_vit_website/he0jq8bkt6cn65uovzd0.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790574/nss_vit_website/t8yekemxqbpvf6eveb1i.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790576/nss_vit_website/wbuvvmrfxmyegq0fzlx1.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790725/nss_vit_website/d2uu5kyfjloo7ghtkbdg.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790727/nss_vit_website/it90tykxcoi0kxr0gnbm.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790729/nss_vit_website/e4two8wkh2267prw3dzy.jpg"
     ],
     title: '5,000+ Trees Thriving Inside Campus',
     subtitle: 'Nurturing a Dense, Biodiverse Eco-Canopy Across VIT Bhopal University',
@@ -221,13 +221,6 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   },
   {
     id: 'nss-spotlight',
-    images: [
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709660/nss_vit_website/qfbsotsgpnuh2dbecoya.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709665/nss_vit_website/yj8uz0yohtwf5oq85wmp.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709676/nss_vit_website/eeqek1zp4z6atwc022bv.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709685/nss_vit_website/o1wdkrp1poe6z9uuxl7l.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709698/nss_vit_website/fxa3szxen2tqzdz4n6n0.jpg"
-    ],
     title: 'NSS Spotlight Platform',
     subtitle: 'Celebrating Talent, Everyday Kindness & Grassroots Heroes',
     category: 'awareness',
@@ -296,7 +289,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
         "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795580/nss_vit_website/s4wrfehl0j0lu1tguiq8.jpg",
         "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795582/nss_vit_website/qnp5jzpwbj2o2shca73q.jpg",
         "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795584/nss_vit_website/uuiokp80ag8zfrpknxf1.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795584/nss_vit_website/waasbzjn0rtez7bch6ny.jpg"
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795584/nss_vit_website/cmvsdokv9ngxmeocgvhf.jpg"
     ],
     title: 'Nukkad Natak — Street Theatre for Social Change',
     subtitle: 'Taking Powerful Social Messages to the Streets Across 4 Core Pillars',
@@ -339,14 +332,6 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   },
   {
     id: 'adopted-10-villages',
-    images: [
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709660/nss_vit_website/qfbsotsgpnuh2dbecoya.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709665/nss_vit_website/yj8uz0yohtwf5oq85wmp.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709676/nss_vit_website/eeqek1zp4z6atwc022bv.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709685/nss_vit_website/o1wdkrp1poe6z9uuxl7l.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709698/nss_vit_website/fxa3szxen2tqzdz4n6n0.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709705/nss_vit_website/q628qgsq9fhlcf56uukw.jpg"
-    ],
     title: 'Adoption of 10 Villages for Holistic Rural Development',
     subtitle: 'Bridging Campus Learning with Grassroots Rural Transformation',
     category: 'rural',
@@ -377,11 +362,12 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   {
     id: 'water-cooler-govt-schools',
     images: [
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792798667/nss_vit_website/v27yotsykzmzgnrzecuj.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792798668/nss_vit_website/jjsghg8qlxmi3azfkth2.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792798669/nss_vit_website/jjdasihzjgptgxy9gllk.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792798670/nss_vit_website/tx3jckjrqo3o1kuh8b12.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709710/nss_vit_website/t306x9n86t06h403vczt.jpg"
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792978968/nss_vit_website/jjdasihzjgptgxy9gllk.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792978969/nss_vit_website/qrih7ovtgyna5idhczov.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792978969/nss_vit_website/crirq9ryw01sbpcor9jw.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792978971/nss_vit_website/joog5feh6inkrnqe7phj.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792978972/nss_vit_website/cax1m0exyitogmxxlkmc.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792978971/nss_vit_website/eak0d4ykm9dxtpysmvbh.jpg"
     ],
     title: 'Installation of Water Coolers in Government Schools',
     subtitle: 'Providing Cold, Purified Drinking Water in Jafrabad & Bor Kheda Villages',
@@ -417,13 +403,6 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   },
   {
     id: 'nasha-mukt-abhiyan',
-    images: [
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795580/nss_vit_website/opbucqx5beivc4k9pcxd.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795582/nss_vit_website/qnp5jzpwbj2o2shca73q.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795584/nss_vit_website/uuiokp80ag8zfrpknxf1.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795585/nss_vit_website/c06m7b0bvnyz3xjth2t2.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795587/nss_vit_website/nzy2ltquoqdljkhkrxur.jpg"
-    ],
     title: 'Nasha Mukt Abhiyan — Towards an Addiction-Free Society',
     subtitle: 'Youth-Led Campaign for Substance Abuse Prevention and Mental Well-Being',
     category: 'awareness',
@@ -454,12 +433,12 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   {
     id: 'national-youth-parliament',
     images: [
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794963/nss_vit_website/duyqgmytyjpbjf36zabx.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794963/nss_vit_website/oqbgqena30fn1loiwn4v.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794963/nss_vit_website/xzh8bh25enhtecugu5sd.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794965/nss_vit_website/cnewqd5accsbqxlmkhjg.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794965/nss_vit_website/afdbif6kf6hpnht6uiei.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794966/nss_vit_website/ji6temxgxwq4xtzsmyox.jpg"
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795074/nss_vit_website/rb0yjo3frhrvztlztioi.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795074/nss_vit_website/xopu5fj5vqpznsj4j8gp.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795075/nss_vit_website/fu9yvysrc1hi8einbxcd.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795077/nss_vit_website/ovn1o8l7oxgymgu4hjrd.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795077/nss_vit_website/hho7gxgxmdzwk9k0b1y4.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792795078/nss_vit_website/ow40twre0wyrozuaczfg.jpg"
     ],
     title: 'National Youth Parliament Leadership Forum',
     subtitle: 'Nurturing Orators, Democratic Discourse and Policy Champions',
@@ -496,7 +475,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
         "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792800100/nss_vit_website/djtlyrwaylgya3ueblsz.jpg",
         "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792800102/nss_vit_website/ouzfsxckmemdr62pochx.jpg",
         "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792800102/nss_vit_website/hapaxanwyomvfgdz2fxu.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792800103/nss_vit_website/a0kgaifiufoplgl9fm1q.jpg"
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792800102/nss_vit_website/vcbgl7m0qasnpwniy8sp.jpg"
     ],
     videoUrl: "https://youtu.be/ULmNP9Lj3aw?si=qGoWMlqOrZISS2Zn",
     videoTitle: "VIBGYOR 2025 Official Aftermovie",
@@ -528,13 +507,6 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   },
   {
     id: 'vibgyor-2026',
-    images: [
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792800100/nss_vit_website/zb6dm7mssu9zl2vrilsg.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792800100/nss_vit_website/vq9aaeaoul9ywrjck3uw.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792800102/nss_vit_website/ouzfsxckmemdr62pochx.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792800102/nss_vit_website/hapaxanwyomvfgdz2fxu.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792800103/nss_vit_website/a0kgaifiufoplgl9fm1q.jpg"
-    ],
     title: 'VIBGYOR 2026 — Ancient Wisdom & Modern Struggles',
     subtitle: 'Ancient Stories. Modern Questions. Timeless Answers.',
     category: 'culture',
@@ -589,11 +561,12 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   {
     id: 'free-health-checkup-camps',
     images: [
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709660/nss_vit_website/qfbsotsgpnuh2dbecoya.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709665/nss_vit_website/yj8uz0yohtwf5oq85wmp.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709676/nss_vit_website/eeqek1zp4z6atwc022bv.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709710/nss_vit_website/t306x9n86t06h403vczt.jpg",
-        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709715/nss_vit_website/dudux77w1qnjr0mvyfuh.jpg"
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792798585/nss_vit_website/ydm4kz9bsxpt2o1oiny2.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792798585/nss_vit_website/nvcuo8jugv3iibq0eorp.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792798585/nss_vit_website/wurmklj3lrkwgkuh4wf5.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792798587/nss_vit_website/okeo1ucv9rkmmexo6f0x.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792798587/nss_vit_website/e27v2xdehsqhpsyacgym.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792798587/nss_vit_website/mrrch6ngqyeczunu6zkn.jpg"
     ],
     title: 'Free Health Check-Up Camps (Eye & Dental Mega Camps)',
     subtitle: 'Preventive Healthcare Outreach with Over 2,600+ Beneficiaries Consulted',
