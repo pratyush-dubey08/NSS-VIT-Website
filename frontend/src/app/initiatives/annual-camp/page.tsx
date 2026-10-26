@@ -139,7 +139,13 @@ export default function AnnualCampPage() {
   }, []);
 
   return (
-    <div className="min-h-screen pt-24 sm:pt-28 bg-white pb-24 font-sans text-gray-900">
+    <div className="min-h-screen pt-24 sm:pt-28 bg-gradient-to-b from-slate-50 via-blue-50/20 to-red-50/20 pb-24 font-sans text-gray-900 relative overflow-hidden">
+      {/* Soft Blended Photography Watermark in Background */}
+      <div className="fixed inset-0 pointer-events-none -z-30 opacity-[0.035] select-none overflow-hidden">
+        <img src="/images/hero-nss-group.jpg" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
+      </div>
+      <div className="absolute top-10 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-96 right-10 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       
       {/* Hero Header Section */}
       <div className="container mx-auto px-4 max-w-6xl">

@@ -132,7 +132,14 @@ export default function AboutPage() {
   // Program officers section removed per requirements
 
   return (
-    <div className="min-h-screen pt-24 sm:pt-28 bg-white pb-24 font-sans text-gray-900">
+    <div className="min-h-screen pt-24 sm:pt-28 bg-gradient-to-b from-slate-50 via-blue-50/20 to-red-50/20 pb-24 font-sans text-gray-900 relative overflow-hidden">
+      
+      {/* Soft Blended Photography Watermark in Background */}
+      <div className="fixed inset-0 pointer-events-none -z-30 opacity-[0.035] select-none overflow-hidden">
+        <img src="/images/hero-nss-group.jpg" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
+      </div>
+      <div className="absolute top-10 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-96 right-10 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       
       {/* 1. Who Are We Section */}
       <section id="who-we-are" className="py-16 container mx-auto px-4 max-w-5xl scroll-mt-28">
@@ -140,13 +147,13 @@ export default function AboutPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="bg-white p-8 md:p-14 rounded-3xl shadow-xl border border-gray-100"
+          className="bg-white/95 backdrop-blur-md p-8 md:p-14 rounded-3xl shadow-xl border border-slate-200/90 border-t-4 border-t-nss-blue"
         >
           <div className="text-center mb-8">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight text-center mb-3">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight text-center mb-3 bg-gradient-to-r from-nss-blue via-blue-900 to-nss-red bg-clip-text text-transparent">
               Who are we <span className="text-nss-red">?</span>
             </h1>
-            <div className="w-24 h-1.5 bg-nss-blue mx-auto rounded-full"></div>
+            <div className="w-24 h-1.5 bg-gradient-to-r from-nss-blue to-nss-red mx-auto rounded-full"></div>
           </div>
           
           <div className="space-y-6 text-base md:text-lg text-gray-700 leading-relaxed font-normal text-justify">
@@ -174,7 +181,7 @@ export default function AboutPage() {
           {/* Motto */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}
-            className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:-translate-y-1.5 hover:shadow-lg transition-all"
+            className="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-slate-200/90 hover:-translate-y-1.5 hover:shadow-2xl hover:border-blue-400/80 transition-all"
           >
             <div className="w-14 h-14 bg-red-50 text-nss-red rounded-2xl flex items-center justify-center mb-6">
               <Quote size={28} />
@@ -190,7 +197,7 @@ export default function AboutPage() {
           {/* The Symbol */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:-translate-y-1.5 hover:shadow-lg transition-all"
+            className="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-slate-200/90 hover:-translate-y-1.5 hover:shadow-2xl hover:border-blue-400/80 transition-all"
           >
             <div className="w-14 h-14 bg-blue-50 text-nss-blue rounded-2xl flex items-center justify-center mb-6">
               <Sun size={28} />
@@ -208,7 +215,7 @@ export default function AboutPage() {
           {/* Inspiration */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }}
-            className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:-translate-y-1.5 hover:shadow-lg transition-all"
+            className="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-slate-200/90 hover:-translate-y-1.5 hover:shadow-2xl hover:border-blue-400/80 transition-all"
           >
             <div className="w-14 h-14 bg-orange-50 text-orange-500 rounded-2xl flex items-center justify-center mb-6">
               <User size={28} />
@@ -223,7 +230,7 @@ export default function AboutPage() {
           {/* Foundation */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 }}
-            className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:-translate-y-1.5 hover:shadow-lg transition-all"
+            className="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-slate-200/90 hover:-translate-y-1.5 hover:shadow-2xl hover:border-blue-400/80 transition-all"
           >
             <div className="w-14 h-14 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center mb-6">
               <Calendar size={28} />
@@ -238,7 +245,7 @@ export default function AboutPage() {
           {/* Salutation */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.5 }}
-            className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:-translate-y-1.5 hover:shadow-lg transition-all"
+            className="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-slate-200/90 hover:-translate-y-1.5 hover:shadow-2xl hover:border-blue-400/80 transition-all"
           >
             <div className="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-6">
               <MessageCircle size={28} />
@@ -253,7 +260,7 @@ export default function AboutPage() {
           {/* Current Theme */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.6 }}
-            className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:-translate-y-1.5 hover:shadow-lg transition-all"
+            className="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-slate-200/90 hover:-translate-y-1.5 hover:shadow-2xl hover:border-blue-400/80 transition-all"
           >
             <div className="w-14 h-14 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center mb-6">
               <Flag size={28} />

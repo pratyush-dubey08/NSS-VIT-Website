@@ -67,7 +67,7 @@ export default function Navbar() {
         
         {/* Left: Brand Identity */}
         <Link href="/" className="flex items-center gap-2.5 xl:gap-3 shrink-0 group">
-          <div className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/80 shadow-xs flex items-center justify-center p-1 group-hover:scale-105 transition-transform">
+          <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow-xs ring-1 ring-red-500/30 flex items-center justify-center p-1 group-hover:scale-105 transition-transform">
             <img src="/images/nss-logo.png" alt="NSS Logo" className="w-8 h-8 object-contain" />
           </div>
           <div className="flex flex-col justify-center">
@@ -87,8 +87,8 @@ export default function Navbar() {
             href="/"
             className={`px-2.5 xl:px-3.5 py-1.5 text-[13px] xl:text-[14px] font-bold rounded-xl transition-all duration-200 whitespace-nowrap ${
               pathname === '/' 
-                ? 'text-white bg-slate-900 shadow-xs' 
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
+                ? 'text-white bg-gradient-to-r from-nss-blue to-blue-900 shadow-sm' 
+                : 'text-slate-700 hover:text-nss-blue hover:bg-blue-50/60'
             }`}
           >
             Home
@@ -104,8 +104,8 @@ export default function Navbar() {
               href="/about"
               className={`px-2.5 xl:px-3.5 py-1.5 text-[13px] xl:text-[14px] font-bold rounded-xl transition-all duration-200 whitespace-nowrap flex items-center gap-1 cursor-pointer ${
                 pathname === '/about' || aboutDropdownOpen
-                  ? 'text-white bg-slate-900 shadow-xs' 
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
+                  ? 'text-white bg-gradient-to-r from-nss-blue to-blue-900 shadow-sm' 
+                  : 'text-slate-700 hover:text-nss-blue hover:bg-blue-50/60'
               }`}
             >
               <span>About</span>
@@ -156,8 +156,8 @@ export default function Navbar() {
                 href={link.path}
                 className={`px-2.5 xl:px-3.5 py-1.5 text-[13px] xl:text-[14px] font-bold rounded-xl transition-all duration-200 whitespace-nowrap ${
                   isActive 
-                    ? 'text-white bg-slate-900 shadow-xs' 
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
+                    ? 'text-white bg-gradient-to-r from-nss-blue to-blue-900 shadow-sm' 
+                    : 'text-slate-700 hover:text-nss-blue hover:bg-blue-50/60'
                 }`}
               >
                 {link.name}
@@ -170,7 +170,7 @@ export default function Navbar() {
         <div className="flex items-center gap-2 xl:gap-2.5 shrink-0 pr-0.5">
           <Link 
             href={isAuthenticated ? (user?.role === 'admin' ? '/admin' : '/dashboard') : "/login"}
-            className="px-4 xl:px-5 py-2 text-xs xl:text-sm font-extrabold rounded-xl transition-all duration-300 transform hover:scale-105 bg-slate-900 hover:bg-nss-blue text-white shadow-xs hover:shadow-md whitespace-nowrap flex items-center gap-1.5"
+            className="px-4 xl:px-5 py-2 text-xs xl:text-sm font-extrabold rounded-xl transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-nss-blue to-blue-900 hover:from-blue-900 hover:to-nss-red text-white shadow-md shadow-blue-950/20 hover:shadow-lg whitespace-nowrap flex items-center gap-1.5"
           >
             <span>{isAuthenticated ? 'Dashboard' : 'Login'}</span>
           </Link>

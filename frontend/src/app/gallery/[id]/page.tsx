@@ -89,7 +89,10 @@ function AlbumPhotosContent() {
     : (folder.images?.[0] || folder.coverImage);
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20 pb-20">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-blue-50/20 to-red-50/20 pt-20 pb-20 relative overflow-hidden">
+      {/* Soft Ambient Brand Glows & Texture */}
+      <div className="absolute top-10 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute bottom-10 right-10 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       
       {/* Hero Section */}
       <section className="relative h-[45vh] min-h-[340px] w-full bg-slate-900 overflow-hidden">
@@ -124,7 +127,7 @@ function AlbumPhotosContent() {
             <ChevronRight size={14} className="text-gray-500 shrink-0" />
             <Link 
               href={`/gallery?category=${folder.categoryId}`} 
-              className="text-yellow-400 font-semibold hover:underline"
+              className="text-red-400 font-bold hover:underline"
             >
               {categoryTitle}
             </Link>
@@ -133,7 +136,7 @@ function AlbumPhotosContent() {
           {/* Explicit Back Button with Category Retention */}
           <button 
             onClick={handleBack}
-            className="flex items-center gap-2 text-white/90 hover:text-white font-semibold mb-4 w-fit transition-all group bg-white/10 hover:bg-white/20 backdrop-blur-md px-4 py-2 rounded-xl text-sm border border-white/10 shadow-sm"
+            className="flex items-center gap-2 text-white font-bold mb-4 w-fit transition-all group bg-white/15 hover:bg-nss-red backdrop-blur-md px-4 py-2 rounded-xl text-sm border border-white/20 shadow-md"
           >
             <ArrowLeft size={18} className="transform group-hover:-translate-x-1 transition-transform" />
             <span>Back to {categoryTitle} Albums</span>
@@ -162,7 +165,7 @@ function AlbumPhotosContent() {
             {folder.images.map((img: string, idx: number) => (
               <div
                 key={idx}
-                className="relative rounded-2xl overflow-hidden cursor-pointer group break-inside-avoid shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200"
+                className="relative rounded-2xl overflow-hidden cursor-pointer group break-inside-avoid shadow-md hover:shadow-2xl transition-all duration-300 bg-slate-900 border-2 border-slate-200/90 hover:border-nss-blue"
                 onClick={() => setSelectedPhoto(img)}
               >
                 <img 
@@ -192,7 +195,7 @@ function AlbumPhotosContent() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
+          <div className="text-center py-20 bg-white/90 backdrop-blur-md rounded-3xl border border-slate-200 shadow-md">
             <ImageIcon size={48} className="mx-auto text-gray-300 mb-4" />
             <h3 className="text-xl font-bold text-gray-700">No photos yet</h3>
             <p className="text-gray-500 mt-1">Photos will be uploaded to this album soon.</p>

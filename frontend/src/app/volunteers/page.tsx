@@ -91,7 +91,14 @@ export default function VolunteersPage() {
   const sections = [...dynamicSections, ...staticSections].filter(s => s.list.length > 0);
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-32 pb-20 px-4">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-blue-50/20 to-red-50/20 pt-32 pb-20 px-4 relative overflow-hidden">
+      
+      {/* Soft Blended Photography Watermark in Background */}
+      <div className="fixed inset-0 pointer-events-none -z-30 opacity-[0.035] select-none overflow-hidden">
+        <img src="/images/hero-nss-group.jpg" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
+      </div>
+      <div className="absolute top-10 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-96 right-10 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="container mx-auto max-w-7xl">
         {/* Header Section */}
         <motion.div 
@@ -99,8 +106,8 @@ export default function VolunteersPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">
-            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-nss-blue to-blue-600">Volunteers</span>
+          <h1 className="text-4xl md:text-5xl font-black mb-6 leading-tight bg-gradient-to-r from-nss-blue via-blue-900 to-nss-red bg-clip-text text-transparent">
+            Our Volunteers
           </h1>
           <p className="text-lg text-gray-600 leading-relaxed">
             The dedicated individuals who drive the NSS Unit forward, working tirelessly to serve the community.
@@ -114,7 +121,7 @@ export default function VolunteersPage() {
         ) : (
           <div className="space-y-16">
             {sections.map((section) => (
-              <div key={section.batch} className="bg-white rounded-3xl p-6 md:p-10 shadow-xl shadow-gray-200/50 border border-gray-100">
+              <div key={section.batch} className="bg-white/95 backdrop-blur-md rounded-3xl p-6 md:p-10 shadow-lg border border-slate-200/90 border-t-4 border-t-nss-blue">
                 <div className="flex items-center gap-4 mb-8 pb-4 border-b border-gray-100">
                   <h2 className="text-2xl md:text-3xl font-black text-gray-900">
                     Batch of {section.batch}
@@ -129,7 +136,7 @@ export default function VolunteersPage() {
                       whileInView={{ opacity: 1, scale: 1 }}
                       viewport={{ once: true, margin: "-20px" }}
                       transition={{ duration: 0.3, delay: (index % 10) * 0.05 }}
-                      className="bg-gray-50 border border-gray-100 rounded-2xl p-4 flex flex-col hover:border-blue-200 hover:bg-blue-50/50 hover:shadow-md transition-all duration-300 group"
+                      className="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-4 flex flex-col hover:border-nss-blue hover:bg-white hover:shadow-lg transition-all duration-300 group hover:-translate-y-1"
                     >
                       <h3 className="text-base font-bold text-gray-900 group-hover:text-nss-blue transition-colors">
                         {volunteer.name}

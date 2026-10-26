@@ -119,7 +119,14 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen pt-24 sm:pt-28 bg-white pb-24 font-sans">
+    <div className="min-h-screen pt-24 sm:pt-28 bg-gradient-to-b from-slate-50 via-blue-50/20 to-red-50/20 pb-24 font-sans relative overflow-hidden">
+      
+      {/* Soft Blended Photography Watermark in Background */}
+      <div className="fixed inset-0 pointer-events-none -z-30 opacity-[0.035] select-none overflow-hidden">
+        <img src="/images/hero-nss-group.jpg" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
+      </div>
+      <div className="absolute top-10 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-96 right-10 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       
       {/* Header (Top Badge Removed as requested) */}
       <section className="py-10 bg-white border-b border-gray-100">
@@ -135,7 +142,7 @@ export default function ContactPage() {
 
       {/* Official Community Hub - Modern Sleek Interactive Rows/Cards */}
       <section className="container mx-auto px-4 pt-10 max-w-5xl">
-        <div className="bg-slate-50/80 rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-xs mb-14">
+        <div className="bg-white/90 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-md mb-14 border-t-4 border-t-nss-blue">
           <div className="mb-6">
             <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
               Connect With Our Community
@@ -195,7 +202,7 @@ export default function ContactPage() {
           
           {/* Contact Information Cards (1/3) */}
           <div className="lg:w-1/3 space-y-4 w-full">
-            <div className="p-6 rounded-2xl border border-gray-200/80 shadow-xs flex gap-4 bg-white">
+            <div className="p-6 rounded-2xl border border-slate-200/90 shadow-md flex gap-4 bg-white/95 backdrop-blur-md hover:shadow-xl hover:border-blue-400/80 transition-all">
               <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center shrink-0 text-nss-blue">
                 <MapPin size={22} />
               </div>
@@ -207,7 +214,7 @@ export default function ContactPage() {
               </div>
             </div>
             
-            <div className="p-6 rounded-2xl border border-gray-200/80 shadow-xs flex gap-4 bg-white">
+            <div className="p-6 rounded-2xl border border-slate-200/90 shadow-md flex gap-4 bg-white/95 backdrop-blur-md hover:shadow-xl hover:border-blue-400/80 transition-all">
               <div className="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center shrink-0 text-nss-red">
                 <Mail size={22} />
               </div>
@@ -220,7 +227,7 @@ export default function ContactPage() {
               </div>
             </div>
             
-            <div className="p-6 rounded-2xl border border-gray-200/80 shadow-xs flex gap-4 bg-white">
+            <div className="p-6 rounded-2xl border border-slate-200/90 shadow-md flex gap-4 bg-white/95 backdrop-blur-md hover:shadow-xl hover:border-blue-400/80 transition-all">
               <div className="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center shrink-0 text-amber-600">
                 <Clock size={22} />
               </div>
@@ -233,7 +240,7 @@ export default function ContactPage() {
           </div>
 
           {/* Contact Message Form (2/3) - Connected to Backend Admin Portal! */}
-          <div className="lg:w-2/3 w-full bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-xs">
+          <div className="lg:w-2/3 w-full bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-lg border-t-4 border-t-nss-red">
             <h3 className="text-xl font-black text-gray-900 mb-2">Send us a Direct Message</h3>
             <p className="text-xs sm:text-sm text-gray-500 mb-6">
               Fill out this form and your message will be forwarded directly to the NSS Admin desk.
@@ -316,7 +323,7 @@ export default function ContactPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-8 py-3 bg-nss-blue hover:bg-blue-900 text-white font-black text-xs sm:text-sm rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                  className="px-8 py-3.5 bg-gradient-to-r from-nss-blue to-blue-900 hover:from-blue-900 hover:to-nss-red text-white font-black text-xs sm:text-sm rounded-xl transition-all shadow-md shadow-blue-950/20 hover:shadow-xl flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                 >
                   <Send size={15} /> {isSubmitting ? 'Sending...' : 'Send Message'}
                 </button>

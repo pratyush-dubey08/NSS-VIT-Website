@@ -11,14 +11,18 @@
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #0f172a;
+  --background: #F8FAFC;
+  --foreground: #0A192F;
 }
 
-/* Removed dark mode to force light theme */
-
+/* Master NSS Brand Body - Blended Navy Blue, Crimson Red & Crisp White */
 body {
-  background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 35%, #FDF4F4 70%, #F8FAFC 100%);
+  background: 
+    radial-gradient(circle at 12% 15%, rgba(10, 25, 47, 0.05) 0%, transparent 45%),
+    radial-gradient(circle at 88% 22%, rgba(211, 47, 47, 0.06) 0%, transparent 45%),
+    radial-gradient(circle at 50% 60%, rgba(30, 58, 138, 0.04) 0%, transparent 55%),
+    radial-gradient(circle at 18% 85%, rgba(211, 47, 47, 0.04) 0%, transparent 45%),
+    #F8FAFC;
   background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-sans);
@@ -26,33 +30,42 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Glassmorphism Utilities */
-.glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+/* NSS Brand Utility Styles */
+.nss-gradient-text {
+  background: linear-gradient(135deg, #0A192F 0%, #1E3A8A 50%, #D32F2F 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.glass-dark {
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+.nss-gradient-bg {
+  background: linear-gradient(135deg, #0A192F 0%, #1E3A8A 60%, #D32F2F 100%);
+}
+
+.nss-gradient-border-b {
+  border-image: linear-gradient(to right, #0A192F, #1E3A8A, #D32F2F) 1;
+}
+
+.nss-card-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nss-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 30px -10px rgba(10, 25, 47, 0.12), 0 10px 20px -8px rgba(211, 47, 47, 0.08);
+}
+
+/* Glassmorphism Utilities */
+.glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
-}
-
-.dark .glass-card {
-  background: rgba(30, 41, 59, 0.7);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 10px 25px -5px rgba(10, 25, 47, 0.05), 0 8px 10px -6px rgba(10, 25, 47, 0.03);
 }
 
 /* Custom Scrollbar */
@@ -60,17 +73,14 @@ body {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #F1F5F9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #94A3B8;
   border-radius: 4px;
 }
-.dark ::-webkit-scrollbar-thumb {
-  background: #475569;
-}
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #0A192F;
 }
 
 html, body {

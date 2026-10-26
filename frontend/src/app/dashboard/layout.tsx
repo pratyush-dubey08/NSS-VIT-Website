@@ -29,7 +29,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
  ];
 
  return (
- <div className="min-h-screen bg-gray-50 flex">
+ <div className="min-h-screen bg-gradient-to-b from-slate-50 via-blue-50/20 to-red-50/20 flex relative overflow-hidden">
  
  {/* Mobile Sidebar Overlay */}
  {sidebarOpen && (

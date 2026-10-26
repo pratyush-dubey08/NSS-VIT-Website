@@ -52,13 +52,13 @@ export default function Hero() {
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto px-2 sm:px-0">
             <Link 
               href="/login" 
-              className="w-full sm:w-auto px-7 py-3 sm:py-3.5 bg-nss-blue text-white rounded-full font-bold text-sm sm:text-base hover:bg-blue-900 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 text-center cursor-pointer"
+              className="w-full sm:w-auto px-7 py-3 sm:py-3.5 bg-gradient-to-r from-nss-blue to-blue-900 text-white rounded-full font-extrabold text-sm sm:text-base hover:from-blue-900 hover:to-nss-red transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 text-center cursor-pointer"
             >
               Volunteer Login
             </Link>
             <Link 
               href="/activities" 
-              className="w-full sm:w-auto px-7 py-3 sm:py-3.5 bg-white border-2 border-white/60 text-gray-900 rounded-full font-bold text-sm sm:text-base hover:bg-gray-50 transition-all shadow-md hover:shadow-lg text-center flex items-center justify-center gap-1.5 cursor-pointer"
+              className="w-full sm:w-auto px-7 py-3 sm:py-3.5 bg-white border-2 border-nss-red text-nss-red rounded-full font-extrabold text-sm sm:text-base hover:bg-red-50 transition-all shadow-md hover:shadow-lg text-center flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <span>Explore Activities</span>
               <ArrowRight size={16} />

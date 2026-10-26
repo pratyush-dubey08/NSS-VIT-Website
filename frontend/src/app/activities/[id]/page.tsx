@@ -112,10 +112,17 @@ export default function ActivityDetailsPage() {
   const eventBanner = event.bannerUrl || event.formBannerUrl || '/images/default-event-banner.png';
 
   return (
-    <div className="min-h-screen pt-24 bg-slate-50/50 pb-24 font-sans">
+    <div className="min-h-screen pt-24 bg-gradient-to-b from-slate-50 via-blue-50/20 to-red-50/20 pb-24 font-sans relative overflow-hidden">
+      
+      {/* Soft Blended Photography Watermark in Background */}
+      <div className="fixed inset-0 pointer-events-none -z-30 opacity-[0.035] select-none overflow-hidden">
+        <img src="/images/hero-nss-group.jpg" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
+      </div>
+      <div className="absolute top-10 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-96 right-10 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       
       {/* Event Header Banner Section */}
-      <section className="bg-white border-b border-gray-100 py-10">
+      <section className="bg-white/80 backdrop-blur-md border-b border-slate-200/80 py-10">
         <div className="container mx-auto px-4 max-w-4xl">
           <Link href="/activities" className="inline-flex items-center gap-1.5 text-xs text-nss-blue hover:underline font-bold mb-6">
             <ArrowLeft size={14} /> Back to Activities

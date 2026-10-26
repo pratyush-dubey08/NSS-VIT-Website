@@ -195,12 +195,18 @@ function GalleryContent() {
   const filteredFolders = folders.filter(f => f.categoryId === selectedCategoryId);
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 pt-16 sm:pt-20 pb-20 relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-blue-50/20 to-red-50/20 text-gray-900 pt-16 sm:pt-20 pb-20 relative overflow-hidden font-sans">
+      
+      {/* Soft Blended Photography Watermark in Background */}
+      <div className="fixed inset-0 pointer-events-none -z-30 opacity-[0.035] select-none overflow-hidden">
+        <img src="/images/hero-nss-group.jpg" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
+      </div>
       
       {/* Soft Ambient Background Glows & Texture */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[400px] bg-gradient-to-b from-blue-100/50 via-indigo-50/30 to-transparent pointer-events-none blur-3xl -z-10" />
       <div className="absolute top-48 -left-20 w-[400px] h-[400px] bg-blue-200/25 rounded-full blur-[100px] pointer-events-none -z-10" />
-      <div className="absolute top-72 -right-20 w-[400px] h-[400px] bg-amber-100/30 rounded-full blur-[100px] pointer-events-none -z-10" />
+      <div className="absolute top-72 -right-20 w-[450px] h-[450px] bg-red-600/10 rounded-full blur-[120px] pointer-events-none -z-10" />
+      <div className="absolute bottom-20 left-10 w-[450px] h-[450px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none -z-10" />
       <div className="absolute inset-0 bg-[radial-gradient(#94a3b8_0.75px,transparent_0.75px)] [background-size:24px_24px] opacity-[0.18] pointer-events-none -z-10" />
 
       {/* Hero Header Section */}
@@ -226,7 +232,7 @@ function GalleryContent() {
               <button
                 key={cat.id}
                 onClick={() => handleSelectCategory(cat.id)}
-                className="px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold bg-white/90 hover:bg-white text-gray-700 hover:text-nss-blue border border-gray-200/90 shadow-sm hover:shadow transition-all"
+                className="px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white/95 hover:bg-blue-50 text-slate-800 hover:text-nss-blue border border-slate-200/90 shadow-sm hover:shadow-md hover:border-blue-300 transition-all active:scale-95"
               >
                 {cat.title}
               </button>
@@ -300,7 +306,7 @@ function GalleryContent() {
 
                           {/* Action Button Badge */}
                           <div className="mt-4 flex items-center gap-3">
-                            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs sm:text-sm font-bold group-hover:bg-yellow-400 group-hover:text-yellow-950 group-hover:border-yellow-400 transition-all duration-300 shadow-lg">
+                            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs sm:text-sm font-bold group-hover:bg-gradient-to-r group-hover:from-nss-blue group-hover:to-nss-red group-hover:text-white group-hover:border-transparent transition-all duration-300 shadow-lg">
                               <FolderOpen size={16} />
                               <span>{albumCount} {albumCount === 1 ? 'Album' : 'Albums'} • View Photos</span>
                               <ArrowRight size={16} className="transform group-hover:translate-x-1.5 transition-transform" />
@@ -326,16 +332,16 @@ function GalleryContent() {
                   <div>
                     <button 
                       onClick={handleBackToCategories}
-                      className="flex items-center gap-2 text-gray-700 hover:text-nss-blue font-semibold mb-3 transition-colors group text-sm md:text-base bg-white px-4 py-2 rounded-xl shadow-sm border border-gray-200/80 w-fit"
+                      className="flex items-center gap-2 text-nss-blue hover:text-white font-extrabold mb-3 transition-all group text-sm md:text-base bg-white/95 hover:bg-nss-blue px-5 py-2.5 rounded-xl shadow-md hover:shadow-xl border-2 border-nss-blue/30 w-fit active:scale-95"
                     >
                       <ArrowLeft size={18} className="transform group-hover:-translate-x-1 transition-transform" />
                       Back to All Categories
                     </button>
-                    <h2 className="text-3xl md:text-5xl font-black text-gray-900 mt-2">{selectedCategory?.title}</h2>
+                    <h2 className="text-3xl md:text-5xl font-black mt-2 bg-gradient-to-r from-nss-blue via-blue-900 to-nss-red bg-clip-text text-transparent">{selectedCategory?.title}</h2>
                     <p className="text-gray-500 text-sm mt-1">{selectedCategory?.subtitle}</p>
                   </div>
                   
-                  <div className="h-1 w-24 bg-yellow-400 rounded-full md:hidden" />
+                  <div className="h-1.5 w-24 bg-gradient-to-r from-nss-blue to-nss-red rounded-full mt-3" />
                 </div>
 
                 {/* Grid of Albums with Instant Link Prefetch (Photo counts hidden as requested) */}
@@ -357,7 +363,7 @@ function GalleryContent() {
                               href={`/gallery/${folder._id}`}
                               prefetch={true}
                               onClick={() => handleOpenAlbum(folder)}
-                              className="block relative rounded-3xl overflow-hidden cursor-pointer group bg-gray-200 shadow-md hover:shadow-2xl transition-all aspect-square md:aspect-[4/3] border border-gray-100"
+                              className="block relative rounded-3xl overflow-hidden cursor-pointer group bg-slate-900 shadow-md hover:shadow-2xl transition-all aspect-square md:aspect-[4/3] border-2 border-slate-200/90 hover:border-nss-blue"
                             >
                               <img 
                                 src={getImageUrl(coverUrl, { width: 600 })} 
@@ -377,7 +383,7 @@ function GalleryContent() {
                               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/30 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
                               
                               <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white transform scale-90 group-hover:scale-100 transition-transform">
+                                <div className="w-14 h-14 rounded-full bg-gradient-to-r from-nss-blue to-nss-red flex items-center justify-center text-white transform scale-90 group-hover:scale-100 transition-transform shadow-xl">
                                   <ImageIcon size={26} />
                                 </div>
                               </div>
@@ -416,7 +422,7 @@ function GalleryContent() {
 
 export default function GalleryPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex justify-center items-center bg-slate-50"><Loader2 className="animate-spin text-nss-blue" size={40} /></div>}>
+    <Suspense fallback={<div className="min-h-screen flex justify-center items-center bg-gradient-to-b from-slate-50 to-blue-50/20"><Loader2 className="animate-spin text-nss-blue" size={40} /></div>}>
       <GalleryContent />
     </Suspense>
   );

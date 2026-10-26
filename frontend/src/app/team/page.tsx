@@ -184,7 +184,13 @@ export default function TeamPage() {
   const tier4 = leadershipData.filter(l => l.tier === 4);
 
   return (
-    <div className="min-h-screen pt-24 sm:pt-28 bg-white pb-32 selection:bg-nss-blue selection:text-white">
+    <div className="min-h-screen pt-24 sm:pt-28 bg-gradient-to-b from-slate-50 via-blue-50/20 to-red-50/20 pb-32 selection:bg-nss-blue selection:text-white relative overflow-hidden">
+      {/* Soft Blended Photography Watermark in Background */}
+      <div className="fixed inset-0 pointer-events-none -z-30 opacity-[0.035] select-none overflow-hidden">
+        <img src="/images/hero-nss-group.jpg" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
+      </div>
+      <div className="absolute top-10 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-96 right-10 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       
       {/* Header Section */}
       <section className="pt-8 pb-4 sm:pt-10 sm:pb-4 text-center container mx-auto px-4 relative">

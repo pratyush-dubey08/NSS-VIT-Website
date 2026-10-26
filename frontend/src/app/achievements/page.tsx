@@ -53,7 +53,13 @@ const CamperCard = ({ name, regNo, role, image, delay = 0, color = "blue", imgPo
 
 export default function AwardeesPage() {
   return (
-    <div className="min-h-screen pt-24 sm:pt-28 sm:pt-28 bg-white pb-24 overflow-hidden selection:bg-nss-blue selection:text-white font-sans">
+    <div className="min-h-screen pt-24 sm:pt-28 bg-gradient-to-b from-slate-50 via-blue-50/20 to-red-50/20 pb-24 overflow-hidden selection:bg-nss-blue selection:text-white font-sans relative">
+      {/* Soft Blended Photography Watermark in Background */}
+      <div className="fixed inset-0 pointer-events-none -z-30 opacity-[0.035] select-none overflow-hidden">
+        <img src="/images/hero-nss-group.jpg" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
+      </div>
+      <div className="absolute top-10 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-96 right-10 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       
       {/* Hero Section */}
       <section className="relative pt-8 pb-4 sm:pt-12 sm:pb-6 text-center max-w-5xl mx-auto px-4">

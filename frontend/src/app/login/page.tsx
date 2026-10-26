@@ -56,11 +56,18 @@ export default function LoginPage() {
 
   return (
     <GoogleOAuthProvider clientId={clientId}>
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 pt-20">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-50 via-blue-50/20 to-red-50/20 px-4 pt-20 relative overflow-hidden">
+      
+      {/* Soft Blended Photography Watermark in Background */}
+      <div className="fixed inset-0 pointer-events-none -z-30 opacity-[0.035] select-none overflow-hidden">
+        <img src="/images/hero-nss-group.jpg" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
+      </div>
+      <div className="absolute top-10 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-96 right-10 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-md w-full bg-white rounded-3xl shadow-xl overflow-hidden p-8 border border-gray-100"
+          className="max-w-md w-full bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl overflow-hidden p-8 border border-slate-200/90 border-t-4 border-t-nss-blue relative z-10"
         >
           <div className="text-center mb-8">
             <h2 className="text-3xl font-black text-gray-900 mb-2">
