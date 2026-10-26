@@ -16,7 +16,10 @@ import {
   Users,
   Award,
   Sparkles,
-  BookOpen
+  BookOpen,
+  FolderOpen,
+  X,
+  ZoomIn
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -84,9 +87,22 @@ const commonDailyRoutine = [
   }
 ];
 
+// Press Releases from Press relaese folder for ANC 2026
+const pressReleases2026 = [
+  { src: '/images/press_2026/IMG-20260324-WA0010.jpg', caption: 'Regional Newspaper Coverage - Dainik Bhaskar' },
+  { src: '/images/press_2026/IMG-20260324-WA0011.jpg', caption: 'Patrika Feature - Gram Borkheda Camp Activities' },
+  { src: '/images/press_2026/IMG-20260324-WA0012.jpg', caption: 'Cleanliness & Social Service Press Report' },
+  { src: '/images/press_2026/IMG-20260324-WA0013.jpg', caption: 'Health & Medical Checkup Camp Media Highlight' },
+  { src: '/images/press_2026/IMG-20260324-WA0014.jpg', caption: 'Rural School Teaching & Student Outreach Story' },
+  { src: '/images/press_2026/IMG-20260324-WA0015.jpg', caption: 'Youth Awareness & Nukkad Natak Feature' },
+  { src: '/images/press_2026/IMG-20260324-WA0016.jpg', caption: 'Valedictory & Certificate Ceremony Coverage' },
+  { src: '/images/press_2026/IMG-20260324-WA0017.jpg', caption: 'Dignitary Visit & Community Impact Report' },
+];
+
 export default function AnnualCampPage() {
   const [activeRoutineId, setActiveRoutineId] = useState<string | null>(null);
   const [activeCampYear, setActiveCampYear] = useState<'2026' | '2025' | '2024'>('2026');
+  const [selectedPressImage, setSelectedPressImage] = useState<string | null>(null);
 
   return (
     <div className="min-h-screen pt-24 sm:pt-28 bg-white pb-24 font-sans text-gray-900">
@@ -102,17 +118,21 @@ export default function AnnualCampPage() {
           {/* Inner Image Grid with rounded corners and overflow hidden */}
           <div className="rounded-3xl overflow-hidden">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-2">
-              <div className="relative h-36 md:h-52 rounded-2xl overflow-hidden">
-                <img src="/images/gallery/events_2025/image14.png" className="w-full h-full object-cover" alt="Camp Immersion 1" />
+              <div className="relative h-36 md:h-52 rounded-2xl overflow-hidden group">
+                <img src="https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709886/nss_vit_website/fqqcfgdawuyvznsulndo.png" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="ANC 2026 Flagship" />
+                <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-black/60 text-white text-[10px] font-bold backdrop-blur-xs">ANC 2026</span>
               </div>
-              <div className="relative h-36 md:h-52 rounded-2xl overflow-hidden">
-                <img src="/images/gallery/events_2025/image28.png" className="w-full h-full object-cover" alt="Camp Immersion 2" />
+              <div className="relative h-36 md:h-52 rounded-2xl overflow-hidden group">
+                <img src="https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972948/nss_vit_website/ydmr2p4ujlvf9ndo7bid.jpg" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="ANC 2026 Field Action" />
+                <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-black/60 text-white text-[10px] font-bold backdrop-blur-xs">Immersion</span>
               </div>
-              <div className="relative h-36 md:h-52 rounded-2xl overflow-hidden">
-                <img src="/images/gallery/events_2025/image31.png" className="w-full h-full object-cover" alt="Camp Immersion 3" />
+              <div className="relative h-36 md:h-52 rounded-2xl overflow-hidden group">
+                <img src="https://res.cloudinary.com/lrsgx9ti/image/upload/v1792796270/nss_vit_website/m4g1p5kwwsmgg0faiu9f.png" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="ANC 2025 Camp" />
+                <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-black/60 text-white text-[10px] font-bold backdrop-blur-xs">ANC 2025</span>
               </div>
-              <div className="relative h-36 md:h-52 rounded-2xl overflow-hidden">
-                <img src="/images/gallery/events_2025/image30.png" className="w-full h-full object-cover" alt="Camp Immersion 4" />
+              <div className="relative h-36 md:h-52 rounded-2xl overflow-hidden group">
+                <img src="https://res.cloudinary.com/lrsgx9ti/image/upload/v1792797264/nss_vit_website/c9gxjwn8g5n7kpn0bk6c.jpg" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="ANC 2024 Camp" />
+                <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-black/60 text-white text-[10px] font-bold backdrop-blur-xs">ANC 2024</span>
               </div>
             </div>
           </div>
@@ -139,6 +159,31 @@ export default function AnnualCampPage() {
           <p className="text-base sm:text-lg leading-relaxed">
             Through this selfless dedication to village upliftment, the camp simultaneously serves as a transformative platform for volunteers’ own personal growth. By experiencing rural life firsthand, overcoming real-world challenges, and collaborating closely with village residents and local administration, students cultivate humility, crisis management, leadership, and emotional resilience. This deep bond between youth and rural society instills lifelong civic empathy, empowering volunteers to evolve into responsible, socially conscious nation-builders.
           </p>
+        </motion.div>
+
+        {/* Direct Link to Special Camps Gallery Album */}
+        <motion.div 
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mt-8 max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 shadow-xs"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-nss-blue text-white flex items-center justify-center shrink-0 shadow-2xs">
+              <FolderOpen size={20} />
+            </div>
+            <div>
+              <h4 className="font-black text-gray-900 text-sm sm:text-base">Special Camps Gallery Repository</h4>
+              <p className="text-xs text-gray-600">Explore full high-resolution photo albums from all our 7-day rural annual camps.</p>
+            </div>
+          </div>
+          <Link
+            href="/gallery?category=camps"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-nss-blue hover:bg-blue-800 text-white font-bold text-xs rounded-xl shadow-xs transition-colors shrink-0"
+          >
+            <span>Explore Camp Gallery</span>
+            <ArrowRight size={14} />
+          </Link>
         </motion.div>
 
         <hr className="my-16 border-t border-gray-200/80 max-w-4xl mx-auto" />
@@ -361,26 +406,43 @@ export default function AnnualCampPage() {
               <div className="pt-8 border-t border-gray-100 space-y-6">
                 <div>
                   <h4 className="text-base font-black text-gray-900 mb-4 flex items-center gap-2">
-                    <Newspaper size={18} className="text-nss-blue" /> Published Media & Press Releases (2026 Camp)
+                    <Newspaper size={18} className="text-nss-blue" /> Published Media & Press Releases (ANC 2026)
                   </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="bg-slate-50 p-3 rounded-2xl border border-gray-200">
-                      <img src="/images/gallery/events_2025/image31.png" alt="2026 Press Release 1" className="w-full h-auto rounded-xl shadow-xs" />
-                      <p className="text-[11px] text-gray-500 text-center mt-2 font-medium">Regional Media Coverage - Danik Bhaskar / Patrika</p>
-                    </div>
-                    <div className="bg-slate-50 p-3 rounded-2xl border border-gray-200">
-                      <img src="/images/gallery/events_2025/image32.png" alt="2026 Press Release 2" className="w-full h-auto rounded-xl shadow-xs" />
-                      <p className="text-[11px] text-gray-500 text-center mt-2 font-medium">Camp Cleanliness & Health Drive Media Feature</p>
-                    </div>
+                  <p className="text-xs text-gray-500 mb-4">
+                    Extensive regional media coverage in leading publications including Dainik Bhaskar and Patrika. Click any article clipping to zoom and read in detail.
+                  </p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    {pressReleases2026.map((item, idx) => (
+                      <div 
+                        key={idx}
+                        onClick={() => setSelectedPressImage(item.src)}
+                        className="bg-slate-50 p-2 sm:p-2.5 rounded-2xl border border-gray-200/90 shadow-2xs hover:shadow-md hover:border-nss-blue/50 transition-all cursor-pointer group flex flex-col justify-between"
+                      >
+                        <div className="relative overflow-hidden rounded-xl bg-gray-100 aspect-3/4 flex items-center justify-center">
+                          <img 
+                            src={item.src} 
+                            alt={item.caption} 
+                            className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300" 
+                          />
+                          <div className="absolute inset-0 bg-slate-900/35 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span className="p-2 rounded-full bg-white/95 text-slate-900 shadow-sm"><ZoomIn size={18} /></span>
+                          </div>
+                        </div>
+                        <p className="text-[11px] text-gray-600 text-center mt-2 font-medium line-clamp-2 leading-tight">
+                          {item.caption}
+                        </p>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-blue-50/60 rounded-2xl border border-blue-100">
                   <div>
                     <h5 className="font-black text-gray-900 text-sm sm:text-base">View Complete Photo Album from ANC 2026</h5>
+                    <p className="text-xs text-gray-500 mt-0.5">Explore 72+ high-resolution photos in the dedicated ANC 2026 gallery album.</p>
                   </div>
                   <Link
-                    href="/gallery?category=camps"
+                    href="/gallery/6a68983ebe9b0736f01570f9"
                     className="inline-flex items-center gap-2 px-5 py-2.5 bg-nss-blue hover:bg-blue-800 text-white font-bold text-xs rounded-xl shadow-xs transition-colors shrink-0"
                   >
                     <ImageIcon size={15} /> Visit ANC 2026 Album <ArrowRight size={14} />
@@ -488,7 +550,7 @@ export default function AnnualCampPage() {
               <div className="pt-8 border-t border-gray-100 space-y-6">
                 <div>
                   <h4 className="text-base font-black text-gray-900 mb-4 flex items-center gap-2">
-                    <Newspaper size={18} className="text-emerald-700" /> Published Media & Press Releases (2025 Camp)
+                    <Newspaper size={18} className="text-emerald-700" /> Published Media & Press Releases (ANC 2025)
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="bg-slate-50 p-3 rounded-2xl border border-gray-200">
@@ -507,7 +569,7 @@ export default function AnnualCampPage() {
                     <h5 className="font-black text-gray-900 text-sm sm:text-base">View Complete Photo Album from ANC 2025</h5>
                   </div>
                   <Link
-                    href="/gallery?category=camps"
+                    href="/gallery/6a666e30050b5c6502e8421e"
                     className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-xs transition-colors shrink-0"
                   >
                     <ImageIcon size={15} /> Visit ANC 2025 Album <ArrowRight size={14} />
@@ -615,7 +677,7 @@ export default function AnnualCampPage() {
               <div className="pt-8 border-t border-gray-100 space-y-6">
                 <div>
                   <h4 className="text-base font-black text-gray-900 mb-4 flex items-center gap-2">
-                    <Newspaper size={18} className="text-amber-700" /> Published Media & Press Releases (2024 Camp)
+                    <Newspaper size={18} className="text-amber-700" /> Published Media & Press Releases (ANC 2024)
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="bg-slate-50 p-3 rounded-2xl border border-gray-200">
@@ -634,7 +696,7 @@ export default function AnnualCampPage() {
                     <h5 className="font-black text-gray-900 text-sm sm:text-base">View Complete Photo Album from ANC 2024</h5>
                   </div>
                   <Link
-                    href="/gallery?category=camps"
+                    href="/gallery/6a666e30050b5c6502e8421d"
                     className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs rounded-xl shadow-xs transition-colors shrink-0"
                   >
                     <ImageIcon size={15} /> Visit ANC 2024 Album <ArrowRight size={14} />
@@ -648,6 +710,38 @@ export default function AnnualCampPage() {
         </section>
 
       </div>
+
+      {/* Interactive Press Release Lightbox Modal */}
+      <AnimatePresence>
+        {selectedPressImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedPressImage(null)}
+            className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm p-4 sm:p-6 flex items-center justify-center cursor-pointer"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative max-w-4xl max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl p-2 sm:p-3 flex flex-col"
+            >
+              <button
+                onClick={() => setSelectedPressImage(null)}
+                className="absolute top-4 right-4 z-20 p-2 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white transition-colors cursor-pointer shadow-md"
+                title="Close Lightbox"
+              >
+                <X size={20} />
+              </button>
+              <div className="overflow-auto max-h-[85vh] p-1 sm:p-2 flex items-center justify-center">
+                <img src={selectedPressImage} alt="Press Release Zoom" className="w-full h-auto rounded-xl object-contain mx-auto" />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
