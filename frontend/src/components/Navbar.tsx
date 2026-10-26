@@ -61,7 +61,7 @@ export default function Navbar() {
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 w-full z-50 pt-3 sm:pt-4 px-3 sm:px-6 pointer-events-none font-sans flex justify-center">
+    <header className="fixed top-0 left-0 right-0 w-full z-50 pt-4 sm:pt-4 px-3.5 sm:px-6 pointer-events-none font-sans flex justify-center">
       <div className="pointer-events-auto flex items-center justify-between gap-2 xl:gap-3 px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl bg-white/95 backdrop-blur-xl shadow-lg shadow-slate-900/5 border border-slate-200/90 transition-all duration-300 w-full max-w-7xl box-border">
         
         {/* Left: Brand Identity */}

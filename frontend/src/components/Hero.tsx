@@ -6,7 +6,7 @@ import { ArrowRight, Sparkles, Smartphone, Download } from 'lucide-react';
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[92vh] sm:min-h-screen flex items-center justify-center overflow-hidden bg-slate-950 pt-20 pb-12 sm:py-24">
+    <section className="relative min-h-[92vh] sm:min-h-screen flex items-center justify-center overflow-hidden bg-slate-950 pt-28 pb-12 sm:py-24">
       {/* Official NSS Unit Grand Volunteer Group Photo Background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <img
