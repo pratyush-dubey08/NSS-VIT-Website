@@ -56,8 +56,8 @@ jobs:
         run: |
           mkdir -p build-artifacts
           mkdir -p frontend/public/downloads
-          find . -name "*.apk" -type f -exec cp -v {} build-artifacts/nss-vit-bhopal.apk \;
-          cp build-artifacts/nss-vit-bhopal.apk frontend/public/downloads/nss-vit-bhopal.apk
+          find frontend/android/app/build/outputs/apk -name "*.apk" -type f -exec cp -v {} build-artifacts/nss-vit-bhopal.apk \;
+          cp -v build-artifacts/nss-vit-bhopal.apk frontend/public/downloads/nss-vit-bhopal.apk
           ls -lh build-artifacts/
           ls -lh frontend/public/downloads/
 
