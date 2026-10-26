@@ -11,15 +11,13 @@ export default function LoginPage() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [regNo, setRegNo] = useState('');
-  const [volName, setVolName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
   const router = useRouter();
   const login = useAuthStore((state) => state.login);
 
-  const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '';
+  const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '1010502569127-uh45dgnuvlbi8188uthp6t55uac19tcf.apps.googleusercontent.com';
 
   const handleAdminLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,31 +31,6 @@ export default function LoginPage() {
       router.push('/admin');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Login failed. Please check your details.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleVolunteerLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!regNo.trim()) {
-      setError('Please enter your Registration Number');
-      return;
-    }
-    setLoading(true);
-    setError('');
-
-    try {
-      const payload = {
-        registrationNumber: regNo.trim().toUpperCase(),
-        name: volName.trim(),
-        isAdminLogin: false,
-      };
-      const { data } = await api.post('/auth/login', payload);
-      login(data.user, data.token);
-      router.push('/dashboard');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed. Please check your Registration Number and Name.');
     } finally {
       setLoading(false);
     }
@@ -135,60 +108,30 @@ export default function LoginPage() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
                 transition={{ duration: 0.2 }}
-                className="space-y-5"
+                className="space-y-6 flex flex-col items-center py-4"
               >
-                <form onSubmit={handleVolunteerLogin} className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
-                      Registration Number <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={regNo}
-                      onChange={(e) => setRegNo(e.target.value)}
-                      className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 text-gray-900 focus:ring-2 focus:ring-nss-blue focus:bg-white transition-all outline-none font-semibold uppercase placeholder:normal-case placeholder:font-normal"
-                      placeholder="e.g. 22BCE10452"
+                <div className="text-center text-sm text-gray-500 mb-2">
+                  Please use your official college email (<span className="font-semibold text-nss-blue">@vitbhopal.ac.in</span>) to sign in.
+                </div>
+                
+                {loading ? (
+                  <div className="w-full text-center py-4 text-nss-blue font-bold animate-pulse">Authenticating with Google...</div>
+                ) : (
+                  <div className="w-full flex justify-center py-2">
+                    <GoogleLogin
+                      onSuccess={handleGoogleSuccess}
+                      onError={handleGoogleError}
+                      useOneTap={false}
+                      theme="filled_blue"
+                      shape="pill"
+                      size="large"
+                      text="signin_with"
                     />
                   </div>
-
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
-                      Full Name <span className="text-gray-400 font-normal lowercase">(as in records)</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={volName}
-                      onChange={(e) => setVolName(e.target.value)}
-                      className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 text-gray-900 focus:ring-2 focus:ring-nss-blue focus:bg-white transition-all outline-none font-medium"
-                      placeholder="e.g. Rishabh Dubey"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full text-white font-bold py-3.5 rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center disabled:opacity-70 bg-gradient-to-r from-[#0A192F] to-[#1E3A8A] hover:from-[#1E3A8A] hover:to-[#0A192F]"
-                  >
-                    {loading ? 'Authenticating...' : 'Sign In as Volunteer'}
-                  </button>
-                </form>
-
-                <div className="relative flex py-1 items-center">
-                  <div className="flex-grow border-t border-gray-200"></div>
-                  <span className="flex-shrink mx-3 text-xs text-gray-400 font-medium">OR WITH COLLEGE GOOGLE ID</span>
-                  <div className="flex-grow border-t border-gray-200"></div>
-                </div>
-
-                <div className="w-full flex justify-center">
-                  <GoogleLogin
-                    onSuccess={handleGoogleSuccess}
-                    onError={handleGoogleError}
-                    useOneTap
-                    theme="filled_blue"
-                    shape="pill"
-                  />
-                </div>
+                )}
+                <p className="text-xs text-gray-400 text-center">
+                  Once signed in, you will stay logged in on this device permanently until you logout.
+                </p>
               </motion.div>
             ) : (
               <motion.form 
