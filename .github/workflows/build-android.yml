@@ -51,19 +51,22 @@ jobs:
         working-directory: frontend/android
         run: |
           ./gradlew assembleDebug --stacktrace --no-daemon
-
-      - name: Locate and Prepare APK
-        run: |
-          mkdir -p build-artifacts
-          mkdir -p frontend/public/downloads
-          echo "Listing all generated APK files:"
-          find frontend/android -name "*.apk"
-          APK_FILE=$(find frontend/android -name "*.apk" | head -n 1)
-          echo "Found APK: $APK_FILE"
-          cp "$APK_FILE" build-artifacts/nss-vit-bhopal.apk
-          cp build-artifacts/nss-vit-bhopal.apk frontend/public/downloads/nss-vit-bhopal.apk
-          ls -lh build-artifacts/
-          ls -lh frontend/public/downloads/
+          echo "=== SEARCHING FOR APK IN ANDROID ==="
+          find . -name "*.apk" -type f
+          mkdir -p ../../build-artifacts
+          mkdir -p ../public/downloads
+          APK_FILE=$(find . -name "*.apk" -type f | head -n 1)
+          if [ -n "$APK_FILE" ]; then
+            echo "Found APK at: $APK_FILE"
+            cp -v "$APK_FILE" ../../build-artifacts/nss-vit-bhopal.apk
+            cp -v "$APK_FILE" ../public/downloads/nss-vit-bhopal.apk
+          else
+            echo "ERROR: No APK was found in frontend/android!"
+            find app/build -type f | head -n 50
+            exit 1
+          fi
+          ls -lh ../../build-artifacts/
+          ls -lh ../public/downloads/
 
       - name: Upload APK as Workflow Artifact
         uses: actions/upload-artifact@v4
