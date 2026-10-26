@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import api from '@/lib/axios';
+import { getActivityFallbackBanner } from '@/lib/utils';
 import DynamicForm from '@/components/DynamicForm';
 import { FieldType } from '@/components/admin/FormBuilder';
 import { MessageCircle, Video } from 'lucide-react';
@@ -109,7 +110,7 @@ export default function ActivityDetailsPage() {
     ? { activityId: event._id, fields: event.formSchema } 
     : defaultFormSchema;
 
-  const eventBanner = event.bannerUrl || event.formBannerUrl || '/images/default-event-banner.png';
+  const eventBanner = (event.bannerUrl && !event.bannerUrl.includes('onrender.com/uploads/')) ? event.bannerUrl : (event.formBannerUrl || getActivityFallbackBanner(event.title));
 
   return (
     <div className="min-h-screen pt-24 bg-gradient-to-b from-slate-50 via-blue-50/20 to-red-50/20 pb-24 font-sans relative overflow-hidden">
@@ -135,7 +136,7 @@ export default function ActivityDetailsPage() {
               alt={event.title} 
               className="w-full max-h-[300px] sm:max-h-[380px] object-contain rounded-2xl"
               onError={(e: any) => {
-                e.currentTarget.src = '/images/default-event-banner.png';
+                e.currentTarget.src = getActivityFallbackBanner(event.title);
               }}
             />
           </div>

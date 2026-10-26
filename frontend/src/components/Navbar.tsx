@@ -12,8 +12,7 @@ const aboutDropdownLinks = [
   { name: 'The Essence of NSS', path: '/about#essence', desc: 'Motto, Symbol & Heritage' },
   { name: 'Mission & Vision', path: '/about#mission-vision', desc: 'Purpose & Future Direction' },
   { name: 'What We Do?', path: '/about#what-we-do', desc: 'Key Initiatives & Community Drives' },
-  { name: 'Guiding Values', path: '/about#core-values', desc: '8 Foundational NSS Principles' },
-  { name: 'From the Desk of POs', path: '/about#program-officers', desc: 'Faculty Program Officers Message' },
+  { name: 'Guiding Values', path: '/about#core-values', desc: 'Foundational NSS Principles' },
 ];
 
 export default function Navbar() {

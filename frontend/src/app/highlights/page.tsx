@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -12,7 +14,10 @@ import {
   Globe2,
   Building2,
   Flag,
-  UserCheck
+  UserCheck,
+  Play,
+  Image as ImageIcon,
+  ExternalLink
 } from 'lucide-react';
 import { UNIT_MILESTONES, MilestoneDetail } from '@/data/unitMilestones';
 
@@ -186,6 +191,86 @@ export default function HighlightsPage() {
                                 </p>
                               </div>
                             ))}
+                          </div>
+                        </div>
+                      )}
+
+                                            {/* Photo Gallery Frame (Curated 5-6 Photos) */}
+                      {milestone.images && milestone.images.length > 0 && (
+                        <div className="pt-3 space-y-3">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <div className="w-2 h-2 rounded-full bg-nss-red animate-pulse" />
+                              <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+                                <ImageIcon size={14} className="text-nss-blue" />
+                                Milestone Photo Gallery ({milestone.images.length} Captures)
+                              </h4>
+                            </div>
+                            <Link
+                              href={`/gallery?category=${
+                                milestone.category === 'environment' ? 'plantation' :
+                                milestone.category === 'health' ? 'blood' :
+                                milestone.category === 'rural' ? 'camps' :
+                                milestone.category === 'culture' ? 'cultural' :
+                                milestone.category === 'awareness' ? 'awareness' : 'youth'
+                              }`}
+                              className="text-xs font-semibold text-nss-blue hover:text-nss-red flex items-center gap-1 transition-colors"
+                            >
+                              Explore in Gallery <ExternalLink size={11} />
+                            </Link>
+                          </div>
+
+                          {/* Elegant Photo Frame Grid */}
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3 p-2.5 sm:p-3 rounded-2xl bg-gradient-to-br from-slate-50 via-blue-50/20 to-slate-100/60 border border-slate-200/80 shadow-inner">
+                            {milestone.images.map((imgSrc, imgIdx) => (
+                              <a
+                                key={imgIdx}
+                                href={imgSrc}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group relative aspect-[4/3] rounded-xl overflow-hidden bg-slate-200 border border-slate-200/80 shadow-xs hover:shadow-md transition-all cursor-zoom-in block"
+                              >
+                                <img
+                                  src={imgSrc}
+                                  alt={`${milestone.title} capture ${imgIdx + 1}`}
+                                  loading="lazy"
+                                  decoding="async"
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2">
+                                  <span className="text-[10px] text-white font-medium flex items-center gap-1 drop-shadow-md">
+                                    <ImageIcon size={10} /> View full size
+                                  </span>
+                                </div>
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Video Feature if available */}
+                      {milestone.videoUrl && (
+                        <div className="pt-2">
+                          <div className="rounded-2xl overflow-hidden border border-purple-200 bg-gradient-to-r from-purple-900/10 via-indigo-900/5 to-transparent p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+                            <div className="space-y-0.5">
+                              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-purple-700 uppercase tracking-wider">
+                                <Play size={11} className="fill-current" /> Official Event Video
+                              </span>
+                              <h5 className="text-sm font-bold text-slate-900">
+                                {milestone.videoTitle || 'Watch Event Showcase on YouTube'}
+                              </h5>
+                              <p className="text-xs text-slate-500">
+                                Experience the live energy, cultural unity, and volunteer spirit.
+                              </p>
+                            </div>
+                            <a
+                              href={milestone.videoUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white text-xs font-bold rounded-xl shadow-xs transition-all shrink-0 justify-center"
+                            >
+                              <Play size={12} className="fill-current" /> Watch on YouTube <ExternalLink size={11} />
+                            </a>
                           </div>
                         </div>
                       )}

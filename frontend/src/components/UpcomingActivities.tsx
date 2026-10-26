@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { getImageUrl } from '@/lib/utils';
+import { getImageUrl, getActivityFallbackBanner } from '@/lib/utils';
 import api from '@/lib/axios';
 
 export default function UpcomingActivities() {
@@ -71,11 +71,11 @@ export default function UpcomingActivities() {
               <div className="h-48 relative overflow-hidden bg-slate-100 flex items-center justify-center">
                 {activity.bannerUrl ? (
                   <img 
-                    src={getImageUrl((activity.bannerUrl && activity.bannerUrl !== '/images/default-event-banner.png') ? activity.bannerUrl : ((activity.photos && activity.photos[0]) || '/images/gallery/events_2025/image1.png'))} 
+                    src={getImageUrl((activity.bannerUrl && !activity.bannerUrl.includes('onrender.com/uploads/')) ? activity.bannerUrl : getActivityFallbackBanner(activity.title))} 
                     alt={activity.title} 
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     onError={(e) => {
-                      (e.currentTarget as HTMLElement).style.display = 'none';
+                      (e.currentTarget as HTMLImageElement).src = getActivityFallbackBanner(activity.title);
                     }}
                   />
                 ) : (

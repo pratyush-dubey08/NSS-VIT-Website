@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FolderOpen, ArrowLeft, Image as ImageIcon, Loader2, ArrowRight } from 'lucide-react';
+import { FolderOpen, ArrowLeft, Image as ImageIcon, Loader2, ArrowRight, Play, Video, ExternalLink, Sparkles } from 'lucide-react';
 import api from '@/lib/axios';
 import Link from 'next/link';
 import { getImageUrl } from '@/lib/utils';
@@ -257,6 +257,123 @@ function GalleryContent() {
                 transition={{ duration: 0.3 }}
                 className="flex flex-col gap-7 max-w-5xl mx-auto"
               >
+              {/* Official Aftermovies & Cinematic Video Section */}
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-8 p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-[#0A192F] to-slate-950 text-white border border-white/10 shadow-2xl relative overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-80 h-80 bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-80 h-80 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
+
+                <div className="relative z-10 space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/20 text-red-300 text-xs font-bold border border-red-500/30 mb-2">
+                        <Sparkles size={13} className="text-red-400" /> Official Aftermovies & Media
+                      </div>
+                      <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                        Experience NSS in Motion
+                      </h3>
+                      <p className="text-xs sm:text-sm text-slate-300 mt-1">
+                        Watch our annual flagship camp documentaries and cultural festivals.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+                    {/* Video 1: Camp 2025 Aftermovie */}
+                    <div className="rounded-2xl overflow-hidden bg-white/5 border border-white/10 p-3 sm:p-4 space-y-3 hover:border-blue-400/50 transition-colors">
+                      <div className="relative aspect-video rounded-xl overflow-hidden bg-black ring-1 ring-white/10">
+                        <iframe
+                          src="https://www.youtube.com/embed/lm92vc0_fGY"
+                          title="Camp 2025 Aftermovie"
+                          className="w-full h-full border-0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold uppercase text-red-400 tracking-wider">Camp Documentary</span>
+                        <h4 className="text-sm font-bold text-white line-clamp-1">Annual Camp 2025 Official Aftermovie</h4>
+                        <p className="text-xs text-slate-400 line-clamp-2 mt-0.5">7 Days of rural transformation and community empowerment at Gram Jafarabad.</p>
+                      </div>
+                      <a
+                        href="https://youtu.be/lm92vc0_fGY?si=7ll7mNQ1o6b1lr4U"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs text-blue-400 hover:text-blue-300 font-semibold"
+                      >
+                        Watch on YouTube <ExternalLink size={12} />
+                      </a>
+                    </div>
+
+                    {/* Video 2: VIBGYOR 2025 Aftermovie */}
+                    <div className="rounded-2xl overflow-hidden bg-white/5 border border-white/10 p-3 sm:p-4 space-y-3 hover:border-purple-400/50 transition-colors">
+                      <div className="relative aspect-video rounded-xl overflow-hidden bg-black ring-1 ring-white/10">
+                        <iframe
+                          src="https://www.youtube.com/embed/ULmNP9Lj3aw"
+                          title="VIBGYOR 2025 Official Aftermovie"
+                          className="w-full h-full border-0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold uppercase text-amber-400 tracking-wider">First Cultural Event</span>
+                        <h4 className="text-sm font-bold text-white line-clamp-1">VIBGYOR 2025 Official Aftermovie</h4>
+                        <p className="text-xs text-slate-400 line-clamp-2 mt-0.5">Celebrating unity in diversity across classical dances, music, and tradition.</p>
+                      </div>
+                      <a
+                        href="https://youtu.be/ULmNP9Lj3aw?si=qGoWMlqOrZISS2Zn"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs text-amber-400 hover:text-amber-300 font-semibold"
+                      >
+                        Watch on YouTube <ExternalLink size={12} />
+                      </a>
+                    </div>
+
+                    {/* Video 3: Camp 2026 Instagram Reel */}
+                    <div className="rounded-2xl overflow-hidden bg-white/5 border border-rose-500/20 p-3 sm:p-4 space-y-3 hover:border-rose-400/50 transition-colors flex flex-col justify-between">
+                      <div className="space-y-3">
+                        <a
+                          href="https://www.instagram.com/reel/DXHLJhlDxNJ/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group/reel relative aspect-video rounded-xl overflow-hidden bg-slate-900 ring-1 ring-white/10 block"
+                        >
+                          <img
+                            src="https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709886/nss_vit_website/fqqcfgdawuyvznsulndo.png"
+                            alt="Camp 2026 Reel"
+                            className="w-full h-full object-cover group-hover/reel:scale-105 transition-transform duration-500 brightness-75"
+                          />
+                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                            <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white flex items-center justify-center shadow-lg group-hover/reel:scale-110 transition-transform">
+                              <Play size={20} className="fill-current ml-0.5" />
+                            </div>
+                          </div>
+                        </a>
+                        <div>
+                          <span className="text-[10px] font-bold uppercase text-rose-400 tracking-wider">Instagram Official Reel</span>
+                          <h4 className="text-sm font-bold text-white line-clamp-1">Annual Camp 2026 Highlights Reel</h4>
+                          <p className="text-xs text-slate-400 line-clamp-2 mt-0.5">Grassroots bonding, morning drills, and community activities at Borkheda.</p>
+                        </div>
+                      </div>
+                      <a
+                        href="https://www.instagram.com/reel/DXHLJhlDxNJ/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-rose-600 to-purple-600 hover:from-rose-500 hover:to-purple-500 text-white text-xs font-bold rounded-xl transition-all shadow-xs"
+                      >
+                        Watch Reel on Instagram <ExternalLink size={12} />
+                      </a>
+                    </div>
+
+                  </div>
+                </div>
+              </motion.div>
+
                 {categories.map((category, index) => {
                   const catFolders = folders.filter(f => f.categoryId === category.id);
                   const albumCount = catFolders.length;
@@ -343,6 +460,61 @@ function GalleryContent() {
                   
                   <div className="h-1.5 w-24 bg-gradient-to-r from-nss-blue to-nss-red rounded-full mt-3" />
                 </div>
+
+                                {/* Category-Specific Featured Video Showcase */}
+                {selectedCategoryId === 'camps' && (
+                  <div className="mb-8 p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-blue-950 via-slate-900 to-slate-950 border border-blue-500/20 shadow-lg text-white">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div className="space-y-1">
+                        <span className="text-xs font-bold uppercase tracking-wider text-blue-400 flex items-center gap-1.5">
+                          <Video size={13} /> Official Camp Documentaries & Reels
+                        </span>
+                        <h4 className="text-lg font-black text-white">Watch Annual Camp Aftermovies</h4>
+                        <p className="text-xs text-slate-300">Relive the 7-day rural immersion experiences through high-definition aftermovies.</p>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2 shrink-0">
+                        <a
+                          href="https://youtu.be/lm92vc0_fGY?si=7ll7mNQ1o6b1lr4U"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl transition-all shadow-xs"
+                        >
+                          <Play size={12} className="fill-current" /> Watch Camp 2025 Aftermovie
+                        </a>
+                        <a
+                          href="https://www.instagram.com/reel/DXHLJhlDxNJ/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-rose-600 to-purple-600 text-white text-xs font-bold rounded-xl transition-all shadow-xs"
+                        >
+                          Watch Camp 2026 Reel
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {selectedCategoryId === 'cultural' && (
+                  <div className="mb-8 p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-purple-950 via-slate-900 to-slate-950 border border-purple-500/20 shadow-lg text-white">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div className="space-y-1">
+                        <span className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                          <Sparkles size={13} /> First Cultural Celebration
+                        </span>
+                        <h4 className="text-lg font-black text-white">VIBGYOR 2025 Official Aftermovie</h4>
+                        <p className="text-xs text-slate-300">Experience our inaugural celebration of India's cultural heritage and artistic expression.</p>
+                      </div>
+                      <a
+                        href="https://youtu.be/ULmNP9Lj3aw?si=qGoWMlqOrZISS2Zn"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-purple-600 to-amber-600 hover:from-purple-500 hover:to-amber-500 text-white text-xs font-bold rounded-xl transition-all shadow-xs shrink-0"
+                      >
+                        <Play size={12} className="fill-current" /> Watch VIBGYOR 2025 on YouTube
+                      </a>
+                    </div>
+                  </div>
+                )}
 
                 {/* Grid of Albums with Instant Link Prefetch (Photo counts hidden as requested) */}
                 {filteredFolders.length > 0 ? (

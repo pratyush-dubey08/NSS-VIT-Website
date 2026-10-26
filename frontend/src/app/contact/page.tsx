@@ -129,13 +129,26 @@ export default function ContactPage() {
       <div className="absolute top-96 right-10 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       
       {/* Header (Top Badge Removed as requested) */}
-      <section className="py-10 bg-white border-b border-gray-100">
+      {/* Seamlessly Blended Header Section */}
+      <section className="py-10 sm:py-14 relative z-10">
         <div className="container mx-auto px-4 text-center max-w-3xl">
-          <motion.h1 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight text-center mb-3">
-            Get in <span className="text-nss-blue">Touch</span> & Connect
+          <span className="text-xs font-black tracking-widest text-nss-red uppercase px-3.5 py-1 bg-red-50 rounded-full border border-red-200/80 inline-block mb-3 shadow-xs">
+            Connect & Outreach
+          </span>
+          <motion.h1 
+            initial={{ opacity: 0, y: 15 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight text-center mb-3 bg-gradient-to-r from-nss-blue via-blue-900 to-nss-red bg-clip-text text-transparent"
+          >
+            Get in Touch with NSS
           </motion.h1>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm sm:text-base text-slate-500 max-w-2xl mx-auto leading-relaxed font-normal text-center">
-            Have questions about volunteer recruitment, blood donation camps, or community service? We would love to hear from you.
+          <motion.p 
+            initial={{ opacity: 0, y: 15 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ delay: 0.1 }} 
+            className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed font-normal text-center"
+          >
+            Have questions about volunteer recruitment, blood donation camps, or community initiatives? We would love to hear from you.
           </motion.p>
         </div>
       </section>

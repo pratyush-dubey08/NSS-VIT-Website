@@ -19,7 +19,9 @@ import {
   BookOpen,
   FolderOpen,
   X,
-  ZoomIn
+  ZoomIn,
+  Video,
+  ExternalLink
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -122,6 +124,16 @@ const pressReleases2026 = [
   '/images/press_2026/IMG-20260324-WA0015.jpg',
   '/images/press_2026/IMG-20260324-WA0016.jpg',
   '/images/press_2026/IMG-20260324-WA0017.jpg',
+];
+
+
+const campShowcasePhotos = [
+  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709886/nss_vit_website/fqqcfgdawuyvznsulndo.png', caption: 'Camp Inaugural & Ceremonial Flag Hoisting' },
+  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972948/nss_vit_website/ydmr2p4ujlvf9ndo7bid.jpg', caption: 'Morning Yoga, PT & Mindfulness Assembly' },
+  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972947/nss_vit_website/n8zsqhoxdjxk04deef3p.jpg', caption: 'Shramdaan & Village Swachhata Abhiyan' },
+  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972947/nss_vit_website/wmbx7z6cherz2c6bb6ho.jpg', caption: 'Free Village Medical & Dental Health Camp' },
+  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709660/nss_vit_website/qfbsotsgpnuh2dbecoya.jpg', caption: 'Government School Child Mentorship & Fun Sports' },
+  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792709665/nss_vit_website/yj8uz0yohtwf5oq85wmp.jpg', caption: 'Evening Cultural Campfire & Community Unity' }
 ];
 
 export default function AnnualCampPage() {
@@ -288,6 +300,43 @@ export default function AnnualCampPage() {
 
         </section>
 
+        {/* Camp Moments Visual Showcase & See More Special Camps */}
+        <section className="max-w-5xl mx-auto my-14">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+            <div>
+              <span className="text-xs font-black uppercase tracking-widest text-nss-red">Memories & Impact</span>
+              <h3 className="text-2xl sm:text-3xl font-black text-gray-900 mt-1">
+                Glimpses of 7 Day Rural Camp Life
+              </h3>
+            </div>
+            <Link
+              href="/gallery?category=camps"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-nss-blue to-blue-900 hover:from-blue-900 hover:to-nss-red text-white font-bold text-xs sm:text-sm rounded-xl shadow-md transition-all group shrink-0 w-fit"
+            >
+              <span>See More Camp Photos</span>
+              <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+            {campShowcasePhotos.map((img, idx) => (
+              <div 
+                key={idx}
+                className="relative rounded-2xl overflow-hidden aspect-[4/3] bg-slate-900 border-2 border-slate-200/90 shadow-md hover:shadow-xl group transition-all"
+              >
+                <img
+                  src={img.url}
+                  alt={img.caption}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-3 flex flex-col justify-end">
+                  <p className="text-white text-xs font-bold leading-tight">{img.caption}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <hr className="my-16 border-t border-gray-200/80 max-w-4xl mx-auto" />
 
         {/* SECTION: Annual Special Camp Editions (2026, 2025, 2024 Day-by-Day Documentation) */}
@@ -342,6 +391,42 @@ export default function AnnualCampPage() {
                 <p className="text-xs sm:text-sm text-gray-500 font-medium mt-1">
                   Location: Gram Borkheda, Tehsil Ashta, District Sehore
                 </p>
+              </div>
+
+              {/* ANC 2026 Album Link & Reel Showcase (Moved Above Days Schedule as requested) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-blue-50/70 rounded-2xl border border-blue-200/90 shadow-xs">
+                  <div>
+                    <h5 className="font-black text-gray-900 text-sm sm:text-base">View Complete Photo Album from ANC 2026</h5>
+                    <p className="text-xs text-gray-500 mt-0.5">Explore 72+ high-resolution photos in the dedicated ANC 2026 gallery album.</p>
+                  </div>
+                  <Link
+                    href="/gallery/6a68983ebe9b0736f01570f9"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-nss-blue hover:bg-blue-800 text-white font-bold text-xs rounded-xl shadow-xs transition-colors shrink-0"
+                  >
+                    <ImageIcon size={15} /> Visit ANC 2026 Album <ArrowRight size={14} />
+                  </Link>
+                </div>
+
+                <a
+                  href="https://www.instagram.com/reel/DXHLJhlDxNJ/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between gap-4 p-5 bg-gradient-to-r from-rose-50 via-pink-50 to-amber-50 rounded-2xl border border-rose-200/90 shadow-xs hover:shadow-md transition-all group"
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                      <Video size={20} />
+                    </div>
+                    <div>
+                      <h5 className="font-black text-gray-900 text-sm sm:text-base group-hover:text-rose-600 transition-colors">
+                        Camp 2026 Official Aftermovie Reel
+                      </h5>
+                      <p className="text-xs text-gray-500 mt-0.5">Watch the viral camp memories, prabhat pheri & village vibes on Instagram.</p>
+                    </div>
+                  </div>
+                  <ExternalLink size={16} className="text-rose-500 shrink-0" />
+                </a>
               </div>
 
               {/* Day-by-Day Breakdown (English Translated) */}
@@ -468,18 +553,7 @@ export default function AnnualCampPage() {
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-blue-50/60 rounded-2xl border border-blue-100">
-                  <div>
-                    <h5 className="font-black text-gray-900 text-sm sm:text-base">View Complete Photo Album from ANC 2026</h5>
-                    <p className="text-xs text-gray-500 mt-0.5">Explore 72+ high-resolution photos in the dedicated ANC 2026 gallery album.</p>
-                  </div>
-                  <Link
-                    href="/gallery/6a68983ebe9b0736f01570f9"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-nss-blue hover:bg-blue-800 text-white font-bold text-xs rounded-xl shadow-xs transition-colors shrink-0"
-                  >
-                    <ImageIcon size={15} /> Visit ANC 2026 Album <ArrowRight size={14} />
-                  </Link>
-                </div>
+                
               </div>
 
             </motion.div>
@@ -501,6 +575,51 @@ export default function AnnualCampPage() {
                 <p className="text-xs sm:text-sm text-gray-500 font-medium mt-1">
                   Location: Gram Jafarabad, Tehsil Ashta, District Sehore | Dates: 24th - 30th January 2025
                 </p>
+              </div>
+
+              {/* ANC 2025 Album Link & Embedded Video Player (Moved Above Days Schedule as requested) */}
+              <div className="space-y-4">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-emerald-50/70 rounded-2xl border border-emerald-200/90 shadow-xs">
+                  <div>
+                    <h5 className="font-black text-gray-900 text-sm sm:text-base">View Complete Photo Album from ANC 2025</h5>
+                    <p className="text-xs text-gray-500 mt-0.5">Explore official photo documentation from the 7-day residential camp at Jafarabad.</p>
+                  </div>
+                  <Link
+                    href="/gallery/6a666e30050b5c6502e8421e"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-xs transition-colors shrink-0"
+                  >
+                    <ImageIcon size={15} /> Visit ANC 2025 Album <ArrowRight size={14} />
+                  </Link>
+                </div>
+
+                {/* Embedded Camp 2025 Official Aftermovie */}
+                <div className="bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 shadow-xl p-4 sm:p-6 text-white space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <span className="w-3 h-3 rounded-full bg-red-600 animate-pulse" />
+                      <h5 className="font-black text-sm sm:text-base tracking-tight">
+                        Annual NSS Unit Camp 2025 — Official Documentary & Aftermovie
+                      </h5>
+                    </div>
+                    <a 
+                      href="https://youtu.be/lm92vc0_fGY?si=7ll7mNQ1o6b1lr4U" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-xs font-bold text-red-400 hover:underline flex items-center gap-1"
+                    >
+                      Watch on YouTube <ExternalLink size={12} />
+                    </a>
+                  </div>
+                  <div className="relative aspect-video w-full rounded-xl overflow-hidden shadow-2xl bg-black">
+                    <iframe
+                      src="https://www.youtube.com/embed/lm92vc0_fGY"
+                      title="Annual NSS Unit Camp 2025 Aftermovie"
+                      className="w-full h-full border-0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                </div>
               </div>
 
               {/* Day-by-Day Breakdown (English Translated) */}
@@ -596,17 +715,7 @@ export default function AnnualCampPage() {
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-emerald-50/60 rounded-2xl border border-emerald-100">
-                  <div>
-                    <h5 className="font-black text-gray-900 text-sm sm:text-base">View Complete Photo Album from ANC 2025</h5>
-                  </div>
-                  <Link
-                    href="/gallery/6a666e30050b5c6502e8421e"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-xs transition-colors shrink-0"
-                  >
-                    <ImageIcon size={15} /> Visit ANC 2025 Album <ArrowRight size={14} />
-                  </Link>
-                </div>
+                
               </div>
 
             </motion.div>
@@ -628,6 +737,20 @@ export default function AnnualCampPage() {
                 <p className="text-xs sm:text-sm text-gray-500 font-medium mt-1">
                   Location: Gram Kachnariya, District Sehore | Concluded: 14th February 2024
                 </p>
+              </div>
+
+              {/* ANC 2024 Album Link (Moved Above Days Schedule as requested) */}
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-amber-50/70 rounded-2xl border border-amber-200/90 shadow-xs mb-8">
+                <div>
+                  <h5 className="font-black text-gray-900 text-sm sm:text-base">View Complete Photo Album from ANC 2024</h5>
+                  <p className="text-xs text-gray-500 mt-0.5">Explore historic documentation from our Kachnariya rural immersion camp.</p>
+                </div>
+                <Link
+                  href="/gallery/6a666e30050b5c6502e8421d"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs rounded-xl shadow-xs transition-colors shrink-0"
+                >
+                  <ImageIcon size={15} /> Visit ANC 2024 Album <ArrowRight size={14} />
+                </Link>
               </div>
 
               {/* Day-by-Day Breakdown */}
@@ -723,17 +846,7 @@ export default function AnnualCampPage() {
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-amber-50/60 rounded-2xl border border-amber-100">
-                  <div>
-                    <h5 className="font-black text-gray-900 text-sm sm:text-base">View Complete Photo Album from ANC 2024</h5>
-                  </div>
-                  <Link
-                    href="/gallery/6a666e30050b5c6502e8421d"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs rounded-xl shadow-xs transition-colors shrink-0"
-                  >
-                    <ImageIcon size={15} /> Visit ANC 2024 Album <ArrowRight size={14} />
-                  </Link>
-                </div>
+                
               </div>
 
             </motion.div>

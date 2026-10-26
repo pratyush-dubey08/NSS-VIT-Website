@@ -17,6 +17,13 @@ export default function AlumniPage() {
       {/* Subtle Dot Matrix Texture */}
       <div className="absolute inset-0 bg-[radial-gradient(#3b82f6_0.8px,transparent_0.8px)] [background-size:24px_24px] opacity-[0.08] pointer-events-none -z-10" />
 
+      {/* Soft Blended Photography Watermark in Background */}
+      <div className="fixed inset-0 pointer-events-none -z-30 opacity-[0.035] select-none overflow-hidden">
+        <img src="/images/hero-nss-group.jpg" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
+      </div>
+      <div className="absolute top-10 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-96 right-10 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      
       <div className="container mx-auto max-w-7xl relative z-10">
         
         {/* Header Section (Clean, Proud Legacy and Batch pills removed, equal gaps balanced) */}
@@ -45,15 +52,19 @@ export default function AlumniPage() {
               className="bg-white/95 backdrop-blur-xl rounded-[2rem] overflow-hidden border border-blue-100/80 shadow-xl shadow-blue-900/5 hover:shadow-2xl hover:shadow-blue-500/10 hover:border-blue-300 hover:-translate-y-2 transition-all duration-300 flex flex-col group relative"
             >
               {/* Top Banner / Card Header */}
-              <div className="relative h-28 bg-gradient-to-r from-blue-100/70 via-indigo-50/80 to-blue-50/90 border-b border-blue-100/60 flex justify-center">
-                <div className="absolute inset-0 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px] opacity-15" />
+              {/* Top Banner / Card Header with NSS Brand Theme & Ambient Styling */}
+              <div className="relative h-32 bg-gradient-to-r from-[#0A192F] via-[#1E3A8A] to-[#D32F2F] flex justify-center overflow-hidden">
+                {/* Geometric Pattern & Soft Brand Glows */}
+                <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1.2px,transparent_1.2px)] [background-size:16px_16px] opacity-25 pointer-events-none" />
+                <div className="absolute -right-6 -bottom-6 w-28 h-28 bg-red-500/30 rounded-full blur-xl pointer-events-none" />
+                <div className="absolute -left-6 -top-6 w-28 h-28 bg-blue-400/30 rounded-full blur-xl pointer-events-none" />
                 
-                {/* Circular Avatar */}
-                <div className="absolute -bottom-14 w-28 h-28 rounded-full border-4 border-white shadow-xl overflow-hidden bg-white ring-2 ring-blue-500/20 group-hover:ring-blue-500/40 group-hover:scale-105 transition-all duration-300 z-10">
+                {/* Circular Avatar with Generous Unclipped Portrait Framing */}
+                <div className="absolute -bottom-14 w-32 h-32 rounded-full border-4 border-white shadow-2xl overflow-hidden bg-white ring-2 ring-blue-900/20 group-hover:ring-nss-red/50 transition-all duration-300 z-10">
                   <img 
                     src={alumnus.photoUrl} 
                     alt={alumnus.name}
-                    className="w-full h-full object-cover object-center scale-110 group-hover:scale-115 transition-transform duration-300"
+                    className="w-full h-full object-cover object-[center_top] transition-transform duration-300"
                     onError={(e) => {
                       (e.currentTarget as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(alumnus.name)}&background=EFF6FF&color=1D4ED8&bold=true`;
                     }}
