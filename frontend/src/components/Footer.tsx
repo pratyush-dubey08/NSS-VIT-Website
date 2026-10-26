@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Mail, MapPin, Heart } from 'lucide-react';
+import { Mail, MapPin, Heart, Smartphone, Download } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 export default function Footer() {
@@ -66,7 +66,18 @@ export default function Footer() {
               <li><Link href="/contact" className="text-slate-300 hover:text-red-400 hover:translate-x-1 transition-all inline-block text-sm font-medium">Contact Support</Link></li>
               <li><Link href="/initiatives/tree-plantation" className="text-slate-300 hover:text-red-400 hover:translate-x-1 transition-all inline-block text-sm font-medium">Tree Plantation</Link></li>
               <li><Link href="/initiatives/blood-donation" className="text-slate-300 hover:text-red-400 hover:translate-x-1 transition-all inline-block text-sm font-medium">Blood Donation</Link></li>
-              <li><Link href="/initiatives/annual-camp" className="text-slate-300 hover:text-red-400 hover:translate-x-1 transition-all inline-block text-sm font-medium">Annual Camp</Link></li>
+                            <li><Link href="/initiatives/annual-camp" className="text-slate-300 hover:text-red-400 hover:translate-x-1 transition-all inline-block text-sm font-medium">Annual Camp</Link></li>
+              <li className="pt-2">
+                <a
+                  href="https://github.com/pratyush-dubey08/NSS-VIT-Website/releases/latest/download/nss-vit-bhopal.apk"
+                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-bold text-xs shadow-md transition-all active:scale-95 group border border-emerald-400/30"
+                  title="Direct Download NSS Unit Official Android App"
+                >
+                  <Smartphone size={14} className="group-hover:rotate-12 transition-transform" />
+                  <span>Download Android App (.apk)</span>
+                  <Download size={12} className="opacity-80" />
+                </a>
+              </li>
             </ul>
           </div>
 
