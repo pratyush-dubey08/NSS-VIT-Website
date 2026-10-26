@@ -1,12 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { Newspaper, Trees, Calendar, Users, MapPin, Award, ZoomIn, X } from 'lucide-react';
+import { Newspaper, Trees, Calendar, Users, MapPin, Award, ZoomIn, X, FolderOpen, ArrowRight } from 'lucide-react';
 
 export default function TreePlantationPage() {
+  const [slideIndex, setSlideIndex] = useState(0);
   const [selectedPressImage, setSelectedPressImage] = useState<string | null>(null);
 
   const pressReleases = [
@@ -14,68 +16,91 @@ export default function TreePlantationPage() {
     '/images/press_plantation/IMG-20260827-WA0032.jpg',
     '/images/press_plantation/IMG-20260827-WA0034.jpg',
   ];
-  const plantationGallery = [
-    {
-      url: "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790377/nss_vit_website/ke8hwjewhh35reol1qbv.jpg",
-      title: "Volunteers and Dignitaries at Mega Plantation Drive"
-    },
-    {
-      url: "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790381/nss_vit_website/bar2sk4mguwxzroe1exp.jpg",
-      title: "Mass Student Participation in Sehore District"
-    },
-    {
-      url: "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790383/nss_vit_website/vm7wh3c4bpu3ylp9cmx3.jpg",
-      title: "Sapling Handover & Hon'ble Dignitaries"
-    },
-    {
-      url: "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790385/nss_vit_website/ofvu3md9bg1xkm5m8jqc.jpg",
-      title: "Flag-Off Rally and Student Volunteer Contingent"
-    }
-  ];
+
+  const heroPlantationPhotos = [
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790377/nss_vit_website/ke8hwjewhh35reol1qbv.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790380/nss_vit_website/ldxhofed2qko3xgkalrw.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790381/nss_vit_website/bar2sk4mguwxzroe1exp.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790383/nss_vit_website/vm7wh3c4bpu3ylp9cmx3.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790385/nss_vit_website/ofvu3md9bg1xkm5m8jqc.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790396/nss_vit_website/nagkh4v72p64tirloif5.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790572/nss_vit_website/he0jq8bkt6cn65uovzd0.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790574/nss_vit_website/t8yekemxqbpvf6eveb1i.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790576/nss_vit_website/wbuvvmrfxmyegq0fzlx1.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790579/nss_vit_website/u0ylvdzscfxj3fuv6sfi.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790582/nss_vit_website/bpy3z614oyij8luiwbhd.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790584/nss_vit_website/ztr1xv8vdzyonr5bky89.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790587/nss_vit_website/jzrmswwonq0sxv5iwqdv.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790589/nss_vit_website/cw7wzhupeshfc73bg2sp.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790591/nss_vit_website/ynbhosec87evkvct56zz.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790593/nss_vit_website/jb3jvbrtpo9eg9numuud.jpg"
+];
+
+  // Auto transition hero photos every 3.5 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSlideIndex((prev) => (prev + 1) % heroPlantationPhotos.length);
+    }, 3500);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className="min-h-screen pt-24 sm:pt-28 pb-24 bg-white selection:bg-nss-blue selection:text-white font-sans">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header Showcase Banner Area */}
+        {/* Header Showcase Banner Area - Animated Hero Banner */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-14 relative"
+          className="relative rounded-3xl shadow-2xl bg-slate-900 border border-gray-100 mb-14"
         >
-          {/* Curated Gallery Showcase Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 rounded-3xl overflow-hidden shadow-xl border border-slate-200/80 bg-slate-50 p-2.5">
-            <div className="md:col-span-2 relative h-72 sm:h-96 rounded-2xl overflow-hidden group">
-              <img 
-                src={plantationGallery[0].url} 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                alt={plantationGallery[0].title} 
-              />
+          {/* Direct See more Link to Plantation Album on Top-Right */}
+          <Link
+            href="/gallery?category=plantation"
+            className="absolute top-4 right-4 z-20 inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-slate-900/85 hover:bg-slate-900 text-white text-xs font-bold backdrop-blur-md border border-white/20 shadow-lg transition-all hover:scale-105 cursor-pointer"
+            title="Explore Tree Plantation Albums in Gallery"
+          >
+            <FolderOpen size={14} className="text-emerald-400" />
+            <span>See more...</span>
+            <ArrowRight size={13} />
+          </Link>
 
-            </div>
-            
-            <div className="grid grid-cols-1 gap-3 h-72 sm:h-96">
-              <div className="relative h-full rounded-2xl overflow-hidden group">
-                <img 
-                  src={plantationGallery[1].url} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                  alt={plantationGallery[1].title} 
-                />
-              </div>
-              <div className="relative h-full rounded-2xl overflow-hidden group">
-                <img 
-                  src={plantationGallery[2].url} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                  alt={plantationGallery[2].title} 
-                />
-              </div>
+          {/* Inner Image Grid with Smooth Live Transition */}
+          <div className="rounded-3xl overflow-hidden bg-slate-950">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-2">
+              {[0, 1, 2, 3].map((slot) => {
+                const photoIdx = (slideIndex * 4 + slot) % heroPlantationPhotos.length;
+                const photoSrc = heroPlantationPhotos[photoIdx];
+
+                return (
+                  <div key={slot} className="relative aspect-[4/3] sm:aspect-[16/10] md:h-52 rounded-2xl overflow-hidden bg-slate-900 group">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={photoSrc}
+                        initial={{ opacity: 0, scale: 1.04 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.98 }}
+                        transition={{ duration: 0.8, ease: 'easeInOut' }}
+                        className="absolute inset-0 w-full h-full"
+                      >
+                        <img 
+                          src={photoSrc} 
+                          alt="Tree Plantation Photography" 
+                          className="absolute inset-0 w-full h-full object-cover object-center"
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
             </div>
           </div>
           
-          {/* Single-Line Clean Heading Pill - No Emojis, No Multiline Wrap */}
-          <div className="absolute -bottom-7 left-1/2 transform -translate-x-1/2 bg-white px-6 sm:px-10 py-3 sm:py-3.5 rounded-full shadow-xl border border-slate-200 flex items-center justify-center max-w-[95%]">
-            <h1 className="text-lg sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight text-center whitespace-nowrap uppercase">
+          {/* Title Pill Badge */}
+          <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 z-20 bg-white px-6 sm:px-10 md:px-14 py-2.5 sm:py-3.5 rounded-full shadow-2xl border border-gray-200/90 flex items-center justify-center max-w-[92%]">
+            <h1 className="text-base sm:text-2xl md:text-3xl font-black text-emerald-800 tracking-tight text-center uppercase whitespace-nowrap">
               Tree Plantation Drive
             </h1>
           </div>

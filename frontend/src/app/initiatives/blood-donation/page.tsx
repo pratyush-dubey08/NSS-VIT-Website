@@ -1,12 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { Newspaper, HeartHandshake, ShieldCheck, Hospital, Users, ZoomIn, X } from 'lucide-react';
+import { Newspaper, HeartHandshake, ShieldCheck, Hospital, Users, ZoomIn, X, FolderOpen, ArrowRight } from 'lucide-react';
 
 export default function BloodDonationPage() {
+  const [slideIndex, setSlideIndex] = useState(0);
   const [selectedPressImage, setSelectedPressImage] = useState<string | null>(null);
 
   const pressReleases = [
@@ -15,68 +17,91 @@ export default function BloodDonationPage() {
     '/images/press_blood_donation/Screenshot 2026-10-26 015428.png',
     '/images/press_blood_donation/Screenshot 2026-10-26 015435.png',
   ];
-  const bloodGallery = [
-    {
-      url: "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794532/nss_vit_website/fjvlh83zvtgjeiayirax.jpg",
-      title: "Voluntary Donors at Mega Blood Donation Camp"
-    },
-    {
-      url: "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794533/nss_vit_website/pm6eue5t9coe59d7hce9.jpg",
-      title: "Medical Staff and Donor Care Station"
-    },
-    {
-      url: "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794535/nss_vit_website/npsnlvekn9hxvmuwqrgf.jpg",
-      title: "Certificate & Refreshment Distribution"
-    },
-    {
-      url: "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794535/nss_vit_website/tnnj3irieq9co4kuo73j.jpg",
-      title: "Hospital Doctors and NSS Volunteer Leads"
-    }
-  ];
+
+  const heroBloodPhotos = [
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794532/nss_vit_website/fjvlh83zvtgjeiayirax.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794533/nss_vit_website/pm6eue5t9coe59d7hce9.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794532/nss_vit_website/xcnghddndbrvr05225lm.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794535/nss_vit_website/npsnlvekn9hxvmuwqrgf.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794535/nss_vit_website/tnnj3irieq9co4kuo73j.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794535/nss_vit_website/sezc1psatzyttyd1orfw.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794537/nss_vit_website/zrf1hp7f3lk0arnjoqvv.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794537/nss_vit_website/ioh5arutkuzhd4wddlsj.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794632/nss_vit_website/xd8f7pzade4bm5ivrc6h.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794632/nss_vit_website/nuv7ebwj3pgfwiwmdohu.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794632/nss_vit_website/hqqkzopvbofkslfh1npv.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794635/nss_vit_website/oafcmgihbnyh2r6whuit.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794635/nss_vit_website/cgm6vg8owwopfkcfabaf.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794635/nss_vit_website/iimcncjsnhsk3tfd6tme.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794638/nss_vit_website/tuimfaltsczuvzdvfl93.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794638/nss_vit_website/uffqfxbx3hpjbzourhae.jpg"
+];
+
+  // Auto transition hero photos every 3.5 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSlideIndex((prev) => (prev + 1) % heroBloodPhotos.length);
+    }, 3500);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className="min-h-screen pt-24 sm:pt-28 pb-24 bg-white selection:bg-nss-blue selection:text-white font-sans">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header Showcase Banner Area */}
+        {/* Header Showcase Banner Area - Animated Hero Banner */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-14 relative"
+          className="relative rounded-3xl shadow-2xl bg-slate-900 border border-gray-100 mb-14"
         >
-          {/* Curated Gallery Showcase Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 rounded-3xl overflow-hidden shadow-xl border border-slate-200/80 bg-slate-50 p-2.5">
-            <div className="md:col-span-2 relative h-72 sm:h-96 rounded-2xl overflow-hidden group">
-              <img 
-                src={bloodGallery[0].url} 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                alt={bloodGallery[0].title} 
-              />
+          {/* Direct See more Link to Blood Donation Album on Top-Right */}
+          <Link
+            href="/gallery?category=blood"
+            className="absolute top-4 right-4 z-20 inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-slate-900/85 hover:bg-slate-900 text-white text-xs font-bold backdrop-blur-md border border-white/20 shadow-lg transition-all hover:scale-105 cursor-pointer"
+            title="Explore Blood Donation Albums in Gallery"
+          >
+            <FolderOpen size={14} className="text-red-400" />
+            <span>See more...</span>
+            <ArrowRight size={13} />
+          </Link>
 
-            </div>
-            
-            <div className="grid grid-cols-1 gap-3 h-72 sm:h-96">
-              <div className="relative h-full rounded-2xl overflow-hidden group">
-                <img 
-                  src={bloodGallery[1].url} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                  alt={bloodGallery[1].title} 
-                />
-              </div>
-              <div className="relative h-full rounded-2xl overflow-hidden group">
-                <img 
-                  src={bloodGallery[2].url} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                  alt={bloodGallery[2].title} 
-                />
-              </div>
+          {/* Inner Image Grid with Smooth Live Transition */}
+          <div className="rounded-3xl overflow-hidden bg-slate-950">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-2">
+              {[0, 1, 2, 3].map((slot) => {
+                const photoIdx = (slideIndex * 4 + slot) % heroBloodPhotos.length;
+                const photoSrc = heroBloodPhotos[photoIdx];
+
+                return (
+                  <div key={slot} className="relative aspect-[4/3] sm:aspect-[16/10] md:h-52 rounded-2xl overflow-hidden bg-slate-900 group">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={photoSrc}
+                        initial={{ opacity: 0, scale: 1.04 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.98 }}
+                        transition={{ duration: 0.8, ease: 'easeInOut' }}
+                        className="absolute inset-0 w-full h-full"
+                      >
+                        <img 
+                          src={photoSrc} 
+                          alt="Blood Donation Photography" 
+                          className="absolute inset-0 w-full h-full object-cover object-center"
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
             </div>
           </div>
           
-          {/* Single-Line Clean Heading Pill - No Emojis, No Multiline Wrap */}
-          <div className="absolute -bottom-7 left-1/2 transform -translate-x-1/2 bg-white px-6 sm:px-10 py-3 sm:py-3.5 rounded-full shadow-xl border border-slate-200 flex items-center justify-center max-w-[95%]">
-            <h1 className="text-lg sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight text-center whitespace-nowrap uppercase">
+          {/* Title Pill Badge */}
+          <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 z-20 bg-white px-6 sm:px-10 md:px-14 py-2.5 sm:py-3.5 rounded-full shadow-2xl border border-gray-200/90 flex items-center justify-center max-w-[92%]">
+            <h1 className="text-base sm:text-2xl md:text-3xl font-black text-red-700 tracking-tight text-center uppercase whitespace-nowrap">
               Blood Donation Camp
             </h1>
           </div>
