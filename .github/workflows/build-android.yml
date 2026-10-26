@@ -22,7 +22,15 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Frontend Dependencies
+        working-directory: frontend
+        run: npm install --legacy-peer-deps
 
       - name: Grant execute permission for gradlew
         working-directory: frontend/android
@@ -43,7 +51,7 @@ jobs:
           name: nss-vit-bhopal-apk
           path: build-artifacts/nss-vit-bhopal.apk
 
-      - name: Create or Update GitHub Release with Direct APK Download
+      - name: Create or Update GitHub Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/heads/main')
         with:
