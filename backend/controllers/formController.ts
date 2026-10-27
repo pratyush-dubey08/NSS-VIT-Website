@@ -292,6 +292,9 @@ export const markAttendance = async (req: Request, res: Response) => {
         // Reverse previous status effect
         if (previousStatus === 'ATTENDED') {
           user.accumulatedHours -= activity.hoursAllocated || 0;
+          if (user.participatedActivities) {
+            user.participatedActivities = user.participatedActivities.filter((id: any) => id.toString() !== activity._id.toString());
+          }
         } else if (previousStatus === 'BUNKED') {
           user.bunks = Math.max(0, (user.bunks || 0) - 1);
         }
@@ -299,6 +302,10 @@ export const markAttendance = async (req: Request, res: Response) => {
         // Apply new status effect
         if (attendanceStatus === 'ATTENDED') {
           user.accumulatedHours += activity.hoursAllocated || 0;
+          if (!user.participatedActivities) user.participatedActivities = [];
+          if (!user.participatedActivities.some((id: any) => id.toString() === activity._id.toString())) {
+            user.participatedActivities.push(activity._id);
+          }
         } else if (attendanceStatus === 'BUNKED') {
           user.bunks = (user.bunks || 0) + 1;
         }

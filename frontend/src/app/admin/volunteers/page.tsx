@@ -156,7 +156,7 @@ This will also remove their attendance and participation records across all even
       escapeCsv(v.batch || ''),
       escapeCsv(v.gender || ''),
       escapeCsv(v.residenceType || ''),
-      escapeCsv(v.participatedActivities ? v.participatedActivities.length : 0)
+      escapeCsv(v.eventsAttendedCount ?? (v.participatedActivities ? v.participatedActivities.length : 0))
     ]);
 
     const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
@@ -354,7 +354,7 @@ This will also remove their attendance and participation records across all even
                       {/* Events Count */}
                       <td className="p-4">
                         <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-50 text-nss-blue font-bold text-sm">
-                          {volunteer.participatedActivities?.length || 0}
+                          {volunteer.eventsAttendedCount ?? (volunteer.participatedActivities?.length || 0)}
                         </span>
                       </td>
 

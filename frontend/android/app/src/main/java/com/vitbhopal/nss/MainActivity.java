@@ -11,6 +11,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import androidx.activity.OnBackPressedCallback;
 import com.getcapacitor.BridgeActivity;
 
 public class MainActivity extends BridgeActivity {
@@ -19,6 +20,56 @@ public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Register back button callback for Android 10+ gesture navigation and button navigation
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // 1. Dismiss popup OAuth dialog if currently showing
+                if (currentAuthDialog != null && currentAuthDialog.isShowing()) {
+                    try {
+                        currentAuthDialog.dismiss();
+                    } catch (Exception ignored) {}
+                    currentAuthDialog = null;
+                    return;
+                }
+
+                // 2. Navigate back in WebView history if user visited pages (e.g. Annual Camp, Dashboard, etc.)
+                if (bridge != null && bridge.getWebView() != null) {
+                    WebView mainWebView = bridge.getWebView();
+                    if (mainWebView.canGoBack()) {
+                        mainWebView.goBack();
+                        return;
+                    }
+                }
+
+                // 3. At root of app, allow system to exit/minimize app cleanly
+                setEnabled(false);
+                getOnBackPressedDispatcher().onBackPressed();
+                setEnabled(true);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentAuthDialog != null && currentAuthDialog.isShowing()) {
+            try {
+                currentAuthDialog.dismiss();
+            } catch (Exception ignored) {}
+            currentAuthDialog = null;
+            return;
+        }
+
+        if (this.bridge != null && this.bridge.getWebView() != null) {
+            WebView mainWebView = this.bridge.getWebView();
+            if (mainWebView.canGoBack()) {
+                mainWebView.goBack();
+                return;
+            }
+        }
+
+        super.onBackPressed();
     }
 
     @SuppressLint("SetJavaScriptEnabled")

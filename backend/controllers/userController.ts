@@ -4,11 +4,42 @@ import { Request, Response } from 'express';
 import User, { Role } from '../models/User';
 import bcrypt from 'bcryptjs';
 
-// Get all volunteers
+// Get all volunteers with real-time attended events count
 export const getVolunteers = async (req: Request, res: Response) => {
   try {
-    const volunteers = await User.find({ role: { $ne: Role.SUPER_ADMIN } }).select('-password').sort({ name: 1 });
-    res.status(200).json(volunteers);
+    const volunteers = await User.find({ role: { $ne: Role.SUPER_ADMIN } })
+      .select('-password')
+      .sort({ name: 1 })
+      .lean();
+
+    // Dynamically aggregate real attended events count from Registration collection
+    const attendanceAgg = await Registration.aggregate([
+      { $match: { attendanceStatus: 'ATTENDED' } },
+      { $group: { _id: '$userId', count: { $sum: 1 }, activities: { $addToSet: '$activityId' } } }
+    ]);
+
+    const attendanceMap = new Map<string, { count: number; activities: any[] }>();
+    attendanceAgg.forEach((a: any) => {
+      if (a._id) {
+        attendanceMap.set(a._id.toString(), {
+          count: a.count,
+          activities: a.activities
+        });
+      }
+    });
+
+    const enrichedVolunteers = volunteers.map((v: any) => {
+      const att = attendanceMap.get(v._id.toString());
+      const realCount = att ? att.count : (v.participatedActivities?.length || 0);
+      const realActivities = (att && att.activities && att.activities.length > 0) ? att.activities : (v.participatedActivities || []);
+      return {
+        ...v,
+        eventsAttendedCount: realCount,
+        participatedActivities: realActivities,
+      };
+    });
+
+    res.status(200).json(enrichedVolunteers);
   } catch (error) {
     console.error('Error fetching volunteers:', error);
     res.status(500).json({ message: 'Server Error' });
