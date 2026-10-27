@@ -1,7 +1,8 @@
 /**
  * Robust file download and share utility.
  * - On Desktop / Standard Website: DIRECT browser download via <a download> (NO share menu popup).
- * - On Mobile / Android App WebView: Uses Web Share API or download fallback to save to device.
+ * - Inside NSS Android App: Directly invokes native Java bridge to save to device Downloads folder!
+ * - On Mobile Web: Uses Web Share API or download fallback.
  */
 export async function downloadOrShareFile({
   blob,
@@ -16,13 +17,28 @@ export async function downloadOrShareFile({
   title?: string;
   text?: string;
 }): Promise<{ success: boolean; method: string }> {
+  // 1. FOR NATIVE ANDROID APP: Direct 1-Click Save to phone's public Downloads directory via Java Bridge!
+  if (typeof window !== 'undefined' && (window as any).AndroidApp?.saveBase64File) {
+    try {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64Data = (reader.result as string).split(',')[1];
+        (window as any).AndroidApp.saveBase64File(base64Data, filename, mimeType);
+      };
+      reader.readAsDataURL(blob);
+      return { success: true, method: 'android-native-download' };
+    } catch (err) {
+      console.warn('Android native bridge save failed, trying fallback:', err);
+    }
+  }
+
   // Check if running on mobile device or native app
   const isMobileOrApp =
     typeof navigator !== 'undefined' &&
     (/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ||
       (typeof window !== 'undefined' && !!(window as any).Capacitor?.isNativePlatform?.()));
 
-  // 1. FOR DESKTOP / PC BROWSERS: ALWAYS USE DIRECT BROWSER DOWNLOAD (No Windows share dialog!)
+  // 2. FOR DESKTOP / PC BROWSERS: ALWAYS USE DIRECT BROWSER DOWNLOAD (No Windows share dialog!)
   if (!isMobileOrApp) {
     try {
       const url = URL.createObjectURL(blob);
@@ -40,7 +56,7 @@ export async function downloadOrShareFile({
     }
   }
 
-  // 2. FOR MOBILE / ANDROID APP WEBVIEWS: Try Web Share API (Save to device / WhatsApp / Drive)
+  // 3. FOR MOBILE BROWSERS: Try Web Share API (Save to device / WhatsApp / Drive)
   try {
     if (typeof navigator !== 'undefined' && 'canShare' in navigator) {
       const file = new File([blob], filename, { type: mimeType });
@@ -60,7 +76,7 @@ export async function downloadOrShareFile({
     console.warn('Mobile Web Share API failed, attempting standard download fallback:', err);
   }
 
-  // 3. Fallback: Standard <a download>
+  // 4. Fallback: Standard <a download>
   try {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -76,7 +92,7 @@ export async function downloadOrShareFile({
     console.error('Download fallback failed:', err);
   }
 
-  // 4. Last-resort fallback for mobile WebViews
+  // 5. Last-resort fallback for mobile WebViews
   try {
     const reader = new FileReader();
     reader.onloadend = () => {

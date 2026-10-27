@@ -2,30 +2,80 @@ package com.vitbhopal.nss;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.DownloadManager;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Message;
+import android.util.Base64;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
+import android.webkit.DownloadListener;
+import android.webkit.JavascriptInterface;
+import android.webkit.URLUtil;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import com.getcapacitor.BridgeActivity;
+import java.io.File;
+import java.io.FileOutputStream;
 
 public class MainActivity extends BridgeActivity {
     private Dialog currentAuthDialog = null;
+    private ValueCallback<Uri[]> mUploadMessage = null;
+    private final static int FILECHOOSER_RESULTCODE = 1001;
+
+    // JavaScript Native Interface for 1-Click Blob/Base64 File Downloads in App
+    public class AndroidNativeBridge {
+        Context mContext;
+
+        AndroidNativeBridge(Context c) {
+            mContext = c;
+        }
+
+        @JavascriptInterface
+        public void saveBase64File(String base64Data, String filename, String mimeType) {
+            try {
+                byte[] pdfAsBytes = Base64.decode(base64Data, Base64.DEFAULT);
+                File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                if (!downloadsDir.exists()) {
+                    downloadsDir.mkdirs();
+                }
+                File file = new File(downloadsDir, filename);
+                FileOutputStream os = new FileOutputStream(file, false);
+                os.write(pdfAsBytes);
+                os.flush();
+                os.close();
+
+                // Notify Android Media Scanner so file appears immediately in Files/Downloads app
+                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                mediaScanIntent.setData(Uri.fromFile(file));
+                mContext.sendBroadcast(mediaScanIntent);
+
+                runOnUiThread(() -> Toast.makeText(mContext, "Downloaded " + filename + " to Downloads folder", Toast.LENGTH_LONG).show());
+            } catch (Exception e) {
+                runOnUiThread(() -> Toast.makeText(mContext, "Download failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+            }
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Register back button callback for Android 10+ gesture navigation and button navigation
+        // Hardware / Gesture Back Navigation
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                // 1. Dismiss popup OAuth dialog if currently showing
                 if (currentAuthDialog != null && currentAuthDialog.isShowing()) {
                     try {
                         currentAuthDialog.dismiss();
@@ -34,7 +84,6 @@ public class MainActivity extends BridgeActivity {
                     return;
                 }
 
-                // 2. Navigate back in WebView history if user visited pages (e.g. Annual Camp, Dashboard, etc.)
                 if (bridge != null && bridge.getWebView() != null) {
                     WebView mainWebView = bridge.getWebView();
                     if (mainWebView.canGoBack()) {
@@ -43,7 +92,6 @@ public class MainActivity extends BridgeActivity {
                     }
                 }
 
-                // 3. At root of app, allow system to exit/minimize app cleanly
                 setEnabled(false);
                 getOnBackPressedDispatcher().onBackPressed();
                 setEnabled(true);
@@ -72,6 +120,16 @@ public class MainActivity extends BridgeActivity {
         super.onBackPressed();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == FILECHOOSER_RESULTCODE) {
+            if (mUploadMessage == null) return;
+            mUploadMessage.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(resultCode, data));
+            mUploadMessage = null;
+        }
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void onResume() {
@@ -80,27 +138,83 @@ public class MainActivity extends BridgeActivity {
             WebView mainWebView = this.bridge.getWebView();
             WebSettings settings = mainWebView.getSettings();
             
-            // Enable JavaScript and persistent HTML5 storage
+            // Enable JavaScript and HTML5 storage
             settings.setJavaScriptEnabled(true);
             settings.setDomStorageEnabled(true);
             settings.setDatabaseEnabled(true);
             settings.setJavaScriptCanOpenWindowsAutomatically(true);
             settings.setSupportMultipleWindows(true);
+            settings.setAllowFileAccess(true);
+            settings.setAllowContentAccess(true);
 
-            // Enable cookies and third-party cookies for Google session preservation
+            // Add JavaScript Interface for Direct File Downloads
+            mainWebView.addJavascriptInterface(new AndroidNativeBridge(this), "AndroidApp");
+
+            // Native Download Listener for HTTP/HTTPS files
+            mainWebView.setDownloadListener(new DownloadListener() {
+                @Override
+                public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimeType, long contentLength) {
+                    try {
+                        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+                        request.setMimeType(mimeType);
+                        String cookies = CookieManager.getInstance().getCookie(url);
+                        request.addRequestHeader("cookie", cookies);
+                        request.addRequestHeader("User-Agent", userAgent);
+                        request.setDescription("Downloading file from NSS Unit...");
+                        String filename = URLUtil.guessFileName(url, contentDisposition, mimeType);
+                        request.setTitle(filename);
+                        request.allowScanningByMediaScanner();
+                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+                        
+                        DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                        if (dm != null) {
+                            dm.enqueue(request);
+                            Toast.makeText(getApplicationContext(), "Downloading " + filename + "...", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        try {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(url));
+                            startActivity(intent);
+                        } catch (Exception ignored) {}
+                    }
+                }
+            });
+
+            // Enable cookies
             final CookieManager cookieManager = CookieManager.getInstance();
             cookieManager.setAcceptCookie(true);
             cookieManager.setAcceptThirdPartyCookies(mainWebView, true);
 
-            // Clean User-Agent removing '; wv' and 'Version/4.0'
+            // Clean User-Agent
             String ua = settings.getUserAgentString();
             if (ua != null) {
                 String cleanUa = ua.replace("; wv", "").replace("Version/4.0 ", "");
                 settings.setUserAgentString(cleanUa);
             }
 
-            // In-app OAuth popup handler with clean lifecycle and repeatable clicks
+            // WebChromeClient with File Chooser (<input type="file">) and OAuth Popup support
             mainWebView.setWebChromeClient(new WebChromeClient() {
+                // File Chooser Handler (Upload Photos, CSV, Certificates)
+                @Override
+                public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+                    if (mUploadMessage != null) {
+                        mUploadMessage.onReceiveValue(null);
+                    }
+                    mUploadMessage = filePathCallback;
+
+                    Intent intent = fileChooserParams.createIntent();
+                    try {
+                        startActivityForResult(intent, FILECHOOSER_RESULTCODE);
+                    } catch (ActivityNotFoundException e) {
+                        mUploadMessage = null;
+                        Toast.makeText(MainActivity.this, "Cannot open file picker", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                    return true;
+                }
+
                 @Override
                 public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
                     if (currentAuthDialog != null && currentAuthDialog.isShowing()) {
