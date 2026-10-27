@@ -726,7 +726,7 @@ export default function AdminResources() {
                   
                   <div className="flex items-center gap-2">
                     <a 
-                      href={res.fileUrl} 
+                      href={res.fileUrl && res.fileUrl.includes('cloudinary.com') && res.fileUrl.endsWith('.pdf') ? res.fileUrl.replace(/\.pdf$/, '.jpg') : res.fileUrl} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="px-2.5 py-1 bg-gray-100 text-gray-700 text-xs font-bold rounded-lg hover:bg-gray-200"

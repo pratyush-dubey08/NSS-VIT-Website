@@ -168,6 +168,11 @@ export default function VolunteerResources() {
                 ? res.fileUrl 
                 : `${backendUrl}${res.fileUrl || ''}`;
 
+              // Avoid Cloudinary 401 "deny or ACL failure" by previewing PDF as clean high-res document image
+              const viewLink = (res.fileUrl && res.fileUrl.includes('cloudinary.com') && res.fileUrl.endsWith('.pdf'))
+                ? res.fileUrl.replace(/\.pdf$/, '.jpg')
+                : fileLink;
+
               return (
                 <div 
                   key={res._id} 
@@ -189,7 +194,7 @@ export default function VolunteerResources() {
                   
                   <div className="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2">
                     <a 
-                      href={fileLink} 
+                      href={viewLink} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-xl font-bold text-xs transition-colors border border-gray-200"
