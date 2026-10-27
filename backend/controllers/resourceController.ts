@@ -27,12 +27,28 @@ export const createResource = async (req: Request, res: Response) => {
 
       if (isCloudinaryConfigured) {
         try {
-          const result = await cloudinary.uploader.upload_large(req.file.path, {
-            folder: 'nss_vit_resources',
-            resource_type: 'auto',
-            chunk_size: 6000000,
+          const uploadResult: any = await new Promise((resolve, reject) => {
+            const stats = fs.statSync(req.file!.path);
+            if (stats.size > 20 * 1024 * 1024) {
+              cloudinary.uploader.upload_large(req.file!.path, {
+                folder: 'nss_vit_resources',
+                resource_type: 'auto',
+                chunk_size: 6000000,
+              }, (err, res) => {
+                if (err) return reject(err);
+                resolve(res);
+              });
+            } else {
+              cloudinary.uploader.upload(req.file!.path, {
+                folder: 'nss_vit_resources',
+                resource_type: 'auto',
+              })
+              .then(resolve)
+              .catch(reject);
+            }
           });
-          fileUrl = (result as any)?.secure_url;
+
+          fileUrl = uploadResult?.secure_url || uploadResult?.url;
           fs.unlink(req.file.path, () => {});
         } catch (cloudErr) {
           console.error('Cloudinary upload error in createResource, falling back to local disk:', cloudErr);

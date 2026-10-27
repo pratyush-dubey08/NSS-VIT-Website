@@ -24,6 +24,7 @@ export default function AdminResources() {
   const [fileTitle, setFileTitle] = useState('');
   const [category, setCategory] = useState('document');
   const [file, setFile] = useState<File | null>(null);
+  const [directUrl, setDirectUrl] = useState('');
   const [isUploadingFile, setIsUploadingFile] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
   const [loadingFiles, setLoadingFiles] = useState(true);
@@ -79,59 +80,74 @@ export default function AdminResources() {
   // Upload File Resource with Dedicated Cloud Upload & Progress Tracking
   const handleUploadFile = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!file || !fileTitle) return;
+    if (!fileTitle.trim()) {
+      alert('Please enter a Resource Title');
+      return;
+    }
+    if (!file && !directUrl.trim()) {
+      alert('Please select a file from your device or provide a direct document URL');
+      return;
+    }
 
     setIsUploadingFile(true);
     setUploadProgress(5);
     try {
-      let fileToUpload: File = file;
+      let finalFileUrl = directUrl.trim();
 
-      // Auto-compress large photos and scans using client-side canvas optimization
-      if (file.type.startsWith('image/')) {
-        try {
-          fileToUpload = await compressImage(file, { maxWidth: 2400, quality: 0.85 });
-        } catch (compErr) {
-          console.warn('Could not compress image, proceeding with original:', compErr);
-        }
-      }
+      // If file selected, upload via /upload endpoint
+      if (file) {
+        let fileToUpload: File = file;
 
-      // 1. Upload to dedicated /upload endpoint (Cloudinary CDN chunked upload)
-      const uploadFormData = new FormData();
-      uploadFormData.append('file', fileToUpload);
-
-      const uploadRes = await api.post('/upload', uploadFormData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        onUploadProgress: (progressEvent) => {
-          if (progressEvent.total) {
-            const percent = Math.round((progressEvent.loaded * 90) / progressEvent.total);
-            setUploadProgress(Math.max(10, percent));
+        // Auto-compress large photos and scans using client-side canvas optimization
+        if (file.type.startsWith('image/')) {
+          try {
+            fileToUpload = await compressImage(file, { maxWidth: 2400, quality: 0.85 });
+          } catch (compErr) {
+            console.warn('Could not compress image, proceeding with original:', compErr);
           }
         }
-      });
 
-      const uploadedUrl = uploadRes.data.url || uploadRes.data.fileUrl;
-      if (!uploadedUrl) {
-        throw new Error('Upload succeeded but server did not return a valid file URL.');
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', fileToUpload);
+
+        const uploadRes = await api.post('/upload', uploadFormData, {
+          onUploadProgress: (progressEvent) => {
+            if (progressEvent.total) {
+              const percent = Math.round((progressEvent.loaded * 90) / progressEvent.total);
+              setUploadProgress(Math.max(10, percent));
+            }
+          }
+        });
+
+        finalFileUrl = uploadRes.data?.url || uploadRes.data?.fileUrl || uploadRes.data?.secure_url;
+        if (!finalFileUrl && uploadRes.data?.filename) {
+          finalFileUrl = `/uploads/${uploadRes.data.filename}`;
+        }
+
+        if (!finalFileUrl) {
+          throw new Error('Upload succeeded on server but returned an empty URL.');
+        }
       }
 
       setUploadProgress(95);
 
-      // 2. Save resource document in MongoDB
+      // Save resource document in MongoDB
       await api.post('/resources', {
-        title: fileTitle,
+        title: fileTitle.trim(),
         category: category || 'document',
-        fileUrl: uploadedUrl
+        fileUrl: finalFileUrl
       });
 
       setUploadProgress(100);
       setFileTitle('');
       setFile(null);
+      setDirectUrl('');
 
       const fileInput = document.getElementById('resource-file-input') as HTMLInputElement;
       if (fileInput) fileInput.value = '';
 
       fetchResources();
-      alert('✓ Resource uploaded successfully to cloud CDN!');
+      alert('✓ Resource saved and published successfully!');
     } catch (err: any) {
       console.error('Resource upload failed:', err);
       const msg = err.response?.data?.message || err.message || 'Failed to upload resource';
@@ -606,25 +622,53 @@ export default function AdminResources() {
                 </select>
               </div>
 
-              <div className="md:col-span-2">
-                <div className="flex justify-between items-center mb-1">
-                  <label className="block text-xs font-bold text-gray-700">Select File (PDF, Docs, Audio, Photos up to 100MB)</label>
-                  {file && (
-                    <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
-                      {(file.size / (1024 * 1024)).toFixed(2)} MB {file.type.startsWith('image/') ? '• Auto-Optimized' : ''}
-                    </span>
-                  )}
+              <div className="md:col-span-2 space-y-3">
+                <div>
+                  <div className="flex justify-between items-center mb-1">
+                    <label className="block text-xs font-bold text-gray-700">Option 1: Choose File from Device (PDF, Docs, Audio, Photos up to 100MB)</label>
+                    {file && (
+                      <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
+                        {(file.size / (1024 * 1024)).toFixed(2)} MB {file.type.startsWith('image/') ? '• Auto-Optimized' : ''}
+                      </span>
+                    )}
+                  </div>
+                  <input 
+                    id="resource-file-input"
+                    type="file" 
+                    onChange={(e) => {
+                      setFile(e.target.files?.[0] || null);
+                      if (e.target.files?.[0]) setDirectUrl('');
+                    }}
+                    className="w-full text-xs px-3.5 py-2 border border-gray-200 rounded-xl file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-nss-blue hover:file:bg-blue-100"
+                  />
+                  <p className="text-[11px] text-gray-400 mt-1">
+                    High-speed cloud optimization enabled. Images are auto-compressed on client side; large files stream safely up to 100MB.
+                  </p>
                 </div>
-                <input 
-                  id="resource-file-input"
-                  type="file" 
-                  required
-                  onChange={(e) => setFile(e.target.files?.[0] || null)}
-                  className="w-full text-xs px-3.5 py-2 border border-gray-200 rounded-xl file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-nss-blue hover:file:bg-blue-100"
-                />
-                <p className="text-[11px] text-gray-400 mt-1">
-                  High-speed cloud optimization enabled. Images are auto-compressed on client side; large files stream safely up to 100MB.
-                </p>
+
+                <div className="relative flex py-1 items-center">
+                  <div className="flex-grow border-t border-gray-200"></div>
+                  <span className="flex-shrink mx-3 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">OR</span>
+                  <div className="flex-grow border-t border-gray-200"></div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Option 2: Direct Document / Google Drive Link</label>
+                  <input 
+                    type="url"
+                    value={directUrl}
+                    onChange={(e) => {
+                      setDirectUrl(e.target.value);
+                      if (e.target.value) {
+                        setFile(null);
+                        const fi = document.getElementById('resource-file-input') as HTMLInputElement;
+                        if (fi) fi.value = '';
+                      }
+                    }}
+                    placeholder="https://drive.google.com/file/d/.../view or direct file URL"
+                    className="w-full px-3.5 py-2.5 text-xs border border-gray-200 rounded-xl focus:border-nss-blue outline-none"
+                  />
+                </div>
 
                 {uploadProgress !== null && (
                   <div className="mt-2 space-y-1">

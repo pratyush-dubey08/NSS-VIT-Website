@@ -49,26 +49,43 @@ export const uploadFile = async (req: Request, res: Response): Promise<void> => 
 
     if (isCloudinaryConfigured) {
       try {
-        // Support files up to 100MB with chunked streaming
-        const result = await cloudinary.uploader.upload_large(req.file.path, {
-          folder: 'nss_vit_website',
-          resource_type: 'auto',
-          chunk_size: 6000000, // 6MB chunks
-          quality: 'auto:good',
-          fetch_format: 'auto',
-          flags: 'progressive',
+        const uploadResult: any = await new Promise((resolve, reject) => {
+          const stats = fs.statSync(req.file!.path);
+          // Files > 20MB: use upload_large with callback
+          if (stats.size > 20 * 1024 * 1024) {
+            cloudinary.uploader.upload_large(req.file!.path, {
+              folder: 'nss_vit_website',
+              resource_type: 'auto',
+              chunk_size: 6000000,
+            }, (err, res) => {
+              if (err) return reject(err);
+              resolve(res);
+            });
+          } else {
+            // Files <= 20MB: standard uploader.upload returns a Promise
+            cloudinary.uploader.upload(req.file!.path, {
+              folder: 'nss_vit_website',
+              resource_type: 'auto',
+            })
+            .then(resolve)
+            .catch(reject);
+          }
         });
 
         // Delete temporary local file after successful upload to Cloudinary
         fs.unlink(req.file.path, () => {});
 
-        res.status(200).json({
-          message: 'File uploaded successfully',
-          url: (result as any)?.secure_url,
-          fileUrl: (result as any)?.secure_url,
-          filename: (result as any)?.public_id,
-        });
-        return;
+        const finalUrl = uploadResult?.secure_url || uploadResult?.url;
+
+        if (finalUrl) {
+          res.status(200).json({
+            message: 'File uploaded successfully',
+            url: finalUrl,
+            fileUrl: finalUrl,
+            filename: uploadResult?.public_id || req.file.filename,
+          });
+          return;
+        }
       } catch (cloudErr) {
         console.error('Cloudinary upload error, falling back to local disk:', cloudErr);
       }
