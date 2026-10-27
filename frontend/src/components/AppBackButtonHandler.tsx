@@ -44,7 +44,46 @@ export default function AppBackButtonHandler() {
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
     window.addEventListener('touchend', handleTouchEnd, { passive: true });
 
-    // 2. Capacitor native back listener (if available)
+    // 2. Android physical / hardware Back key interception (Keycode 4 / GoBack / Escape)
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.key === 'GoBack' ||
+        e.key === 'Back' ||
+        e.key === 'BrowserBack' ||
+        e.key === 'Escape' ||
+        e.keyCode === 4 ||
+        e.keyCode === 27
+      ) {
+        if (window.location.pathname !== '/' && window.location.pathname !== '') {
+          e.preventDefault();
+          e.stopPropagation();
+          if (window.history.length > 1) {
+            window.history.back();
+          } else {
+            router.push('/');
+          }
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown, { capture: true });
+
+    // 3. Cordova & Capacitor native document backbutton bridge event
+    const handleBackButtonEvent = (e: any) => {
+      if (window.location.pathname !== '/' && window.location.pathname !== '') {
+        if (e && typeof e.preventDefault === 'function') {
+          e.preventDefault();
+        }
+        if (window.history.length > 1) {
+          window.history.back();
+        } else {
+          router.push('/');
+        }
+      }
+    };
+    document.addEventListener('backbutton', handleBackButtonEvent, false);
+    document.addEventListener('ionBackButton', handleBackButtonEvent, false);
+
+    // 4. Capacitor native plugin listener (if available)
     let cleanupCapacitor: (() => void) | null = null;
     import('@capacitor/app')
       .then(({ App }) => {
@@ -68,6 +107,9 @@ export default function AppBackButtonHandler() {
     return () => {
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('keydown', handleKeyDown, { capture: true });
+      document.removeEventListener('backbutton', handleBackButtonEvent);
+      document.removeEventListener('ionBackButton', handleBackButtonEvent);
       if (cleanupCapacitor) cleanupCapacitor();
     };
   }, [router, pathname]);

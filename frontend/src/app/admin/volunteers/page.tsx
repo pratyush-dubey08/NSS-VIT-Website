@@ -27,6 +27,7 @@ import {
 import api from '@/lib/axios';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { downloadOrShareFile } from '@/lib/downloadHelper';
 
 import AddVolunteerModal from '@/components/admin/AddVolunteerModal';
 import BulkAddModal from '@/components/admin/BulkAddModal';
@@ -125,7 +126,7 @@ This will also remove their attendance and participation records across all even
   };
 
   // One-Click Full Details CSV Sheet Export
-  const handleDownloadSheet = (targetVolunteers?: any[]) => {
+  const handleDownloadSheet = async (targetVolunteers?: any[]) => {
     const listToExport = targetVolunteers && targetVolunteers.length > 0 ? targetVolunteers : filteredVolunteers;
     
     if (listToExport.length === 0) {
@@ -164,16 +165,14 @@ This will also remove their attendance and participation records across all even
 
     const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    
     const dateStr = new Date().toISOString().split('T')[0];
-    link.href = url;
-    link.setAttribute('download', `NSS_VIT_Bhopal_Volunteers_Sheet_${dateStr}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    await downloadOrShareFile({
+      blob,
+      filename: `NSS_VIT_Bhopal_Volunteers_Sheet_${dateStr}.csv`,
+      mimeType: 'text/csv',
+      title: 'NSS Volunteers Data Sheet',
+      text: 'Official NSS Unit Volunteer Data Sheet'
+    });
   };
 
   const [downloadingBatchPdf, setDownloadingBatchPdf] = useState(false);
@@ -401,8 +400,15 @@ This will also remove their attendance and participation records across all even
         }
       });
 
-      // Save PDF with descriptive name
-      doc.save(`NSS_VIT_Batch_${batchYear}_Volunteer_Roster.pdf`);
+      // Save or share PDF with robust mobile WebView support
+      const pdfBlob = doc.output('blob');
+      await downloadOrShareFile({
+        blob: pdfBlob,
+        filename: `NSS_VIT_Batch_${batchYear}_Volunteer_Roster.pdf`,
+        mimeType: 'application/pdf',
+        title: `NSS VIT Batch ${batchYear} Volunteer Roster`,
+        text: `Official NSS Unit Volunteer Roster for Batch ${batchYear}`
+      });
     } catch (err: any) {
       console.error('Error generating batch PDF:', err);
       alert('Failed to generate PDF. Please try again.');

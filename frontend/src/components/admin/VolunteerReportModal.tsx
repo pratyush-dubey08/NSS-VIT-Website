@@ -20,6 +20,7 @@ import {
 import api from '@/lib/axios';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { downloadOrShareFile } from '@/lib/downloadHelper';
 
 interface VolunteerReportModalProps {
   isOpen: boolean;
@@ -81,7 +82,7 @@ export default function VolunteerReportModal({ isOpen, onClose, volunteer }: Vol
   // ==========================================================================
   // GENERATE & DOWNLOAD OFFICIAL PDF REPORT CARD
   // ==========================================================================
-  const handleDownloadPdf = () => {
+  const handleDownloadPdf = async () => {
     try {
       setIsGeneratingPdf(true);
       const doc = new jsPDF('p', 'mm', 'a4');
@@ -293,9 +294,16 @@ export default function VolunteerReportModal({ isOpen, onClose, volunteer }: Vol
       doc.setTextColor(148, 163, 184);
       doc.text('This is an official system-generated record from the NSS Unit Administrative Portal.', pageWidth / 2, 287, { align: 'center' });
 
-      // Save file
+      // Save or share PDF with mobile WebView support
       const cleanReg = (vol.registrationNumber || 'VOL').replace(/[^a-zA-Z0-9]/g, '_');
-      doc.save(`NSS_ReportCard_${cleanReg}.pdf`);
+      const pdfBlob = doc.output('blob');
+      await downloadOrShareFile({
+        blob: pdfBlob,
+        filename: `NSS_ReportCard_${cleanReg}.pdf`,
+        mimeType: 'application/pdf',
+        title: `NSS Volunteer Report Card - ${vol.name || 'Volunteer'}`,
+        text: `Official NSS Unit Performance & Attendance Report Card for ${vol.name || ''} (${vol.registrationNumber || ''})`
+      });
     } catch (err) {
       console.error('Error generating PDF report card:', err);
       alert('Error generating PDF report card. Please try again.');
