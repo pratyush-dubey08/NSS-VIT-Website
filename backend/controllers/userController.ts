@@ -196,20 +196,60 @@ export const updateVolunteer = async (req: Request, res: Response) => {
       user.certificates.push(newCertificate);
     }
     if (position !== undefined) user.position = position;
-    if (name !== undefined) user.name = name;
-    if (email !== undefined) user.email = email;
-    if (batch !== undefined) user.batch = batch;
-    if (gender !== undefined) user.gender = gender;
-    if (residenceType !== undefined) user.residenceType = residenceType;
-    if (phoneNumber !== undefined) user.phoneNumber = phoneNumber;
-    if (registrationNumber !== undefined) user.registrationNumber = registrationNumber.toUpperCase();
+    if (name !== undefined) user.name = name.trim();
+    
+    // Sanitize optional fields to prevent empty string enum/unique index validation crashes
+    if (email !== undefined) {
+      const cleanEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
+      user.email = cleanEmail || undefined;
+    }
+    if (batch !== undefined) {
+      const cleanBatch = typeof batch === 'string' ? batch.trim() : '';
+      user.batch = cleanBatch || undefined;
+    }
+    if (phoneNumber !== undefined) {
+      const cleanPhone = typeof phoneNumber === 'string' ? phoneNumber.trim() : '';
+      user.phoneNumber = cleanPhone || undefined;
+    }
+
+    if (gender !== undefined) {
+      const cleanGender = typeof gender === 'string' ? gender.trim() : '';
+      if (['Male', 'Female', 'Other'].includes(cleanGender)) {
+        user.gender = cleanGender as any;
+      } else {
+        user.gender = undefined;
+      }
+    }
+
+    if (residenceType !== undefined) {
+      const cleanRes = typeof residenceType === 'string' ? residenceType.trim() : '';
+      if (['Hosteller', 'Day Scholar'].includes(cleanRes)) {
+        user.residenceType = cleanRes as any;
+      } else {
+        user.residenceType = undefined;
+      }
+    }
+
+    if (registrationNumber !== undefined && typeof registrationNumber === 'string') {
+      const newReg = registrationNumber.trim().toUpperCase();
+      if (newReg && newReg !== user.registrationNumber) {
+        const existing = await User.findOne({ registrationNumber: newReg, _id: { $ne: user._id } });
+        if (existing) {
+          return res.status(400).json({ message: `Registration number ${newReg} is already taken by ${existing.name}` });
+        }
+        user.registrationNumber = newReg;
+      }
+    }
 
     await user.save();
 
     res.status(200).json(user);
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error updating volunteer:', error);
-    res.status(500).json({ message: 'Server Error' });
+    const msg = error.name === 'ValidationError' 
+      ? Object.values(error.errors || {}).map((e: any) => e.message).join(', ') 
+      : (error.message || 'Server Error');
+    res.status(400).json({ message: msg });
   }
 };
 

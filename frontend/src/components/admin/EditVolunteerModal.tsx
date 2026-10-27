@@ -63,11 +63,27 @@ export default function EditVolunteerModal({
     setError('');
     
     try {
-      await api.put(`/users/${volunteer._id}`, {
-        ...formData,
+      const payload: any = {
+        name: formData.name.trim(),
+        registrationNumber: formData.registrationNumber.trim().toUpperCase(),
+        email: formData.email.trim() || undefined,
         batch: formData.batch.trim() || undefined,
         phoneNumber: formData.phoneNumber.trim() || undefined
-      });
+      };
+
+      if (formData.gender && ['Male', 'Female', 'Other'].includes(formData.gender)) {
+        payload.gender = formData.gender;
+      } else {
+        payload.gender = undefined;
+      }
+
+      if (formData.residenceType && ['Hosteller', 'Day Scholar'].includes(formData.residenceType)) {
+        payload.residenceType = formData.residenceType;
+      } else {
+        payload.residenceType = undefined;
+      }
+
+      await api.put(`/users/${volunteer._id}`, payload);
       onSuccess();
       onClose();
     } catch (err: any) {
