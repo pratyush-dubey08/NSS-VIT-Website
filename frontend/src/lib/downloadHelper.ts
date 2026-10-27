@@ -1,8 +1,7 @@
 /**
- * Robust file download and share utility for mobile WebViews and desktop browsers.
- * In Android WebViews, standard <a download> is blocked.
- * This utility uses the Web Share API on mobile to trigger native system save/open,
- * with standard browser download as fallback.
+ * Robust file download and share utility.
+ * - On Desktop / Standard Website: DIRECT browser download via <a download> (NO share menu popup).
+ * - On Mobile / Android App WebView: Uses Web Share API or download fallback to save to device.
  */
 export async function downloadOrShareFile({
   blob,
@@ -17,9 +16,33 @@ export async function downloadOrShareFile({
   title?: string;
   text?: string;
 }): Promise<{ success: boolean; method: string }> {
-  // 1. Try Web Share API (Natively supported in modern mobile Chrome & Android WebViews)
+  // Check if running on mobile device or native app
+  const isMobileOrApp =
+    typeof navigator !== 'undefined' &&
+    (/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ||
+      (typeof window !== 'undefined' && !!(window as any).Capacitor?.isNativePlatform?.()));
+
+  // 1. FOR DESKTOP / PC BROWSERS: ALWAYS USE DIRECT BROWSER DOWNLOAD (No Windows share dialog!)
+  if (!isMobileOrApp) {
+    try {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', filename);
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+      return { success: true, method: 'direct-desktop-download' };
+    } catch (err) {
+      console.error('Desktop direct download failed, trying fallback:', err);
+    }
+  }
+
+  // 2. FOR MOBILE / ANDROID APP WEBVIEWS: Try Web Share API (Save to device / WhatsApp / Drive)
   try {
-    if (typeof navigator !== 'undefined' && typeof window !== 'undefined' && 'canShare' in navigator) {
+    if (typeof navigator !== 'undefined' && 'canShare' in navigator) {
       const file = new File([blob], filename, { type: mimeType });
       if (navigator.canShare({ files: [file] })) {
         await navigator.share({
@@ -27,17 +50,17 @@ export async function downloadOrShareFile({
           title,
           text
         });
-        return { success: true, method: 'share' };
+        return { success: true, method: 'mobile-share-sheet' };
       }
     }
   } catch (err: any) {
     if (err.name === 'AbortError') {
       return { success: true, method: 'aborted' };
     }
-    console.warn('Web Share API failed, attempting fallback download:', err);
+    console.warn('Mobile Web Share API failed, attempting standard download fallback:', err);
   }
 
-  // 2. Standard browser <a download> fallback (works on Desktop browsers)
+  // 3. Fallback: Standard <a download>
   try {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -48,12 +71,12 @@ export async function downloadOrShareFile({
     link.click();
     document.body.removeChild(link);
     setTimeout(() => URL.revokeObjectURL(url), 10000);
-    return { success: true, method: 'download' };
+    return { success: true, method: 'download-fallback' };
   } catch (err) {
-    console.error('Browser anchor download failed:', err);
+    console.error('Download fallback failed:', err);
   }
 
-  // 3. Fallback for mobile WebViews where <a download> fails: Open data/blob in new tab
+  // 4. Last-resort fallback for mobile WebViews
   try {
     const reader = new FileReader();
     reader.onloadend = () => {
