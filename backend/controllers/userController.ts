@@ -324,8 +324,14 @@ export const getVolunteerReport = async (req: Request, res: Response) => {
 
     // Find all registrations for this volunteer across all activities
     const registrations = await Registration.find({ userId: id })
-      .populate('activityId', 'title date category hours venue bannerUrl')
-      .sort({ createdAt: -1 });
+      .populate('activityId', 'title date category hours venue bannerUrl');
+
+    // Strictly sort registrations by the actual event date descending (RECENT to OLD)
+    registrations.sort((a: any, b: any) => {
+      const timeA = a.activityId?.date ? new Date(a.activityId.date).getTime() : 0;
+      const timeB = b.activityId?.date ? new Date(b.activityId.date).getTime() : 0;
+      return timeB - timeA;
+    });
 
     const totalEvents = registrations.length;
     const attendedEvents = registrations.filter(r => r.attendanceStatus === 'ATTENDED').length;
@@ -352,6 +358,7 @@ export const getVolunteerReport = async (req: Request, res: Response) => {
         id: r._id,
         activityId: r.activityId?._id,
         title: r.activityId?.title || 'Community Service Activity',
+        rawDate: r.activityId?.date || null,
         date: r.activityId?.date ? new Date(r.activityId.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A',
         category: r.activityId?.category || 'General',
         venue: r.activityId?.venue || 'Campus',

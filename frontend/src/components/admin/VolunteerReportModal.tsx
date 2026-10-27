@@ -77,7 +77,12 @@ export default function VolunteerReportModal({ isOpen, onClose, volunteer }: Vol
     attendanceRate: 100,
     totalHours: 0
   };
-  const activities = reportData?.activities || [];
+  // Strictly sort activities from RECENT to OLD (newest date first)
+  const activities = [...(reportData?.activities || [])].sort((a: any, b: any) => {
+    const timeA = a.rawDate ? new Date(a.rawDate).getTime() : (a.date && a.date !== 'N/A' ? new Date(a.date).getTime() : 0);
+    const timeB = b.rawDate ? new Date(b.rawDate).getTime() : (b.date && b.date !== 'N/A' ? new Date(b.date).getTime() : 0);
+    return timeB - timeA;
+  });
 
   // ==========================================================================
   // GENERATE & DOWNLOAD OFFICIAL PDF REPORT CARD
