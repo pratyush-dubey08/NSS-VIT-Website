@@ -670,7 +670,7 @@ function VolunteerActivitiesContent() {
                   <span>Important Notice Regarding 2024 Batch Attendance</span>
                 </div>
                 <p className="text-amber-900 leading-relaxed font-medium text-xs text-justify">
-                  If you belong to the 2024 batch and your status is marked as &apos;Absent&apos; in activities conducted following the Orientation Program, please note that this is because you joined the NSS Unit at a later date. For the 2024 batch, official attendance calculation commenced strictly from the Orientation Program onwards. Consequently, events held prior to your unit enrollment are recorded as absent.
+                  If you belong to the 2024 batch and your status is marked as &apos;Absent&apos; in activities conducted following the Orientation Program for 2024 (17 Jul 2025), please note that this is because you joined the NSS Unit at a later date. For the 2024 batch, official attendance calculation commenced strictly from the Orientation Program for 2024 (17 Jul 2025) onwards. Consequently, events held prior to your unit enrollment are recorded as absent.
                 </p>
               </div>
 
