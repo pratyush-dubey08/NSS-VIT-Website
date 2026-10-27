@@ -187,15 +187,25 @@ export default function VolunteerResources() {
                     </div>
                   </div>
                   
-                  <div className="mt-4 pt-4 border-t border-gray-100">
+                  <div className="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2">
                     <a 
                       href={fileLink} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="w-full inline-flex items-center justify-center gap-2 py-2.5 bg-gray-50 hover:bg-nss-blue text-gray-700 hover:text-white rounded-xl font-bold text-xs transition-colors shadow-2xs"
+                      className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-xl font-bold text-xs transition-colors border border-gray-200"
                     >
-                      <Download size={15} />
-                      View & Download Resource
+                      <ExternalLink size={14} />
+                      View
+                    </a>
+                    <a 
+                      href={fileLink} 
+                      download={res.title || 'nss-resource.pdf'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 bg-nss-blue hover:bg-blue-900 text-white rounded-xl font-bold text-xs transition-colors shadow-2xs cursor-pointer"
+                    >
+                      <Download size={14} />
+                      Download
                     </a>
                   </div>
                 </div>

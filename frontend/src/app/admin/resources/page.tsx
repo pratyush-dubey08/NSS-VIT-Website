@@ -3,7 +3,7 @@
 import { compressImage } from '@/lib/imageCompressor';
 
 import { useState, useEffect } from 'react';
-import { Plus, Trash2, FileText, Upload, Sparkles, Link as LinkIcon, ExternalLink, Calendar, Clock, CheckCircle2, XCircle } from 'lucide-react';
+import { Plus, Trash2, FileText, Upload, Download, Sparkles, Link as LinkIcon, ExternalLink, Calendar, Clock, CheckCircle2, XCircle } from 'lucide-react';
 import api from '@/lib/axios';
 
 const COLOR_PRESETS = [
@@ -682,12 +682,21 @@ export default function AdminResources() {
                   
                   <div className="flex items-center gap-2">
                     <a 
-                      href={res.fileUrl.startsWith('http') ? res.fileUrl : `http://localhost:5000${res.fileUrl}`} 
+                      href={res.fileUrl} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="px-3 py-1 bg-gray-100 text-gray-700 text-xs font-bold rounded-lg hover:bg-gray-200"
+                      className="px-2.5 py-1 bg-gray-100 text-gray-700 text-xs font-bold rounded-lg hover:bg-gray-200"
                     >
                       View
+                    </a>
+                    <a 
+                      href={res.fileUrl} 
+                      download={res.title || 'nss-resource.pdf'}
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="px-2.5 py-1 bg-blue-50 text-nss-blue text-xs font-bold rounded-lg hover:bg-blue-100 flex items-center gap-1 cursor-pointer"
+                    >
+                      <Download size={12} /> Download
                     </a>
                     <button 
                       onClick={() => handleDeleteResource(res._id)}
