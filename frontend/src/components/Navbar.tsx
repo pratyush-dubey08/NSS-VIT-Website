@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown, ChevronRight, Info, Compass, Target, HeartHandshake, ShieldCheck, UserCheck, Smartphone, Download } from 'lucide-react';
+import { Menu, X, ChevronDown, ChevronRight, ArrowLeft, Info, Compass, Target, HeartHandshake, ShieldCheck, UserCheck, Smartphone, Download } from 'lucide-react';
 import { useAuthStore } from '@/store/useAuthStore';
 
 const aboutDropdownLinks = [
@@ -64,20 +64,39 @@ export default function Navbar() {
     <header className="fixed top-0 left-0 right-0 w-full z-50 pt-4 sm:pt-4 px-3.5 sm:px-6 pointer-events-none font-sans flex justify-center">
       <div className="pointer-events-auto flex items-center justify-between gap-2 xl:gap-3 px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl bg-white/95 backdrop-blur-xl shadow-lg shadow-slate-900/5 border border-slate-200/90 transition-all duration-300 w-full max-w-7xl box-border">
         
-        {/* Left: Brand Identity */}
-        <Link href="/" className="flex items-center gap-2.5 xl:gap-3 shrink-0 group">
-          <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow-xs ring-1 ring-red-500/30 flex items-center justify-center p-1 group-hover:scale-105 transition-transform">
-            <img src="/images/nss-logo.png" alt="NSS Logo" className="w-8 h-8 object-contain" />
-          </div>
-          <div className="flex flex-col justify-center">
-            <span className="font-black text-slate-900 text-lg sm:text-xl xl:text-2xl tracking-tight leading-none">
-              NSS Unit
-            </span>
-            <span className="text-[11px] sm:text-xs xl:text-[13px] font-bold text-slate-500 tracking-wide leading-none mt-1">
-              VIT Bhopal University
-            </span>
-          </div>
-        </Link>
+        {/* Left: Mobile In-App Back Button + Brand Identity */}
+        <div className="flex items-center gap-2 shrink-0">
+          {pathname !== '/' && (
+            <button
+              onClick={() => {
+                if (typeof window !== 'undefined' && window.history.length > 1) {
+                  window.history.back();
+                } else {
+                  window.location.href = '/';
+                }
+              }}
+              className="lg:hidden flex items-center justify-center w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 active:scale-95 transition-all cursor-pointer border border-slate-200/80 shadow-2xs"
+              aria-label="Go Back"
+              title="Go Back"
+            >
+              <ArrowLeft size={16} className="text-nss-red" />
+            </button>
+          )}
+
+          <Link href="/" className="flex items-center gap-2.5 xl:gap-3 shrink-0 group">
+            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow-xs ring-1 ring-red-500/30 flex items-center justify-center p-1 group-hover:scale-105 transition-transform">
+              <img src="/images/nss-logo.png" alt="NSS Logo" className="w-8 h-8 object-contain" />
+            </div>
+            <div className="flex flex-col justify-center">
+              <span className="font-black text-slate-900 text-lg sm:text-xl xl:text-2xl tracking-tight leading-none">
+                NSS Unit
+              </span>
+              <span className="text-[11px] sm:text-xs xl:text-[13px] font-bold text-slate-500 tracking-wide leading-none mt-1">
+                VIT Bhopal University
+              </span>
+            </div>
+          </Link>
+        </div>
 
         {/* Center: Nav Links with About Dropdown */}
         <nav className="hidden lg:flex items-center justify-center gap-0.5 xl:gap-1.5 flex-1 min-w-0 px-1 xl:px-2">

@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { 
- LayoutDashboard, 
+ LayoutDashboard,
+ ArrowLeft, 
  CalendarCheck, 
  Award, 
  User, 
@@ -102,10 +103,27 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
  {/* Main Content */}
  <main className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
  {/* Mobile Header */}
- <header className="lg:hidden bg-white border-b border-gray-100 p-4 flex items-center justify-between sticky top-0 z-30">
- <Link href="/"className="flex items-center gap-2">
- <img src="/images/nss-logo.png"alt="NSS Logo"className="w-8 h-8 object-contain rounded-full bg-white p-0.5 shadow-sm"/>
+ <header className="lg:hidden bg-white border-b border-gray-100 px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-2xs">
+ <div className="flex items-center gap-2.5">
+ <button
+ onClick={() => {
+ if (typeof window !== 'undefined' && window.history.length > 1) {
+ window.history.back();
+ } else {
+ window.location.href = '/';
+ }
+ }}
+ className="flex items-center justify-center w-8 h-8 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 active:scale-95 transition-all cursor-pointer border border-gray-200/60"
+ aria-label="Go Back"
+ title="Go Back"
+ >
+ <ArrowLeft size={16} className="text-nss-red" />
+ </button>
+ <Link href="/" className="flex items-center gap-2">
+ <img src="/images/nss-logo.png" alt="NSS Logo" className="w-7 h-7 object-contain rounded-full bg-white p-0.5 shadow-2xs"/>
+ <span className="text-xs font-black text-gray-900">Volunteer Portal</span>
  </Link>
+ </div>
  <button onClick={() => setSidebarOpen(true)} className="text-gray-600 p-2 bg-gray-50 rounded-lg">
  <Menu size={20} />
  </button>

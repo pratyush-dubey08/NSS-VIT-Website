@@ -1,48 +1,76 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 export default function AppBackButtonHandler() {
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    let cleanup: (() => void) | null = null;
+    // 1. Natural Left-Edge Swipe Back (works on all mobile screens inside installed app)
+    let startX = 0;
+    let startY = 0;
 
-    // Dynamically import @capacitor/app so SSR never throws
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 1) {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      }
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (e.changedTouches.length === 1 && startX < 50) {
+        const endX = e.changedTouches[0].clientX;
+        const endY = e.changedTouches[0].clientY;
+        const diffX = endX - startX;
+        const diffY = Math.abs(endY - startY);
+
+        // Swipe right from left edge (>65px)
+        if (diffX > 65 && diffX > diffY * 1.4) {
+          if (window.location.pathname !== '/' && window.location.pathname !== '') {
+            if (window.history.length > 1) {
+              window.history.back();
+            } else {
+              router.push('/');
+            }
+          }
+        }
+      }
+    };
+
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+    // 2. Capacitor native back listener (if available)
+    let cleanupCapacitor: (() => void) | null = null;
     import('@capacitor/app')
       .then(({ App }) => {
-        const listenerPromise = App.addListener('backButton', () => {
-          const currentPath = window.location.pathname;
-
-          // If on an inner page (not home '/')
-          if (currentPath !== '/' && currentPath !== '') {
-            // Check if there is browser history to go back to
+        const p = App.addListener('backButton', () => {
+          if (window.location.pathname !== '/' && window.location.pathname !== '') {
             if (window.history.length > 1) {
               window.history.back();
             } else {
               router.push('/');
             }
           } else {
-            // If at the root home page, minimize/exit app cleanly
             App.exitApp();
           }
         });
-
-        cleanup = () => {
-          listenerPromise.then(l => l.remove()).catch(() => {});
+        cleanupCapacitor = () => {
+          p.then(l => l.remove()).catch(() => {});
         };
       })
-      .catch(() => {
-        // Normal web browser - no-op
-      });
+      .catch(() => {});
 
     return () => {
-      if (cleanup) cleanup();
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
+      if (cleanupCapacitor) cleanupCapacitor();
     };
-  }, [router]);
+  }, [router, pathname]);
 
   return null;
 }
