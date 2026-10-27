@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import Resource from '../models/Resource';
+import { v2 as cloudinary } from 'cloudinary';
+import fs from 'fs';
 
 export const getResources = async (req: Request, res: Response) => {
   try {
@@ -13,10 +15,42 @@ export const getResources = async (req: Request, res: Response) => {
 
 export const createResource = async (req: Request, res: Response) => {
   try {
-    const { title, category, fileUrl } = req.body;
+    let { title, category, fileUrl } = req.body;
+
+    // If file uploaded directly via multipart form
+    if (req.file) {
+      const isCloudinaryConfigured = Boolean(
+        process.env.CLOUDINARY_CLOUD_NAME &&
+        process.env.CLOUDINARY_API_KEY &&
+        process.env.CLOUDINARY_API_SECRET
+      );
+
+      if (isCloudinaryConfigured) {
+        try {
+          const result = await cloudinary.uploader.upload_large(req.file.path, {
+            folder: 'nss_vit_resources',
+            resource_type: 'auto',
+            chunk_size: 6000000,
+          });
+          fileUrl = (result as any)?.secure_url;
+          fs.unlink(req.file.path, () => {});
+        } catch (cloudErr) {
+          console.error('Cloudinary upload error in createResource, falling back to local disk:', cloudErr);
+          const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+          const host = req.headers['x-forwarded-host'] || req.get('host');
+          const baseUrl = process.env.BACKEND_URL || (protocol + '://' + host);
+          fileUrl = baseUrl + '/uploads/' + req.file.filename;
+        }
+      } else {
+        const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+        const host = req.headers['x-forwarded-host'] || req.get('host');
+        const baseUrl = process.env.BACKEND_URL || (protocol + '://' + host);
+        fileUrl = baseUrl + '/uploads/' + req.file.filename;
+      }
+    }
     
     if (!title || !fileUrl) {
-      return res.status(400).json({ message: 'Title and fileUrl are required' });
+      return res.status(400).json({ message: 'Title and fileUrl or uploaded file are required' });
     }
 
     const resource = new Resource({

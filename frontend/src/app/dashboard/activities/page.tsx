@@ -100,8 +100,13 @@ function VolunteerActivitiesContent() {
         api.get('/activities')
       ]);
 
-      // All valid registrations
+      // All valid registrations sorted by activity date descending (newest first)
       const myRegs = (regRes.data || []).filter((r: any) => r.activityId != null);
+      myRegs.sort((a: any, b: any) => {
+        const dateA = a.activityId?.date ? new Date(a.activityId.date).getTime() : 0;
+        const dateB = b.activityId?.date ? new Date(b.activityId.date).getTime() : 0;
+        return dateB - dateA;
+      });
       setRegisteredActivities(myRegs);
 
       // Filter activities managed by this user
@@ -176,15 +181,21 @@ function VolunteerActivitiesContent() {
     );
   }
 
-  // Filtered registrations based on attendance pill
-  const filteredRegistrations = registeredActivities.filter((reg: any) => {
-    const status = reg.attendanceStatus;
-    if (attendanceFilter === 'ALL') return true;
-    if (attendanceFilter === 'ATTENDED') return status === 'ATTENDED' || status === 'Present';
-    if (attendanceFilter === 'BUNKED') return status === 'BUNKED' || status === 'Absent';
-    if (attendanceFilter === 'PENDING') return !status || status === 'PENDING';
-    return true;
-  });
+  // Filtered registrations based on attendance pill, strictly sorted by event date (newest to oldest)
+  const filteredRegistrations = registeredActivities
+    .filter((reg: any) => {
+      const status = reg.attendanceStatus;
+      if (attendanceFilter === 'ALL') return true;
+      if (attendanceFilter === 'ATTENDED') return status === 'ATTENDED' || status === 'Present';
+      if (attendanceFilter === 'BUNKED') return status === 'BUNKED' || status === 'Absent';
+      if (attendanceFilter === 'PENDING') return !status || status === 'PENDING';
+      return true;
+    })
+    .sort((a: any, b: any) => {
+      const dateA = a.activityId?.date ? new Date(a.activityId.date).getTime() : 0;
+      const dateB = b.activityId?.date ? new Date(b.activityId.date).getTime() : 0;
+      return dateB - dateA;
+    });
 
   const presentCount = registeredActivities.filter(r => r.attendanceStatus === 'ATTENDED' || r.attendanceStatus === 'Present').length;
   const pendingCount = registeredActivities.filter(r => !r.attendanceStatus || r.attendanceStatus === 'PENDING').length;

@@ -1,5 +1,7 @@
 'use client';
 
+import { compressImage } from '@/lib/imageCompressor';
+
 import { useState, useEffect } from 'react';
 import { Plus, Trash2, FileText, Upload, Sparkles, Link as LinkIcon, ExternalLink, Calendar, Clock, CheckCircle2, XCircle } from 'lucide-react';
 import api from '@/lib/axios';
@@ -23,6 +25,7 @@ export default function AdminResources() {
   const [category, setCategory] = useState('document');
   const [file, setFile] = useState<File | null>(null);
   const [isUploadingFile, setIsUploadingFile] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
   const [loadingFiles, setLoadingFiles] = useState(true);
 
   // Volunteer Forms state
@@ -73,31 +76,52 @@ export default function AdminResources() {
     }
   };
 
-  // Upload File Resource
+  // Upload File Resource with Client Optimization & Progress Tracking
   const handleUploadFile = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!file || !fileTitle) return;
 
     setIsUploadingFile(true);
+    setUploadProgress(0);
     try {
+      let fileToUpload: File = file;
+
+      // Auto-compress large photos and scans using client-side canvas optimization
+      if (file.type.startsWith('image/')) {
+        try {
+          fileToUpload = await compressImage(file, { maxWidth: 2400, quality: 0.85 });
+        } catch (compErr) {
+          console.warn('Could not compress image, proceeding with original:', compErr);
+        }
+      }
+
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', fileToUpload);
       formData.append('title', fileTitle);
       formData.append('category', category);
 
       await api.post('/resources', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+        headers: { 'Content-Type': 'multipart/form-data' },
+        onUploadProgress: (progressEvent) => {
+          if (progressEvent.total) {
+            const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+            setUploadProgress(percent);
+          }
+        }
       });
 
       setFileTitle('');
       setFile(null);
+      setUploadProgress(null);
       fetchResources();
       alert('✓ Resource uploaded successfully!');
-    } catch (err) {
-      console.error(err);
-      alert('Failed to upload resource');
+    } catch (err: any) {
+      console.error('Resource upload failed:', err);
+      const msg = err.response?.data?.message || err.message || 'Failed to upload resource';
+      alert('Failed to upload resource: ' + msg);
     } finally {
       setIsUploadingFile(false);
+      setUploadProgress(null);
     }
   };
 
@@ -566,22 +590,54 @@ export default function AdminResources() {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-xs font-bold text-gray-700 mb-1">Select File</label>
+                <div className="flex justify-between items-center mb-1">
+                  <label className="block text-xs font-bold text-gray-700">Select File (PDF, Docs, Audio, Photos up to 100MB)</label>
+                  {file && (
+                    <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
+                      {(file.size / (1024 * 1024)).toFixed(2)} MB {file.type.startsWith('image/') ? '• Auto-Optimized' : ''}
+                    </span>
+                  )}
+                </div>
                 <input 
                   type="file" 
                   required
                   onChange={(e) => setFile(e.target.files?.[0] || null)}
                   className="w-full text-xs px-3.5 py-2 border border-gray-200 rounded-xl file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-nss-blue hover:file:bg-blue-100"
                 />
+                <p className="text-[11px] text-gray-400 mt-1">
+                  High-speed cloud optimization enabled. Images are auto-compressed on client side; large files stream safely up to 100MB.
+                </p>
+
+                {uploadProgress !== null && (
+                  <div className="mt-2 space-y-1">
+                    <div className="flex justify-between text-[11px] font-bold text-nss-blue">
+                      <span>Uploading to Cloud...</span>
+                      <span>{uploadProgress}%</span>
+                    </div>
+                    <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                      <div 
+                        className="bg-gradient-to-r from-nss-blue to-emerald-500 h-full transition-all duration-300" 
+                        style={{ width: `${uploadProgress}%` }}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="md:col-span-2 flex justify-end mt-2">
                 <button 
                   type="submit" 
                   disabled={isUploadingFile}
-                  className="flex items-center gap-2 bg-nss-blue text-white px-6 py-2.5 rounded-xl text-xs font-bold hover:bg-blue-900 transition-colors disabled:opacity-50 cursor-pointer"
+                  className="flex items-center gap-2 bg-nss-blue text-white px-6 py-2.5 rounded-xl text-xs font-bold hover:bg-blue-900 transition-colors disabled:opacity-50 cursor-pointer shadow-md"
                 >
-                  {isUploadingFile ? 'Uploading...' : <><Plus size={16} /> Upload Resource</>}
+                  {isUploadingFile ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      {uploadProgress !== null ? `Uploading (${uploadProgress}%)...` : 'Uploading...'}
+                    </>
+                  ) : (
+                    <><Plus size={16} /> Upload Resource</>
+                  )}
                 </button>
               </div>
             </form>

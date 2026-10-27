@@ -30,7 +30,7 @@ const storage = multer.diskStorage({
 // Create multer instance with configuration
 export const upload = multer({
   storage: storage,
-  limits: { fileSize: 25 * 1024 * 1024 }, // 25MB limit
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB limit for large resources and docs
 });
 
 export const uploadFile = async (req: Request, res: Response): Promise<void> => {
@@ -49,9 +49,11 @@ export const uploadFile = async (req: Request, res: Response): Promise<void> => 
 
     if (isCloudinaryConfigured) {
       try {
-        const result = await cloudinary.uploader.upload(req.file.path, {
+        // Support files up to 100MB with chunked streaming
+        const result = await cloudinary.uploader.upload_large(req.file.path, {
           folder: 'nss_vit_website',
           resource_type: 'auto',
+          chunk_size: 6000000, // 6MB chunks
           quality: 'auto:good',
           fetch_format: 'auto',
           flags: 'progressive',
@@ -62,9 +64,9 @@ export const uploadFile = async (req: Request, res: Response): Promise<void> => 
 
         res.status(200).json({
           message: 'File uploaded successfully',
-          url: result.secure_url,
-          fileUrl: result.secure_url,
-          filename: result.public_id,
+          url: (result as any)?.secure_url,
+          fileUrl: (result as any)?.secure_url,
+          filename: (result as any)?.public_id,
         });
         return;
       } catch (cloudErr) {

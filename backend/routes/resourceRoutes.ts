@@ -1,3 +1,4 @@
+import { upload } from '../controllers/uploadController';
 import express from 'express';
 import { getResources, createResource, deleteResource } from '../controllers/resourceController';
 import { authenticate, authorize } from '../middleware/authMiddleware';
@@ -9,7 +10,7 @@ const router = express.Router();
 router.get('/', getResources);
 
 // Admin routes for managing resources
-router.post('/', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER]), createResource);
+router.post('/', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER]), upload.single('file'), createResource);
 router.delete('/:id', authenticate, authorize([Role.SUPER_ADMIN, Role.PROGRAM_OFFICER]), deleteResource);
 
 export default router;

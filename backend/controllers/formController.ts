@@ -541,6 +541,14 @@ export const getMyRegistrations = async (req: Request, res: Response) => {
     
     // Filter out orphaned registrations where activity was deleted
     const validRegistrations = registrations.filter(r => r.activityId != null);
+
+    // Sort chronologically by activity event date: newest / most recent first to oldest last
+    validRegistrations.sort((a: any, b: any) => {
+      const dateA = a.activityId?.date ? new Date(a.activityId.date).getTime() : 0;
+      const dateB = b.activityId?.date ? new Date(b.activityId.date).getTime() : 0;
+      return dateB - dateA;
+    });
+
     res.json(validRegistrations);
   } catch (error) {
     console.error('Error fetching my registrations:', error);

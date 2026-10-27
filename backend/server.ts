@@ -34,8 +34,8 @@ const port = process.env.PORT || 5000;
 app.use(compression());
 
 // Body parser with safe payload limit to prevent memory exhaustion DoS
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 
 // Comprehensive Helmet Security Headers
 app.use(

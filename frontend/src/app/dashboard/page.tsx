@@ -36,6 +36,11 @@ export default function VolunteerDashboard() {
           setManagedActivities(managing);
 
           const validRegs = (myRegsRes.data || []).filter((r: any) => r.activityId != null);
+          validRegs.sort((a: any, b: any) => {
+            const dateA = a.activityId?.date ? new Date(a.activityId.date).getTime() : 0;
+            const dateB = b.activityId?.date ? new Date(b.activityId.date).getTime() : 0;
+            return dateB - dateA;
+          });
           setRegisteredActivities(validRegs);
 
           const now = new Date();

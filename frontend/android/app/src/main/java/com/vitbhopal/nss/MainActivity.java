@@ -12,6 +12,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import com.getcapacitor.BridgeActivity;
+import com.getcapacitor.BridgeWebChromeClient;
 
 public class MainActivity extends BridgeActivity {
     private Dialog currentAuthDialog = null;
@@ -35,6 +36,8 @@ public class MainActivity extends BridgeActivity {
             settings.setDatabaseEnabled(true);
             settings.setJavaScriptCanOpenWindowsAutomatically(true);
             settings.setSupportMultipleWindows(true);
+            settings.setAllowFileAccess(true);
+            settings.setAllowContentAccess(true);
 
             // Enable cookies and third-party cookies for Google session preservation
             final CookieManager cookieManager = CookieManager.getInstance();
@@ -48,8 +51,10 @@ public class MainActivity extends BridgeActivity {
                 settings.setUserAgentString(cleanUa);
             }
 
-            // In-app OAuth popup handler with clean lifecycle and repeatable clicks
-            mainWebView.setWebChromeClient(new WebChromeClient() {
+            // Subclass BridgeWebChromeClient:
+            // 1. Inherits onShowFileChooser so <input type="file"> / Choose File native picker works 100%
+            // 2. Overrides onCreateWindow for in-app Google OAuth popup handling
+            mainWebView.setWebChromeClient(new BridgeWebChromeClient(this.bridge) {
                 @Override
                 public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
                     if (currentAuthDialog != null && currentAuthDialog.isShowing()) {
