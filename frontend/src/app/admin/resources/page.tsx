@@ -76,13 +76,13 @@ export default function AdminResources() {
     }
   };
 
-  // Upload File Resource with Client Optimization & Progress Tracking
+  // Upload File Resource with Dedicated Cloud Upload & Progress Tracking
   const handleUploadFile = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!file || !fileTitle) return;
 
     setIsUploadingFile(true);
-    setUploadProgress(0);
+    setUploadProgress(5);
     try {
       let fileToUpload: File = file;
 
@@ -95,26 +95,43 @@ export default function AdminResources() {
         }
       }
 
-      const formData = new FormData();
-      formData.append('file', fileToUpload);
-      formData.append('title', fileTitle);
-      formData.append('category', category);
+      // 1. Upload to dedicated /upload endpoint (Cloudinary CDN chunked upload)
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', fileToUpload);
 
-      await api.post('/resources', formData, {
+      const uploadRes = await api.post('/upload', uploadFormData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         onUploadProgress: (progressEvent) => {
           if (progressEvent.total) {
-            const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-            setUploadProgress(percent);
+            const percent = Math.round((progressEvent.loaded * 90) / progressEvent.total);
+            setUploadProgress(Math.max(10, percent));
           }
         }
       });
 
+      const uploadedUrl = uploadRes.data.url || uploadRes.data.fileUrl;
+      if (!uploadedUrl) {
+        throw new Error('Upload succeeded but server did not return a valid file URL.');
+      }
+
+      setUploadProgress(95);
+
+      // 2. Save resource document in MongoDB
+      await api.post('/resources', {
+        title: fileTitle,
+        category: category || 'document',
+        fileUrl: uploadedUrl
+      });
+
+      setUploadProgress(100);
       setFileTitle('');
       setFile(null);
-      setUploadProgress(null);
+
+      const fileInput = document.getElementById('resource-file-input') as HTMLInputElement;
+      if (fileInput) fileInput.value = '';
+
       fetchResources();
-      alert('✓ Resource uploaded successfully!');
+      alert('✓ Resource uploaded successfully to cloud CDN!');
     } catch (err: any) {
       console.error('Resource upload failed:', err);
       const msg = err.response?.data?.message || err.message || 'Failed to upload resource';
@@ -599,6 +616,7 @@ export default function AdminResources() {
                   )}
                 </div>
                 <input 
+                  id="resource-file-input"
                   type="file" 
                   required
                   onChange={(e) => setFile(e.target.files?.[0] || null)}
