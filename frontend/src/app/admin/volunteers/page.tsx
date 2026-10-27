@@ -21,9 +21,12 @@ import {
   MoreVertical,
   FileText,
   Sparkles,
-  FileEdit
+  FileEdit,
+  FileDown
 } from 'lucide-react';
 import api from '@/lib/axios';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 import AddVolunteerModal from '@/components/admin/AddVolunteerModal';
 import BulkAddModal from '@/components/admin/BulkAddModal';
@@ -171,6 +174,241 @@ This will also remove their attendance and participation records across all even
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+  };
+
+  const [downloadingBatchPdf, setDownloadingBatchPdf] = useState(false);
+
+  // Generate and download live official PDF report for a selected batch
+  const handleDownloadBatchPdf = async (batchYear: string, fallbackList: any[]) => {
+    try {
+      setDownloadingBatchPdf(true);
+      // Fetch fresh updated database state so any recent edits or attendance changes are 100% captured!
+      let batchList = fallbackList;
+      try {
+        const { data: freshData } = await api.get('/users');
+        if (Array.isArray(freshData)) {
+          setVolunteers(freshData);
+          const filtered = freshData.filter((v: any) => v.batch === batchYear);
+          if (filtered.length > 0) {
+            batchList = filtered;
+          }
+        }
+      } catch (e) {
+        console.warn('Using local batchList fallback for PDF generation', e);
+      }
+
+      // Compute Live Demographics & Metrics
+      const totalVolunteers = batchList.length;
+      const maleCount = batchList.filter((v: any) => v.gender === 'Male').length;
+      const femaleCount = batchList.filter((v: any) => v.gender === 'Female').length;
+      const otherGenderCount = batchList.filter((v: any) => v.gender && v.gender !== 'Male' && v.gender !== 'Female').length;
+      const unspecGenderCount = batchList.filter((v: any) => !v.gender).length;
+
+      const hostellerCount = batchList.filter((v: any) => v.residenceType === 'Hosteller').length;
+      const dayScholarCount = batchList.filter((v: any) => v.residenceType === 'Day Scholar').length;
+      const unspecResidenceCount = batchList.filter((v: any) => !v.residenceType).length;
+
+      const totalEventsAttended = batchList.reduce((sum: number, v: any) => sum + (Number(v.eventsAttendedCount ?? (v.participatedActivities?.length || 0))), 0);
+      const totalEventsAbsent = batchList.reduce((sum: number, v: any) => sum + (Number(v.bunks || 0)), 0);
+
+      // Initialize landscape jsPDF document (297mm x 210mm)
+      const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+
+      // Top Navy Blue Banner
+      doc.setFillColor(10, 25, 47); // NSS Navy #0A192F
+      doc.rect(0, 0, pageWidth, 28, 'F');
+
+      // Crimson Red Stripe Accent
+      doc.setFillColor(211, 47, 47); // NSS Crimson Red #D32F2F
+      doc.rect(0, 28, pageWidth, 2, 'F');
+
+      // Header Typography
+      doc.setTextColor(255, 255, 255);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(14);
+      doc.text('NATIONAL SERVICE SCHEME (NSS) • VIT BHOPAL UNIVERSITY', pageWidth / 2, 11, { align: 'center' });
+
+      doc.setFontSize(9.5);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`OFFICIAL BATCH PERFORMANCE & VOLUNTEER ROSTER REPORT — BATCH ${batchYear}`, pageWidth / 2, 18, { align: 'center' });
+
+      doc.setFontSize(8);
+      doc.setTextColor(254, 202, 202);
+      doc.text('"NOT ME, BUT YOU"', pageWidth / 2, 24, { align: 'center' });
+
+      // Sub-meta bar
+      const nowFormatted = new Date().toLocaleString('en-IN', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      doc.setTextColor(71, 85, 105);
+      doc.setFontSize(8);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`Generated on: ${nowFormatted} (Official Database Record)`, 14, 35);
+      doc.text(`Roster Ref: NSS-VITB-BATCH-${batchYear}-${new Date().getFullYear()}`, pageWidth - 14, 35, { align: 'right' });
+
+      // Metric KPI Summary Cards (5 cards across the width)
+      const boxY = 38;
+      const boxH = 18;
+      const margin = 14;
+      const spacing = 4;
+      const totalWidth = pageWidth - (margin * 2);
+      const boxW = (totalWidth - (spacing * 4)) / 5;
+
+      // Card 1: Total Volunteers
+      doc.setFillColor(239, 246, 255); // Light Blue
+      doc.setDrawColor(191, 219, 254);
+      doc.roundedRect(margin, boxY, boxW, boxH, 2, 2, 'FD');
+      doc.setFontSize(7.5);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(30, 64, 175);
+      doc.text('TOTAL VOLUNTEERS', margin + boxW / 2, boxY + 5.5, { align: 'center' });
+      doc.setFontSize(12);
+      doc.text(String(totalVolunteers), margin + boxW / 2, boxY + 13, { align: 'center' });
+
+      // Card 2: Gender Distribution
+      const c2X = margin + boxW + spacing;
+      doc.setFillColor(245, 243, 255); // Light Purple
+      doc.setDrawColor(221, 214, 254);
+      doc.roundedRect(c2X, boxY, boxW, boxH, 2, 2, 'FD');
+      doc.setFontSize(7.5);
+      doc.setTextColor(109, 40, 217);
+      doc.text('GENDER RATIO', c2X + boxW / 2, boxY + 5.5, { align: 'center' });
+      doc.setFontSize(9.5);
+      doc.text(`Male: ${maleCount}  |  Female: ${femaleCount}`, c2X + boxW / 2, boxY + 11.5, { align: 'center' });
+      if (otherGenderCount > 0 || unspecGenderCount > 0) {
+        doc.setFontSize(6.5);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`Other/Unspec: ${otherGenderCount + unspecGenderCount}`, c2X + boxW / 2, boxY + 15.5, { align: 'center' });
+      }
+
+      // Card 3: Residence Type
+      const c3X = c2X + boxW + spacing;
+      doc.setFillColor(254, 243, 199); // Amber
+      doc.setDrawColor(253, 230, 138);
+      doc.roundedRect(c3X, boxY, boxW, boxH, 2, 2, 'FD');
+      doc.setFontSize(7.5);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(180, 83, 9);
+      doc.text('RESIDENCE STATUS', c3X + boxW / 2, boxY + 5.5, { align: 'center' });
+      doc.setFontSize(9.5);
+      doc.text(`Hostel: ${hostellerCount}  |  Day: ${dayScholarCount}`, c3X + boxW / 2, boxY + 11.5, { align: 'center' });
+      if (unspecResidenceCount > 0) {
+        doc.setFontSize(6.5);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`Unspecified: ${unspecResidenceCount}`, c3X + boxW / 2, boxY + 15.5, { align: 'center' });
+      }
+
+      // Card 4: Total Events Attended
+      const c4X = c3X + boxW + spacing;
+      doc.setFillColor(236, 253, 245); // Emerald Green
+      doc.setDrawColor(167, 243, 208);
+      doc.roundedRect(c4X, boxY, boxW, boxH, 2, 2, 'FD');
+      doc.setFontSize(7.5);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(6, 95, 70);
+      doc.text('EVENTS ATTENDED (SUM)', c4X + boxW / 2, boxY + 5.5, { align: 'center' });
+      doc.setFontSize(12);
+      doc.text(String(totalEventsAttended), c4X + boxW / 2, boxY + 13, { align: 'center' });
+
+      // Card 5: Total Events Absent / Bunked
+      const c5X = c4X + boxW + spacing;
+      doc.setFillColor(254, 242, 242); // Rose/Red
+      doc.setDrawColor(254, 202, 202);
+      doc.roundedRect(c5X, boxY, boxW, boxH, 2, 2, 'FD');
+      doc.setFontSize(7.5);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(153, 27, 27);
+      doc.text('EVENTS ABSENT / BUNKS', c5X + boxW / 2, boxY + 5.5, { align: 'center' });
+      doc.setFontSize(12);
+      doc.text(String(totalEventsAbsent), c5X + boxW / 2, boxY + 13, { align: 'center' });
+
+      // Prepare Table Data Rows
+      const tableRows = batchList.map((vol: any, index: number) => {
+        const attended = vol.eventsAttendedCount ?? (vol.participatedActivities?.length || 0);
+        const absent = vol.bunks || 0;
+        return [
+          String(index + 1),
+          vol.name || 'Unnamed Volunteer',
+          vol.registrationNumber || '-',
+          vol.email || 'Not provided',
+          vol.phoneNumber || 'Not provided',
+          vol.gender || 'Unspecified',
+          vol.residenceType || 'Unspecified',
+          String(attended),
+          String(absent)
+        ];
+      });
+
+      // AutoTable
+      autoTable(doc, {
+        startY: 60,
+        margin: { left: 14, right: 14, bottom: 20 },
+        head: [['#', 'Volunteer Name', 'Reg. No.', 'Email Address', 'Contact No.', 'Gender', 'Residence', 'Attended', 'Absent']],
+        body: tableRows,
+        theme: 'grid',
+        styles: {
+          font: 'helvetica',
+          fontSize: 8,
+          cellPadding: { top: 2.2, bottom: 2.2, left: 2.5, right: 2.5 },
+          textColor: [30, 41, 59],
+          lineColor: [226, 232, 240],
+          lineWidth: 0.2,
+          valign: 'middle'
+        },
+        headStyles: {
+          fillColor: [15, 23, 42],
+          textColor: [255, 255, 255],
+          fontStyle: 'bold',
+          fontSize: 8.5,
+          halign: 'left',
+          lineWidth: 0
+        },
+        alternateRowStyles: {
+          fillColor: [248, 250, 252]
+        },
+        columnStyles: {
+          0: { cellWidth: 10, halign: 'center', fontStyle: 'bold' },
+          1: { cellWidth: 46, fontStyle: 'bold' },
+          2: { cellWidth: 26, font: 'courier', fontStyle: 'bold' },
+          3: { cellWidth: 56 },
+          4: { cellWidth: 28 },
+          5: { cellWidth: 22, halign: 'center' },
+          6: { cellWidth: 26, halign: 'center' },
+          7: { cellWidth: 22, halign: 'center', fontStyle: 'bold', textColor: [21, 128, 61] },
+          8: { cellWidth: 20, halign: 'center', fontStyle: 'bold', textColor: [185, 28, 28] }
+        },
+        didDrawPage: (data) => {
+          doc.setFontSize(7.5);
+          doc.setFont('helvetica', 'normal');
+          doc.setTextColor(148, 163, 184);
+          doc.text(
+            'National Service Scheme (NSS) • VIT Bhopal University • Official Batch Performance Record',
+            14,
+            pageHeight - 8
+          );
+          doc.text(
+            `Page ${data.pageNumber} of ${doc.getNumberOfPages()}`,
+            pageWidth - 14,
+            pageHeight - 8,
+            { align: 'right' }
+          );
+        }
+      });
+
+      // Save PDF with descriptive name
+      doc.save(`NSS_VIT_Batch_${batchYear}_Volunteer_Roster.pdf`);
+    } catch (err: any) {
+      console.error('Error generating batch PDF:', err);
+      alert('Failed to generate PDF. Please try again.');
+    } finally {
+      setDownloadingBatchPdf(false);
+    }
   };
 
   // Toggle single volunteer selection
@@ -743,13 +981,30 @@ This will also remove their attendance and participation records across all even
                     Batch {batchYear} <span className="text-sm font-semibold text-gray-500">({batchList.length} volunteers)</span>
                   </h2>
                   {selectedBatchTab !== 'All' && (
-                    <button
-                      type="button"
-                      onClick={() => setSelectedBatchTab('All')}
-                      className="text-xs font-bold text-nss-blue hover:underline cursor-pointer"
-                    >
-                      ← Back to All Batches
-                    </button>
+                    <div className="flex items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => handleDownloadBatchPdf(batchYear, batchList)}
+                        disabled={downloadingBatchPdf}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-700 hover:to-rose-800 text-white rounded-xl text-xs font-bold shadow-xs hover:shadow-md transition-all cursor-pointer active:scale-95 disabled:opacity-50"
+                        title={`Download official PDF report for Batch ${batchYear}`}
+                      >
+                        {downloadingBatchPdf ? (
+                          <RefreshCw size={13} className="animate-spin" />
+                        ) : (
+                          <FileDown size={14} />
+                        )}
+                        <span>{downloadingBatchPdf ? 'Preparing PDF...' : `Download Batch ${batchYear} PDF Report`}</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setSelectedBatchTab('All')}
+                        className="text-xs font-bold text-nss-blue hover:underline cursor-pointer"
+                      >
+                        ← Back to All Batches
+                      </button>
+                    </div>
                   )}
                 </div>
                 {renderTable(batchList, `Batch ${batchYear}`)}
