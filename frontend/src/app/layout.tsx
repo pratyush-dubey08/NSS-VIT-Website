@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import GlobalSearch from "@/components/GlobalSearch";
 import LayoutWrapper from "@/components/LayoutWrapper";
+import AppBackButtonHandler from "@/components/AppBackButtonHandler";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -54,6 +55,7 @@ export default function RootLayout({
  return (
  <html lang="en">
  <body className={inter.className}>
+ <AppBackButtonHandler />
  <GlobalSearch />
  <LayoutWrapper>
  {children}
