@@ -12,29 +12,46 @@ export const getVolunteers = async (req: Request, res: Response) => {
       .sort({ name: 1 })
       .lean();
 
-    // Dynamically aggregate real attended events count from Registration collection
+    // Dynamically aggregate real attendance (both ATTENDED and BUNKED) from Registration collection
+    // This guarantees 100% mathematical synchronization between individual report and combined batch report
     const attendanceAgg = await Registration.aggregate([
-      { $match: { attendanceStatus: 'ATTENDED' } },
-      { $group: { _id: '$userId', count: { $sum: 1 }, activities: { $addToSet: '$activityId' } } }
+      {
+        $group: {
+          _id: '$userId',
+          totalEvents: { $sum: 1 },
+          attendedCount: {
+            $sum: { $cond: [{ $eq: ['$attendanceStatus', 'ATTENDED'] }, 1, 0] }
+          },
+          bunkedCount: {
+            $sum: { $cond: [{ $eq: ['$attendanceStatus', 'BUNKED'] }, 1, 0] }
+          },
+          activities: { $addToSet: '$activityId' }
+        }
+      }
     ]);
 
-    const attendanceMap = new Map<string, { count: number; activities: any[] }>();
+    const attendanceMap = new Map<string, { total: number; attended: number; bunked: number; activities: any[] }>();
     attendanceAgg.forEach((a: any) => {
       if (a._id) {
         attendanceMap.set(a._id.toString(), {
-          count: a.count,
-          activities: a.activities
+          total: a.totalEvents || 0,
+          attended: a.attendedCount || 0,
+          bunked: a.bunkedCount || 0,
+          activities: a.activities || []
         });
       }
     });
 
     const enrichedVolunteers = volunteers.map((v: any) => {
       const att = attendanceMap.get(v._id.toString());
-      const realCount = att ? att.count : (v.participatedActivities?.length || 0);
+      const realAttended = att ? att.attended : (v.eventsAttendedCount ?? v.participatedActivities?.length ?? 0);
+      const realBunked = att ? att.bunked : (v.bunks || 0);
       const realActivities = (att && att.activities && att.activities.length > 0) ? att.activities : (v.participatedActivities || []);
       return {
         ...v,
-        eventsAttendedCount: realCount,
+        eventsAttendedCount: realAttended,
+        bunks: realBunked,
+        totalEventsEnrolled: att ? att.total : (realAttended + realBunked),
         participatedActivities: realActivities,
       };
     });
