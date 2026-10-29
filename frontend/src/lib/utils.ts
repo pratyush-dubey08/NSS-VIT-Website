@@ -68,37 +68,37 @@ export const getImageUrl = (
 };
 
 export const getActivityFallbackBanner = (title?: string): string => {
-  if (!title) return 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792709236/nss_vit_website/pk6gzqkhszn69cu8biyk.jpg';
+  if (!title) return 'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792709236/nss_vit_website/pk6gzqkhszn69cu8biyk.jpg';
   const t = title.toLowerCase();
   if (t.includes('bird') || t.includes('water and food')) {
-    return 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794315/nss_vit_website/g2vqq8ae2tixpk3wk2iz.jpg';
+    return 'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794315/nss_vit_website/g2vqq8ae2tixpk3wk2iz.jpg';
   }
   if (t.includes('blood')) {
-    return 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794754/nss_vit_website/ax7sfirvqlqaxamqpypn.jpg';
+    return 'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794754/nss_vit_website/ax7sfirvqlqaxamqpypn.jpg';
   }
   if (t.includes('plant') || t.includes('tree')) {
-    return 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790514/nss_vit_website/ej5vnzcva3mygt8vj2t3.jpg';
+    return 'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790514/nss_vit_website/ej5vnzcva3mygt8vj2t3.jpg';
   }
   if (t.includes('camp')) {
-    return 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792709886/nss_vit_website/fqqcfgdawuyvznsulndo.png';
+    return 'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792709886/nss_vit_website/fqqcfgdawuyvznsulndo.png';
   }
   if (t.includes('parliament') || t.includes('youth')) {
-    return 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792795056/nss_vit_website/hizw5gnkyhn0vzehoriv.jpg';
+    return 'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792795056/nss_vit_website/hizw5gnkyhn0vzehoriv.jpg';
   }
   if (t.includes('vibgyor') || t.includes('nirvana') || t.includes('cultural')) {
-    return 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792800085/nss_vit_website/a0kgaifiufoplgl9fm1q.jpg';
+    return 'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792800085/nss_vit_website/a0kgaifiufoplgl9fm1q.jpg';
   }
   if (t.includes('cloth')) {
-    return 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792798667/nss_vit_website/v27yotsykzmzgnrzecuj.jpg';
+    return 'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792798667/nss_vit_website/v27yotsykzmzgnrzecuj.jpg';
   }
   if (t.includes('clean') || t.includes('swachh') || t.includes('hostel')) {
-    return 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792799593/nss_vit_website/emu7fraotij0ihnycbqe.jpg';
+    return 'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792799593/nss_vit_website/emu7fraotij0ihnycbqe.jpg';
   }
   if (t.includes('eye') || t.includes('health') || t.includes('dental')) {
-    return 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792798570/nss_vit_website/z3frd4t5rjkd3upzzeyj.jpg';
+    return 'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792798570/nss_vit_website/z3frd4t5rjkd3upzzeyj.jpg';
   }
   if (t.includes('cooler')) {
-    return 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792978943/nss_vit_website/jjsghg8qlxmi3azfkth2.jpg';
+    return 'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792978943/nss_vit_website/jjsghg8qlxmi3azfkth2.jpg';
   }
-  return 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792709236/nss_vit_website/pk6gzqkhszn69cu8biyk.jpg';
+  return 'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792709236/nss_vit_website/pk6gzqkhszn69cu8biyk.jpg';
 };

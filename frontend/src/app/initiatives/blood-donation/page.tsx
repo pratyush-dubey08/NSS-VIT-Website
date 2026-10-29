@@ -19,22 +19,22 @@ export default function BloodDonationPage() {
   ];
 
   const heroBloodPhotos = [
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794532/nss_vit_website/fjvlh83zvtgjeiayirax.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794533/nss_vit_website/pm6eue5t9coe59d7hce9.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794532/nss_vit_website/xcnghddndbrvr05225lm.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794535/nss_vit_website/npsnlvekn9hxvmuwqrgf.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794535/nss_vit_website/tnnj3irieq9co4kuo73j.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794535/nss_vit_website/sezc1psatzyttyd1orfw.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794537/nss_vit_website/zrf1hp7f3lk0arnjoqvv.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794537/nss_vit_website/ioh5arutkuzhd4wddlsj.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794632/nss_vit_website/xd8f7pzade4bm5ivrc6h.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794632/nss_vit_website/nuv7ebwj3pgfwiwmdohu.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794632/nss_vit_website/hqqkzopvbofkslfh1npv.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794635/nss_vit_website/oafcmgihbnyh2r6whuit.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794635/nss_vit_website/cgm6vg8owwopfkcfabaf.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794635/nss_vit_website/iimcncjsnhsk3tfd6tme.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794638/nss_vit_website/tuimfaltsczuvzdvfl93.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794638/nss_vit_website/uffqfxbx3hpjbzourhae.jpg"
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794532/nss_vit_website/fjvlh83zvtgjeiayirax.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794533/nss_vit_website/pm6eue5t9coe59d7hce9.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794532/nss_vit_website/xcnghddndbrvr05225lm.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794535/nss_vit_website/npsnlvekn9hxvmuwqrgf.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794535/nss_vit_website/tnnj3irieq9co4kuo73j.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794535/nss_vit_website/sezc1psatzyttyd1orfw.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794537/nss_vit_website/zrf1hp7f3lk0arnjoqvv.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794537/nss_vit_website/ioh5arutkuzhd4wddlsj.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794632/nss_vit_website/xd8f7pzade4bm5ivrc6h.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794632/nss_vit_website/nuv7ebwj3pgfwiwmdohu.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794632/nss_vit_website/hqqkzopvbofkslfh1npv.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794635/nss_vit_website/oafcmgihbnyh2r6whuit.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794635/nss_vit_website/cgm6vg8owwopfkcfabaf.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794635/nss_vit_website/iimcncjsnhsk3tfd6tme.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794638/nss_vit_website/tuimfaltsczuvzdvfl93.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794638/nss_vit_website/uffqfxbx3hpjbzourhae.jpg"
 ];
 
   // Auto transition hero photos every 3.5 seconds

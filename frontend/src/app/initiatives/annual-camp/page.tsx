@@ -92,26 +92,26 @@ const commonDailyRoutine = [
 // 16 Authentic Real Field Camp Action Photos from ANC 2026, 2025, and 2024 (No captions)
 const heroCampPhotos = [
   // ANC 2026 (Gram Borkheda)
-  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972948/nss_vit_website/ydmr2p4ujlvf9ndo7bid.jpg',
-  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972947/nss_vit_website/n8zsqhoxdjxk04deef3p.jpg',
-  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972947/nss_vit_website/wmbx7z6cherz2c6bb6ho.jpg',
-  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972950/nss_vit_website/dahu2hum58xsjin9vdyh.jpg',
-  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972951/nss_vit_website/ydknfiudozriwy9hffqp.jpg',
-  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972953/nss_vit_website/wgbcglj9rsbjskzsjyqr.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792972948/nss_vit_website/ydmr2p4ujlvf9ndo7bid.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792972947/nss_vit_website/n8zsqhoxdjxk04deef3p.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792972947/nss_vit_website/wmbx7z6cherz2c6bb6ho.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792972950/nss_vit_website/dahu2hum58xsjin9vdyh.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792972951/nss_vit_website/ydknfiudozriwy9hffqp.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792972953/nss_vit_website/wgbcglj9rsbjskzsjyqr.jpg',
   
   // ANC 2025 (Gram Jafarabad)
-  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792973350/nss_vit_website/b8mka7okpwddhvqmbnwg.jpg',
-  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792973350/nss_vit_website/zetb4kqynx8chdgnr7uc.jpg',
-  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792973350/nss_vit_website/vqyfkoem9wufzhmyanqx.jpg',
-  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792973352/nss_vit_website/zgosydolpn5j4sduudux.jpg',
-  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792973354/nss_vit_website/k8mgq1trsh5kyuti1ztw.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792973350/nss_vit_website/b8mka7okpwddhvqmbnwg.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792973350/nss_vit_website/zetb4kqynx8chdgnr7uc.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792973350/nss_vit_website/vqyfkoem9wufzhmyanqx.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792973352/nss_vit_website/zgosydolpn5j4sduudux.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792973354/nss_vit_website/k8mgq1trsh5kyuti1ztw.jpg',
 
   // ANC 2024 (Gram Kachnariya)
-  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792969136/nss_vit_website/kj4tf366p1t6ji2zp8nm.jpg',
-  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792969136/nss_vit_website/yxlhufykeahoj6rpkhfo.jpg',
-  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792969137/nss_vit_website/vtaka2byoxsmtwz1hzqb.jpg',
-  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792969138/nss_vit_website/op6s1amaspjjvpwrmw4l.jpg',
-  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792969139/nss_vit_website/yorqqztbkh1rrqt9smvt.jpg'
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792969136/nss_vit_website/kj4tf366p1t6ji2zp8nm.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792969136/nss_vit_website/yxlhufykeahoj6rpkhfo.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792969137/nss_vit_website/vtaka2byoxsmtwz1hzqb.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792969138/nss_vit_website/op6s1amaspjjvpwrmw4l.jpg',
+  'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792969139/nss_vit_website/yorqqztbkh1rrqt9smvt.jpg'
 ];
 
 // Press Releases from Press relaese folder for ANC 2026 (No captions)
@@ -128,12 +128,12 @@ const pressReleases2026 = [
 
 
 const campShowcasePhotos = [
-  { url: 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972982/nss_vit_website/xtwap4vl8ch7ohdl9zh0.jpg', caption: 'Shramdaan & Rural Cleanliness Drive' },
-  { url: 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972980/nss_vit_website/xzd5lsvcm7e7gxflbudx.jpg', caption: 'Morning Yoga & Physical Fitness Assembly' },
-  { url: 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972987/nss_vit_website/wlxlzywhzuux4ollkcw5.jpg', caption: 'Village Primary School Classroom Mentorship' },
-  { url: 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972991/nss_vit_website/uokb0zyks5fcjbgclhfc.jpg', caption: 'Household Socio-Economic Survey with Elders' },
-  { url: 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972991/nss_vit_website/yy9wikznl2z6lt3hvufw.jpg', caption: 'Free Health & Eye Check-Up Camp' },
-  { url: 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972993/nss_vit_website/ecs9uw5scnegy925pwwj.jpg', caption: 'Evening Cultural Chaupal & Villager Interaction' }
+  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792972982/nss_vit_website/xtwap4vl8ch7ohdl9zh0.jpg', caption: 'Shramdaan & Rural Cleanliness Drive' },
+  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792972980/nss_vit_website/xzd5lsvcm7e7gxflbudx.jpg', caption: 'Morning Yoga & Physical Fitness Assembly' },
+  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792972987/nss_vit_website/wlxlzywhzuux4ollkcw5.jpg', caption: 'Village Primary School Classroom Mentorship' },
+  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792972991/nss_vit_website/uokb0zyks5fcjbgclhfc.jpg', caption: 'Household Socio-Economic Survey with Elders' },
+  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792972991/nss_vit_website/yy9wikznl2z6lt3hvufw.jpg', caption: 'Free Health & Eye Check-Up Camp' },
+  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792972993/nss_vit_website/ecs9uw5scnegy925pwwj.jpg', caption: 'Evening Cultural Chaupal & Villager Interaction' }
 ];
 
 export default function AnnualCampPage() {

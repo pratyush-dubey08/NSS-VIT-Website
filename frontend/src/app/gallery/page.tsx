@@ -11,46 +11,46 @@ import { getImageUrl } from '@/lib/utils';
 // Curated default high-quality Cloudinary photos for each category (fallback & initial preview)
 const defaultCategoryCollages: Record<string, string[]> = {
   camps: [
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792709660/nss_vit_website/qfbsotsgpnuh2dbecoya.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792709665/nss_vit_website/yj8uz0yohtwf5oq85wmp.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792709676/nss_vit_website/eeqek1zp4z6atwc022bv.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792709685/nss_vit_website/o1wdkrp1poe6z9uuxl7l.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792709698/nss_vit_website/fxa3szxen2tqzdz4n6n0.jpg"
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792709660/nss_vit_website/qfbsotsgpnuh2dbecoya.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792709665/nss_vit_website/yj8uz0yohtwf5oq85wmp.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792709676/nss_vit_website/eeqek1zp4z6atwc022bv.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792709685/nss_vit_website/o1wdkrp1poe6z9uuxl7l.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792709698/nss_vit_website/fxa3szxen2tqzdz4n6n0.jpg"
   ],
   plantation: [
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790377/nss_vit_website/ke8hwjewhh35reol1qbv.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790380/nss_vit_website/ldxhofed2qko3xgkalrw.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790381/nss_vit_website/bar2sk4mguwxzroe1exp.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790383/nss_vit_website/vm7wh3c4bpu3ylp9cmx3.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790385/nss_vit_website/ofvu3md9bg1xkm5m8jqc.jpg"
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790377/nss_vit_website/ke8hwjewhh35reol1qbv.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790380/nss_vit_website/ldxhofed2qko3xgkalrw.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790381/nss_vit_website/bar2sk4mguwxzroe1exp.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790383/nss_vit_website/vm7wh3c4bpu3ylp9cmx3.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790385/nss_vit_website/ofvu3md9bg1xkm5m8jqc.jpg"
   ],
   blood: [
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794532/nss_vit_website/fjvlh83zvtgjeiayirax.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794533/nss_vit_website/pm6eue5t9coe59d7hce9.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794532/nss_vit_website/xcnghddndbrvr05225lm.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794535/nss_vit_website/npsnlvekn9hxvmuwqrgf.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794535/nss_vit_website/tnnj3irieq9co4kuo73j.jpg"
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794532/nss_vit_website/fjvlh83zvtgjeiayirax.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794533/nss_vit_website/pm6eue5t9coe59d7hce9.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794532/nss_vit_website/xcnghddndbrvr05225lm.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794535/nss_vit_website/npsnlvekn9hxvmuwqrgf.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794535/nss_vit_website/tnnj3irieq9co4kuo73j.jpg"
   ],
   awareness: [
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792795580/nss_vit_website/opbucqx5beivc4k9pcxd.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792795580/nss_vit_website/wujfnuwh9mbuh6u7kr5g.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792795580/nss_vit_website/s4wrfehl0j0lu1tguiq8.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792795582/nss_vit_website/qnp5jzpwbj2o2shca73q.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792795584/nss_vit_website/uuiokp80ag8zfrpknxf1.jpg"
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792795580/nss_vit_website/opbucqx5beivc4k9pcxd.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792795580/nss_vit_website/wujfnuwh9mbuh6u7kr5g.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792795580/nss_vit_website/s4wrfehl0j0lu1tguiq8.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792795582/nss_vit_website/qnp5jzpwbj2o2shca73q.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792795584/nss_vit_website/uuiokp80ag8zfrpknxf1.jpg"
   ],
   youth: [
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794963/nss_vit_website/duyqgmytyjpbjf36zabx.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794963/nss_vit_website/oqbgqena30fn1loiwn4v.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794963/nss_vit_website/xzh8bh25enhtecugu5sd.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794965/nss_vit_website/cnewqd5accsbqxlmkhjg.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794965/nss_vit_website/afdbif6kf6hpnht6uiei.jpg"
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794963/nss_vit_website/duyqgmytyjpbjf36zabx.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794963/nss_vit_website/oqbgqena30fn1loiwn4v.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794963/nss_vit_website/xzh8bh25enhtecugu5sd.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794965/nss_vit_website/cnewqd5accsbqxlmkhjg.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794965/nss_vit_website/afdbif6kf6hpnht6uiei.jpg"
   ],
   cultural: [
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792800100/nss_vit_website/zb6dm7mssu9zl2vrilsg.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792800100/nss_vit_website/vq9aaeaoul9ywrjck3uw.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792800100/nss_vit_website/djtlyrwaylgya3ueblsz.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792800102/nss_vit_website/ouzfsxckmemdr62pochx.jpg",
-    "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792800102/nss_vit_website/hapaxanwyomvfgdz2fxu.jpg"
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792800100/nss_vit_website/zb6dm7mssu9zl2vrilsg.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792800100/nss_vit_website/vq9aaeaoul9ywrjck3uw.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792800100/nss_vit_website/djtlyrwaylgya3ueblsz.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792800102/nss_vit_website/ouzfsxckmemdr62pochx.jpg",
+    "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792800102/nss_vit_website/hapaxanwyomvfgdz2fxu.jpg"
   ]
 };
 
@@ -342,7 +342,7 @@ function GalleryContent() {
                           className="group/aftermovie relative aspect-video rounded-xl overflow-hidden bg-slate-900 ring-1 ring-white/10 block"
                         >
                           <img
-                            src="https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792709886/nss_vit_website/fqqcfgdawuyvznsulndo.png"
+                            src="https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792709886/nss_vit_website/fqqcfgdawuyvznsulndo.png"
                             alt="Camp 2026 Official Aftermovie"
                             className="w-full h-full object-cover group-hover/aftermovie:scale-105 transition-transform duration-500 brightness-75"
                           />

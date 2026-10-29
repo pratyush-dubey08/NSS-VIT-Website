@@ -160,7 +160,7 @@ export default function VideoShowcase() {
                 className="group block relative rounded-2xl overflow-hidden aspect-[16/7] bg-slate-900 border border-white/10 shadow-lg cursor-pointer"
               >
                 <img
-                  src="https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792709886/nss_vit_website/fqqcfgdawuyvznsulndo.png"
+                  src="https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792709886/nss_vit_website/fqqcfgdawuyvznsulndo.png"
                   alt="Camp 2026 Official Aftermovie"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-75"
                 />

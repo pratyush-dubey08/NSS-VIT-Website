@@ -18,22 +18,22 @@ export default function TreePlantationPage() {
   ];
 
   const heroPlantationPhotos = [
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790377/nss_vit_website/ke8hwjewhh35reol1qbv.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790380/nss_vit_website/ldxhofed2qko3xgkalrw.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790381/nss_vit_website/bar2sk4mguwxzroe1exp.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790383/nss_vit_website/vm7wh3c4bpu3ylp9cmx3.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790385/nss_vit_website/ofvu3md9bg1xkm5m8jqc.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790396/nss_vit_website/nagkh4v72p64tirloif5.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790572/nss_vit_website/he0jq8bkt6cn65uovzd0.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790574/nss_vit_website/t8yekemxqbpvf6eveb1i.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790576/nss_vit_website/wbuvvmrfxmyegq0fzlx1.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790579/nss_vit_website/u0ylvdzscfxj3fuv6sfi.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790582/nss_vit_website/bpy3z614oyij8luiwbhd.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790584/nss_vit_website/ztr1xv8vdzyonr5bky89.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790587/nss_vit_website/jzrmswwonq0sxv5iwqdv.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790589/nss_vit_website/cw7wzhupeshfc73bg2sp.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790591/nss_vit_website/ynbhosec87evkvct56zz.jpg",
-  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790593/nss_vit_website/jb3jvbrtpo9eg9numuud.jpg"
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790377/nss_vit_website/ke8hwjewhh35reol1qbv.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790380/nss_vit_website/ldxhofed2qko3xgkalrw.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790381/nss_vit_website/bar2sk4mguwxzroe1exp.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790383/nss_vit_website/vm7wh3c4bpu3ylp9cmx3.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790385/nss_vit_website/ofvu3md9bg1xkm5m8jqc.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790396/nss_vit_website/nagkh4v72p64tirloif5.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790572/nss_vit_website/he0jq8bkt6cn65uovzd0.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790574/nss_vit_website/t8yekemxqbpvf6eveb1i.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790576/nss_vit_website/wbuvvmrfxmyegq0fzlx1.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790579/nss_vit_website/u0ylvdzscfxj3fuv6sfi.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790582/nss_vit_website/bpy3z614oyij8luiwbhd.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790584/nss_vit_website/ztr1xv8vdzyonr5bky89.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790587/nss_vit_website/jzrmswwonq0sxv5iwqdv.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790589/nss_vit_website/cw7wzhupeshfc73bg2sp.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790591/nss_vit_website/ynbhosec87evkvct56zz.jpg",
+  "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790593/nss_vit_website/jb3jvbrtpo9eg9numuud.jpg"
 ];
 
   // Auto transition hero photos every 3.5 seconds

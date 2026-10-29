@@ -32,12 +32,12 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   {
     id: 'mega-tree-plantation-2024',
     images: [
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790377/nss_vit_website/ke8hwjewhh35reol1qbv.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790380/nss_vit_website/ldxhofed2qko3xgkalrw.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790381/nss_vit_website/bar2sk4mguwxzroe1exp.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790383/nss_vit_website/vm7wh3c4bpu3ylp9cmx3.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790385/nss_vit_website/ofvu3md9bg1xkm5m8jqc.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790396/nss_vit_website/nagkh4v72p64tirloif5.jpg"
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790377/nss_vit_website/ke8hwjewhh35reol1qbv.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790380/nss_vit_website/ldxhofed2qko3xgkalrw.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790381/nss_vit_website/bar2sk4mguwxzroe1exp.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790383/nss_vit_website/vm7wh3c4bpu3ylp9cmx3.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790385/nss_vit_website/ofvu3md9bg1xkm5m8jqc.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790396/nss_vit_website/nagkh4v72p64tirloif5.jpg"
     ],
     title: 'Mega Tree Plantation Drive 2024',
     subtitle: '10,000 Trees in a Single Day — Largest Single-Day Drive in Sehore',
@@ -112,12 +112,12 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   {
     id: 'swachhta-hi-seva-2024',
     images: [
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792962475/nss_vit_website/nzy2ltquoqdljkhkrxur.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792962475/nss_vit_website/i2wqxamrqdr5lhutmyqq.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792962475/nss_vit_website/wrlhfna8fjmutzaxnjln.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792962476/nss_vit_website/ldrsmudkmifd06je2ljf.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792962476/nss_vit_website/ws1chlpmam5uylldjifq.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792962478/nss_vit_website/cykpfoxr0ahidjmxjvy4.jpg"
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792962475/nss_vit_website/nzy2ltquoqdljkhkrxur.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792962475/nss_vit_website/i2wqxamrqdr5lhutmyqq.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792962475/nss_vit_website/wrlhfna8fjmutzaxnjln.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792962476/nss_vit_website/ldrsmudkmifd06je2ljf.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792962476/nss_vit_website/ws1chlpmam5uylldjifq.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792962478/nss_vit_website/cykpfoxr0ahidjmxjvy4.jpg"
     ],
     title: 'Swachhta Hi Seva Abhiyan 2024',
     subtitle: 'A Fortnight of Cleanliness, Upcycling & Community Awakening (19 Sept – 2 Oct)',
@@ -149,12 +149,12 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   {
     id: 'mega-blood-donation-camps',
     images: [
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794632/nss_vit_website/hqqkzopvbofkslfh1npv.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794532/nss_vit_website/fjvlh83zvtgjeiayirax.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794635/nss_vit_website/cgm6vg8owwopfkcfabaf.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794532/nss_vit_website/xcnghddndbrvr05225lm.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794535/nss_vit_website/npsnlvekn9hxvmuwqrgf.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794535/nss_vit_website/tnnj3irieq9co4kuo73j.jpg"
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794632/nss_vit_website/hqqkzopvbofkslfh1npv.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794532/nss_vit_website/fjvlh83zvtgjeiayirax.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794635/nss_vit_website/cgm6vg8owwopfkcfabaf.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794532/nss_vit_website/xcnghddndbrvr05225lm.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794535/nss_vit_website/npsnlvekn9hxvmuwqrgf.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792794535/nss_vit_website/tnnj3irieq9co4kuo73j.jpg"
     ],
     title: 'Mega Blood Donation Initiatives',
     subtitle: '1,500+ Units of Blood Donated to Save Lives and Strengthen Emergency Healthcare',
@@ -186,12 +186,12 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   {
     id: 'campus-tree-canopy-5000',
     images: [
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790572/nss_vit_website/he0jq8bkt6cn65uovzd0.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790574/nss_vit_website/t8yekemxqbpvf6eveb1i.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790576/nss_vit_website/wbuvvmrfxmyegq0fzlx1.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790725/nss_vit_website/d2uu5kyfjloo7ghtkbdg.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790727/nss_vit_website/it90tykxcoi0kxr0gnbm.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790729/nss_vit_website/e4two8wkh2267prw3dzy.jpg"
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790572/nss_vit_website/he0jq8bkt6cn65uovzd0.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790574/nss_vit_website/t8yekemxqbpvf6eveb1i.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790576/nss_vit_website/wbuvvmrfxmyegq0fzlx1.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790725/nss_vit_website/d2uu5kyfjloo7ghtkbdg.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790727/nss_vit_website/it90tykxcoi0kxr0gnbm.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790729/nss_vit_website/e4two8wkh2267prw3dzy.jpg"
     ],
     title: '5,000+ Trees Thriving Inside Campus',
     subtitle: 'Nurturing a Dense, Biodiverse Eco-Canopy Across VIT Bhopal University',
@@ -284,8 +284,8 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   {
     id: 'nukkad-natak-street-theatre',
     images: [
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792795580/nss_vit_website/opbucqx5beivc4k9pcxd.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792795580/nss_vit_website/wujfnuwh9mbuh6u7kr5g.jpg"
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792795580/nss_vit_website/opbucqx5beivc4k9pcxd.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792795580/nss_vit_website/wujfnuwh9mbuh6u7kr5g.jpg"
     ],
     title: 'Nukkad Natak — Street Theatre for Social Change',
     subtitle: 'Taking Powerful Social Messages to the Streets Across 4 Core Pillars',
@@ -358,12 +358,12 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   {
     id: 'water-cooler-govt-schools',
     images: [
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792978968/nss_vit_website/jjdasihzjgptgxy9gllk.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792978969/nss_vit_website/qrih7ovtgyna5idhczov.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792978969/nss_vit_website/crirq9ryw01sbpcor9jw.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792978971/nss_vit_website/joog5feh6inkrnqe7phj.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792978972/nss_vit_website/cax1m0exyitogmxxlkmc.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792978971/nss_vit_website/eak0d4ykm9dxtpysmvbh.jpg"
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792978968/nss_vit_website/jjdasihzjgptgxy9gllk.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792978969/nss_vit_website/qrih7ovtgyna5idhczov.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792978969/nss_vit_website/crirq9ryw01sbpcor9jw.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792978971/nss_vit_website/joog5feh6inkrnqe7phj.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792978972/nss_vit_website/cax1m0exyitogmxxlkmc.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792978971/nss_vit_website/eak0d4ykm9dxtpysmvbh.jpg"
     ],
     title: 'Installation of Water Coolers in Government Schools',
     subtitle: 'Providing Cold, Purified Drinking Water in Jafrabad & Bor Kheda Villages',
@@ -429,12 +429,12 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   {
     id: 'national-youth-parliament',
     images: [
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792795074/nss_vit_website/rb0yjo3frhrvztlztioi.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792795074/nss_vit_website/xopu5fj5vqpznsj4j8gp.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792795075/nss_vit_website/fu9yvysrc1hi8einbxcd.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792795077/nss_vit_website/ovn1o8l7oxgymgu4hjrd.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792795077/nss_vit_website/hho7gxgxmdzwk9k0b1y4.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792795078/nss_vit_website/ow40twre0wyrozuaczfg.jpg"
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792795074/nss_vit_website/rb0yjo3frhrvztlztioi.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792795074/nss_vit_website/xopu5fj5vqpznsj4j8gp.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792795075/nss_vit_website/fu9yvysrc1hi8einbxcd.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792795077/nss_vit_website/ovn1o8l7oxgymgu4hjrd.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792795077/nss_vit_website/hho7gxgxmdzwk9k0b1y4.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792795078/nss_vit_website/ow40twre0wyrozuaczfg.jpg"
     ],
     title: 'National Youth Parliament Leadership Forum',
     subtitle: 'Nurturing Orators, Democratic Discourse and Policy Champions',
@@ -466,12 +466,12 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   {
     id: 'vibgyor-2025',
     images: [
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792800100/nss_vit_website/zb6dm7mssu9zl2vrilsg.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792800100/nss_vit_website/vq9aaeaoul9ywrjck3uw.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792800100/nss_vit_website/djtlyrwaylgya3ueblsz.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792800102/nss_vit_website/ouzfsxckmemdr62pochx.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792800102/nss_vit_website/hapaxanwyomvfgdz2fxu.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792800102/nss_vit_website/vcbgl7m0qasnpwniy8sp.jpg"
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792800100/nss_vit_website/zb6dm7mssu9zl2vrilsg.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792800100/nss_vit_website/vq9aaeaoul9ywrjck3uw.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792800100/nss_vit_website/djtlyrwaylgya3ueblsz.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792800102/nss_vit_website/ouzfsxckmemdr62pochx.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792800102/nss_vit_website/hapaxanwyomvfgdz2fxu.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792800102/nss_vit_website/vcbgl7m0qasnpwniy8sp.jpg"
     ],
     videoUrl: "https://youtu.be/ULmNP9Lj3aw?si=qGoWMlqOrZISS2Zn",
     videoTitle: "VIBGYOR 2025 Official Aftermovie",
@@ -557,12 +557,12 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   {
     id: 'free-health-checkup-camps',
     images: [
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792798585/nss_vit_website/ydm4kz9bsxpt2o1oiny2.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792798585/nss_vit_website/nvcuo8jugv3iibq0eorp.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792798585/nss_vit_website/wurmklj3lrkwgkuh4wf5.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792798587/nss_vit_website/okeo1ucv9rkmmexo6f0x.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792798587/nss_vit_website/e27v2xdehsqhpsyacgym.jpg",
-        "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792798587/nss_vit_website/mrrch6ngqyeczunu6zkn.jpg"
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792798585/nss_vit_website/ydm4kz9bsxpt2o1oiny2.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792798585/nss_vit_website/nvcuo8jugv3iibq0eorp.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792798585/nss_vit_website/wurmklj3lrkwgkuh4wf5.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792798587/nss_vit_website/okeo1ucv9rkmmexo6f0x.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792798587/nss_vit_website/e27v2xdehsqhpsyacgym.jpg",
+        "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792798587/nss_vit_website/mrrch6ngqyeczunu6zkn.jpg"
     ],
     title: 'Free Health Check-Up Camps (Eye & Dental Mega Camps)',
     subtitle: 'Preventive Healthcare Outreach with Over 2,600+ Beneficiaries Consulted',
