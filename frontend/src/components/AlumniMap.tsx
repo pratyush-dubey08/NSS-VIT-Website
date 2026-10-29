@@ -33,7 +33,7 @@ const PIN_LOCATIONS: PinLocation[] = [
     y: 212,
     color: '#EF4444', // Red
     badgeBg: 'bg-red-500',
-    names: ['Nitank Dasondi', 'Rishabh Kabra', 'Shreya Gupta'],
+    names: ['Rishabh Kabra', 'Shreya Gupta'],
     keyHighlight: 'Novome Technologies • SD Biosensors • FIREAI'
   },
   {
@@ -44,7 +44,7 @@ const PIN_LOCATIONS: PinLocation[] = [
     y: 565,
     color: '#3B82F6', // Blue
     badgeBg: 'bg-blue-600',
-    names: ['Ayush Saxena', 'Omanshi Kaushal', 'Ayush Raj', 'Mukesh Kumar Ghosh'],
+    names: ['Nitank Dasondi', 'Ayush Saxena', 'Omanshi Kaushal', 'Ayush Raj', 'Mukesh Kumar Ghosh'],
     keyHighlight: 'Airbus • Novome Technologies • MSRUAS'
   },
   {
@@ -350,11 +350,11 @@ export default function AlumniMap({ alumni }: AlumniMapProps) {
           <div className="mt-4 pt-3 border-t border-white/10 flex flex-wrap items-center justify-around gap-2 text-xs text-gray-300">
             <div className="flex items-center gap-1.5">
               <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
-              <span>Noida / NCR (3)</span>
+              <span>Noida / NCR (2)</span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
-              <span>Bengaluru (4)</span>
+              <span>Bengaluru (5)</span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
