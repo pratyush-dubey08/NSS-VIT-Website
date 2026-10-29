@@ -85,7 +85,7 @@ export default function Navbar() {
 
           <Link href="/" className="flex items-center gap-2.5 xl:gap-3 shrink-0 group">
             <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow-xs ring-1 ring-red-500/30 flex items-center justify-center p-1 group-hover:scale-105 transition-transform">
-              <img src="/images/nss-logo.png" alt="NSS Logo" className="w-8 h-8 object-contain" />
+              <img src="/images/nss-logo.webp" alt="NSS Logo" className="w-8 h-8 object-contain" />
             </div>
             <div className="flex flex-col justify-center">
               <span className="font-black text-slate-900 text-lg sm:text-xl xl:text-2xl tracking-tight leading-none">

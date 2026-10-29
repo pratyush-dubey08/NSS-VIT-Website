@@ -12,29 +12,29 @@ export default function BloodDonationPage() {
   const [selectedPressImage, setSelectedPressImage] = useState<string | null>(null);
 
   const pressReleases = [
-    '/images/press_blood_donation/IMG-20260827-WA0029.jpg',
-    '/images/press_blood_donation/IMG-20260827-WA0033.jpg',
+    '/images/press_blood_donation/IMG-20260827-WA0029.webp',
+    '/images/press_blood_donation/IMG-20260827-WA0033.webp',
     '/images/press_blood_donation/Screenshot 2026-10-26 015428.png',
     '/images/press_blood_donation/Screenshot 2026-10-26 015435.png',
   ];
 
   const heroBloodPhotos = [
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794532/nss_vit_website/fjvlh83zvtgjeiayirax.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794533/nss_vit_website/pm6eue5t9coe59d7hce9.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794532/nss_vit_website/xcnghddndbrvr05225lm.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794535/nss_vit_website/npsnlvekn9hxvmuwqrgf.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794535/nss_vit_website/tnnj3irieq9co4kuo73j.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794535/nss_vit_website/sezc1psatzyttyd1orfw.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794537/nss_vit_website/zrf1hp7f3lk0arnjoqvv.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794537/nss_vit_website/ioh5arutkuzhd4wddlsj.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794632/nss_vit_website/xd8f7pzade4bm5ivrc6h.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794632/nss_vit_website/nuv7ebwj3pgfwiwmdohu.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794632/nss_vit_website/hqqkzopvbofkslfh1npv.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794635/nss_vit_website/oafcmgihbnyh2r6whuit.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794635/nss_vit_website/cgm6vg8owwopfkcfabaf.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794635/nss_vit_website/iimcncjsnhsk3tfd6tme.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794638/nss_vit_website/tuimfaltsczuvzdvfl93.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792794638/nss_vit_website/uffqfxbx3hpjbzourhae.jpg"
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794532/nss_vit_website/fjvlh83zvtgjeiayirax.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794533/nss_vit_website/pm6eue5t9coe59d7hce9.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794532/nss_vit_website/xcnghddndbrvr05225lm.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794535/nss_vit_website/npsnlvekn9hxvmuwqrgf.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794535/nss_vit_website/tnnj3irieq9co4kuo73j.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794535/nss_vit_website/sezc1psatzyttyd1orfw.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794537/nss_vit_website/zrf1hp7f3lk0arnjoqvv.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794537/nss_vit_website/ioh5arutkuzhd4wddlsj.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794632/nss_vit_website/xd8f7pzade4bm5ivrc6h.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794632/nss_vit_website/nuv7ebwj3pgfwiwmdohu.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794632/nss_vit_website/hqqkzopvbofkslfh1npv.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794635/nss_vit_website/oafcmgihbnyh2r6whuit.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794635/nss_vit_website/cgm6vg8owwopfkcfabaf.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794635/nss_vit_website/iimcncjsnhsk3tfd6tme.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794638/nss_vit_website/tuimfaltsczuvzdvfl93.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792794638/nss_vit_website/uffqfxbx3hpjbzourhae.jpg"
 ];
 
   // Auto transition hero photos every 3.5 seconds
@@ -49,7 +49,7 @@ export default function BloodDonationPage() {
     <div className="min-h-screen pt-24 sm:pt-28 pb-24 bg-gradient-to-b from-slate-50 via-blue-50/20 to-red-50/20 selection:bg-nss-blue selection:text-white font-sans relative overflow-hidden">
       {/* Soft Blended Photography Watermark in Background */}
       <div className="fixed inset-0 pointer-events-none -z-30 opacity-[0.035] select-none overflow-hidden">
-        <img src="/images/hero-nss-group.jpg" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
+        <img src="/images/hero-nss-group.webp" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
       </div>
       <div className="absolute top-10 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute top-96 right-10 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none -z-10" />

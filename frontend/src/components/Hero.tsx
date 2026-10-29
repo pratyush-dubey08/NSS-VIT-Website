@@ -10,7 +10,7 @@ export default function Hero() {
       {/* Official NSS Unit Grand Volunteer Group Photo Background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <img
-          src="/images/hero-nss-group.jpg"
+          src="/images/hero-nss-group.webp"
           className="absolute inset-0 w-full h-full object-cover object-center filter brightness-90"
           alt="NSS Unit VIT Bhopal University Volunteers"
         />
@@ -31,7 +31,7 @@ export default function Hero() {
           {/* Logo with drop shadow */}
           <div className="mb-4 relative w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32">
             <img 
-              src="/images/nss-logo.png" 
+              src="/images/nss-logo.webp" 
               alt="NSS Logo" 
               className="w-full h-full object-contain drop-shadow-xl rounded-full bg-white/20 p-1" 
             />

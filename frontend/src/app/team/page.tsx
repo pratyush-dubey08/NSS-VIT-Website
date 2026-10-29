@@ -27,7 +27,7 @@ const leadershipData: Leader[] = [
     designation: 'Chancellor',
     institution: 'VIT University',
     tier: 1,
-    image: '/images/leadership/chancellor.jpg'
+    image: '/images/leadership/chancellor.webp'
   },
   
   {
@@ -35,14 +35,14 @@ const leadershipData: Leader[] = [
     designation: 'Vice President',
     institution: 'VIT Bhopal University',
     tier: 2,
-    image: '/images/leadership/vice-president.jpg'
+    image: '/images/leadership/vice-president.webp'
   },
   {
     name: 'Ms. Kadhambari S. Viswanathan',
     designation: 'Assistant Vice President',
     institution: 'VIT Bhopal University',
     tier: 2,
-    image: '/images/leadership/assistant-vice-president.jpg'
+    image: '/images/leadership/assistant-vice-president.webp'
   },
   
   {
@@ -50,21 +50,21 @@ const leadershipData: Leader[] = [
     designation: 'Vice-Chancellor',
     institution: 'VIT Bhopal University',
     tier: 3,
-    image: '/images/leadership/vice-chancellor.jpg'
+    image: '/images/leadership/vice-chancellor.webp'
   },
   {
     name: 'Prof. T. B. Sridharan',
     designation: 'Pro-Vice Chancellor',
     institution: 'VIT Bhopal University',
     tier: 4,
-    image: '/images/leadership/pro-vice-chancellor.jpeg'
+    image: '/images/leadership/pro-vice-chancellor.webp'
   },
   {
     name: 'Dr. Gyan Prakash Mishra',
     designation: 'Registrar',
     institution: 'VIT Bhopal University',
     tier: 4,
-    image: '/images/leadership/registrar.png'
+    image: '/images/leadership/registrar.webp'
   },
 ];
 
@@ -72,26 +72,26 @@ const programOfficersData: ProgramOfficer[] = [
   {
     name: 'Dr. Vinod Bhatt',
     designation: 'Program Officer',
-    image: '/images/leadership/vinod-bhatt.png',
+    image: '/images/leadership/vinod-bhatt.webp',
     imagePosition: 'object-top',
     bio: 'Dr. Vinod Bhatt is an accomplished scholar, researcher, and writer specializing in English Literature and Journalism. He has had 22 years of teaching and administrative experience, for which he has been the main force in fusing literature and mass communication to create unique pedagogic strategies. An Associate Professor in VIT Bhopal University, he personally guides students and research scholars. He holds a Ph.D. in Canadian Literature. Dr. Bhatt is a registered Ph.D. guide and has supervised numerous research scholars. He has published 42 research papers, with nine appearing in Scopus-indexed journals. His academic engagements include participation in over 48 conferences, and he serves as an editor and reviewer for four international journals. He has also chaired conferences at prestigious institutions such as Amity University Dubai and Singapore. In recognition of his contributions, he was honored with the IWA Bogdani Prize (Belgium) in 2023.'
   },
   {
     name: 'Dr. Devbrat Gupta',
     designation: 'Program Officer',
-    image: '/images/leadership/devbrat-gupta.png',
+    image: '/images/leadership/devbrat-gupta.webp',
     bio: 'Dr. Dev Brat Gupta is MA and M.Phil. in English Literature and Ph.D. in ELT from Vikram University, Ujjain. Having 16 years of experience in teaching and administration and 12 years of experience in research, he has worked at all levels of academics such as Academic Head and HoD. Presently at VIT Bhopal University, he has authored five research papers, presented 12 national and international conferences, and attended several workshops, seminars, and FDPs. Moreover, he is a member, editor, and reviewer of five international peer-reviewed journals. Dr. Devbrat has also given expert talks on communication skills, professional communication, and soft skills in engineering colleges and universities in India.'
   },
   {
     name: 'Dr. Himanshi Harish Sharma',
     designation: 'Program Officer',
-    image: '/images/leadership/himanshi-sharma.jpeg',
+    image: '/images/leadership/himanshi-sharma.webp',
     bio: 'Dr. Himanshi Harish Sharma is an Assistant Professor of Chemistry in the School of Advanced Sciences and Languages at VIT Bhopal University. She holds a Ph.D. in Chemistry from Vellore Institute of Technology (VIT), Tamil Nadu, where her doctoral research established fundamental work in coordination chemistry, functional nanomaterials, and bio-inorganic applications. Her research career seamlessly integrates advanced academic investigation with applied industrial R&D. Complementing her academic foundation, she has led six multidisciplinary R&D projects as a Research Scientist at Macsen Drugs, Udaipur focusing on standardized nanomaterial suspensions, inorganic support matrices, and multi-step chemical process development and contributed to green technology research on biomass torrefaction for resource recovery as a Project Assistant-II at CSIR-IICT Hyderabad. Her scholarly contributions include numerous research papers in SCI and Scopus-indexed international journals, complemented by active national and international conference presentations and three Raman Research Awards from VIT.'
   },
   {
     name: 'Dr. Dipti Bhojwani',
     designation: 'Program Officer',
-    image: '/images/leadership/dipti-bhojwani.png',
+    image: '/images/leadership/dipti-bhojwani.webp',
     bio: 'Dr. Dipti Bhojwani is a dedicated Program Officer at VIT Bhopal University. (Full biographical information will be updated shortly).'
   }
 ];
@@ -187,7 +187,7 @@ export default function TeamPage() {
     <div className="min-h-screen pt-24 sm:pt-28 bg-gradient-to-b from-slate-50 via-blue-50/20 to-red-50/20 pb-32 selection:bg-nss-blue selection:text-white relative overflow-hidden">
       {/* Soft Blended Photography Watermark in Background */}
       <div className="fixed inset-0 pointer-events-none -z-30 opacity-[0.035] select-none overflow-hidden">
-        <img src="/images/hero-nss-group.jpg" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
+        <img src="/images/hero-nss-group.webp" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
       </div>
       <div className="absolute top-10 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute top-96 right-10 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none -z-10" />

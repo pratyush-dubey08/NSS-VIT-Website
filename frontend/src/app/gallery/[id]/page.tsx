@@ -106,7 +106,7 @@ function AlbumPhotosContent() {
               if (folder.images && folder.images.length > 0 && e.currentTarget.src !== getImageUrl(folder.images[0])) {
                 e.currentTarget.src = getImageUrl(folder.images[0], { width: 1400 });
               } else {
-                e.currentTarget.src = '/images/gallery/events_2025/image1.png';
+                e.currentTarget.src = '/images/gallery/events_2025/image1.webp';
               }
             }}
             className="w-full h-full object-cover opacity-40 blur-[1px]" 
@@ -181,7 +181,7 @@ function AlbumPhotosContent() {
                         e.currentTarget.src = getImageUrl(img);
                       }, 500);
                     } else {
-                      e.currentTarget.src = '/images/gallery/events_2025/image1.png';
+                      e.currentTarget.src = '/images/gallery/events_2025/image1.webp';
                     }
                   }}
                   className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500" 
@@ -235,7 +235,7 @@ function AlbumPhotosContent() {
                    alt="Fullscreen view" 
                    loading="eager"
                    decoding="async"
-                   onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image1.png'; }}
+                   onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image1.webp'; }}
                    className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
                  />
               </div>

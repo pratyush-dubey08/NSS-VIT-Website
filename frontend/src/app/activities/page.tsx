@@ -61,7 +61,7 @@ export default function ActivitiesPage() {
       
       {/* Soft Blended Photography Watermark */}
       <div className="fixed inset-0 pointer-events-none -z-30 opacity-[0.035] select-none overflow-hidden">
-        <img src="/images/hero-nss-group.jpg" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
+        <img src="/images/hero-nss-group.webp" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
       </div>
       <div className="absolute top-10 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute top-96 right-10 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none -z-10" />

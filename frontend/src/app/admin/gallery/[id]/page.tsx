@@ -221,7 +221,7 @@ export default function AlbumDetailsPage() {
             alt={folder.title} 
             loading="lazy"
             decoding="async"
-            onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image1.png'; }}
+            onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image1.webp'; }}
             className="w-full h-full object-cover aspect-video md:aspect-square" 
           />
           {isEditing && (
@@ -401,7 +401,7 @@ export default function AlbumDetailsPage() {
                 alt="Gallery item" 
                 loading="lazy"
                 decoding="async"
-                onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image1.png'; }}
+                onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image1.webp'; }}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />

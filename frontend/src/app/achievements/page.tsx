@@ -56,7 +56,7 @@ export default function AwardeesPage() {
     <div className="min-h-screen pt-24 sm:pt-28 bg-gradient-to-b from-slate-50 via-blue-50/20 to-red-50/20 pb-24 overflow-hidden selection:bg-nss-blue selection:text-white font-sans relative">
       {/* Soft Blended Photography Watermark in Background */}
       <div className="fixed inset-0 pointer-events-none -z-30 opacity-[0.035] select-none overflow-hidden">
-        <img src="/images/hero-nss-group.jpg" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
+        <img src="/images/hero-nss-group.webp" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
       </div>
       <div className="absolute top-10 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute top-96 right-10 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
@@ -107,7 +107,7 @@ export default function AwardeesPage() {
                       regNo="21MSI10017" 
                       role="State Representative"
                       color="blue"
-                      image="/images/achievements/rishabh-kabra.jpeg"
+                      image="/images/achievements/rishabh-kabra.webp"
                     />
                   </div>
                </div>
@@ -154,14 +154,14 @@ export default function AwardeesPage() {
                   regNo="21MSI10017" 
                   color="emerald"
                   delay={0.1}
-                  image="/images/achievements/rishabh-kabra.jpeg"
+                  image="/images/achievements/rishabh-kabra.webp"
                 />
                 <CamperCard 
                   name="Khushi Desai" 
                   regNo="22BOE10027" 
                   color="emerald"
                   delay={0.2}
-                  image="/images/achievements/khushi-desai.png"
+                  image="/images/achievements/khushi-desai.webp"
                 />
             </div>
             
@@ -217,7 +217,7 @@ export default function AwardeesPage() {
               <div className="bg-gradient-to-r from-rose-500/20 to-rose-600/10 border border-rose-500/30 rounded-3xl p-6 flex items-center gap-6 backdrop-blur-md">
                 <div className="w-20 h-20 shrink-0 bg-white/10 p-1 rounded-full backdrop-blur-sm border border-white/20">
                    <div className="w-full h-full bg-gray-100 rounded-full overflow-hidden flex items-center justify-center relative">
-                     <img src="/images/achievements/vinod-bhatt.png" alt="Dr. Vinod Bhatt" className="w-full h-full object-cover object-top" onError={(e) => { (e.currentTarget as HTMLImageElement).src = "https://ui-avatars.com/api/?name=Vinod+Bhatt&background=E11D48&color=fff&size=256&bold=true"; }} />
+                     <img src="/images/achievements/vinod-bhatt.webp" alt="Dr. Vinod Bhatt" className="w-full h-full object-cover object-top" onError={(e) => { (e.currentTarget as HTMLImageElement).src = "https://ui-avatars.com/api/?name=Vinod+Bhatt&background=E11D48&color=fff&size=256&bold=true"; }} />
                    </div>
                 </div>
                 <div>
@@ -235,14 +235,14 @@ export default function AwardeesPage() {
                   regNo="23BAI10595"
                   color="rose"
                   delay={0.1}
-                  image="/images/achievements/pratyush-dubey.png"
+                  image="/images/achievements/pratyush-dubey.webp"
                 />
                 <CamperCard 
                   name="Shivani Nikam" 
                   regNo="24BEY10074"
                   color="rose"
                   delay={0.2}
-                  image="/images/achievements/shivani-nikam.png"
+                  image="/images/achievements/shivani-nikam.webp"
                 />
               </div>
 
@@ -270,7 +270,7 @@ export default function AwardeesPage() {
                       name="Nandine Pandey" 
                       role="State Representative"
                       color="amber"
-                      image="/images/achievements/nandine-pandey.png"
+                      image="/images/achievements/nandine-pandey.webp"
                     />
                   </div>
                </div>
@@ -316,7 +316,7 @@ export default function AwardeesPage() {
                       name="Nandine Pandey" 
                       role="Sehore Representative"
                       color="amber"
-                      image="/images/achievements/nandine-pandey.png"
+                      image="/images/achievements/nandine-pandey.webp"
                     />
                   </div>
                </div>
@@ -361,7 +361,7 @@ export default function AwardeesPage() {
                       name="Maulik Dubey" 
                       role="Finalist"
                       color="amber"
-                      image="/images/achievements/maulik-dubey.png"
+                      image="/images/achievements/maulik-dubey.webp"
                     />
                   </div>
                </div>
@@ -407,14 +407,14 @@ export default function AwardeesPage() {
                   regNo="24BAI10764" 
                   color="purple"
                   delay={0.1}
-                  image="/images/achievements/maulik-dubey.png"
+                  image="/images/achievements/maulik-dubey.webp"
                 />
                 <CamperCard 
                   name="Soumya Mishra" 
                   regNo="24MIP10024" 
                   color="purple"
                   delay={0.2}
-                  image="/images/achievements/soumya-mishra.png"
+                  image="/images/achievements/soumya-mishra.webp"
                 />
             </div>
             

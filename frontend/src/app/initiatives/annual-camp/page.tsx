@@ -92,48 +92,48 @@ const commonDailyRoutine = [
 // 16 Authentic Real Field Camp Action Photos from ANC 2026, 2025, and 2024 (No captions)
 const heroCampPhotos = [
   // ANC 2026 (Gram Borkheda)
-  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972948/nss_vit_website/ydmr2p4ujlvf9ndo7bid.jpg',
-  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972947/nss_vit_website/n8zsqhoxdjxk04deef3p.jpg',
-  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972947/nss_vit_website/wmbx7z6cherz2c6bb6ho.jpg',
-  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972950/nss_vit_website/dahu2hum58xsjin9vdyh.jpg',
-  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972951/nss_vit_website/ydknfiudozriwy9hffqp.jpg',
-  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972953/nss_vit_website/wgbcglj9rsbjskzsjyqr.jpg',
+  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972948/nss_vit_website/ydmr2p4ujlvf9ndo7bid.jpg',
+  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972947/nss_vit_website/n8zsqhoxdjxk04deef3p.jpg',
+  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972947/nss_vit_website/wmbx7z6cherz2c6bb6ho.jpg',
+  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972950/nss_vit_website/dahu2hum58xsjin9vdyh.jpg',
+  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972951/nss_vit_website/ydknfiudozriwy9hffqp.jpg',
+  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972953/nss_vit_website/wgbcglj9rsbjskzsjyqr.jpg',
   
   // ANC 2025 (Gram Jafarabad)
-  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792973350/nss_vit_website/b8mka7okpwddhvqmbnwg.jpg',
-  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792973350/nss_vit_website/zetb4kqynx8chdgnr7uc.jpg',
-  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792973350/nss_vit_website/vqyfkoem9wufzhmyanqx.jpg',
-  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792973352/nss_vit_website/zgosydolpn5j4sduudux.jpg',
-  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792973354/nss_vit_website/k8mgq1trsh5kyuti1ztw.jpg',
+  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792973350/nss_vit_website/b8mka7okpwddhvqmbnwg.jpg',
+  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792973350/nss_vit_website/zetb4kqynx8chdgnr7uc.jpg',
+  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792973350/nss_vit_website/vqyfkoem9wufzhmyanqx.jpg',
+  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792973352/nss_vit_website/zgosydolpn5j4sduudux.jpg',
+  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792973354/nss_vit_website/k8mgq1trsh5kyuti1ztw.jpg',
 
   // ANC 2024 (Gram Kachnariya)
-  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792969136/nss_vit_website/kj4tf366p1t6ji2zp8nm.jpg',
-  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792969136/nss_vit_website/yxlhufykeahoj6rpkhfo.jpg',
-  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792969137/nss_vit_website/vtaka2byoxsmtwz1hzqb.jpg',
-  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792969138/nss_vit_website/op6s1amaspjjvpwrmw4l.jpg',
-  'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792969139/nss_vit_website/yorqqztbkh1rrqt9smvt.jpg'
+  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792969136/nss_vit_website/kj4tf366p1t6ji2zp8nm.jpg',
+  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792969136/nss_vit_website/yxlhufykeahoj6rpkhfo.jpg',
+  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792969137/nss_vit_website/vtaka2byoxsmtwz1hzqb.jpg',
+  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792969138/nss_vit_website/op6s1amaspjjvpwrmw4l.jpg',
+  'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792969139/nss_vit_website/yorqqztbkh1rrqt9smvt.jpg'
 ];
 
 // Press Releases from Press relaese folder for ANC 2026 (No captions)
 const pressReleases2026 = [
-  '/images/press_2026/IMG-20260324-WA0010.jpg',
-  '/images/press_2026/IMG-20260324-WA0011.jpg',
-  '/images/press_2026/IMG-20260324-WA0012.jpg',
-  '/images/press_2026/IMG-20260324-WA0013.jpg',
-  '/images/press_2026/IMG-20260324-WA0014.jpg',
-  '/images/press_2026/IMG-20260324-WA0015.jpg',
-  '/images/press_2026/IMG-20260324-WA0016.jpg',
-  '/images/press_2026/IMG-20260324-WA0017.jpg',
+  '/images/press_2026/IMG-20260324-WA0010.webp',
+  '/images/press_2026/IMG-20260324-WA0011.webp',
+  '/images/press_2026/IMG-20260324-WA0012.webp',
+  '/images/press_2026/IMG-20260324-WA0013.webp',
+  '/images/press_2026/IMG-20260324-WA0014.webp',
+  '/images/press_2026/IMG-20260324-WA0015.webp',
+  '/images/press_2026/IMG-20260324-WA0016.webp',
+  '/images/press_2026/IMG-20260324-WA0017.webp',
 ];
 
 
 const campShowcasePhotos = [
-  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972982/nss_vit_website/xtwap4vl8ch7ohdl9zh0.jpg', caption: 'Shramdaan & Rural Cleanliness Drive' },
-  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972980/nss_vit_website/xzd5lsvcm7e7gxflbudx.jpg', caption: 'Morning Yoga & Physical Fitness Assembly' },
-  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972987/nss_vit_website/wlxlzywhzuux4ollkcw5.jpg', caption: 'Village Primary School Classroom Mentorship' },
-  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972991/nss_vit_website/uokb0zyks5fcjbgclhfc.jpg', caption: 'Household Socio-Economic Survey with Elders' },
-  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972991/nss_vit_website/yy9wikznl2z6lt3hvufw.jpg', caption: 'Free Health & Eye Check-Up Camp' },
-  { url: 'https://res.cloudinary.com/lrsgx9ti/image/upload/v1792972993/nss_vit_website/ecs9uw5scnegy925pwwj.jpg', caption: 'Evening Cultural Chaupal & Villager Interaction' }
+  { url: 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972982/nss_vit_website/xtwap4vl8ch7ohdl9zh0.jpg', caption: 'Shramdaan & Rural Cleanliness Drive' },
+  { url: 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972980/nss_vit_website/xzd5lsvcm7e7gxflbudx.jpg', caption: 'Morning Yoga & Physical Fitness Assembly' },
+  { url: 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972987/nss_vit_website/wlxlzywhzuux4ollkcw5.jpg', caption: 'Village Primary School Classroom Mentorship' },
+  { url: 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972991/nss_vit_website/uokb0zyks5fcjbgclhfc.jpg', caption: 'Household Socio-Economic Survey with Elders' },
+  { url: 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972991/nss_vit_website/yy9wikznl2z6lt3hvufw.jpg', caption: 'Free Health & Eye Check-Up Camp' },
+  { url: 'https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792972993/nss_vit_website/ecs9uw5scnegy925pwwj.jpg', caption: 'Evening Cultural Chaupal & Villager Interaction' }
 ];
 
 export default function AnnualCampPage() {
@@ -154,7 +154,7 @@ export default function AnnualCampPage() {
     <div className="min-h-screen pt-24 sm:pt-28 bg-gradient-to-b from-slate-50 via-blue-50/20 to-red-50/20 pb-24 font-sans text-gray-900 relative overflow-hidden">
       {/* Soft Blended Photography Watermark in Background */}
       <div className="fixed inset-0 pointer-events-none -z-30 opacity-[0.035] select-none overflow-hidden">
-        <img src="/images/hero-nss-group.jpg" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
+        <img src="/images/hero-nss-group.webp" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
       </div>
       <div className="absolute top-10 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute top-96 right-10 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
@@ -705,11 +705,11 @@ export default function AnnualCampPage() {
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="bg-slate-50 p-3 rounded-2xl border border-gray-200">
-                      <img src="/images/gallery/events_2025/image1.png" alt="2025 Press Release 1" className="w-full h-auto rounded-xl shadow-xs" />
+                      <img src="/images/gallery/events_2025/image1.webp" alt="2025 Press Release 1" className="w-full h-auto rounded-xl shadow-xs" />
                       <p className="text-[11px] text-gray-500 text-center mt-2 font-medium">Camp Inauguration & Health Camp Media Coverage</p>
                     </div>
                     <div className="bg-slate-50 p-3 rounded-2xl border border-gray-200">
-                      <img src="/images/gallery/events_2025/image2.png" alt="2025 Press Release 2" className="w-full h-auto rounded-xl shadow-xs" />
+                      <img src="/images/gallery/events_2025/image2.webp" alt="2025 Press Release 2" className="w-full h-auto rounded-xl shadow-xs" />
                       <p className="text-[11px] text-gray-500 text-center mt-2 font-medium">Republic Day & Community Service Feature</p>
                     </div>
                   </div>
@@ -836,11 +836,11 @@ export default function AnnualCampPage() {
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="bg-slate-50 p-3 rounded-2xl border border-gray-200">
-                      <img src="/images/gallery/events_2025/image28.png" alt="2024 Press Release 1" className="w-full h-auto rounded-xl shadow-xs" />
+                      <img src="/images/gallery/events_2025/image28.webp" alt="2024 Press Release 1" className="w-full h-auto rounded-xl shadow-xs" />
                       <p className="text-[11px] text-gray-500 text-center mt-2 font-medium">Newspaper Coverage - Kachnariya Camp Cleanliness Drive</p>
                     </div>
                     <div className="bg-slate-50 p-3 rounded-2xl border border-gray-200">
-                      <img src="/images/gallery/events_2025/image29.png" alt="2024 Press Release 2" className="w-full h-auto rounded-xl shadow-xs" />
+                      <img src="/images/gallery/events_2025/image29.webp" alt="2024 Press Release 2" className="w-full h-auto rounded-xl shadow-xs" />
                       <p className="text-[11px] text-gray-500 text-center mt-2 font-medium">Health Camp & Valedictory Closing Feature</p>
                     </div>
                   </div>

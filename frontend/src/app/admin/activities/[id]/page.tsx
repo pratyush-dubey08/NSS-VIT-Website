@@ -146,7 +146,7 @@ export default function ManageActivityPage() {
       setActivity(actData);
       setIsRegistrationOpen(actData.isRegistrationOpen !== false);
       setIsFormLockedForManagers(actData.isFormLockedForManagers === true);
-      setFormBannerUrl(actData.formBannerUrl || '/images/default-event-banner.png');
+      setFormBannerUrl(actData.formBannerUrl || '/images/default-event-banner.webp');
       setConfirmationMessage(actData.confirmationMessage || 'Thank you for filling out the form! Our team will contact you shortly.');
       setRegistrationMode(actData.registrationMode || (actData.googleFormUrl ? 'GOOGLE_FORM' : 'CUSTOM'));
       setGoogleFormUrl(actData.googleFormUrl || '');
@@ -285,7 +285,7 @@ export default function ManageActivityPage() {
   };
 
   const handleResetToDefaultBanner = async () => {
-    const defaultUrl = '/images/default-event-banner.png';
+    const defaultUrl = '/images/default-event-banner.webp';
     setFormBannerUrl(defaultUrl);
     try {
       await api.put('/activities/' + id, { formBannerUrl: defaultUrl });
@@ -304,7 +304,7 @@ export default function ManageActivityPage() {
 
       const payload = {
         formSchema: newSchema,
-        formBannerUrl: formBannerUrl || '/images/default-event-banner.png',
+        formBannerUrl: formBannerUrl || '/images/default-event-banner.webp',
         isRegistrationOpen: openState,
         confirmationMessage
       };
@@ -1349,14 +1349,14 @@ export default function ManageActivityPage() {
                 <div className="w-full bg-slate-50 border border-gray-200 rounded-2xl p-3 flex flex-col items-center justify-center">
                   <div className="w-full max-w-3xl max-h-[220px] rounded-xl overflow-hidden bg-white shadow-xs border border-gray-100 flex items-center justify-center p-2">
                     <img
-                      src={formBannerUrl || '/images/default-event-banner.png'}
+                      src={formBannerUrl || '/images/default-event-banner.webp'}
                       alt="Banner Preview"
                       className="w-full max-h-[190px] object-contain rounded-lg"
                     />
                   </div>
                   <div className="mt-2 flex items-center gap-2 text-[11px] font-bold text-gray-500">
                     <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                    {formBannerUrl && formBannerUrl !== '/images/default-event-banner.png' 
+                    {formBannerUrl && formBannerUrl !== '/images/default-event-banner.webp' 
                       ? 'Custom Registration Form Banner Active' 
                       : 'Official VIT Bhopal & NSS Unit Default Banner Active'}
                   </div>

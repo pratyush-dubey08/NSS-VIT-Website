@@ -2,6 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { alumniData } from '@/data/alumni';
+import AlumniMap from '@/components/AlumniMap';
+import { MapPin } from 'lucide-react';
 import { ExternalLink, Briefcase, GraduationCap, Quote, Globe, Heart } from 'lucide-react';
 
 export default function AlumniPage() {
@@ -19,7 +21,7 @@ export default function AlumniPage() {
 
       {/* Soft Blended Photography Watermark in Background */}
       <div className="fixed inset-0 pointer-events-none -z-30 opacity-[0.035] select-none overflow-hidden">
-        <img src="/images/hero-nss-group.jpg" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
+        <img src="/images/hero-nss-group.webp" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
       </div>
       <div className="absolute top-10 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute top-96 right-10 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
@@ -40,6 +42,24 @@ export default function AlumniPage() {
             The spirit of <span className="text-nss-blue font-semibold italic">"Not Me But You"</span> stays with our volunteers forever. Discover how their NSS journey shaped their professional lives and where they are making an impact today.
           </p>
         </motion.div>
+
+        {/* Interactive India & Global Alumni Presence Map */}
+        <AlumniMap alumni={alumniData} />
+
+        {/* Section Divider & Grid Title */}
+        <div className="flex items-center justify-between mb-8 pb-4 border-b border-blue-100">
+          <div>
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
+              Individual Alumni Spotlights
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-500 mt-1">
+              Read inspiring journeys and testimonials from our graduated NSS leaders.
+            </p>
+          </div>
+          <span className="hidden sm:inline-block px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-bold border border-blue-200">
+            {alumniData.length} Profiles
+          </span>
+        </div>
 
         {/* Alumni Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -97,6 +117,14 @@ export default function AlumniPage() {
                       {alumnus.status}
                     </span>
                   </div>
+
+                  {/* City Location */}
+                  {alumnus.city && (
+                    <div className="flex items-center justify-center gap-1 text-[11px] font-semibold text-gray-500 mb-2">
+                      <MapPin size={12} className="text-red-500 shrink-0" />
+                      <span>{alumnus.city}</span>
+                    </div>
+                  )}
 
                   {/* Company & Designation */}
                   {(alumnus.company || alumnus.designation) && (

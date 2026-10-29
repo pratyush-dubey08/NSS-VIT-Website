@@ -193,7 +193,7 @@ function AdminGalleryContent() {
                   alt={folder.title} 
                   loading="lazy"
                   decoding="async"
-                  onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image1.png'; }}
+                  onError={(e: any) => { e.currentTarget.src = '/images/gallery/events_2025/image1.webp'; }}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <span className="absolute top-3 left-3 bg-black/60 backdrop-blur-md text-white text-xs px-2.5 py-1 rounded-full font-medium">

@@ -10,7 +10,7 @@ export default function AboutPreview() {
       <div className="absolute top-1/4 -left-20 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-red-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none -z-10 select-none">
-        <img src="/images/nss-logo.png" alt="" className="w-[450px] h-[450px] object-contain" />
+        <img src="/images/nss-logo.webp" alt="" className="w-[450px] h-[450px] object-contain" />
       </div>
 
       <div className="container mx-auto px-4">

@@ -12,28 +12,28 @@ export default function TreePlantationPage() {
   const [selectedPressImage, setSelectedPressImage] = useState<string | null>(null);
 
   const pressReleases = [
-    '/images/press_plantation/IMG-20260827-WA0031.jpg',
-    '/images/press_plantation/IMG-20260827-WA0032.jpg',
-    '/images/press_plantation/IMG-20260827-WA0034.jpg',
+    '/images/press_plantation/IMG-20260827-WA0031.webp',
+    '/images/press_plantation/IMG-20260827-WA0032.webp',
+    '/images/press_plantation/IMG-20260827-WA0034.webp',
   ];
 
   const heroPlantationPhotos = [
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790377/nss_vit_website/ke8hwjewhh35reol1qbv.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790380/nss_vit_website/ldxhofed2qko3xgkalrw.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790381/nss_vit_website/bar2sk4mguwxzroe1exp.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790383/nss_vit_website/vm7wh3c4bpu3ylp9cmx3.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790385/nss_vit_website/ofvu3md9bg1xkm5m8jqc.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790396/nss_vit_website/nagkh4v72p64tirloif5.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790572/nss_vit_website/he0jq8bkt6cn65uovzd0.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790574/nss_vit_website/t8yekemxqbpvf6eveb1i.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790576/nss_vit_website/wbuvvmrfxmyegq0fzlx1.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790579/nss_vit_website/u0ylvdzscfxj3fuv6sfi.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790582/nss_vit_website/bpy3z614oyij8luiwbhd.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790584/nss_vit_website/ztr1xv8vdzyonr5bky89.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790587/nss_vit_website/jzrmswwonq0sxv5iwqdv.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790589/nss_vit_website/cw7wzhupeshfc73bg2sp.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790591/nss_vit_website/ynbhosec87evkvct56zz.jpg",
-  "https://res.cloudinary.com/lrsgx9ti/image/upload/v1792790593/nss_vit_website/jb3jvbrtpo9eg9numuud.jpg"
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790377/nss_vit_website/ke8hwjewhh35reol1qbv.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790380/nss_vit_website/ldxhofed2qko3xgkalrw.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790381/nss_vit_website/bar2sk4mguwxzroe1exp.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790383/nss_vit_website/vm7wh3c4bpu3ylp9cmx3.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790385/nss_vit_website/ofvu3md9bg1xkm5m8jqc.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790396/nss_vit_website/nagkh4v72p64tirloif5.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790572/nss_vit_website/he0jq8bkt6cn65uovzd0.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790574/nss_vit_website/t8yekemxqbpvf6eveb1i.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790576/nss_vit_website/wbuvvmrfxmyegq0fzlx1.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790579/nss_vit_website/u0ylvdzscfxj3fuv6sfi.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790582/nss_vit_website/bpy3z614oyij8luiwbhd.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790584/nss_vit_website/ztr1xv8vdzyonr5bky89.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790587/nss_vit_website/jzrmswwonq0sxv5iwqdv.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790589/nss_vit_website/cw7wzhupeshfc73bg2sp.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790591/nss_vit_website/ynbhosec87evkvct56zz.jpg",
+  "https://res.cloudinary.com//image/upload/f_auto,q_auto/v1792790593/nss_vit_website/jb3jvbrtpo9eg9numuud.jpg"
 ];
 
   // Auto transition hero photos every 3.5 seconds
@@ -48,7 +48,7 @@ export default function TreePlantationPage() {
     <div className="min-h-screen pt-24 sm:pt-28 pb-24 bg-gradient-to-b from-slate-50 via-blue-50/20 to-red-50/20 selection:bg-nss-blue selection:text-white font-sans relative overflow-hidden">
       {/* Soft Blended Photography Watermark in Background */}
       <div className="fixed inset-0 pointer-events-none -z-30 opacity-[0.035] select-none overflow-hidden">
-        <img src="/images/hero-nss-group.jpg" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
+        <img src="/images/hero-nss-group.webp" alt="" className="w-full h-full object-cover scale-105 filter blur-xs" />
       </div>
       <div className="absolute top-10 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute top-96 right-10 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none -z-10" />

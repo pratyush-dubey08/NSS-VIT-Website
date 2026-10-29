@@ -17,7 +17,7 @@ export default function Footer() {
       <div className="absolute top-0 right-10 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute bottom-0 left-10 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute inset-0 flex items-center justify-end opacity-[0.03] pointer-events-none -z-10 select-none pr-10">
-        <img src="/images/nss-logo.png" alt="" className="w-80 h-80 object-contain" />
+        <img src="/images/nss-logo.webp" alt="" className="w-80 h-80 object-contain" />
       </div>
 
       <div className="container mx-auto px-4 md:px-8">
@@ -26,7 +26,7 @@ export default function Footer() {
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center gap-3 mb-6 group">
               <img 
-                src="/images/nss-logo.png" 
+                src="/images/nss-logo.webp" 
                 alt="NSS Logo" 
                 className="w-12 h-12 object-contain rounded-full bg-white p-1 shadow-lg ring-2 ring-red-500/50 group-hover:scale-105 transition-transform"
               />

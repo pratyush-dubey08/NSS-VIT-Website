@@ -40,7 +40,7 @@ export default function UpcomingActivities() {
       <div className="absolute top-10 right-10 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute bottom-10 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute inset-0 flex items-center justify-center opacity-[0.025] pointer-events-none -z-10 select-none">
-        <img src="/images/nss-logo.png" alt="" className="w-[450px] h-[450px] object-contain" />
+        <img src="/images/nss-logo.webp" alt="" className="w-[450px] h-[450px] object-contain" />
       </div>
 
       <div className="container mx-auto px-4">
