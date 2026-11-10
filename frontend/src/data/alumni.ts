@@ -55,8 +55,8 @@ export const alumniData: IAlumnus[] = [
     mapHub: "noida",
     linkedin: "",
     photoUrl: "/images/alumni/shreya-gupta.webp",
-    message: "Being part of the NSS Unit at VIT Bhopal was truly transformative for me. Participating in the district-level NSS camp and conducting medical survey camps as part of community outreach gave me a deeper sense of empathy and social responsibility. It taught me how to work with diverse groups of people, communicate effectively, and take ownership of tasks in real, on-ground situations — skills that have stayed with me well beyond the camp.",
-    cherished: "The one thing I cherished most was the sense of genuine human connection I built during the medical survey camps. Meeting people from different backgrounds, listening to their concerns, and being able to contribute — even in a small way — to their well-being gave me a perspective that no classroom or workplace could offer."
+    message: "Being part of the NSS Unit at VIT Bhopal was truly transformative for me. Participating in the district-level NSS camp and conducting medical survey camps as part of community outreach gave me a deeper sense of empathy and social responsibility. It taught me how to work with diverse groups of people, communicate effectively, and take ownership of tasks in real, on-ground situations - skills that have stayed with me well beyond the camp.",
+    cherished: "The one thing I cherished most was the sense of genuine human connection I built during the medical survey camps. Meeting people from different backgrounds, listening to their concerns, and being able to contribute - even in a small way - to their well-being gave me a perspective that no classroom or workplace could offer."
   },
 
   // 2022 Batch

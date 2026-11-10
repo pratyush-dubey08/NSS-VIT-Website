@@ -456,14 +456,14 @@ Ananya Sen, ${yr.slice(2)}BCE10001, ananya@vitbhopal.ac.in, 9123456780, ${yr}, F
                                   <Phone size={10} className="text-slate-400" /> {vol.phoneNumber}
                                 </span>
                               ) : (
-                                <span className="text-slate-300 font-normal">—</span>
+                                <span className="text-slate-300 font-normal">-</span>
                               )}
                             </td>
                             <td className="p-2.5 text-slate-600 truncate max-w-[140px]" title={vol.email}>
-                              {vol.email || <span className="text-slate-300">—</span>}
+                              {vol.email || <span className="text-slate-300">-</span>}
                             </td>
                             <td className="p-2.5 text-slate-700">
-                              {vol.batch ? `Batch of ${vol.batch}` : <span className="text-slate-300">—</span>}
+                              {vol.batch ? `Batch of ${vol.batch}` : <span className="text-slate-300">-</span>}
                             </td>
                             <td className="p-2.5">
                               {vol.gender ? (
@@ -471,7 +471,7 @@ Ananya Sen, ${yr.slice(2)}BCE10001, ananya@vitbhopal.ac.in, 9123456780, ${yr}, F
                                   {vol.gender}
                                 </span>
                               ) : (
-                                <span className="text-slate-300">—</span>
+                                <span className="text-slate-300">-</span>
                               )}
                             </td>
                             <td className="p-2.5">
@@ -484,7 +484,7 @@ Ananya Sen, ${yr.slice(2)}BCE10001, ananya@vitbhopal.ac.in, 9123456780, ${yr}, F
                                   {vol.residenceType}
                                 </span>
                               ) : (
-                                <span className="text-slate-300">—</span>
+                                <span className="text-slate-300">-</span>
                               )}
                             </td>
                           </tr>

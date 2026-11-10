@@ -40,7 +40,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
         "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792790396/nss_vit_website/nagkh4v72p64tirloif5.jpg"
     ],
     title: 'Mega Tree Plantation Drive 2024',
-    subtitle: '10,000 Trees in a Single Day — Largest Single-Day Drive in Sehore',
+    subtitle: '10,000 Trees in a Single Day - Largest Single-Day Drive in Sehore',
     category: 'environment',
     categoryLabel: 'Environmental Conservation',
     date: '9 August 2024',
@@ -85,7 +85,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
       label: 'NSS Volunteers Deployed'
     },
     badges: ['State Dignitary Protocol', '5 Core Operational Wings'],
-    motto: '“Not Me, But You — Professionalism, Leadership & Institutional Trust”',
+    motto: '“Not Me, But You - Professionalism, Leadership & Institutional Trust”',
     dignitaries: [
       'Dr. Mohan Yadav (Hon’ble Chief Minister of Madhya Pradesh)',
       'Dr. G. Viswanathan (Founder & Chancellor, VIT)',
@@ -130,9 +130,9 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
       label: 'Nationwide Action Campaign'
     },
     badges: ['Culminated on Gandhi Jayanti'],
-    motto: '“Cleanliness is Civic Duty — Transforming Daily Habits for a Sustainable Future”',
+    motto: '“Cleanliness is Civic Duty - Transforming Daily Habits for a Sustainable Future”',
     paragraphs: [
-      'From 19 September to 2 October 2024, NSS Unit, VIT Bhopal University, actively participated in the Swachhta Hi Seva Abhiyan 2024 — a comprehensive multi-day nationwide initiative focused on sanitation, civic awareness, and environmental responsibility across Sehore district and campus.',
+      'From 19 September to 2 October 2024, NSS Unit, VIT Bhopal University, actively participated in the Swachhta Hi Seva Abhiyan 2024 - a comprehensive multi-day nationwide initiative focused on sanitation, civic awareness, and environmental responsibility across Sehore district and campus.',
       'Rather than limiting the campaign to symbolic clean-up drives, the unit organized a multi-faceted series of educational, creative, and action-oriented activities including poster-making, awareness rallies, debates, essay writing, tree planting, street theatre (Nukkad Natak), and social documentary film-making.',
       'A standout highlight was the Upcycling Workshop held on 29 September 2024 at the Laboratory Complex. The workshop challenged university students to innovatively transform discarded items and waste materials into functional, aesthetic utility products, promoting circular economy principles.',
       'The campaign culminated on 2 October 2024 (Gandhi Jayanti), reinforcing Mahatma Gandhi’s enduring message that cleanliness and dignity of labor are integral components of true nation-building.'
@@ -167,7 +167,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
       label: 'Blood Units Collected'
     },
     badges: ['1,500+ Units Milestone', 'Red Cross & Govt Blood Bank Partner', 'Life-Saving Humanitarian Service'],
-    motto: '“Donate Blood. Share Hope. Help Save Lives — Every Drop Counts, Every Donor Matters.”',
+    motto: '“Donate Blood. Share Hope. Help Save Lives - Every Drop Counts, Every Donor Matters.”',
     paragraphs: [
       'NSS Unit, VIT Bhopal University, has been actively contributing to community healthcare through regular blood donation drives that mobilize hundreds of students, faculty, and staff members to donate voluntarily.',
       'The unit has achieved a cumulative milestone of over 1,500+ units of blood collected across organized mega camps and emergency replacement drives, directly benefiting government hospital blood banks, trauma centers, and thalassemia patients across the region.',
@@ -204,11 +204,11 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
       label: 'Thriving Campus Trees'
     },
     badges: ['5,000+ Campus Canopy', 'Carbon Offset & Microclimate', 'Biodiversity Sanctuary'],
-    motto: '“5,000+ Trees Inside Campus — Growing a Greener Tomorrow”',
+    motto: '“5,000+ Trees Inside Campus - Growing a Greener Tomorrow”',
     paragraphs: [
       'NSS Unit, VIT Bhopal University, is deeply committed to ecological restoration and long-term environmental sustainability. Through successive phases of targeted plantation drives and sustained maintenance, the campus now proudly shelters more than 5,000 thriving trees.',
       'This green canopy plays an indispensable role in maintaining local ecological balance, reducing heat island effects, enriching topsoil, and supporting diverse avian and insect biodiversity across the campus.',
-      'NSS volunteers instill the philosophy that planting a tree is only the first step — regular watering, organic mulching, pruning, and protective fencing are consistently carried out through dedicated volunteer tree-warden batches.'
+      'NSS volunteers instill the philosophy that planting a tree is only the first step - regular watering, organic mulching, pruning, and protective fencing are consistently carried out through dedicated volunteer tree-warden batches.'
     ],
     customHighlights: {
       heading: 'Canopy Ecological Benefits',
@@ -235,7 +235,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
     motto: '“Your Action. Your Story. Your Spotlight.”',
     paragraphs: [
       'NSS Spotlight is a signature initiative created to recognize and celebrate the diverse talents, individuality, and social contributions of NSS volunteers beyond standard duty routines.',
-      'The initiative provides an empowering platform for student volunteers to showcase creative skills — from spoken word, singing, poetry, and digital art to cultural performances — while giving equal prominence to quiet, real-life acts of social empathy.',
+      'The initiative provides an empowering platform for student volunteers to showcase creative skills - from spoken word, singing, poetry, and digital art to cultural performances - while giving equal prominence to quiet, real-life acts of social empathy.',
       'Stories highlighted on Spotlight celebrate everyday heroes: teaching underprivileged children, caring for street animals, eliminating single-use plastic, planting saplings, donating clothes, and appreciating campus security and sanitary workers.',
       'Shared across NSS social media channels through bite-sized videos and written reflections, NSS Spotlight proves that true service is found in continuous everyday choices.'
     ],
@@ -287,7 +287,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
         "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792795580/nss_vit_website/opbucqx5beivc4k9pcxd.jpg",
         "https://res.cloudinary.com/lrsgx9ti/image/upload/f_auto,q_auto/v1792795580/nss_vit_website/wujfnuwh9mbuh6u7kr5g.jpg"
     ],
-    title: 'Nukkad Natak — Street Theatre for Social Change',
+    title: 'Nukkad Natak - Street Theatre for Social Change',
     subtitle: 'Taking Powerful Social Messages to the Streets Across 4 Core Pillars',
     category: 'awareness',
     categoryLabel: 'Street Theatre & Social Reform',
@@ -381,7 +381,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
       'As part of its concrete rural upliftment agenda, the NSS Unit of VIT Bhopal University funded and facilitated the complete installation of commercial-grade water coolers in government schools across two adopted villages: Jafrabad and Bor Kheda.',
       'In central Madhya Pradesh, scorching summer temperatures often exceed 42°C, causing severe dehydration, heat exhaustion, and diminished attendance among young schoolchildren who lack chilled or purified water at school.',
       'By identifying this critical everyday need and installing sturdy, high-capacity water coolers, NSS directly improved the physical well-being, dignity, and classroom comfort of hundreds of rural children.',
-      'This initiative exemplifies the core philosophy of NSS: community service does not always require grandiose speeches — it requires identifying real, tangible pain points and solving them with heart and consistency.'
+      'This initiative exemplifies the core philosophy of NSS: community service does not always require grandiose speeches - it requires identifying real, tangible pain points and solving them with heart and consistency.'
     ],
     customHighlights: {
       heading: 'Beneficiary School Locations',
@@ -399,7 +399,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   },
   {
     id: 'nasha-mukt-abhiyan',
-    title: 'Nasha Mukt Abhiyan — Towards an Addiction-Free Society',
+    title: 'Nasha Mukt Abhiyan - Towards an Addiction-Free Society',
     subtitle: 'Youth-Led Campaign for Substance Abuse Prevention and Mental Well-Being',
     category: 'awareness',
     categoryLabel: 'Substance Abuse Prevention',
@@ -450,7 +450,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
     motto: '“Young Voices. Informed Minds. A Stronger Democracy.”',
     paragraphs: [
       'The National Youth Parliament initiative provides a high-caliber platform for NSS volunteers to immerse themselves in parliamentary debate, constitutional law, public policy analysis, and nation-building discourse.',
-      'Rather than remaining passive observers of democratic governance, student participants research intricate national challenges — such as electoral reforms, economic equity, and environmental legislation — and debate them with legislative decorum and intellectual rigor.',
+      'Rather than remaining passive observers of democratic governance, student participants research intricate national challenges - such as electoral reforms, economic equity, and environmental legislation - and debate them with legislative decorum and intellectual rigor.',
       'NSS VIT Bhopal volunteers have consistently demonstrated commanding eloquence, advancing through competitive district and nodal rounds to represent their region at the Madhya Pradesh State Legislative Assembly and national forums.',
       'The initiative sharpens public speaking, critical research, persuasive argumentation, and statesmanship, equipping the next generation to be visionary leaders of the world’s largest democracy.'
     ],
@@ -475,7 +475,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
     ],
     videoUrl: "https://youtu.be/ULmNP9Lj3aw?si=qGoWMlqOrZISS2Zn",
     videoTitle: "VIBGYOR 2025 Official Aftermovie",
-    title: 'VIBGYOR 2025 — Cultural Induction Through Diversity',
+    title: 'VIBGYOR 2025 - Cultural Induction Through Diversity',
     subtitle: 'Welcoming Freshers with the Vibrant Cultural Tapestry of Seven Indian States',
     category: 'culture',
     categoryLabel: 'Cultural Diversity & Induction',
@@ -489,7 +489,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
     motto: '“Seven States. Diverse Traditions. One Vibrant Celebration.”',
     paragraphs: [
       'VIBGYOR 2025 established a vibrant new cultural induction tradition for NSS VIT Bhopal, designed to introduce incoming first-year students to the spirit and camaraderie of NSS through high-energy music, dance, folk arts, and creative expression.',
-      'Departing from conventional dry orientations, VIBGYOR demonstrated that volunteerism in NSS is not solely about social service — it is equally about teamwork, emotional intelligence, cultural expression, and lifelong friendships.',
+      'Departing from conventional dry orientations, VIBGYOR demonstrated that volunteerism in NSS is not solely about social service - it is equally about teamwork, emotional intelligence, cultural expression, and lifelong friendships.',
       'The central concept of VIBGYOR 2025 revolved around celebrating the immense regional richness of India through the distinct cultural identities of seven diverse Indian states. Each colour of the spectrum represented a unique state, highlighting folk dances, music, traditional costumes, and local customs on one unified stage.'
     ],
     customHighlights: {
@@ -503,7 +503,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
   },
   {
     id: 'vibgyor-2026',
-    title: 'VIBGYOR 2026 — Ancient Wisdom & Modern Struggles',
+    title: 'VIBGYOR 2026 - Ancient Wisdom & Modern Struggles',
     subtitle: 'Ancient Stories. Modern Questions. Timeless Answers.',
     category: 'culture',
     categoryLabel: 'Philosophical Theatre & Social Dialogue',
@@ -518,7 +518,7 @@ export const UNIT_MILESTONES: MilestoneDetail[] = [
     paragraphs: [
       'Building upon the foundation of 2025, VIBGYOR 2026 elevated NSS cultural performances into an intellectual and emotional tour de force by connecting ancient Indian epics with the most pressing dilemmas faced by modern youth.',
       'Rather than treating mythology and contemporary life as separate entities, VIBGYOR 2026 used iconic archetypes from Indian literature as artistic allegories to explore women’s safety, systemic justice, educational equality, mental health anxiety, resisting oppression, and overcoming burnout.',
-      'Through seven powerful thematic performances—Shakti, Prashna, Adhikaar, Sangharsh, Sahas, Astitva, and Taandav—the production delivered an evocative social commentary inspiring deep introspection and transformative change.'
+      'Through seven powerful thematic performances - Shakti, Prashna, Adhikaar, Sangharsh, Sahas, Astitva, and Taandav - the production delivered an evocative social commentary inspiring deep introspection and transformative change.'
     ],
     customHighlights: {
       heading: 'The Seven Thematic Performances',

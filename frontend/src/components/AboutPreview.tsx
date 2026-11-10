@@ -33,7 +33,7 @@ export default function AboutPreview() {
               NSS Unit, VIT Bhopal University is an official unit under the National Service Scheme (NSS), a flagship initiative by the Ministry of Youth Affairs and Sports, Government of India. Established with the vision of nurturing social responsibility, leadership, and community engagement, the unit comprises around 250 dedicated volunteers committed to serving society.
             </p>
             <p className="text-gray-700 text-base md:text-lg mb-8 leading-relaxed text-justify font-normal">
-              Following the motto — <strong className="text-nss-blue font-bold">"Not Me, But You"</strong>, NSS Unit, VIT Bhopal University actively engages in a wide range of community service initiatives, including education programs, environmental sustainability efforts, health awareness campaigns, and rural development projects. Through various activities, our volunteers strive to make a lasting impact on society while developing essential leadership and teamwork skills.
+              Following the motto - <strong className="text-nss-blue font-bold">"Not Me, But You"</strong>, NSS Unit, VIT Bhopal University actively engages in a wide range of community service initiatives, including education programs, environmental sustainability efforts, health awareness campaigns, and rural development projects. Through various activities, our volunteers strive to make a lasting impact on society while developing essential leadership and teamwork skills.
             </p>
 
             <div className="flex flex-wrap items-center gap-3">

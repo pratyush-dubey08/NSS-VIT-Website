@@ -226,7 +226,7 @@ export default function AnnualCampPage() {
           className="mt-14 md:mt-16 max-w-4xl mx-auto space-y-6 text-gray-700 leading-relaxed font-normal text-justify"
         >
           <p className="text-base sm:text-lg leading-relaxed">
-            The 7 Day Annual NSS Unit Camp, organized each academic year by the National Service Scheme (NSS) Unit of VIT Bhopal University, represents a premier rural immersion initiative held in villages across Sehore district, Madhya Pradesh. Grounded firmly in the foundational motto of <span className="font-bold text-nss-blue">"Not Me, But You"</span>, the primary objective of this week-long camp is the holistic development and betterment of rural villages. Student volunteers live within the village community and work tirelessly to execute every possible measure that improves the lives of the villagers—from village-wide cleanliness campaigns (Swachhata Abhiyan) and health check-ups to school teaching, plantation drives, and social awareness campaigns.
+            The 7 Day Annual NSS Unit Camp, organized each academic year by the National Service Scheme (NSS) Unit of VIT Bhopal University, represents a premier rural immersion initiative held in villages across Sehore district, Madhya Pradesh. Grounded firmly in the foundational motto of <span className="font-bold text-nss-blue">"Not Me, But You"</span>, the primary objective of this week-long camp is the holistic development and betterment of rural villages. Student volunteers live within the village community and work tirelessly to execute every possible measure that improves the lives of the villagers - from village-wide cleanliness campaigns (Swachhata Abhiyan) and health check-ups to school teaching, plantation drives, and social awareness campaigns.
           </p>
           
           <p className="text-base sm:text-lg leading-relaxed">
@@ -598,7 +598,7 @@ export default function AnnualCampPage() {
                     <div className="flex items-center gap-2.5">
                       <span className="w-3 h-3 rounded-full bg-red-600 animate-pulse" />
                       <h5 className="font-black text-sm sm:text-base tracking-tight">
-                        Annual NSS Unit Camp 2025 — Official Documentary & Aftermovie
+                        Annual NSS Unit Camp 2025 - Official Documentary & Aftermovie
                       </h5>
                     </div>
                     <a 

@@ -150,7 +150,7 @@ export default function BloodDonationPage() {
           </div>
 
           <p className="text-base sm:text-lg">
-            Blood donation is the highest form of humanitarian service — an anonymous, selfless act that directly bridges the critical divide between life and death for accident trauma victims, cancer patients, thalassemia warriors, and emergency surgical cases. The NSS Unit of VIT Bhopal University organizes large-scale, voluntary Blood Donation Camps annually, instilling a deep sense of social responsibility and civic empathy across our student and faculty fraternity.
+            Blood donation is the highest form of humanitarian service - an anonymous, selfless act that directly bridges the critical divide between life and death for accident trauma victims, cancer patients, thalassemia warriors, and emergency surgical cases. The NSS Unit of VIT Bhopal University organizes large-scale, voluntary Blood Donation Camps annually, instilling a deep sense of social responsibility and civic empathy across our student and faculty fraternity.
           </p>
 
           <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-200/80 space-y-4">
@@ -184,7 +184,7 @@ export default function BloodDonationPage() {
           </div>
 
           <p className="text-base sm:text-lg font-medium text-slate-800 text-center pt-4">
-            Anchored in our guiding philosophy: <span className="font-black text-rose-700">“Donate Blood. Share Hope. Save Lives — Every Drop Counts, Every Donor Matters.”</span>
+            Anchored in our guiding philosophy: <span className="font-black text-rose-700">“Donate Blood. Share Hope. Save Lives - Every Drop Counts, Every Donor Matters.”</span>
           </p>
         </motion.article>
 

@@ -174,7 +174,7 @@ export default function TreePlantationPage() {
               Annual Monsoon Campaigns & The "Adopt-a-Sapling" Culture
             </h3>
             <p className="text-sm sm:text-base leading-relaxed text-slate-700">
-              Our core tenet is that <em>"Planting a sapling is only day one — nurturing it into a mature tree is our true responsibility."</em> Every year with the onset of the monsoon season, the NSS Unit launches fresh plantation drives across adopted villages, rural schools, and peripheral public spaces. Through our volunteer <strong>Tree-Warden Batches</strong>, students take ownership of designated plantation zones, conducting periodic watering schedules, organic compost enrichment, pruning, and health monitoring throughout the academic year.
+              Our core tenet is that <em>"Planting a sapling is only day one - nurturing it into a mature tree is our true responsibility."</em> Every year with the onset of the monsoon season, the NSS Unit launches fresh plantation drives across adopted villages, rural schools, and peripheral public spaces. Through our volunteer <strong>Tree-Warden Batches</strong>, students take ownership of designated plantation zones, conducting periodic watering schedules, organic compost enrichment, pruning, and health monitoring throughout the academic year.
             </p>
           </div>
 

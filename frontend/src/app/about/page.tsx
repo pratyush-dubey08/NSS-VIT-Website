@@ -167,7 +167,7 @@ export default function AboutPage() {
               NSS Unit, VIT Bhopal University is an official unit under the National Service Scheme (NSS), a flagship initiative by the Ministry of Youth Affairs and Sports, Government of India. Established with the vision of nurturing social responsibility, leadership, and community engagement, the unit comprises over 250 dedicated volunteers committed to serving society with distinction and honor.
             </p>
             <p>
-              Following the noble motto — <span className="font-bold text-nss-blue">"Not Me, But You"</span>, the NSS Unit of VIT Bhopal University actively engages in an expansive portfolio of community service initiatives. These include educational outreach in rural schools, environmental sustainability and plantation drives, preventive health camps, and sustainable village development. Through these endeavors, our volunteers cultivate practical leadership, empathy, and organizational excellence while generating enduring positive change.
+              Following the noble motto - <span className="font-bold text-nss-blue">"Not Me, But You"</span>, the NSS Unit of VIT Bhopal University actively engages in an expansive portfolio of community service initiatives. These include educational outreach in rural schools, environmental sustainability and plantation drives, preventive health camps, and sustainable village development. Through these endeavors, our volunteers cultivate practical leadership, empathy, and organizational excellence while generating enduring positive change.
             </p>
           </div>
         </motion.div>
@@ -183,27 +183,60 @@ export default function AboutPage() {
           <div className="w-24 h-1.5 bg-nss-red mx-auto rounded-full"></div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {/* Motto */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}
-            className="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-slate-200/90 hover:-translate-y-1.5 hover:shadow-2xl hover:border-blue-400/80 transition-all"
+            className="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-slate-200/90 hover:-translate-y-1.5 hover:shadow-2xl hover:border-blue-400/80 transition-all flex flex-col"
           >
             <div className="w-14 h-14 bg-red-50 text-nss-red rounded-2xl flex items-center justify-center mb-6">
               <Quote size={28} />
             </div>
             <h3 className="text-xl font-bold mb-2 text-gray-900">The Motto</h3>
             <p className="text-lg font-black text-nss-blue mb-1">"Not Me, But You"</p>
+            <p className="text-slate-800 font-bold text-sm mb-1">(नाहं वै भवान्)</p>
             <p className="text-gray-500 font-medium text-xs mb-4">स्वयं से पहले आप</p>
             <p className="text-gray-600 text-xs sm:text-sm leading-relaxed text-justify">
               Reflects the essence of democratic living and upholds the need for selfless service. It signifies that the welfare of an individual depends on the welfare of society as a whole.
             </p>
           </motion.div>
 
-          {/* The Symbol */}
+          {/* Objective */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.15 }}
+            className="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-slate-200/90 hover:-translate-y-1.5 hover:shadow-2xl hover:border-blue-400/80 transition-all flex flex-col"
+          >
+            <div className="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-6">
+              <Target size={28} />
+            </div>
+            <h3 className="text-xl font-bold mb-2 text-gray-900">The Objective</h3>
+            <p className="text-base font-bold text-emerald-700 mb-1 leading-snug">समाज सेवा द्वारा विद्यार्थियों के व्यक्तित्व का विकास</p>
+            <p className="text-gray-500 font-medium text-xs mb-4 italic">Student Personality Development through Community Service</p>
+            <p className="text-gray-600 text-xs sm:text-sm leading-relaxed text-justify">
+              The primary objective of the National Service Scheme is the development of the personality and character of students through voluntary community service, nurturing empathetic, responsible, and proactive citizens.
+            </p>
+          </motion.div>
+
+          {/* Aim */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-slate-200/90 hover:-translate-y-1.5 hover:shadow-2xl hover:border-blue-400/80 transition-all"
+            className="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-slate-200/90 hover:-translate-y-1.5 hover:shadow-2xl hover:border-blue-400/80 transition-all flex flex-col"
+          >
+            <div className="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mb-6">
+              <Compass size={28} />
+            </div>
+            <h3 className="text-xl font-bold mb-2 text-gray-900">The Aim</h3>
+            <p className="text-base font-bold text-indigo-700 mb-1 leading-snug">शिक्षा द्वारा समाज सेवा एवं समाज सेवा द्वारा शिक्षा</p>
+            <p className="text-gray-500 font-medium text-xs mb-4 italic">Education through Community Service & Community Service through Education</p>
+            <p className="text-gray-600 text-xs sm:text-sm leading-relaxed text-justify">
+              NSS establishes a vital bridge between academic education and real-world societal needs, ensuring that learning actively uplifts the community while selfless service deepens students' moral and social consciousness.
+            </p>
+          </motion.div>
+
+          {/* The Symbol */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.25 }}
+            className="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-slate-200/90 hover:-translate-y-1.5 hover:shadow-2xl hover:border-blue-400/80 transition-all flex flex-col"
           >
             <div className="w-14 h-14 bg-blue-50 text-nss-blue rounded-2xl flex items-center justify-center mb-6">
               <Sun size={28} />
@@ -212,7 +245,7 @@ export default function AboutPage() {
             <p className="text-gray-600 text-xs sm:text-sm leading-relaxed mb-3 text-justify">
               Based on the giant Rath Wheel of the Konark Sun Temple. The 8 bars represent 24 hours of the day, reminding volunteers to be ready for selfless service round the clock.
             </p>
-            <ul className="text-xs text-gray-600 space-y-1">
+            <ul className="text-xs text-gray-600 space-y-1 mt-auto">
               <li><span className="font-bold text-nss-red">Red Color:</span> Energy, spirit, and active zeal.</li>
               <li><span className="font-bold text-nss-blue">Navy Blue:</span> Represents the cosmos and unity.</li>
             </ul>
@@ -221,7 +254,7 @@ export default function AboutPage() {
           {/* Inspiration */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }}
-            className="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-slate-200/90 hover:-translate-y-1.5 hover:shadow-2xl hover:border-blue-400/80 transition-all"
+            className="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-slate-200/90 hover:-translate-y-1.5 hover:shadow-2xl hover:border-blue-400/80 transition-all flex flex-col"
           >
             <div className="w-14 h-14 bg-orange-50 text-orange-500 rounded-2xl flex items-center justify-center mb-6">
               <User size={28} />
@@ -235,8 +268,8 @@ export default function AboutPage() {
 
           {/* Foundation */}
           <motion.div 
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 }}
-            className="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-slate-200/90 hover:-translate-y-1.5 hover:shadow-2xl hover:border-blue-400/80 transition-all"
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.35 }}
+            className="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-slate-200/90 hover:-translate-y-1.5 hover:shadow-2xl hover:border-blue-400/80 transition-all flex flex-col"
           >
             <div className="w-14 h-14 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center mb-6">
               <Calendar size={28} />
@@ -250,8 +283,8 @@ export default function AboutPage() {
 
           {/* Salutation */}
           <motion.div 
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.5 }}
-            className="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-slate-200/90 hover:-translate-y-1.5 hover:shadow-2xl hover:border-blue-400/80 transition-all"
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 }}
+            className="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-slate-200/90 hover:-translate-y-1.5 hover:shadow-2xl hover:border-blue-400/80 transition-all flex flex-col"
           >
             <div className="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-6">
               <MessageCircle size={28} />
@@ -265,8 +298,8 @@ export default function AboutPage() {
 
           {/* Current Theme */}
           <motion.div 
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.6 }}
-            className="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-slate-200/90 hover:-translate-y-1.5 hover:shadow-2xl hover:border-blue-400/80 transition-all"
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.45 }}
+            className="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-slate-200/90 hover:-translate-y-1.5 hover:shadow-2xl hover:border-blue-400/80 transition-all flex flex-col"
           >
             <div className="w-14 h-14 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center mb-6">
               <Flag size={28} />

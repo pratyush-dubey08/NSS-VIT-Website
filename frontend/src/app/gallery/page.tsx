@@ -354,7 +354,7 @@ function GalleryContent() {
                         </a>
                         <div>
                           <span className="text-[10px] font-bold uppercase text-rose-400 tracking-wider">Official Camp Aftermovie</span>
-                          <h4 className="text-sm font-bold text-white line-clamp-1">Annual NSS Unit Camp 2026 — Official Aftermovie</h4>
+                          <h4 className="text-sm font-bold text-white line-clamp-1">Annual NSS Unit Camp 2026 - Official Aftermovie</h4>
                           <p className="text-xs text-slate-400 line-clamp-2 mt-0.5">Grassroots bonding, morning drills, and community activities at Borkheda.</p>
                         </div>
                       </div>

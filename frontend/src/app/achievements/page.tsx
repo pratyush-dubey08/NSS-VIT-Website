@@ -454,7 +454,7 @@ export default function AwardeesPage() {
                 A Proud Moment for <span className="text-blue-600">VIT Bhopal University</span>
               </h3>
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed text-justify">
-                Our exceptional volunteers — <strong className="text-slate-900 font-bold">Shagun Singh, Maulik Dubey, Kshitika Atri, Soumya Mishra, Pragati,</strong> and <strong className="text-slate-900 font-bold">Riya Singh</strong> — showcased outstanding leadership, discipline, and dedication at the <strong className="text-slate-900 font-bold">Pre-RDC Zonal Level Selections</strong>. Their phenomenal performance proudly represents VIT Bhopal University and reflects the true essence of NSS — <span className="italic text-blue-600 font-semibold">"Not Me But You"</span>.
+                Our exceptional volunteers - <strong className="text-slate-900 font-bold">Shagun Singh, Maulik Dubey, Kshitika Atri, Soumya Mishra, Pragati,</strong> and <strong className="text-slate-900 font-bold">Riya Singh</strong> - showcased outstanding leadership, discipline, and dedication at the <strong className="text-slate-900 font-bold">Pre-RDC Zonal Level Selections</strong>. Their phenomenal performance proudly represents VIT Bhopal University and reflects the true essence of NSS - <span className="italic text-blue-600 font-semibold">"Not Me But You"</span>.
               </p>
 
               <div className="flex flex-wrap justify-center items-center gap-2.5 pt-2">

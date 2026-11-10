@@ -35,7 +35,7 @@ export default function RequestCorrectionModal({
     { id: 'residenceType', label: 'Residential Status (Hosteller / Day Scholar)', current: user?.residenceType || 'Not specified' },
     { id: 'batch', label: 'Batch / Admission Year', current: user?.batch ? `Batch of ${user.batch}` : 'Not specified' },
     { id: 'registrationNumber', label: 'Registration Number', current: user?.registrationNumber || '' },
-    { id: 'other', label: 'Other Record Detail', current: '—' },
+    { id: 'other', label: 'Other Record Detail', current: '-' },
   ];
 
   const currentFieldObj = fields.find(f => f.id === selectedField) || fields[0];

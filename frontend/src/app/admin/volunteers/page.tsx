@@ -231,7 +231,7 @@ This will also remove their attendance and participation records across all even
 
       doc.setFontSize(9.5);
       doc.setFont('helvetica', 'normal');
-      doc.text(`OFFICIAL BATCH PERFORMANCE & VOLUNTEER ROSTER REPORT — BATCH ${batchYear}`, pageWidth / 2, 18, { align: 'center' });
+      doc.text(`OFFICIAL BATCH PERFORMANCE & VOLUNTEER ROSTER REPORT - BATCH ${batchYear}`, pageWidth / 2, 18, { align: 'center' });
 
       doc.setFontSize(8);
       doc.setTextColor(254, 202, 202);

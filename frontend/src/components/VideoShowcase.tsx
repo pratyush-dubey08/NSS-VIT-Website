@@ -73,7 +73,7 @@ export default function VideoShowcase() {
 
             <div>
               <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                Annual NSS Unit Camp 2025 — Official Aftermovie
+                Annual NSS Unit Camp 2025 - Official Aftermovie
               </h3>
               <p className="text-xs sm:text-sm text-slate-300 mt-1 leading-relaxed">
                 7 Days of grassroots transformation, cleanliness drives, medical camps, and community immersion at Gram Jafarabad, Sehore.
@@ -130,7 +130,7 @@ export default function VideoShowcase() {
 
               <div>
                 <h4 className="text-base sm:text-lg font-black text-white leading-tight">
-                  VIBGYOR 2025 — Official Aftermovie
+                  VIBGYOR 2025 - Official Aftermovie
                 </h4>
                 <p className="text-xs text-slate-300 mt-1 leading-relaxed">
                   Our inaugural flagship cultural celebration uniting music, dance, and cultural unity across seven Indian states.
@@ -170,7 +170,7 @@ export default function VideoShowcase() {
                   </div>
                 </div>
                 <div className="absolute bottom-2 left-3 right-3 text-white">
-                  <p className="text-xs font-black truncate">Annual NSS Unit Camp 2026 — Official Aftermovie</p>
+                  <p className="text-xs font-black truncate">Annual NSS Unit Camp 2026 - Official Aftermovie</p>
                   <p className="text-[10px] text-slate-300">Tap to watch on Instagram @nssvitbhopal</p>
                 </div>
               </a>
