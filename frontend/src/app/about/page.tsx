@@ -305,9 +305,10 @@ export default function AboutPage() {
               <Flag size={28} />
             </div>
             <h3 className="text-xl font-bold mb-2 text-gray-900">Official Theme</h3>
-            <p className="text-sm font-black text-gray-800 mb-2">"Mera Yuva Bharat & Digital Literacy"</p>
-            <p className="text-gray-600 text-xs sm:text-sm leading-relaxed text-justify">
-              Designated focus empowering Indian youth with digital capabilities, community technology access, and grassroots civic engagement.
+            <p className="text-base font-bold text-teal-800 mb-1 leading-snug">"मेरा युवा भारत एवं डिजिटल साक्षरता के लिए युवा।"</p>
+            <p className="text-teal-600 font-semibold text-xs mb-4">वर्तमान थीम (2025 से निरंतर)</p>
+            <p className="text-gray-600 text-xs sm:text-sm leading-relaxed text-justify mt-auto">
+              यह राष्ट्रीय सेवा योजना की आधिकारिक वर्तमान थीम है जो वर्ष 2025 से निरंतर चल रही है। इसका मुख्य उद्देश्य भारतीय युवाओं को डिजिटल साक्षरता से सशक्त कर समाज के प्रत्येक वर्ग तक तकनीकी पहुंच और सामुदायिक विकास को पहुँचाना है।
             </p>
           </motion.div>
         </div>
